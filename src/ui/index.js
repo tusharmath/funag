@@ -5,7 +5,7 @@
 'use strict'
 
 import Cycle from '@cycle/core'
-import {makeDOMDriver} from 'cycle-snabbdom'
+import {makeDOMDriver} from '@cycle/dom'
 import Controls from './controls'
 
 const container = document.createElement('div')
@@ -16,7 +16,7 @@ function App ({DOM, storage}) {
 
   // Sink
   return {
-    DOM: Controls.DOM
+    DOM: Controls().DOM
   }
 }
 

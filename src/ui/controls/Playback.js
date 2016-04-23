@@ -3,15 +3,15 @@
  */
 
 'use strict'
+
+import {div, i} from '@cycle/dom'
 import {Observable} from 'rx'
-import {div, i} from 'cycle-snabbdom'
-import * as S from '../lib/StyleUtils'
-import * as F from '../lib/Flexbox'
+import * as S from '../../lib/StyleUtils'
+import * as F from '../../lib/Flexbox'
 
 const BUTTON_SIZE = 80
 
 const controlsSTY = {
-  ...S.absolute(null, null, null),
   ...F.RowMiddle,
   width: '100%',
   color: 'rgb(148, 143, 63)',
@@ -33,12 +33,12 @@ const secondaryButtonSTY = {
   fontSize: '2em'
 }
 
-export default {
-  DOM: Observable.just(
-    div({style: controlsSTY}, [
+export default () => {
+  return {
+    DOM: Observable.just(div({style: controlsSTY}, [
       i('.fa.fa-fast-backward', {style: secondaryButtonSTY}),
       i('.fa.fa-play', {style: primaryButtonSTY}),
       i('.fa.fa-fast-forward', {style: secondaryButtonSTY})
-    ])
-  )
+    ]))
+  }
 }
