@@ -6,7 +6,7 @@
 import {Observable} from 'rx'
 import {div} from '@cycle/dom'
 import * as S from '../../lib/StyleUtils'
-import Scroller from './Scroller'
+import Scroller from './Scrobber'
 import Playback from './Playback'
 
 export default () => {
