@@ -9,10 +9,10 @@ import {div} from '@cycle/dom'
 import * as F from '../../lib/Flexbox'
 
 const infoSTY = {
-  ...F.RowSpaceAround,
+  ...F.RowSpaceBetween,
   color: '#555',
   fontWeight: 100,
-  padding: '10px',
+  padding: '10px 0',
   fontFamily: 'Fjalla One, sans-serif',
   fontSize: '0.8em'
 }
