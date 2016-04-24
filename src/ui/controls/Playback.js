@@ -4,18 +4,17 @@
 
 'use strict'
 
-import {div, i} from '@cycle/dom'
-import {Observable} from 'rx'
+import {div, i, small} from '@cycle/dom'
 import * as S from '../../lib/StyleUtils'
 import * as F from '../../lib/Flexbox'
+import PlaybackMetaInfo from './PlaybackMetaInfo'
 
-const BUTTON_SIZE = 80
+const BUTTON_SIZE = 60
 
 const controlsSTY = {
-  ...F.RowMiddle,
+  ...F.RowSpaceAround,
   width: '100%',
-  color: 'rgb(148, 143, 63)',
-  padding: '20px 0'
+  color: '#fff'
 }
 
 const buttonSTY = {
@@ -25,20 +24,27 @@ const buttonSTY = {
 
 const primaryButtonSTY = {
   ...buttonSTY,
-  fontSize: '4em'
+  fontSize: '2em'
 }
 
 const secondaryButtonSTY = {
   ...buttonSTY,
-  fontSize: '2em'
+  fontSize: '1em'
 }
 
 export default () => {
   return {
-    DOM: Observable.just(div({style: controlsSTY}, [
-      i('.fa.fa-fast-backward', {style: secondaryButtonSTY}),
-      i('.fa.fa-play', {style: primaryButtonSTY}),
-      i('.fa.fa-fast-forward', {style: secondaryButtonSTY})
-    ]))
+    DOM: PlaybackMetaInfo().DOM.map(info =>
+      div({}, [
+        div({style: F.RowSpaceAround}, [
+          div({style: controlsSTY}, [
+            i('.fa.fa-backward', {style: secondaryButtonSTY}),
+            i('.fa.fa-play', {style: primaryButtonSTY}),
+            i('.fa.fa-forward', {style: secondaryButtonSTY})
+          ])
+        ]),
+        info
+      ])
+    )
   }
 }

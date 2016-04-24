@@ -4,7 +4,7 @@
 
 'use strict'
 import {Observable} from 'rx'
-import {div, i} from '@cycle/dom'
+import {div} from '@cycle/dom'
 import * as S from '../../lib/StyleUtils'
 import Scroller from './Scroller'
 import Playback from './Playback'
