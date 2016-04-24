@@ -4,9 +4,12 @@
 
 'use strict'
 
+import {Observable} from 'rx'
 import Cycle from '@cycle/core'
-import {makeDOMDriver} from '@cycle/dom'
+import {makeDOMDriver, div} from '@cycle/dom'
 import Controls from './controls'
+import Playlist from './playlist'
+import * as F from '../lib/Flexbox'
 
 const container = document.createElement('div')
 document.body.appendChild(container)
@@ -16,7 +19,12 @@ function App ({DOM, storage}) {
 
   // Sink
   return {
-    DOM: Controls().DOM
+    DOM: Observable.combineLatest(
+      Playlist().DOM.map(view => div({style: {flexGrow: 1}}, [view])),
+      Controls().DOM
+    ).map(views =>
+      div({style: {height: '100%', ...F.ColSpaceBetween}}, views)
+    )
   }
 }
 

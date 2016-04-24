@@ -12,7 +12,7 @@ export default () => {
   return {
     DOM: Observable.just(
       div({style: F.RowSpaceBetween}, [
-        div({style: {textTransform: 'capitalize', fontSize: '0.8em'}}, [
+        div({style: {textTransform: 'capitalize', fontSize: '0.8em', fontWeight: 600}}, [
           div({style: {}}, ['Didi']),
           div({style: {fontSize: '0.8em', color: '#555'}}, [
             'Khaled',
