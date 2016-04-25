@@ -6,9 +6,19 @@
 
 import toolbox from 'sw-toolbox'
 
-toolbox.router.get('/', toolbox.cacheFirst)
-toolbox.router.get(/.*bundle.*/, toolbox.cacheFirst)
-toolbox.router.get(/.*googleapis.*/, toolbox.cacheFirst)
-toolbox.router.get(/.*gstatic.*/, toolbox.cacheFirst)
-toolbox.router.get(/.*bootstrapcdn.*/, toolbox.cacheFirst)
+const swConfig = APP_CONFIG.sw
+console.log(swConfig)
+if (swConfig.appCache) {
+  const {policy} = swConfig.appCache
+  toolbox.router.get('/', toolbox[policy])
+  toolbox.router.get(/.*bundle.*/, toolbox[policy])
+}
+
+if (swConfig.externalCache) {
+  const {policy} = swConfig.externalCache
+  toolbox.router.get(/.*googleapis.*/, toolbox[policy])
+  toolbox.router.get(/.*gstatic.*/, toolbox[policy])
+  toolbox.router.get(/.*bootstrapcdn.*/, toolbox[policy])
+}
+
 toolbox.router.default = toolbox.cacheFirst
