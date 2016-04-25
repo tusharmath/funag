@@ -1,0 +1,11 @@
+{
+	"lang": "en",
+	"dir": "ltr",
+	"name": "Flo",
+	"short_name": "Flo",
+	"start_url": "/",
+	"display": "standalone",
+	"orientation": "portrait",
+	"theme_color": "#000",
+	"background_color": "#000"
+}

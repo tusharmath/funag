@@ -30,7 +30,9 @@
     "less": "^2.6.1",
     "less-loader": "^2.2.3",
     "rx": "^4.1.0",
+    "serviceworker-loader": "^0.1.0",
     "style-loader": "^0.13.1",
+    "sw-toolbox": "^3.1.1",
     "webpack": "^1.13.0",
     "webpack-closure-compiler": "^2.0.2",
     "webpack-dev-middleware": "^1.6.1"

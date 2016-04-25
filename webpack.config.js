@@ -29,7 +29,7 @@ module.exports = {
   entry: ['./src/ui/index.js'],
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: 'bundle.js'
+    filename: '[hash].bundle.js'
   },
   devtool: config.webpack.devtool,
   devServer: {

@@ -10,9 +10,7 @@ import {makeDOMDriver, div} from '@cycle/dom'
 import Controls from './controls'
 import Playlist from './playlist'
 import * as F from '../lib/Flexbox'
-
-const container = document.createElement('div')
-document.body.appendChild(container)
+import {container} from './bootstrapHTML'
 
 function App ({DOM, storage}) {
   // Sources
