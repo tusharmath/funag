@@ -2,6 +2,7 @@ module.exports = {
   env: 'production',
   port: 8081,
   sw: {
+    debug: false,
     preCache: true,
     appCache: {
       policy: 'fastest'

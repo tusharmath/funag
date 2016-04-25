@@ -7,7 +7,7 @@
 import toolbox from 'sw-toolbox'
 
 const swConfig = APP_CONFIG.sw
-console.log(swConfig)
+
 if (swConfig.appCache) {
   const {policy} = swConfig.appCache
   toolbox.router.get('/', toolbox[policy])
@@ -21,4 +21,7 @@ if (swConfig.externalCache) {
   toolbox.router.get(/.*bootstrapcdn.*/, toolbox[policy])
 }
 
-toolbox.router.default = toolbox.cacheFirst
+toolbox.router.default = toolbox.fastest
+if (swConfig.debug) {
+  toolbox.options.debug = true
+}
