@@ -4,8 +4,12 @@
 
 'use strict'
 
-import manifestFile from 'file!./manifest.json'
-import sw from 'serviceworker!./sw.js'
+import Cycle from '@cycle/core'
+import {makeDOMDriver} from '@cycle/dom'
+import manifestFile from 'file!./pwd/manifest.json'
+import sw from 'serviceworker!./pwd/sw.js'
+import App from './app'
+
 export const container = document.createElement('div')
 document.body.appendChild(container)
 
@@ -20,3 +24,4 @@ sw({scope: '/'})
     x => console.error(x)
   )
 
+Cycle.run(App, {DOM: makeDOMDriver(container)})

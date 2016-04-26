@@ -5,7 +5,7 @@
 'use strict'
 import {Observable} from 'rx'
 import {div, ul, li} from '@cycle/dom'
-import * as F from '../../lib/Flexbox'
+import * as F from '../../utils/Flexbox'
 import {Visualizer} from './SoundVisualizerIcon'
 
 const Index = index => div({

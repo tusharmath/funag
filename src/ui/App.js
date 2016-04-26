@@ -5,20 +5,14 @@
 'use strict'
 
 import {Observable} from 'rx'
-import Cycle from '@cycle/core'
 import {makeDOMDriver, div} from '@cycle/dom'
 import Controls from './controls'
 import Playlist from './playlist'
 import SearchBox from './search/index'
-import * as F from '../lib/Flexbox'
-import {container} from './bootstrapHTML'
+import * as F from '../utils/Flexbox'
 
-function App ({DOM, storage}) {
-  // Sources
-
-  // Sink
+export default function ({DOM, storage}) {
   const searchBox = SearchBox({DOM})
-
   return {
     DOM: Observable.combineLatest(
       searchBox.DOM,
@@ -29,5 +23,3 @@ function App ({DOM, storage}) {
     )
   }
 }
-
-Cycle.run(App, {DOM: makeDOMDriver(container)})

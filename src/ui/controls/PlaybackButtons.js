@@ -5,8 +5,8 @@
 'use strict'
 import {div, i} from '@cycle/dom'
 import {Observable} from 'rx'
-import * as F from '../../lib/Flexbox'
-import * as S from '../../lib/StyleUtils'
+import * as F from '../../utils/Flexbox'
+import * as S from '../../utils/StyleUtils'
 
 const controlsSTY = {
   ...F.RowSpaceAround,
