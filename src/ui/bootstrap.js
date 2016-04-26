@@ -9,6 +9,7 @@ import {makeDOMDriver} from '@cycle/dom'
 import manifestFile from 'file!./pwd/manifest.json'
 import sw from 'serviceworker!./pwd/sw.js'
 import App from './app'
+import {routerDriver} from '../drivers/router'
 
 export const container = document.createElement('div')
 document.body.appendChild(container)
@@ -24,4 +25,4 @@ sw({scope: '/'})
     x => console.error(x)
   )
 
-Cycle.run(App, {DOM: makeDOMDriver(container)})
+Cycle.run(App, {DOM: makeDOMDriver(container), route: routerDriver})

@@ -11,9 +11,10 @@ import Playlist from './playlist'
 import SearchBox from './search/index'
 import * as F from '../utils/Flexbox'
 
-export default function ({DOM, storage}) {
-  const searchBox = SearchBox({DOM})
+export default function ({DOM, route}) {
+  const searchBox = SearchBox({DOM, route})
   return {
+    route: searchBox.href$,
     DOM: Observable.combineLatest(
       searchBox.DOM,
       Playlist().DOM.map(view => div({style: {flexGrow: 1}}, [view])),

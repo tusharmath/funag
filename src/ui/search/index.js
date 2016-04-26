@@ -29,17 +29,18 @@ const searchBoxContainer = {
   padding: '0 15px'
 }
 
-export default ({DOM}) => {
-  // TODO:  startWith() current route's `q`
-  const value$ = U.inputVal(DOM.select('.search'))
+export default ({DOM, route}) => {
 
+  const startValue$ = route.match('/search/:q').pluck('q').first()
+  const value$ = startValue$.concat(U.inputVal(DOM.select('.search')))
+  const href$ = value$.map(x => x ? `/search/${x}` : '/')
   return {
-    DOM: Observable.just(
+    DOM: value$.map(value =>
       div({className: 'search', style: searchBoxContainer}, [
-        input({type: 'text', style: searchBoxSTY}),
+        input({type: 'text', style: searchBoxSTY, value}),
         S.fa('search')
       ])
-    ), value$
+    ), value$, href$
   }
 }
 
