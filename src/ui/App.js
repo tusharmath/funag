@@ -19,7 +19,7 @@ export default function ({DOM, route}) {
     route: searchBox.href$,
     DOM: Observable.combineLatest(
       searchBox.DOM,
-      Playlist().DOM.map(view => div({style: {flexGrow: 1}}, [view])),
+      Playlist({tracks$}).DOM.map(view => div({style: {flexGrow: 1}}, [view])),
       Controls().DOM
     ).map(views =>
       div({style: {height: '100%', ...F.ColSpaceBetween}}, views)
