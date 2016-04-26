@@ -19,3 +19,8 @@ export const fa = (name, dim = 1) => i(`.fa.fa-${name}`, {
     width: `${dim}em`, ...F.ColMiddle
   }
 })
+export const overflowEllipsis = {
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis'
+}

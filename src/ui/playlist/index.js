@@ -3,10 +3,11 @@
  */
 
 'use strict'
-import {Observable} from 'rx'
-import {div, ul, li, a} from '@cycle/dom'
-import * as F from '../../Utils/Flexbox'
+import {div} from '@cycle/dom'
+import * as F from '../../utils/Flexbox'
+import * as SC from '../../utils/SoundCloud'
 import {Visualizer} from './SoundVisualizerIcon'
+import {overflowEllipsis} from '../../utils/StyleUtils'
 
 const Index = index => div({
   style: {
@@ -17,54 +18,34 @@ const Index = index => div({
   }
 }, [index])
 
-const PlayListItem = (route, {song, artist, duration, playing}, index) => {
+const PlayListItem = ({title, user, duration, playing, selected}, index) => {
   const activeSTY = {backgroundColor: '#fff', color: '#000'}
   const defaultStyle = {fontSize: '0.8em', fontWeight: 600, ...F.RowLeft, alignItems: 'center', padding: '0 10px'}
-
-
-  const isSelected = route.id === index.toString()
-  return a({
-    href: reverseAppend({...route, body: `/tracks/${index}`,}),
-    style: {
-      textDecoration: 'none'
-    }
-  }, [
-    div({style: isSelected ? {...defaultStyle, ...activeSTY} : defaultStyle}, [
+  return div({}, [
+    div({style: selected ? {...defaultStyle, ...activeSTY} : defaultStyle}, [
       div({style: {width: '20px', marginRight: '4px', textAlign: 'center'}}, [
-        playing ? Visualizer : Index(index)
+        playing ? Visualizer : Index(index + 1)
       ]),
       div({
         style: {
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)', ...F.RowLeft,
+          ...F.RowLeft,
           width: '100%',
-          padding: '14px 0'
+          padding: '14px 0',
+          overflow: 'hidden'
         }
       }, [
-        div({style: {color: isSelected ? '#000' : '#fff'}}, song),
-        div({style: {marginLeft: '1em', color: '#555', flexGrow: 1}}, artist),
-        div({style: {marginLeft: '1em', color: '#555'}}, duration)
+        div({style: {flex: '1 0 0', overflow: 'hidden'}}, [
+          div({style: overflowEllipsis}, title),
+          div({style: {color: '#555', fontSize: '0.8em', ...overflowEllipsis}}, user.username)
+        ]),
+        div({style: {marginLeft: '1em', color: '#555'}}, SC.durationFormat(duration))
       ])
     ])
   ])
 }
-export default ({route}) => {
-  const list = [
-    {song: 'Halo', artist: 'Beyonce', duration: '4:21'},
-    {song: 'Beautiful ft. Colby O\'Donis', artist: 'Akon', duration: '3:23'},
-    {song: 'The Call', artist: 'Backstreet Boys', duration: '6:21'},
-    {song: 'Blue (Da Ba Dee)', artist: 'Eiffel 65', duration: '3:58'},
-    {song: 'Didi', artist: 'Khaled', duration: '3:58', playing: true}
-  ]
 
+export default ({tracks$}) => {
   return {
-    DOM: Observable.combineLatest(Observable.just(list), route.match('/((*head)/tracks/:id(/*tail))(search/:search)'), (list, route) => ({
-        list, route
-      }))
-      .map(x => x.list.map(PlayListItem.bind(null, x.route)))
-      .map(x => div(x))
+    DOM: tracks$.map(tracks => div(tracks.map(PlayListItem)))
   }
-}
-
-const reverseAppend = ({head, body, tail, search}) => {
-  return '/#/' + [search ? `search/${search}` : null, head, body, tail].filter(Boolean).join('')
 }

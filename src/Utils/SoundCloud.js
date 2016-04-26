@@ -17,3 +17,9 @@ export const searchTracks = q$ => {
   return q$.debounce(500)
     .flatMap(q => get('/tracks', {q}))
 }
+
+export const durationFormat = time => {
+  const mins = Math.floor(time / 60000)
+  const secs = Math.round((time - mins * 60000) / 1000)
+  return `${mins}:${secs}`
+}

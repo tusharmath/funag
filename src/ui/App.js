@@ -14,12 +14,11 @@ import * as SC from '../Utils/SoundCloud'
 
 export default function ({DOM, route}) {
   const searchBox = SearchBox({DOM, route})
-  const tracks$ = SC.searchTracks(route.match('/search/:q').pluck('q'))
+  const tracks$ = SC.searchTracks(searchBox.value$)
   return {
-    route: searchBox.href$,
     DOM: Observable.combineLatest(
       searchBox.DOM,
-      Playlist({tracks$}).DOM.map(view => div({style: {flexGrow: 1, overflow: 'auto'}}, [view])),
+      Playlist({tracks$}).DOM.map(view => div({style: {flexGrow: 1, overflow: 'scroll'}}, [view])),
       Controls().DOM
     ).map(views =>
       div({style: {height: '100%', ...F.ColSpaceBetween}}, views)
