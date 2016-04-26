@@ -39,6 +39,16 @@
     "webpack-dev-middleware": "^1.6.1"
   },
   "devDependencies": {
+    "cz-conventional-changelog": "^1.1.6",
     "node-dev": "^3.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "repository": {
+	"type": "git",
+	"url": "git@github.com:tusharmath/flo.git"
   }
 }
