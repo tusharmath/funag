@@ -30,6 +30,7 @@
     "html-webpack-plugin": "^2.16.0",
     "less": "^2.6.1",
     "less-loader": "^2.2.3",
+    "qs": "^6.1.0",
     "route-parser": "0.0.5",
     "rx": "^4.1.0",
     "serviceworker-loader": "^0.1.0",
