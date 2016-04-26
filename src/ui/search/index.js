@@ -30,7 +30,7 @@ const searchBoxContainer = {
 }
 
 export default ({DOM, route}) => {
-  const startValue$ = route.match('/(search/:q)').pluck('q').first()
+  const startValue$ = route.match('/(search/:q(/tracks/:p))').pluck('q').first()
   const value$ = startValue$.concat(U.inputVal(DOM.select('.search')))
   const href$ = value$.map(x => x ? `/search/${x}` : '/')
   return {
