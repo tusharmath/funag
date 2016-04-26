@@ -2,10 +2,11 @@ module.exports = {
   env: 'development',
   port: 9000,
   sw: {
+    debug: true,
     preCache: false,
     appCache: false,
     externalCache: {
-      policy: 'cacheFirst'
+      policy: 'fastest'
     }
   },
   express: {
