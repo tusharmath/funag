@@ -10,9 +10,11 @@ import Controls from './controls'
 import Playlist from './playlist'
 import SearchBox from './search/index'
 import * as F from '../utils/Flexbox'
+import * as SC from '../Utils/SoundCloud'
 
 export default function ({DOM, route}) {
   const searchBox = SearchBox({DOM, route})
+  const tracks$ = SC.searchTracks(route.match('/search/:q').pluck('q'))
   return {
     route: searchBox.href$,
     DOM: Observable.combineLatest(
