@@ -6,41 +6,29 @@
 import {div} from '@cycle/dom'
 import * as F from '../../utils/Flexbox'
 import * as SC from '../../utils/SoundCloud'
-import {Visualizer} from './SoundVisualizerIcon'
-import {overflowEllipsis} from '../../utils/StyleUtils'
+import {overflowEllipsis, size} from '../../utils/StyleUtils'
 
-const Index = index => div({
+const Artwork = url => div({
   style: {
-    color: '#555',
-    width: '100%',
-    fontSize: '0.8em',
-    padding: '14px 0', ...F.ColCenter
+    ...size(35, 35),
+    backgroundImage: url ? `url('${url}')` : null,
+    backgroundColor: 'rgb(42, 44, 49)',
+    backgroundSize: '35px 35px',
+    backgroundRepeat: 'no-repeat',
+    marginRight: '10px'
   }
-}, [index])
+})
 
-const PlayListItem = ({title, user, duration, playing, selected}, index) => {
+const PlayListItem = ({title, user, duration, artwork_url, playing, selected}, index) => {
   const activeSTY = {backgroundColor: '#fff', color: '#000'}
-  const defaultStyle = {fontSize: '0.8em', fontWeight: 600, ...F.RowLeft, alignItems: 'center', padding: '0 10px'}
-  return div({}, [
-    div({style: selected ? {...defaultStyle, ...activeSTY} : defaultStyle}, [
-      div({style: {width: '20px', marginRight: '4px', textAlign: 'center'}}, [
-        playing ? Visualizer : Index(index + 1)
-      ]),
-      div({
-        style: {
-          ...F.RowLeft,
-          width: '100%',
-          padding: '14px 0',
-          overflow: 'hidden'
-        }
-      }, [
-        div({style: {flex: '1 0 0', overflow: 'hidden'}}, [
-          div({style: overflowEllipsis}, title),
-          div({style: {color: '#555', fontSize: '0.8em', ...overflowEllipsis}}, user.username)
-        ]),
-        div({style: {marginLeft: '1em', color: '#555'}}, SC.durationFormat(duration))
-      ])
-    ])
+  const defaultStyle = {fontSize: '0.8em', fontWeight: 600, padding: '4px 10px', ...F.RowSpaceBetween}
+  return div({style: selected ? {...defaultStyle, ...activeSTY} : defaultStyle}, [
+    Artwork(artwork_url),
+    div({style: {overflow: 'hidden', flex: '1 0 0'}}, [
+      div({style: overflowEllipsis}, title),
+      div({style: {color: '#555', fontSize: '0.8em', ...overflowEllipsis}}, user.username)
+    ]),
+    div({style: {marginLeft: '1em', color: '#555'}}, SC.durationFormat(duration))
   ])
 }
 
