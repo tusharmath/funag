@@ -5,19 +5,18 @@
 'use strict'
 
 import {Observable} from 'rx'
-import Cycle from '@cycle/core'
 import {makeDOMDriver, div} from '@cycle/dom'
 import Controls from './controls'
 import Playlist from './playlist'
-import * as F from '../lib/Flexbox'
-import {container} from './bootstrapHTML'
+import SearchBox from './search/index'
+import * as F from '../utils/Flexbox'
 
-function App ({DOM, storage}) {
-  // Sources
-
-  // Sink
+export default function ({DOM, route}) {
+  const searchBox = SearchBox({DOM, route})
   return {
+    route: searchBox.href$,
     DOM: Observable.combineLatest(
+      searchBox.DOM,
       Playlist().DOM.map(view => div({style: {flexGrow: 1}}, [view])),
       Controls().DOM
     ).map(views =>
@@ -25,5 +24,3 @@ function App ({DOM, storage}) {
     )
   }
 }
-
-Cycle.run(App, {DOM: makeDOMDriver(container)})

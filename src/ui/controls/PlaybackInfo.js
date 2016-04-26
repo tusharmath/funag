@@ -5,8 +5,8 @@
 'use strict'
 import {Observable} from 'rx'
 import {div, i} from '@cycle/dom'
-import * as S from '../../lib/StyleUtils'
-import * as F from '../../lib/Flexbox'
+import * as S from '../../utils/StyleUtils'
+import * as F from '../../utils/Flexbox'
 
 export default () => {
   return {

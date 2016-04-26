@@ -7,7 +7,8 @@
 import {Observable} from 'rx'
 import Route from 'route-parser'
 
-export const routerDriver = () => {
+export const routerDriver = source$ => {
+  source$.subscribe(x => (location.hash = x))
   const hashChange$ = Observable.fromEvent(window, 'hashchange').startWith(null).map(() => location.hash.replace('#', ''))
   return {
     match (pattern) {

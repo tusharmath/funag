@@ -6,7 +6,6 @@
 
 import {div, i, small} from '@cycle/dom'
 import {Observable} from 'rx'
-import PlaybackMetaInfo from './PlaybackMetaInfo'
 import PlaybackInfo from './PlaybackInfo'
 import PlaybackButtons from './PlaybackButtons'
 
@@ -15,8 +14,7 @@ export default () => {
     DOM: Observable
       .combineLatest(
         PlaybackInfo().DOM,
-        PlaybackButtons().DOM,
-        PlaybackMetaInfo().DOM
+        PlaybackButtons().DOM
       )
       .map(views => div({style: {padding: '6px'}}, views))
   }
