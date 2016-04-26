@@ -9,7 +9,7 @@ import Cycle from '@cycle/core'
 import {makeDOMDriver, div} from '@cycle/dom'
 import Controls from './controls'
 import Playlist from './playlist'
-import SearchBox from './SearchBox'
+import SearchBox from './search/index'
 import * as F from '../lib/Flexbox'
 import {container} from './bootstrapHTML'
 

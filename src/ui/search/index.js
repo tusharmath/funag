@@ -6,9 +6,9 @@
 
 import {Observable} from 'rx'
 import {div, input} from '@cycle/dom'
-import * as F from '../lib/Flexbox'
-import * as S from '../lib/StyleUtils'
-import * as U from './Utils'
+import * as F from '../../lib/Flexbox'
+import * as S from '../../lib/StyleUtils'
+import * as U from './../Utils'
 
 const searchBoxSTY = {
   border: 'none',
