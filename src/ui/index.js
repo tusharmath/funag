@@ -9,7 +9,6 @@ import Cycle from '@cycle/core'
 import {makeDOMDriver, div} from '@cycle/dom'
 import Controls from './controls'
 import Playlist from './playlist'
-import Loader from './loader'
 import SearchBox from './SearchBox'
 import * as F from '../lib/Flexbox'
 import {container} from './bootstrapHTML'
@@ -19,12 +18,11 @@ function App ({DOM, storage}) {
 
   // Sink
   const searchBox = SearchBox({DOM})
-  
+
   return {
     DOM: Observable.combineLatest(
       searchBox.DOM,
       Playlist().DOM.map(view => div({style: {flexGrow: 1}}, [view])),
-      Loader().DOM,
       Controls().DOM
     ).map(views =>
       div({style: {height: '100%', ...F.ColSpaceBetween}}, views)
