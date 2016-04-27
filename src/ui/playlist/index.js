@@ -8,6 +8,7 @@ import {Observable} from 'rx'
 import isolate from '@cycle/isolate'
 import * as F from '../../utils/Flexbox'
 import * as SC from '../../utils/SoundCloud'
+import * as D from '../../utils/DOMUtils'
 import {overflowEllipsis, size} from '../../utils/StyleUtils'
 
 const Artwork = url => div({
@@ -31,12 +32,13 @@ const TrackDetail = ({artist, title}) =>
   ])
 
 const PlayListItem = ({DOM, track: {title, user, duration, artwork_url, id}, trackListClick$}) => {
-  const select$ = DOM.select('.playlist-item').events('click').map(id)
+  const click$ = DOM.select('.playlist-item').events('click').map(id)
+  const dblClick$ = D.doubleClick(DOM.select('.playlist-item')).map(id)
   const activeSTY = {backgroundColor: '#fff', color: '#000'}
   const defaultStyle = {fontSize: '0.8em', fontWeight: 600, padding: '4px 10px', ...F.RowSpaceBetween}
-  const isSelected$ = Observable.merge(trackListClick$.map(false), select$.map(true)).startWith(false).distinctUntilChanged()
+  const isSelected$ = Observable.merge(trackListClick$.map(false), click$.map(true)).startWith(false).distinctUntilChanged()
   return {
-    select$,
+    click$, dblClick$,
     DOM: isSelected$.map(selected => div({
       className: 'playlist-item', style: selected ? {...defaultStyle, ...activeSTY} : defaultStyle
     }, [
@@ -44,7 +46,6 @@ const PlayListItem = ({DOM, track: {title, user, duration, artwork_url, id}, tra
       TrackDetail({title, artist: user.username}),
       TrackDuration(duration)
     ]))
-
   }
 }
 
@@ -56,12 +57,12 @@ export default ({tracks$, DOM}) => {
         .map(track => isolate(PlayListItem, track.id.toString())({track, DOM, trackListClick$}))
     })
   const playlistItemVTree$ = playlistItem$.map(tracks => tracks.map(x => x.DOM))
-  const playlistItemClick$ = playlistItem$.map(tracks => tracks.map(x => x.select$))
+  const playlistItemClick$ = playlistItem$.map(tracks => tracks.map(x => x.click$))
+  const playlistItemDblClick$ = playlistItem$.map(tracks => tracks.map(x => x.dblClick$))
 
   return {
-    DOM: playlistItemVTree$
-      .flatMapLatest(tracks => Observable.combineLatest(tracks))
-      .map(x => div('.tracks', x)),
-    selected$: playlistItemClick$.flatMapLatest(clicks => Observable.merge(clicks))
+    DOM: playlistItemVTree$.flatMapLatest(tracks => Observable.combineLatest(tracks)).map(x => div('.tracks', x)),
+    selected$: playlistItemClick$.flatMapLatest(clicks => Observable.merge(clicks)),
+    play$: playlistItemDblClick$.flatMapLatest(clicks => Observable.merge(clicks))
   }
 }
