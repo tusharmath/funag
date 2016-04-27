@@ -8,12 +8,12 @@ import {div} from '@cycle/dom'
 import Scrobber from './Scrobber'
 import Playback from './Playback'
 
-export default ({audio}) => {
+export default ({audio, selectedTrack$}) => {
   const completion$ = audio.events('timeupdate').map(x => x.currentTime / x.duration).startWith(0)
   return {
     DOM: Observable.combineLatest(
       Scrobber({completion$}).DOM,
-      Playback().DOM
+      Playback({selectedTrack$}).DOM
     ).map(views => div(views))
   }
 }

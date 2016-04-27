@@ -9,11 +9,11 @@ import {Observable} from 'rx'
 import PlaybackInfo from './PlaybackInfo'
 import PlaybackButtons from './PlaybackButtons'
 
-export default () => {
+export default ({selectedTrack$}) => {
   return {
     DOM: Observable
       .combineLatest(
-        PlaybackInfo().DOM,
+        PlaybackInfo({selectedTrack$}).DOM,
         PlaybackButtons().DOM
       )
       .map(views => div({style: {padding: '6px'}}, views))

@@ -3,25 +3,27 @@
  */
 
 'use strict'
-import {Observable} from 'rx'
 import {div, i} from '@cycle/dom'
-import * as S from '../../utils/StyleUtils'
 import * as F from '../../utils/Flexbox'
 
-export default () => {
+export default ({selectedTrack$}) => {
+  const init = {
+    title: ' ',
+    user: {username: ' '},
+    genre: ' '
+  }
   return {
-    DOM: Observable.just(
+    DOM: selectedTrack$.startWith(init).map(track =>
       div({style: F.RowSpaceBetween}, [
         div({style: {textTransform: 'capitalize', fontSize: '0.8em', fontWeight: 600}}, [
-          div({style: {}}, ['Didi']),
+          div({style: {}}, [track.title]),
           div({style: {fontSize: '0.8em', color: '#555'}}, [
-            'Khaled',
+            track.user.username,
             ' - ',
-            'Tonie\'s top 2000 (1989-2000)'
+            track.genre
           ])
-        ]),
-        div({style: F.ColCenter}, S.fa('ellipsis-v'))
+        ])
       ])
-    )
+    ).startWith(null)
   }
 }

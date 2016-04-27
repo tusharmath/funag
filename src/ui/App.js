@@ -17,9 +17,10 @@ export default function ({DOM, route, audio}) {
   const tracks$ = SC.searchTracks(searchBox.value$)
   const playlist = Playlist({tracks$, DOM})
 
-  const playStreamURL$ = playlist.play$
+  const selectedTrack$ = playlist.play$
     .withLatestFrom(tracks$, (id, tracks) => tracks.filter(x => x.id === id)[0])
-    .pluck('stream_url')
+
+  const playStreamURL$ = selectedTrack$.pluck('stream_url')
     .map(src => ({type: 'LOAD', src: src + SC.clientIDParams({})}))
 
   return {
@@ -27,7 +28,7 @@ export default function ({DOM, route, audio}) {
     DOM: Observable.combineLatest(
       searchBox.DOM,
       playlist.DOM.map(view => div({style: {flexGrow: 1, overflow: 'auto'}}, [view])),
-      Controls({audio}).DOM
+      Controls({audio, selectedTrack$}).DOM
     ).map(views =>
       div({style: {height: '100%', ...F.ColSpaceBetween}}, views)
     )
