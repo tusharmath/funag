@@ -19,7 +19,7 @@ export default function ({DOM, route}) {
   return {
     DOM: Observable.combineLatest(
       searchBox.DOM,
-      playlist.DOM.map(view => div({style: {flexGrow: 1, overflow: 'scroll'}}, [view])),
+      playlist.DOM.map(view => div({style: {flexGrow: 1, overflow: 'auto'}}, [view])),
       Controls().DOM
     ).map(views =>
       div({style: {height: '100%', ...F.ColSpaceBetween}}, views)
