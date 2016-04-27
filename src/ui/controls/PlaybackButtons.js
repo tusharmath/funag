@@ -14,13 +14,17 @@ const controlsSTY = {
   width: '100%'
 }
 
-export default () => {
+export default ({audio}) => {
+  const ev = Observable.merge(
+    audio.events('play').map('pause'),
+    audio.events('pause').map('play')
+  ).distinctUntilChanged().startWith('play')
   return {
-    DOM: Observable.just(
+    DOM: ev.map(icon =>
       div({style: F.RowSpaceAround}, [
         div({style: controlsSTY}, [
           S.fa('backward'),
-          S.fa('play', 2),
+          S.fa(icon, 2),
           S.fa('forward')
         ])
       ])

@@ -13,7 +13,7 @@ export default ({audio, selectedTrack$}) => {
   return {
     DOM: Observable.combineLatest(
       Scrobber({completion$}).DOM,
-      Playback({selectedTrack$}).DOM
+      Playback({selectedTrack$, audio}).DOM
     ).map(views => div(views))
   }
 }
