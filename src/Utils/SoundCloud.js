@@ -8,9 +8,13 @@ import qs from 'qs'
 
 const client_id = '1862b9bf02ed7c80d0f545f835ad8773'
 const baseURL = 'https://api.soundcloud.com'
+
+export const clientIDParams = params => {
+  return '?' + qs.stringify({...params, client_id})
+}
+
 export const get = (path, params) => {
-  const paramsSecure = qs.stringify({...params, client_id})
-  return fetch(`${baseURL}${path}?${paramsSecure}`).then(x => x.json())
+  return fetch(`${baseURL}${path}${clientIDParams(params)}`).then(x => x.json())
 }
 
 export const searchTracks = q$ => {

@@ -33,7 +33,7 @@ const TrackDetail = ({artist, title}) =>
 
 const PlayListItem = ({DOM, track: {title, user, duration, artwork_url, id}, trackListClick$}) => {
   const click$ = DOM.select('.playlist-item').events('click').map(id)
-  const dblClick$ = D.doubleClick(DOM.select('.playlist-item')).map(id)
+  const dblClick$ = D.doubleClick(DOM.select('.playlist-item'), 300).map(id)
   const activeSTY = {backgroundColor: '#fff', color: '#000'}
   const defaultStyle = {fontSize: '0.8em', fontWeight: 600, padding: '4px 10px', ...F.RowSpaceBetween}
   const isSelected$ = Observable.merge(trackListClick$.map(false), click$.map(true)).startWith(false).distinctUntilChanged()
