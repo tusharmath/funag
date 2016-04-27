@@ -30,37 +30,38 @@ const TrackDetail = ({artist, title}) =>
     div({style: {color: '#555', fontSize: '0.8em', ...overflowEllipsis}}, artist)
   ])
 
-const PlayListItem = ({DOM, track: {title, user, duration, artwork_url, id}, selected}) => {
+const PlayListItem = ({DOM, track: {title, user, duration, artwork_url, id}, trackListClick$}) => {
   const select$ = DOM.select('.playlist-item').events('click').map(id)
   const activeSTY = {backgroundColor: '#fff', color: '#000'}
   const defaultStyle = {fontSize: '0.8em', fontWeight: 600, padding: '4px 10px', ...F.RowSpaceBetween}
-
+  const isSelected$ = Observable.merge(trackListClick$.map(false), select$.map(true)).startWith(false).distinctUntilChanged()
   return {
     select$,
-    DOM: Observable.just(div({
+    DOM: isSelected$.map(selected => div({
       className: 'playlist-item', style: selected ? {...defaultStyle, ...activeSTY} : defaultStyle
     }, [
       Artwork(artwork_url),
       TrackDetail({title, artist: user.username}),
       TrackDuration(duration)
     ]))
+
   }
 }
 
 export default ({tracks$, DOM}) => {
+  const trackListClick$ = DOM.select('.tracks').events('click')
   const playlistItem$ = tracks$
     .map(tracks => {
       return tracks
-        .map(track => isolate(PlayListItem, track.id.toString())({track, DOM}))
+        .map(track => isolate(PlayListItem, track.id.toString())({track, DOM, trackListClick$}))
     })
-
   const playlistItemVTree$ = playlistItem$.map(tracks => tracks.map(x => x.DOM))
   const playlistItemClick$ = playlistItem$.map(tracks => tracks.map(x => x.select$))
 
   return {
     DOM: playlistItemVTree$
       .flatMapLatest(tracks => Observable.combineLatest(tracks))
-      .map(x => div(x)),
+      .map(x => div('.tracks', x)),
     selected$: playlistItemClick$.flatMapLatest(clicks => Observable.merge(clicks))
   }
 }
