@@ -20,13 +20,13 @@ export default ({audio, DOM}) => {
     audio.events('pause').map('play')
   ).distinctUntilChanged().startWith('play')
 
-  const play$ = Observable.merge(
+  const audio$ = Observable.merge(
     DOM.select('.fa.fa-pause').events('click').map({type: 'PAUSE'}),
     DOM.select('.fa.fa-play').events('click').map({type: 'PLAY'})
   ).distinctUntilChanged()
 
   return {
-    $play: play$,
+    audio$,
     DOM: ev.map(icon =>
       div({style: F.RowSpaceAround}, [
         div({style: controlsSTY}, [

@@ -12,7 +12,7 @@ export default ({audio, selectedTrack$, DOM}) => {
   const completion$ = audio.events('timeupdate').map(x => x.currentTime / x.duration).startWith(0)
   const playback = Playback({selectedTrack$, audio, DOM})
   return {
-    play$: playback.play$,
+    audio$: playback.audio$,
     DOM: Observable.combineLatest(
       Scrobber({completion$}).DOM,
       playback.DOM
