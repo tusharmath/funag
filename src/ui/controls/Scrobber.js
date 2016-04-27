@@ -13,7 +13,7 @@ export default ({completion$}) => {
           div({
             style: {
               transition: 'transform 500ms linear',
-              backgroundColor: 'rgb(148, 143, 63)',
+              backgroundColor: 'rgb(255, 240, 0)',
               height: '100%',
               width: '100%',
               transform: `scaleX(${completion})`,
