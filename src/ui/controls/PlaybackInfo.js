@@ -3,25 +3,28 @@
  */
 
 'use strict'
-import {Observable} from 'rx'
 import {div, i} from '@cycle/dom'
-import * as S from '../../utils/StyleUtils'
-import * as F from '../../utils/Flexbox'
+import * as S from '../../Utils/StyleUtils'
 
-export default () => {
+const playbackInfoSTY = {
+  textTransform: 'capitalize',
+  fontSize: '1em',
+  fontWeight: 600,
+  overflow: 'hidden',
+  textAlign: 'center'
+}
+export default ({selectedTrack$}) => {
+  const init = {
+    title: ' ',
+    user: {username: ' '},
+    genre: ' '
+  }
   return {
-    DOM: Observable.just(
-      div({style: F.RowSpaceBetween}, [
-        div({style: {textTransform: 'capitalize', fontSize: '0.8em', fontWeight: 600}}, [
-          div({style: {}}, ['Didi']),
-          div({style: {fontSize: '0.8em', color: '#555'}}, [
-            'Khaled',
-            ' - ',
-            'Tonie\'s top 2000 (1989-2000)'
-          ])
-        ]),
-        div({style: F.ColCenter}, S.fa('ellipsis-v'))
+    DOM: selectedTrack$.startWith(init).map(track =>
+      div({style: playbackInfoSTY}, [
+        div({style: S.overflowEllipsis}, [track.title]),
+        div({style: {...S.overflowEllipsis, fontSize: '0.8em', color: '#555'}}, track.user.username)
       ])
-    )
+    ).startWith(null)
   }
 }
