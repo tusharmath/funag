@@ -13,7 +13,7 @@ import * as F from '../utils/Flexbox'
 import * as SC from '../Utils/SoundCloud'
 
 export default function ({DOM, route, audio}) {
-  const searchBox = SearchBox({DOM, route, audio})
+  const searchBox = SearchBox({DOM, route})
   const tracks$ = SC.searchTracks(searchBox.value$)
   const playlist = Playlist({tracks$, DOM})
 
@@ -27,7 +27,7 @@ export default function ({DOM, route, audio}) {
     DOM: Observable.combineLatest(
       searchBox.DOM,
       playlist.DOM.map(view => div({style: {flexGrow: 1, overflow: 'auto'}}, [view])),
-      Controls().DOM
+      Controls({audio}).DOM
     ).map(views =>
       div({style: {height: '100%', ...F.ColSpaceBetween}}, views)
     )

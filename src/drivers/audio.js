@@ -26,7 +26,7 @@ export const audioDriver = instruction$ => {
 
   return {
     events (type) {
-      return Observable.fromEvent(audio, type)
+      return Observable.fromEvent(audio, type).map(audio)
     }
   }
 }
