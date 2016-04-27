@@ -21,12 +21,13 @@ export default function ({DOM, route, audio}) {
   const playStreamURL$ = selectedTrack$.pluck('stream_url')
     .map(src => ({type: 'LOAD', src: src + SC.clientIDParams({})}))
 
+  const controls = Controls({audio, selectedTrack$, DOM})
   return {
-    audio: playStreamURL$,
+    audio: Observable.merge(playStreamURL$, controls.play$),
     DOM: Observable.combineLatest(
       searchBox.DOM,
       playlist.DOM.map(view => div({style: {flexGrow: 1, overflow: 'auto'}}, [view])),
-      Controls({audio, selectedTrack$}).DOM
+      controls.DOM
     ).map(views =>
       div({style: {height: '100%', ...F.ColSpaceBetween}}, views)
     )
