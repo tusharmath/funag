@@ -28,3 +28,8 @@ export const durationFormat = time => {
   const secs = Math.round((time - mins * 60000) / 1000)
   return `${mins}:${secs}`
 }
+
+export const findTrack = ({id$, tracks$}) => {
+  return id$
+    .withLatestFrom(tracks$, (id, tracks) => tracks.filter(x => x.id === id)[0])
+}
