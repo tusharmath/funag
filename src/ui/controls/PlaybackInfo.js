@@ -4,8 +4,15 @@
 
 'use strict'
 import {div, i} from '@cycle/dom'
-import * as F from '../../utils/Flexbox'
+import * as S from '../../Utils/StyleUtils'
 
+const playbackInfoSTY = {
+  textTransform: 'capitalize',
+  fontSize: '1em',
+  fontWeight: 600,
+  overflow: 'hidden',
+  textAlign: 'center'
+}
 export default ({selectedTrack$}) => {
   const init = {
     title: ' ',
@@ -14,15 +21,9 @@ export default ({selectedTrack$}) => {
   }
   return {
     DOM: selectedTrack$.startWith(init).map(track =>
-      div({style: F.RowSpaceBetween}, [
-        div({style: {textTransform: 'capitalize', fontSize: '0.8em', fontWeight: 600}}, [
-          div({style: {}}, [track.title]),
-          div({style: {fontSize: '0.8em', color: '#555'}}, [
-            track.user.username,
-            ' - ',
-            track.genre
-          ])
-        ])
+      div({style: playbackInfoSTY}, [
+        div({style: S.overflowEllipsis}, [track.title]),
+        div({style: {...S.overflowEllipsis, fontSize: '0.8em', color: '#555'}}, track.user.username)
       ])
     ).startWith(null)
   }

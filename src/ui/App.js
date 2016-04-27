@@ -9,7 +9,7 @@ import {makeDOMDriver, div} from '@cycle/dom'
 import Controls from './controls'
 import Playlist from './playlist'
 import SearchBox from './search/index'
-import * as F from '../utils/Flexbox'
+import * as F from '../Utils/Flexbox'
 import * as SC from '../Utils/SoundCloud'
 
 export default function ({DOM, route, audio}) {

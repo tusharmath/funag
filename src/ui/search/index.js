@@ -5,15 +5,15 @@
 'use strict'
 
 import {div, input} from '@cycle/dom'
-import * as F from '../../utils/Flexbox'
-import * as S from '../../utils/StyleUtils'
-import * as U from '../../utils/DOMUtils'
+import * as F from '../../Utils/Flexbox'
+import * as S from '../../Utils/StyleUtils'
+import * as U from '../../Utils/DOMUtils'
 
 const searchBoxSTY = {
   border: 'none',
   width: '100%',
   color: '#fff',
-  fontSize: '0.8em',
+  fontSize: '1em',
   fontWeight: '600',
   backgroundColor: 'transparent',
   outline: 'none',
