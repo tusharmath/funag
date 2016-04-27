@@ -15,10 +15,11 @@ import * as SC from '../Utils/SoundCloud'
 export default function ({DOM, route}) {
   const searchBox = SearchBox({DOM, route})
   const tracks$ = SC.searchTracks(searchBox.value$)
+  const playlist = Playlist({tracks$, DOM})
   return {
     DOM: Observable.combineLatest(
       searchBox.DOM,
-      Playlist({tracks$}).DOM.map(view => div({style: {flexGrow: 1, overflow: 'scroll'}}, [view])),
+      playlist.DOM.map(view => div({style: {flexGrow: 1, overflow: 'scroll'}}, [view])),
       Controls().DOM
     ).map(views =>
       div({style: {height: '100%', ...F.ColSpaceBetween}}, views)

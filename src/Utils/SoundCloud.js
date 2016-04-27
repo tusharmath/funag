@@ -16,6 +16,7 @@ export const get = (path, params) => {
 export const searchTracks = q$ => {
   return q$.debounce(500)
     .flatMap(q => get('/tracks', {q}))
+    .share()
 }
 
 export const durationFormat = time => {
