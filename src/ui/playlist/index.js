@@ -8,12 +8,15 @@ import {Observable} from 'rx'
 import isolate from '@cycle/isolate'
 import {PlayListItem} from './PlayListItem'
 
-export default ({tracks$, DOM}) => {
+export default ({tracks$, DOM, audio}) => {
   const trackListClick$ = DOM.select('.tracks').events('click')
+  const play$ = audio.events('playing')
+  const pause$ = audio.events('pause')
+  const isPlaying$ = Observable.merge(play$.map(true), pause$.map(false)).startWith(false)
   const playlistItem$ = tracks$
     .map(tracks => {
       return tracks
-        .map(track => isolate(PlayListItem, track.id.toString())({track, DOM, trackListClick$}))
+        .map(track => isolate(PlayListItem, track.id.toString())({track, DOM, trackListClick$, isPlaying$}))
     })
   const playlistItemVTree$ = playlistItem$.map(tracks => tracks.map(x => x.DOM))
   const playlistItemClick$ = playlistItem$.map(tracks => tracks.map(x => x.click$))

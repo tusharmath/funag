@@ -4,10 +4,12 @@
 
 import {div} from '@cycle/dom'
 import {Observable} from 'rx'
-import * as F from '../../Utils/Flexbox'
-import * as SC from '../../Utils/SoundCloud'
-import * as D from '../../Utils/DOMUtils'
-import {overflowEllipsis, size} from '../../Utils/StyleUtils'
+import * as _ from 'lodash'
+import * as F from '../../utils/Flexbox'
+import * as SC from '../../utils/SoundCloud'
+import * as D from '../../utils/DOMUtils'
+import {overflowEllipsis, size} from '../../utils/StyleUtils'
+import {Visualizer} from './SoundVisualizerIcon'
 
 const Artwork = url => div({
   style: {
@@ -29,17 +31,21 @@ const TrackDetail = ({artist, title}) =>
     div({style: {color: '#555', fontSize: '0.8em', ...overflowEllipsis}}, artist)
   ])
 
-export const PlayListItem = ({DOM, track: {title, user, duration, artwork_url, id}, trackListClick$}) => {
+export const PlayListItem = ({DOM, track: {title, user, duration, artwork_url, id}, trackListClick$, isPlaying$}) => {
   const click$ = DOM.select('.playlist-item').events('click').map(id)
+  const isSelected$ = Observable.merge(trackListClick$.map(false), click$.map(true)).startWith(false)
   const defaultStyle = {fontSize: '1em', fontWeight: 600, padding: '5px 10px', alignItems: 'center', ...F.RowSpaceBetween}
   return {
     click$,
-    DOM: Observable.just(div({
-      className: 'playlist-item', style: defaultStyle
-    }, [
-      Artwork(artwork_url),
-      TrackDetail({title, artist: user.username}),
-      TrackDuration(duration)
-    ]))
+    DOM: isPlaying$
+      .withLatestFrom(isSelected$, (isPlaying$, isSelected$) => _.every([isPlaying$, isSelected$]))
+      .distinctUntilChanged()
+      .map(x => div({
+        className: 'playlist-item', style: defaultStyle
+      }, [
+        x ? div({style: {height: '35px', width: '35px', ...F.RowMiddle}}, [Visualizer]) : Artwork(artwork_url),
+        TrackDetail({title, artist: user.username}),
+        TrackDuration(duration)
+      ]))
   }
 }
