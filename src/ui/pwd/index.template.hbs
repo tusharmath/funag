@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <title>{{htmlWebpackPlugin.options.title}}</title>
+    <!--TODO: externalize-->
     <style>
         body, html {
             height: 100%;
@@ -15,6 +16,11 @@
             -webkit-font-smoothing: antialiased;
             -webkit-user-select: none;
             font-size: 13px;
+            overflow: hidden;
+        }
+
+        input {
+            font-family: Lato, sans-serif;
         }
 
         div {
