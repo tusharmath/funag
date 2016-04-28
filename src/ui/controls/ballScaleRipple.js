@@ -5,10 +5,13 @@
 'use strict'
 
 import {div} from '@cycle/dom'
-import './ballScaleRipple.less'
+import {Observable} from 'rx'
+import './BallScaleRipple.less'
 
-export const BufferingLoader = div(
-  '.ball-scale-ripple-multiple',
-  {style: {width: '50px', height: '50px'}}, [
-    div(), div(), div()
-  ])
+export default () => div(
+    '.ball-scale-ripple-multiple',
+    {style: {width: '50px', height: '50px'}}, [
+      div(), div(), div()
+    ])
+
+

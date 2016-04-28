@@ -7,7 +7,7 @@ import {div, i} from '@cycle/dom'
 import {Observable} from 'rx'
 import * as F from '../../Utils/Flexbox'
 import * as S from '../../Utils/StyleUtils'
-import {BufferingLoader} from './ballScaleRipple'
+import BallScaleRipple from './BallScaleRipple'
 
 const controlsSTY = {
   ...F.RowSpaceAround,
@@ -16,23 +16,23 @@ const controlsSTY = {
 }
 
 export default ({audio, DOM}) => {
-  const ev = Observable.merge(
+  const playPause$ = Observable.merge(
     audio.events('playing').map('pause'),
-    audio.events('pause').map('play'),
-    audio.events('loadstart').map('loadstart')
-  ).distinctUntilChanged().startWith('play')
-
+    audio.events('pause').map('play')
+  ).map((event) => S.fa(event)).startWith(S.fa('play'))
+  const loadStart$ = audio.events('loadstart').map(x => BallScaleRipple())
+  const ev = Observable.merge(playPause$, loadStart$)
+  ev.subscribe(x => console.log('ev', x))
   const audio$ = Observable.merge(
     DOM.select('.fa.fa-pause').events('click').map({type: 'PAUSE'}),
     DOM.select('.fa.fa-play').events('click').map({type: 'PLAY'})
   ).distinctUntilChanged()
-
   return {
     audio$,
-    DOM: ev.map(event =>
+    DOM: ev.map((x) =>
       div({style: F.RowSpaceAround}, [
         div({style: controlsSTY}, [
-          event === 'loadstart' ? BufferingLoader : S.fa(event)
+          x
         ])
       ])
     )

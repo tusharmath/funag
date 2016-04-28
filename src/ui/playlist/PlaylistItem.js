@@ -39,14 +39,18 @@ const playListItemSTY = {
 export default ({DOM, track: {title, user, duration, artwork_url, id}, trackListClick$, isPlaying$}, index) => {
   const click$ = DOM.select('.playlist-item').events('click').map(id)
   const isSelected$ = Observable.merge(trackListClick$.map(false), click$.map(true)).startWith(false)
+  const track$ = Observable.combineLatest(isPlaying$, isSelected$, (isPlaying$, isSelected$) => [isPlaying$, isSelected$].every(Boolean))
+    .distinctUntilChanged()
+  const isTrackPlaying$ = track$.filter(x => x).map(() => div({style: {height: '35px', width: '35px', ...F.RowMiddle}}, [Visualizer]))
+  const isTrackNotPlaying$ = track$.filter(x => !x).map(() => Index(index))
   return {
     click$,
-    DOM: Observable.combineLatest(isPlaying$, isSelected$, (isPlaying$, isSelected$) => [isPlaying$, isSelected$].every(Boolean))
+    DOM: Observable.merge(isTrackPlaying$, isTrackNotPlaying$)
       .distinctUntilChanged()
-      .map((x) => div({
+      .map((icon) => div({
       className: 'playlist-item', style: playListItemSTY
     }, [
-      x ? div({style: {height: '35px', width: '35px', ...F.RowMiddle}}, [Visualizer]) : Index(index),
+      icon,
       div({
         style: {
           borderBottom: 'solid 1px rgba(255, 255, 255, 0.1)',
