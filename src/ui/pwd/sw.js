@@ -16,9 +16,10 @@ if (swConfig.appCache) {
 
 if (swConfig.externalCache) {
   const {policy} = swConfig.externalCache
-  toolbox.router.get(/.*googleapis.*/, toolbox[policy])
-  toolbox.router.get(/.*gstatic.*/, toolbox[policy])
-  toolbox.router.get(/.*bootstrapcdn.*/, toolbox[policy])
+  toolbox.router.get(/^.*googleapis.*$/, toolbox[policy])
+  toolbox.router.get(/^.*gstatic.*$/, toolbox[policy])
+  toolbox.router.get(/^.*bootstrapcdn.*$/, toolbox[policy])
+  toolbox.router.get(/^.*snd\.cdn.*$/, toolbox[policy])
 }
 
 toolbox.router.default = toolbox.fastest
