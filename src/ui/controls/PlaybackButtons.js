@@ -22,7 +22,6 @@ export default ({audio, DOM}) => {
   ).map((event) => S.fa(event)).startWith(S.fa('play'))
   const loadStart$ = audio.events('loadstart').map(x => BallScaleRipple())
   const ev = Observable.merge(playPause$, loadStart$)
-  ev.subscribe(x => console.log('ev', x))
   const audio$ = Observable.merge(
     DOM.select('.fa.fa-pause').events('click').map({type: 'PAUSE'}),
     DOM.select('.fa.fa-play').events('click').map({type: 'PLAY'})
