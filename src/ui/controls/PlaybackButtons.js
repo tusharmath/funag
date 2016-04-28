@@ -10,6 +10,7 @@ import * as S from '../../Utils/StyleUtils'
 
 const controlsSTY = {
   ...F.RowSpaceAround,
+  padding: '5px',
   alignItems: 'center',
   width: '100%'
 }
@@ -30,9 +31,7 @@ export default ({audio, DOM}) => {
     DOM: ev.map(icon =>
       div({style: F.RowSpaceAround}, [
         div({style: controlsSTY}, [
-          S.fa('backward'),
-          S.fa(icon, 2),
-          S.fa('forward')
+          S.fa(icon)
         ])
       ])
     )

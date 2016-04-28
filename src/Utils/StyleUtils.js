@@ -15,12 +15,15 @@ export const absolute = (left = 0, top = 0, right = 0, bottom = 0) => ({
 export const fa = (name, dim = 1) => i(`.fa.fa-${name}`, {
   style: {
     fontSize: `${dim}em`,
-    height: `${dim}em`,
-    width: `${dim}em`, ...F.ColMiddle
+    ...F.ColMiddle
   }
 })
-export const overflowEllipsis = {
+export const overflowEllipsisSTY = {
   overflow: 'hidden',
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis'
+}
+
+export const subtitleSTY = {
+  color: '#555', fontSize: '0.8em'
 }

@@ -8,6 +8,7 @@ import {div, i, small} from '@cycle/dom'
 import {Observable} from 'rx'
 import PlaybackInfo from './PlaybackInfo'
 import PlaybackButtons from './PlaybackButtons'
+import * as F from '../../Utils/Flexbox'
 
 export default ({selectedTrack$, audio, DOM}) => {
   const playbackButtons = PlaybackButtons({audio, DOM})
@@ -15,9 +16,9 @@ export default ({selectedTrack$, audio, DOM}) => {
     audio$: playbackButtons.audio$,
     DOM: Observable
       .combineLatest(
-        PlaybackInfo({selectedTrack$}).DOM,
-        playbackButtons.DOM
+        playbackButtons.DOM,
+        PlaybackInfo({selectedTrack$}).DOM
       )
-      .map(views => div({style: {padding: '6px'}}, views))
+      .map(views => div({className: 'spaced', style: {...F.RowLeft, alignItems: 'center', padding: '10px'}}, views))
   }
 }

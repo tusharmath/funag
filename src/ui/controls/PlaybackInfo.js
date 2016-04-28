@@ -10,8 +10,7 @@ const playbackInfoSTY = {
   textTransform: 'capitalize',
   fontSize: '1em',
   fontWeight: 600,
-  overflow: 'hidden',
-  textAlign: 'center'
+  overflow: 'hidden'
 }
 export default ({selectedTrack$}) => {
   const init = {
@@ -22,8 +21,8 @@ export default ({selectedTrack$}) => {
   return {
     DOM: selectedTrack$.startWith(init).map(track =>
       div({style: playbackInfoSTY}, [
-        div({style: S.overflowEllipsis}, [track.title]),
-        div({style: {...S.overflowEllipsis, fontSize: '0.8em', color: '#555'}}, track.user.username)
+        div({style: S.overflowEllipsisSTY}, [track.title]),
+        div({style: {...S.overflowEllipsisSTY, ...S.subtitleSTY}}, track.user.username)
       ])
     ).startWith(null)
   }
