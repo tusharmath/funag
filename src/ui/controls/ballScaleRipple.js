@@ -4,11 +4,11 @@
 
 'use strict'
 
-import {ul, li, style} from '@cycle/dom'
-import './ball-.less'
+import {div} from '@cycle/dom'
+import './ballScaleRipple.less'
 
-export const Visualizer = ul(
-  '.animate-sound-visualizer',
-  {style: {width: '15px', height: '15px'}}, [
-    li(), li(), li(), li()
+export const BufferingLoader = div(
+  '.ball-scale-ripple-multiple',
+  {style: {width: '50px', height: '50px'}}, [
+    div(), div(), div()
   ])
