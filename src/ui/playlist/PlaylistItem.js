@@ -6,17 +6,18 @@ import {div, span} from '@cycle/dom'
 import {Observable} from 'rx'
 import * as F from '../../Utils/Flexbox'
 import * as SC from '../../Utils/SoundCloud'
-import {overflowEllipsisSTY, size, subtitleSTY} from '../../Utils/StyleUtils'
+import {overflowEllipsisSTY, subtitleSTY} from '../../Utils/StyleUtils'
 
-const Artwork = url => div({
+const Artwork = artwork_url => artwork_url ? div({
   style: {
-    ...size(35, 35),
-    backgroundImage: url ? `url('${url}')` : null,
-    backgroundColor: 'rgb(42, 44, 49)',
-    backgroundSize: '35px 35px',
-    backgroundRepeat: 'no-repeat'
+    WebkitFilter: 'blur(2px)',
+    backgroundImage: `url(${artwork_url})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: '50%',
+    backgroundSize: '100%',
+    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0
   }
-})
+}) : null
 const Index = index => div({style: {...subtitleSTY, width: '35px', textAlign: 'center'}}, [index + 1])
 
 const TrackDuration = duration =>
@@ -28,11 +29,24 @@ const TrackDetail = ({artist, title}) =>
     div({style: {...subtitleSTY, ...overflowEllipsisSTY}}, artist)
   ])
 
+const TrackDetailContainer = ({title, user, duration}) =>
+  div({
+    style: {
+      padding: '10px 0',
+      flex: '1 0 0',
+      overflow: 'hidden', ...F.RowSpaceBetween,
+      alignItems: 'center'
+    }
+  }, [
+    TrackDetail({title, artist: user.username}),
+    TrackDuration(duration)
+  ])
+
 const playListItemSTY = {
   fontSize: '1em',
   fontWeight: 600,
-  alignItems: 'center',
-  ...F.RowSpaceBetween
+  position: 'relative',
+  overflow: 'hidden'
 }
 
 export default ({DOM, track: {title, user, duration, artwork_url, id}, trackListClick$}, index) => {
@@ -40,20 +54,18 @@ export default ({DOM, track: {title, user, duration, artwork_url, id}, trackList
   return {
     click$,
     DOM: Observable.just(div({
-      className: 'playlist-item', style: playListItemSTY
+      className: 'playlist-item', style: {...playListItemSTY}
     }, [
-      Index(index),
+      Artwork(artwork_url),
       div({
         style: {
-          borderBottom: 'solid 1px rgba(255, 255, 255, 0.1)',
-          padding: '10px 0',
-          flex: '1 0 0',
-          overflow: 'hidden', ...F.RowSpaceBetween,
-          alignItems: 'center'
+          alignItems: 'center', ...F.RowSpaceBetween,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          position: 'relative'
         }
       }, [
-        TrackDetail({title, artist: user.username}),
-        TrackDuration(duration)
+        Index(index),
+        TrackDetailContainer({title, user, duration})
       ])
     ]))
   }

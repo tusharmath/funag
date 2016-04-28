@@ -12,7 +12,7 @@ import * as U from '../../Utils/DOMUtils'
 const searchBoxSTY = {
   border: 'none',
   width: '100%',
-  color: '#fff',
+  color: '#4E3300',
   fontSize: '1em',
   fontWeight: '600',
   backgroundColor: 'transparent',
@@ -23,9 +23,10 @@ const searchBoxSTY = {
 const searchBoxContainer = {
   ...F.RowSpaceAround,
   alignItems: 'center',
-  backgroundColor: 'rgb(42, 44, 49)',
+  backgroundColor: 'rgb(255, 165, 0)',
   padding: '0 15px',
-  minHeight: '47px'
+  minHeight: '47px',
+  color: '#4E3300'
 }
 
 export default ({DOM}) => {
@@ -33,7 +34,7 @@ export default ({DOM}) => {
   return {
     DOM: value$.map(value =>
       div({className: 'search', style: searchBoxContainer}, [
-        input({type: 'text', style: searchBoxSTY, value, placeholder: 'search'}),
+        input({type: 'text', style: searchBoxSTY, value}),
         S.fa('search')
       ])
     ), value$
