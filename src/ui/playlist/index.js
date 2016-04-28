@@ -6,7 +6,7 @@
 import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import isolate from '@cycle/isolate'
-import {PlayListItem} from './PlayListItem'
+import PlayListItem from './PlayListItem'
 
 export default ({tracks$, DOM, audio}) => {
   const trackListClick$ = DOM.select('.tracks').events('click')
@@ -17,7 +17,7 @@ export default ({tracks$, DOM, audio}) => {
   const playlistItem$ = tracks$
     .map(tracks => {
       return tracks
-        .map(track => isolate(PlayListItem, track.id.toString())({track, DOM, trackListClick$, isPlaying$}))
+        .map((track, i) => isolate(PlayListItem, track.id.toString())({track, DOM, trackListClick$, isPlaying$}, i))
     })
   const playlistItemVTree$ = playlistItem$.map(tracks => tracks.map(x => x.DOM))
   const playlistItemClick$ = playlistItem$.map(tracks => tracks.map(x => x.click$))

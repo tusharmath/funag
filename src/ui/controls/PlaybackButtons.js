@@ -21,6 +21,7 @@ export default ({audio, DOM}) => {
     audio.events('pause').map('play'),
     audio.events('loadstart').map('loadstart')
   ).distinctUntilChanged().startWith('play')
+
   const audio$ = Observable.merge(
     DOM.select('.fa.fa-pause').events('click').map({type: 'PAUSE'}),
     DOM.select('.fa.fa-play').events('click').map({type: 'PLAY'})
@@ -31,9 +32,7 @@ export default ({audio, DOM}) => {
     DOM: ev.map(event =>
       div({style: F.RowSpaceAround}, [
         div({style: controlsSTY}, [
-          S.fa('backward'),
-          event === 'loadstart' ? BufferingLoader : S.fa(event, 2),
-          S.fa('forward')
+          event === 'loadstart' ? BufferingLoader : S.fa(event)
         ])
       ])
     )
