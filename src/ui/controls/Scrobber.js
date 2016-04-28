@@ -9,11 +9,11 @@ export default ({completion$}) => {
   return {
     DOM: completion$.map(completion =>
       div([
-        div({style: {background: 'radial-gradient(#000000, #1E1F23)', height: '1px', width: '100%'}}, [
+        div({style: {height: '2px', width: '100%'}}, [
           div({
             style: {
-              transition: 'transform 500ms linear',
-              backgroundColor: 'rgb(255, 240, 0)',
+              transition: 'transform 100ms linear',
+              background: '#fff',
               height: '100%',
               width: '100%',
               transform: `scaleX(${completion})`,
