@@ -37,8 +37,7 @@ export const PlayListItem = ({DOM, track: {title, user, duration, artwork_url, i
   const defaultStyle = {fontSize: '1em', fontWeight: 600, padding: '5px 10px', alignItems: 'center', ...F.RowSpaceBetween}
   return {
     click$,
-    DOM: isPlaying$
-      .withLatestFrom(isSelected$, (isPlaying$, isSelected$) => _.every([isPlaying$, isSelected$]))
+    DOM: Observable.combineLatest(isPlaying$, isSelected$, (isPlaying$, isSelected$) => [isPlaying$, isSelected$].every(Boolean))
       .distinctUntilChanged()
       .map(x => div({
         className: 'playlist-item', style: defaultStyle
