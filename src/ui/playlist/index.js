@@ -24,6 +24,6 @@ export default ({tracks$, DOM, audio}) => {
 
   return {
     DOM: playlistItemVTree$.flatMapLatest(tracks => Observable.combineLatest(tracks)).map(x => div('.tracks', x)),
-    play$: playlistItemClick$.flatMapLatest(clicks => Observable.merge(clicks))
+    selectedTrack$: playlistItemClick$.flatMapLatest(clicks => Observable.merge(clicks))
   }
 }

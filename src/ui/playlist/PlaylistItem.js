@@ -17,8 +17,9 @@ const playListItemSTY = {
   overflow: 'hidden'
 }
 
-export default ({DOM, track: {title, user, duration, artwork_url, id}, trackListClick$, isPlaying$}, index) => {
-  const click$ = DOM.select('.playlist-item').events('click').map(id)
+export default ({DOM, track, trackListClick$, isPlaying$}, index) => {
+  const {title, user, duration, artwork_url} = track
+  const click$ = DOM.select('.playlist-item').events('click').map(track)
   const isSelected$ = Observable.merge(trackListClick$.map(false), click$.map(true)).startWith(false)
   const track$ = Observable.combineLatest(isPlaying$, isSelected$, (isPlaying$, isSelected$) => [isPlaying$, isSelected$].every(Boolean)).distinctUntilChanged()
   const isTrackPlaying$ = track$.filter(x => x).map(() => div({
@@ -32,7 +33,7 @@ export default ({DOM, track: {title, user, duration, artwork_url, id}, trackList
     click$,
     DOM: Observable.merge(isTrackPlaying$, isTrackNotPlaying$)
       .distinctUntilChanged()
-      .map(icon => div({ className: 'playlist-item', style: {...playListItemSTY}}, [
+      .map(icon => div({className: 'playlist-item', style: {...playListItemSTY}}, [
         Artwork(artwork_url),
         div({
           style: {
