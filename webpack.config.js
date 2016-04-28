@@ -60,6 +60,7 @@ module.exports = {
         exclude: /node_modules/,
         query: {
           cacheDirectory: true,
+          // TODO: Read from package.json
           presets: ['es2015'],
           plugins: [
             'transform-object-rest-spread'

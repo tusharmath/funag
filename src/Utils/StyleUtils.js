@@ -27,3 +27,8 @@ export const overflowEllipsisSTY = {
 export const subtitleSTY = {
   color: '#555', fontSize: '0.8em'
 }
+
+export const block = (height, width = height) => ({
+  ...size(height, width),
+  ...F.ColMiddle
+})
