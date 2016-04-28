@@ -43,7 +43,7 @@ export const PlayListItem = ({DOM, track: {title, user, duration, artwork_url, i
       .map(x => div({
         className: 'playlist-item', style: defaultStyle
       }, [
-        x ? div({style: {height: '35px', width: '35px', ...F.RowMiddle}}, [Visualizer]) : Artwork(artwork_url),
+        x ? div({style: {height: '35px', width: '35px', marginRight: '10px', ...F.RowMiddle}}, [Visualizer]) : Artwork(artwork_url),
         TrackDetail({title, artist: user.username}),
         TrackDuration(duration)
       ]))
