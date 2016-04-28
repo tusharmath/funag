@@ -6,7 +6,7 @@
 import t from 'argtoob'
 import {Observable} from 'rx'
 
-export const isTrackPlaying = ({audio$, selectedTrackId$}, id) => {
+export default  ({audio$, selectedTrackId$}, id) => {
   const events$ = audio$.withLatestFrom(selectedTrackId$, t('event', 'id'))
   const true$ = Observable.merge(
     events$.filter(x => x.event === 'playing' && x.id === id)

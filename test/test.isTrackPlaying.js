@@ -6,7 +6,7 @@
 
 import {ReactiveTest, TestScheduler} from 'rx'
 import test from 'ava'
-import * as A from '../src/Utils/isTrackPlaying'
+import isTrackPlaying from '../src/Utils/isTrackPlaying'
 const {onNext} = ReactiveTest
 
 test('isSongPlaying():play+pause', t => {
@@ -20,7 +20,7 @@ test('isSongPlaying():play+pause', t => {
     onNext(260, 'pause'),
   )
   const selectedTrackId$ = sh.createHotObservable(onNext(205, 5))
-  const out = sh.startScheduler(() => A.isTrackPlaying({audio$, selectedTrackId$}, 5))
+  const out = sh.startScheduler(() => isTrackPlaying({audio$, selectedTrackId$}, 5))
   t.deepEqual(out.messages, [
     onNext(220, true),
     onNext(230, false),
@@ -35,7 +35,7 @@ test('isSongPlaying():no-match', t => {
     onNext(220, 'playing'),
   )
   const selectedTrackId$ = sh.createHotObservable(onNext(205, 4))
-  const out = sh.startScheduler(() => A.isTrackPlaying({audio$, selectedTrackId$}, 5))
+  const out = sh.startScheduler(() => isTrackPlaying({audio$, selectedTrackId$}, 5))
 
   t.deepEqual(out.messages, [
     onNext(210, false)
@@ -57,7 +57,7 @@ test('isSongPlaying():song-changed', t => {
     onNext(230, 2),
     onNext(260, 3),
   )
-  const out = sh.startScheduler(() => A.isTrackPlaying({audio$, selectedTrackId$}, 2))
+  const out = sh.startScheduler(() => isTrackPlaying({audio$, selectedTrackId$}, 2))
   t.deepEqual(out.messages, [
     onNext(210, false),
     onNext(250, true),
