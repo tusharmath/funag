@@ -19,21 +19,16 @@ export default ({audio, DOM}) => {
   const playPause$ = Observable.merge(
     audio.events('playing').map('pause'),
     audio.events('pause').map('play')
-  ).map((event) => S.fa(event)).startWith(S.fa('play'))
-  const loadStart$ = audio.events('loadstart').map(x => BallScaleRipple())
-  const ev = Observable.merge(playPause$, loadStart$)
+  ).startWith('play')
+    .map(button => div({className: `ctrl-${button}`, style: S.block(50)}, [S.fa(button)]))
+
+  const loadStart$ = audio.events('loadstart').map(div({style: S.block(50)}, [BallScaleRipple(2)]))
+
   const audio$ = Observable.merge(
     DOM.select('.fa.fa-pause').events('click').map({type: 'PAUSE'}),
     DOM.select('.fa.fa-play').events('click').map({type: 'PLAY'})
   ).distinctUntilChanged()
   return {
-    audio$,
-    DOM: ev.map((x) =>
-      div({style: F.RowSpaceAround}, [
-        div({style: controlsSTY}, [
-          x
-        ])
-      ])
-    )
+    audio$, DOM: Observable.merge(playPause$, loadStart$)
   }
 }

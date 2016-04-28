@@ -5,12 +5,11 @@
 'use strict'
 
 import {div} from '@cycle/dom'
-import {Observable} from 'rx'
 import './BallScaleRipple.less'
 
-export default () => div(
-    '.ball-scale-ripple-multiple',
-    {style: {width: '50px', height: '50px'}}, [
+export default (dim = 1) =>
+  div('.ball-scale-ripple-multiple',
+    {style: {width: `${dim}em`, height: `${dim}em`}}, [
       div(), div(), div()
     ])
 

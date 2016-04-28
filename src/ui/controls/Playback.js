@@ -20,14 +20,7 @@ export default ({selectedTrack$, audio, DOM}) => {
         PlaybackInfo({selectedTrack$}).DOM
       )
       .map(views => div({
-        className: 'spaced',
-        style: {
-          ...F.RowLeft,
-          alignItems: 'center',
-          padding: '10px',
-          color: '#4E3300',
-          minHeight: '55px'
-        }
+        style: {...F.RowLeft, alignItems: 'center', color: '#4E3300'}
       }, views))
   }
 }
