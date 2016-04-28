@@ -12,7 +12,8 @@ export default ({tracks$, DOM, audio}) => {
   const trackListClick$ = DOM.select('.tracks').events('click')
   const play$ = audio.events('playing')
   const pause$ = audio.events('pause')
-  const isPlaying$ = Observable.merge(play$.map(true), pause$.map(false)).startWith(false)
+  const loadstart$ = audio.events('loadstart')
+  const isPlaying$ = Observable.merge(play$.map(true), pause$.map(false), loadstart$.map(false)).startWith(false)
   const playlistItem$ = tracks$
     .map(tracks => {
       return tracks
