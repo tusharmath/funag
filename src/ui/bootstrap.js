@@ -12,9 +12,6 @@ import App from './app'
 import {routerDriver} from '../drivers/router'
 import {audioDriver} from '../drivers/audio'
 
-export const container = document.createElement('div')
-document.body.appendChild(container)
-
 const manifest = document.createElement('link')
 manifest.href = manifestFile
 manifest.rel = 'manifest'
@@ -26,4 +23,4 @@ sw({scope: '/'})
     x => console.error(x)
   )
 
-Cycle.run(App, {DOM: makeDOMDriver(container), route: routerDriver, audio: audioDriver})
+Cycle.run(App, {DOM: makeDOMDriver('#container'), route: routerDriver, audio: audioDriver})

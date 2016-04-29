@@ -37,7 +37,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Flo',
+      title: 'Funag',
       template: './src/ui/pwd/index.template.hbs'
     }),
     new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(config)})
