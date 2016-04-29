@@ -4,7 +4,9 @@ module.exports = {
   sw: {
     debug: true,
     preCache: false,
-    appCache: false,
+    appCache: {
+      policy: 'networkFirst'
+    },
     externalCache: {
       policy: 'fastest'
     }
