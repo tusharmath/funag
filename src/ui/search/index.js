@@ -17,17 +17,17 @@ const searchBoxSTY = {
   color: font.primary,
   fontWeight: '600',
   outline: 'none',
-  height: '45px',
   backgroundColor: 'inherit'
 }
 
 const searchBoxContainer = {
   ...F.RowSpaceAround,
   alignItems: 'center',
-  padding: '0 15px',
-  minHeight: '47px',
+  padding: '0 10px',
+  minHeight: '50px',
   color: font.primary,
-  boxShadow: '0px 1px 8px 1px rgba(0, 0, 0, 0.43)',
+  boxShadow: '0px 1px 8px 1px rgba(0, 0, 0, 0.50)',
+  backgroundColor: 'rgb(246, 246, 246)',
   position: 'relative'
 }
 
