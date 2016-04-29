@@ -1,12 +1,12 @@
 {
   "name": "musical",
-  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "ava",
     "start": "node-dev src/server",
-    "build": "webpack"
+    "build": "webpack",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "author": "",
   "license": "ISC",
@@ -45,7 +45,8 @@
   "devDependencies": {
     "ava": "^0.14.0",
     "cz-conventional-changelog": "^1.1.6",
-    "node-dev": "^3.1.0"
+    "node-dev": "^3.1.0",
+    "semantic-release": "^4.3.5"
   },
   "config": {
     "commitizen": {
