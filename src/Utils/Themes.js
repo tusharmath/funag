@@ -11,4 +11,7 @@ export const colors = {
   'khakhi': '#a88b4c',
   'light-khakhi': '#c8b272'
 }
-export const theme = colors.blue
+export const theme = {
+  search: colors.blue,
+  control: colors.blue
+}

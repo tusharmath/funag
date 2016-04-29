@@ -8,6 +8,7 @@ import {div, input} from '@cycle/dom'
 import * as F from '../../Utils/Flexbox'
 import * as S from '../../Utils/StyleUtils'
 import * as U from '../../Utils/DOMUtils'
+import {theme} from '../../Utils/Themes'
 
 const searchBoxSTY = {
   border: 'none',
@@ -23,7 +24,7 @@ const searchBoxSTY = {
 const searchBoxContainer = {
   ...F.RowSpaceAround,
   alignItems: 'center',
-  backgroundColor: 'rgb(255, 165, 0)',
+  backgroundColor: theme.search,
   padding: '0 15px',
   minHeight: '47px',
   color: '#4E3300'

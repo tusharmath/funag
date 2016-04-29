@@ -20,7 +20,7 @@ export default ({selectedTrack$, audio, DOM}) => {
         PlaybackInfo({selectedTrack$}).DOM
       )
       .map(views => div({
-        style: {...F.RowLeft, alignItems: 'center', color: '#4E3300'}
+        style: {...F.RowLeft, alignItems: 'center'}
       }, views))
   }
 }

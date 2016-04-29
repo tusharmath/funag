@@ -20,7 +20,7 @@ export default ({audio, DOM}) => {
     audio.events('playing').map('pause'),
     audio.events('pause').map('play')
   ).startWith('play')
-    .map(button => div({className: `ctrl-${button}`, style: S.block(50)}, [S.fa(button)]))
+    .map(button => div({className: `ctrl-${button}`, style: {color: 'rgb(78, 51, 0)', ...S.block(50)}}, [S.fa(button)]))
 
   const loadStart$ = audio.events('loadstart').map(div({style: S.block(50)}, [BallScaleRipple(2)]))
 
