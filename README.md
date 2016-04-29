@@ -1,5 +1,7 @@
 # flo
 
+[![Join the chat at https://gitter.im/funag/ui-core](https://badges.gitter.im/funag/ui-core.svg)](https://gitter.im/funag/ui-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Gitter](https://badges.gitter.im/tusharmath/flo.svg)](https://gitter.im/tusharmath/flo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/funag/ui-core.svg?branch=master)](https://travis-ci.org/funag/ui-core)
 
