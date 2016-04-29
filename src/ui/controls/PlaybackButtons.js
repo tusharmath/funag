@@ -25,8 +25,8 @@ export default ({audio, DOM}) => {
   const loadStart$ = audio.events('loadstart').map(div({style: S.block(50)}, [BallScaleRipple(2)]))
 
   const audio$ = Observable.merge(
-    DOM.select('.fa.fa-pause').events('click').map({type: 'PAUSE'}),
-    DOM.select('.fa.fa-play').events('click').map({type: 'PLAY'})
+    DOM.select('.ctrl-play').events('click').map({type: 'PLAY'}),
+    DOM.select('.ctrl-pause').events('click').map({type: 'PAUSE'})
   ).distinctUntilChanged()
   return {
     audio$, DOM: Observable.merge(playPause$, loadStart$)
