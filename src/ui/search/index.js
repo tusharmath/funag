@@ -36,7 +36,7 @@ export default ({DOM}) => {
   return {
     DOM: value$.map(value =>
       div({className: 'search', style: searchBoxContainer}, [
-        input({type: 'text', style: searchBoxSTY, value}),
+        input({type: 'text', style: searchBoxSTY, value, placeholder: 'Search'}),
         S.fa('search')
       ])
     ), value$
