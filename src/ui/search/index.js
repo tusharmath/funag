@@ -28,7 +28,7 @@ const searchBoxContainer = {
   minHeight: '47px',
   color: font.primary,
   boxShadow: '0px 1px 8px 1px rgba(0, 0, 0, 0.43)',
-  zIndex: 1
+  position: 'relative'
 }
 
 export default ({DOM}) => {
@@ -36,7 +36,7 @@ export default ({DOM}) => {
   return {
     DOM: value$.map(value =>
       div({className: 'search', style: searchBoxContainer}, [
-        input({type: 'text', style: searchBoxSTY, value}),
+        input({type: 'text', style: searchBoxSTY, value, placeholder: 'Search'}),
         S.fa('search')
       ])
     ), value$

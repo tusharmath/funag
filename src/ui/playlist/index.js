@@ -20,7 +20,7 @@ export default ({tracks$, DOM, audio}) => {
   return {
     DOM: playlistItemVTree$.flatMapLatest(tracks => Observable.combineLatest(tracks)).map(x => div({
       className: 'tracks',
-      style: {backgroundColor: '#ECECEC'}},
+      style: {backgroundColor: '#FFF'}},
       x
     )),
     selectedTrack$: selectedTrackProxy$

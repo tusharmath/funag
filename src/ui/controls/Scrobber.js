@@ -16,7 +16,6 @@ export default ({completion$}) => {
               background: '#f00',
               height: '100%',
               width: '100%',
-              // NOTE: scaleX causes repaints at other places
               transform: `translateX(${100 * completion - 100}%)`,
               transformOrigin: 'left'
             }

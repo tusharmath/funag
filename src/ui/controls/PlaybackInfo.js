@@ -10,8 +10,9 @@ import * as T from '../../Utils/Themes'
 const playbackInfoSTY = {
   textTransform: 'capitalize',
   fontSize: '1em',
-  fontWeight: 600,
-  overflow: 'hidden'
+  fontWeight: '600',
+  overflow: 'hidden',
+  paddingRight: '10px'
 }
 export default ({selectedTrack$}) => {
   const init = {

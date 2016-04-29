@@ -14,7 +14,6 @@ import * as T from '../../Utils/Themes'
 
 const playListItemSTY = {
   fontSize: '1em',
-  fontWeight: 600,
   position: 'relative',
   overflow: 'hidden'
 }
