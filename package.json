@@ -6,7 +6,8 @@
     "test": "ava",
     "start": "node-dev src/server",
     "build": "webpack",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "gh-pages": "sh scripts/gh-pages.sh"
   },
   "author": "",
   "license": "ISC",
