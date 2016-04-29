@@ -16,6 +16,11 @@ export default ({audio, selectedTrack$, DOM}) => {
     DOM: Observable.combineLatest(
       Scrobber({completion$}).DOM,
       playback.DOM
-    ).map(views => div({style: {backgroundColor: 'rgb(255, 165, 0)'}}, views))
+    ).map(views => div({
+      style: {
+        boxShadow: '0px -1px 8px 1px rgba(0, 0, 0, 0.43)',
+        position: 'relative'
+      }
+    }, views))
   }
 }

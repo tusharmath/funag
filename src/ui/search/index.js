@@ -8,25 +8,27 @@ import {div, input} from '@cycle/dom'
 import * as F from '../../Utils/Flexbox'
 import * as S from '../../Utils/StyleUtils'
 import * as U from '../../Utils/DOMUtils'
+import {font} from '../../Utils/Themes'
 
 const searchBoxSTY = {
   border: 'none',
   width: '100%',
-  color: '#4E3300',
   fontSize: '1em',
+  color: font.primary,
   fontWeight: '600',
-  backgroundColor: 'transparent',
   outline: 'none',
-  height: '45px'
+  height: '45px',
+  backgroundColor: 'inherit'
 }
 
 const searchBoxContainer = {
   ...F.RowSpaceAround,
   alignItems: 'center',
-  backgroundColor: 'rgb(255, 165, 0)',
   padding: '0 15px',
   minHeight: '47px',
-  color: '#4E3300'
+  color: font.primary,
+  boxShadow: '0px 1px 8px 1px rgba(0, 0, 0, 0.43)',
+  zIndex: 1
 }
 
 export default ({DOM}) => {

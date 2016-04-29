@@ -10,6 +10,7 @@ import FixedWidthLabel from './Label'
 import TrackDetail from './TrackDetail'
 import SoundVisualizerIcon from './SoundVisualizerIcon'
 import isTrackPlaying from '../../Utils/isTrackPlaying'
+import * as T from '../../Utils/Themes'
 
 const playListItemSTY = {
   fontSize: '1em',
@@ -21,8 +22,8 @@ const playListItemSTY = {
 const trackInfoSTY = {
   ...F.RowSpaceBetween,
   alignItems: 'center',
-  backgroundColor: 'rgba(0, 0, 0, 0.8)',
-  position: 'relative'
+  color: T.font.primary,
+  borderBottom: '1px solid rgb(228, 228, 228)'
 }
 
 // TODO: Move to isTrackPlaying function
@@ -47,7 +48,6 @@ export default ({DOM, track, audio, selectedTrack$}, index) => {
     click$,
     DOM: trackStatus$.map(icon =>
       div({className: 'playlist-item', style: {...playListItemSTY}}, [
-        Artwork(artwork_url),
         div({style: trackInfoSTY}, [
           icon,
           TrackDetail({title, user, duration})
