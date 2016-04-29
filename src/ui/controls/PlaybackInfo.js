@@ -5,6 +5,7 @@
 'use strict'
 import {div, i} from '@cycle/dom'
 import * as S from '../../Utils/StyleUtils'
+import * as T from '../../Utils/Themes'
 
 const playbackInfoSTY = {
   textTransform: 'capitalize',
@@ -22,7 +23,7 @@ export default ({selectedTrack$}) => {
     DOM: selectedTrack$.startWith(init).map(track =>
       div({style: playbackInfoSTY}, [
         div({style: S.overflowEllipsisSTY}, [track.title]),
-        div({style: {...S.overflowEllipsisSTY, fontSize: '0.8em'}}, track.user.username)
+        div({style: {...S.overflowEllipsisSTY, fontSize: '0.8em', color: T.font.secondary}}, track.user.username)
       ])
     ).startWith(null)
   }
