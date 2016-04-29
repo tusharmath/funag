@@ -28,7 +28,7 @@ const searchBoxContainer = {
   minHeight: '47px',
   color: font.primary,
   boxShadow: '0px 1px 8px 1px rgba(0, 0, 0, 0.43)',
-  zIndex: 1
+  position: 'relative'
 }
 
 export default ({DOM}) => {
