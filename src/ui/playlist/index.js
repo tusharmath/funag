@@ -7,9 +7,10 @@ import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import isolate from '@cycle/isolate'
 import PlayListItem from './PlayListItem'
+import Proxy from '../../Utils/Proxy'
 
 export default ({tracks$, DOM, audio}) => {
-  const selectedTrackProxy$ = Observable.start(() => selectedTrack$.shareReplay(1)).mergeAll()
+  const selectedTrackProxy$ = Proxy(() => selectedTrack$)
   const playlistItem$ = tracks$.map(tracks => tracks.map((track, i) =>
     isolate(PlayListItem, track.id.toString())({track, DOM, audio, selectedTrack$: selectedTrackProxy$}, i)
   ))
