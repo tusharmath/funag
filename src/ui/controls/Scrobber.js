@@ -7,16 +7,17 @@ import {div} from '@cycle/dom'
 
 export default ({completion$}) => {
   return {
-    DOM: completion$.map(completion =>
+    DOM: completion$.throttle(500).map(completion =>
       div([
         div({style: {height: '2px', width: '100%'}}, [
           div({
             style: {
               transition: 'transform 100ms linear',
-              background: '#fff',
+              background: '#f00',
               height: '100%',
               width: '100%',
-              transform: `scaleX(${completion})`,
+              // NOTE: scaleX causes repaints at other places
+              transform: `translateX(${100 * completion - 100}%)`,
               transformOrigin: 'left'
             }
           })
