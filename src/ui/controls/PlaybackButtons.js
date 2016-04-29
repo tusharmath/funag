@@ -29,6 +29,6 @@ export default ({audio, DOM}) => {
     DOM.select('.ctrl-pause').events('click').map({type: 'PAUSE'})
   ).distinctUntilChanged()
   return {
-    audio$, DOM: Observable.merge(playPause$, loadStart$)
+    audio$, DOM: Observable.merge(playPause$, loadStart$).map(x => div(x))
   }
 }
