@@ -2,21 +2,21 @@ sudo: false
 language: node_js
 cache:
   directories:
-    - node_modules
+  - node_modules
 notifications:
   email: false
 node_js:
-  - '6'
+- '6'
 before_install:
-  - npm i -g npm@^2.0.0
+- npm i -g npm@^2.0.0
 before_script:
-  - npm prune
+- npm prune
 after_success:
-  - 'curl -Lo travis_after_all.py https://git.io/travis_after_all'
-  - python travis_after_all.py
-  - export $(cat .to_export_back) &> /dev/null
-  - npm run semantic-release
-  - npm run gh-pages
+- npm run semantic-release
+- npm run gh-pages
 branches:
   except:
-    - /^v\d+\.\d+\.\d+$/
+  - /^v\d+\.\d+\.\d+$/
+env:
+  global:
+    secure: WR4sDOMR3P22dQIAH1HwcHM6KqgZ0Ra7F0KBGbRVCp28Kps+31+Zbhj8CA/D90tyHX+9IQH8Tp7nBAZlng9mNcjuHrY19v2JqyhRM+q8jAAJ83t9ZFHD6FYpqJ/uLg1uV0GLcqVxtnTCaabiL20sS5tftp+CrlV+k7isEdesW+bEIfdBCm1rIDwnaaFi0F555FzDXAkddCz0hL+PgdIZ8b5LaK+ZhJuQI+dmZUlHyHuQMke2nkYjiiTMQNYAV/v3Dth0A9yQ92bvZZuPP8AfYRzQXkK9rBnDxRs26WQqPcX90pUSH6dZamJj03PtOTpiMZaGhtVwypg8Nia09hKctA5v8nzkE0cSMJ1m2DtJcpV1x/NAdgdE9E/0XbKi4MBql6bqR73Fx6Pa9oG4OXD726RJQ5wG8NC1vebZgsYvlPf7S2Z/q3yAjRe4DYtzSYG2zjEgQh9gxkUleNibeHGK5gtn605hQg2IdH9dW9ZDaJddlfbEgB/woXhyiKyStDxhLRG7dw5jJCTopzdMBJcjQ+ksoKJZpXU9+9GKIlY17/4BajurrJdVYFWKwPRo3Im15sBAinGIXQibsE5ybe0cTqo1glMPYow5SfhqqHQb6VyBnqfKtyugZedNhyCvwqE6QLwAoRF2K5wl+XYeiHjcQQKTzCZPO4Zwj41DMtwQnE4=
