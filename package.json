@@ -1,12 +1,13 @@
 {
-  "name": "musical",
+  "name": "funag",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "ava",
     "start": "node-dev src/server",
     "build": "webpack",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "gh-pages": "scripts/gh-pages.js"
   },
   "author": "",
   "license": "ISC",
@@ -33,6 +34,7 @@
     "less": "^2.6.1",
     "less-loader": "^2.2.3",
     "qs": "^6.1.0",
+    "rimraf": "^2.5.2",
     "route-parser": "0.0.5",
     "rx": "^4.1.0",
     "serviceworker-loader": "^0.1.0",
@@ -46,6 +48,7 @@
     "ava": "^0.14.0",
     "babel-register": "^6.7.2",
     "cz-conventional-changelog": "^1.1.6",
+    "gh-pages": "^0.11.0",
     "node-dev": "^3.1.0",
     "semantic-release": "^4.3.5"
   },
