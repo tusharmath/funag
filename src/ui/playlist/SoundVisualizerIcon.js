@@ -5,11 +5,11 @@
 'use strict'
 
 import {ul, li, div} from '@cycle/dom'
-import * as F from '../../Utils/Flexbox'
+import * as S from '../../Utils/StyleUtils'
 import './SoundVisualizerIcon.less'
 
-export default div({style: {height: '35px', width: '35px', ...F.RowMiddle}}, [
-  ul('.animate-sound-visualizer', {style: {width: '15px', height: '15px'}}, [
-    li(), li(), li(), li()
+export default div({style: S.block(35)}, [
+  ul('.animate-sound-visualizer', {style: S.size(17)}, [
+    li(), li(), li()
   ])
 ])
