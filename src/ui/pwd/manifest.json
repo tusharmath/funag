@@ -1,11 +1,11 @@
 {
 	"lang": "en",
 	"dir": "ltr",
-	"name": "Flo",
-	"short_name": "Flo",
+	"name": "Funag",
+	"short_name": "Funag",
 	"start_url": "/",
 	"display": "standalone",
 	"orientation": "portrait",
-	"theme_color": "#000",
-	"background_color": "#000"
+	"theme_color": "#CCC",
+	"background_color": "#FFF"
 }
