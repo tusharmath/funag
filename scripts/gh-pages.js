@@ -16,7 +16,7 @@ const env = process.env
 // Makes sure that publish happens only in master
 const canPublish = [
   env.TRAVIS_PULL_REQUEST === 'false',
-  env.TRAVIS_BRANCH === env.SOURCE_BRANCH
+  env.TRAVIS_BRANCH === 'master'
 ].every(Boolean)
 
 // Delete all files in public folder
@@ -26,7 +26,7 @@ const jobs = rimraf('public/**')
   // Create new files in public folder
   .flatMap(() => webpack(webpackConfig))
   .tap(log('Webpack Build Completed'))
-    
+
   // Ignore unpublishables
   .tap(log(`Is Publishable: [${canPublish}]`))
   .filter(() => canPublish)
