@@ -8,7 +8,7 @@ const {Observable} = require('rx')
 const path = require('path')
 const rimraf = Observable.fromCallback(require('rimraf'))
 const webpack = Observable.fromNodeCallback(require('webpack'))
-const publish = Observable.fromNodeCallback(require('gh-pages').publish)
+const publish = Observable.fromCallback(require('gh-pages').publish)
 const webpackConfig = require('../webpack.config')
 const log = message => () => console.log(message)
 const env = process.env
@@ -34,8 +34,8 @@ const jobs = rimraf('public/**')
   // Publish to github
   .flatMap(() => publish(
     path.resolve(__dirname, '../public'),
-    {repo: `https://${env.GH_TOKEN}@github.com/funag/funag.github.io.git`}
+    {logger: console.log.bind(console), repo: `https://${env.GH_TOKEN}@github.com/funag/funag.github.io.git`}
   ))
-  .tap(log('Github Publish Completed'))
+  .tap(x => console.log('Github Publish Completed', x))
 
 jobs.subscribe(log('All Jobs Done'))
