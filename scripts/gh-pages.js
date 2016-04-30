@@ -19,7 +19,18 @@ const canPublish = [
   env.TRAVIS_BRANCH === 'master'
 ].every(Boolean)
 
+// gh-pages config
+const GH_PAGES_PUBLISH_CONFIG = {
+  user: {
+    name: 'travisbot',
+    email: 'support@travis-ci.org'
+  },
+  logger: console.log.bind(console),
+  repo: `https://${env.GH_TOKEN}@github.com/funag/funag.github.io.git`
+}
+
 // Delete all files in public folder
+
 const jobs = rimraf('public/**')
   .tap(log('Files Deleted'))
 
@@ -32,10 +43,7 @@ const jobs = rimraf('public/**')
   .filter(() => canPublish)
 
   // Publish to github
-  .flatMap(() => publish(
-    path.resolve(__dirname, '../public'),
-    {logger: console.log.bind(console), repo: `https://${env.GH_TOKEN}@github.com/funag/funag.github.io.git`}
-  ))
+  .flatMap(() => publish(path.resolve(__dirname, '../public'), GH_PAGES_PUBLISH_CONFIG))
   .tap(x => console.log('Github Publish Completed', x))
 
 jobs.subscribe(log('All Jobs Done'))
