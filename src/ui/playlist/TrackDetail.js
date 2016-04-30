@@ -11,9 +11,9 @@ import TrackDuration from './TrackDuration'
 export default ({title, user, duration}) =>
   div({
     style: {
-      padding: '10px 0',
       flex: '1 0 0',
       overflow: 'hidden', ...F.RowSpaceBetween,
+      marginLeft: '10px',
       alignItems: 'center'
     }
   }, [
