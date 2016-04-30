@@ -25,6 +25,7 @@ const GH_PAGES_PUBLISH_CONFIG = {
     name: 'travisbot',
     email: 'support@travis-ci.org'
   },
+  branch: 'master',
   logger: console.log.bind(console),
   repo: `https://${env.GH_TOKEN}@github.com/funag/funag.github.io.git`
 }
