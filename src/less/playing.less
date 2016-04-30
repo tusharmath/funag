@@ -1,4 +1,4 @@
-.animate-sound-visualizer {
+.playing-animation {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -13,13 +13,13 @@
     margin-right: 1px;
   }
   :nth-child(1) {
-    animation: animate-sound-visualizer 1250ms infinite;
+    animation: playing-animation 1250ms infinite;
   }
   :nth-child(2) {
-    animation: animate-sound-visualizer 1000ms infinite;
+    animation: playing-animation 1000ms infinite;
   }
   :nth-child(3) {
-    animation: animate-sound-visualizer 750ms infinite;
+    animation: playing-animation 750ms infinite;
   }
 
   :last-child {
@@ -27,7 +27,7 @@
   }
 }
 
-@keyframes animate-sound-visualizer {
+@keyframes playing-animation {
   0% {
     transform: scaleY(1)
   }
