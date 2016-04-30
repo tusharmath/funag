@@ -22,8 +22,8 @@ const canPublish = [
 // gh-pages config
 const GH_PAGES_PUBLISH_CONFIG = {
   user: {
-    name: 'travisbot',
-    email: 'support@travis-ci.org'
+    name: 'Tushar Mathur (CI)',
+    email: 'tusharmath@gmail.com'
   },
   branch: 'master',
   logger: console.log.bind(console),
