@@ -14,6 +14,6 @@ export default div({
     ...S.block(50),
     backgroundColor: 'rgba(255, 255, 255, 0.8)'
   }
-}, [ul('.animate-sound-visualizer', {style: {...S.size(17)}}, [
+}, [ul('.playing-animation', {style: {...S.size(17)}}, [
   li(), li(), li()
 ])])
