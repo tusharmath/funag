@@ -8,7 +8,7 @@ import Cycle from '@cycle/core'
 import {makeDOMDriver} from '@cycle/dom'
 import manifestFile from 'file!./pwd/manifest.json'
 import sw from 'serviceworker!./pwd/sw.js'
-import App from './app'
+import App from './App'
 import {routerDriver} from '../drivers/router'
 import {audioDriver} from '../drivers/audio'
 
