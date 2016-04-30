@@ -4,14 +4,18 @@
 
 'use strict'
 import {div} from '@cycle/dom'
+import * as S from '../../Utils/StyleUtils'
 
-export default artwork_url => artwork_url ? div({
-  style: {
-    WebkitFilter: 'blur(2px)',
-    backgroundImage: `url(${artwork_url})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: '50%',
-    backgroundSize: '100%',
-    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0
-  }
-}) : null
+const DefaultArtwork = div({style: {...S.block(50), color: '#ccc', backgroundColor: '#F6F6F6'}}, [
+  div(S.fa('music'))
+])
+export default artwork_url =>
+  artwork_url ? div({
+    style: {
+      backgroundImage: `url(${artwork_url})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: '50%',
+      backgroundSize: '100%',
+      ...S.size(50)
+    }
+  }) : DefaultArtwork

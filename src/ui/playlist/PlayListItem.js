@@ -6,7 +6,6 @@ import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import * as F from '../../Utils/Flexbox'
 import Artwork from './Artwork'
-import FixedWidthLabel from './Label'
 import TrackDetail from './TrackDetail'
 import SoundVisualizerIcon from './SoundVisualizerIcon'
 import isTrackPlaying from '../../Utils/isTrackPlaying'
@@ -14,7 +13,6 @@ import * as T from '../../Utils/Themes'
 
 const playListItemSTY = {
   fontSize: '1em',
-  position: 'relative',
   overflow: 'hidden'
 }
 
@@ -40,8 +38,10 @@ export default ({DOM, track, audio, selectedTrack$}, index) => {
   const isTrackPlaying$ = isTrackPlaying({audio$, selectedTrackId$}, id)
     .startWith(false)
     .distinctUntilChanged()
+    .map(play => play ? SoundVisualizerIcon : null)
 
-  const trackStatus$ = isTrackPlaying$.map(x => x ? SoundVisualizerIcon : FixedWidthLabel({width: 35, text: index + 1}))
+  const trackStatus$ = isTrackPlaying$
+    .map(icon => div({style: {position: 'relative'}}, [Artwork(artwork_url), icon]))
 
   return {
     click$,

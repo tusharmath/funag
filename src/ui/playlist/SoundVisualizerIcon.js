@@ -5,11 +5,15 @@
 'use strict'
 
 import {ul, li, div} from '@cycle/dom'
-import * as F from '../../Utils/Flexbox'
-import './SoundVisualizerIcon.less'
+import * as S from '../../Utils/StyleUtils'
 
-export default div({style: {height: '35px', width: '35px', ...F.RowMiddle}}, [
-  ul('.animate-sound-visualizer', {style: {width: '15px', height: '15px'}}, [
-    li(), li(), li(), li()
-  ])
-])
+export default div({
+  className: 'fade-in',
+  style: {
+    ...S.absolute(),
+    ...S.block(50),
+    backgroundColor: 'rgba(255, 255, 255, 0.8)'
+  }
+}, [ul('.animate-sound-visualizer', {style: {...S.size(17)}}, [
+  li(), li(), li()
+])])
