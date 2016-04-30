@@ -13,7 +13,7 @@ before_script:
 - npm prune
 after_success:
 - npm run semantic-release
-- npm run gh-pages
+- NODE_ENV=production npm run gh-pages
 branches:
   except:
   - /^v\d+\.\d+\.\d+$/
