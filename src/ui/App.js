@@ -25,11 +25,11 @@ export default function ({DOM, route, audio}) {
   return {
     audio: Observable.merge(playStreamURL$, controls.audio$),
     DOM: Observable.combineLatest(
-      searchBox.DOM,
       playlist.DOM.map(view => div({style: {flexGrow: 1, overflow: 'auto'}}, [view])),
+      searchBox.DOM,
       controls.DOM
     ).map(views =>
-      div({style: {height: '100%', ...F.ColSpaceBetween}}, views)
+      div({style: {height: '100%', paddingTop: '51px', ...F.ColSpaceBetween}}, views)
     )
   }
 }
