@@ -12,6 +12,7 @@ import '../less/main.less'
 import App from './App'
 import {routerDriver} from '../drivers/router'
 import {audioDriver} from '../drivers/audio'
+import {eventSinkDriver} from '../drivers/eventSink'
 
 const manifest = document.createElement('link')
 manifest.href = manifestFile
@@ -24,4 +25,9 @@ sw({scope: '/'})
     x => console.error(x)
   )
 
-Cycle.run(App, {DOM: makeDOMDriver('#container'), route: routerDriver, audio: audioDriver})
+Cycle.run(App, {
+  DOM: makeDOMDriver('#container'),
+  route: routerDriver,
+  audio: audioDriver,
+  events: eventSinkDriver
+})
