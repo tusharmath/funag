@@ -28,7 +28,9 @@ const searchBoxContainer = {
   color: font.primary,
   boxShadow: '0px 1px 8px 1px rgba(0, 0, 0, 0.50)',
   backgroundColor: 'rgb(246, 246, 246)',
-  position: 'relative'
+  position: 'absolute',
+  width: '100%',
+  top: 0
 }
 
 export default ({DOM}) => {
@@ -42,4 +44,3 @@ export default ({DOM}) => {
     ), value$
   }
 }
-

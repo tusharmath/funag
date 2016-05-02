@@ -13,7 +13,7 @@ export default ({title, user, duration}) =>
     style: {
       flex: '1 0 0',
       overflow: 'hidden', ...F.RowSpaceBetween,
-      marginLeft: '10px',
+      margin: '0 10px',
       alignItems: 'center'
     }
   }, [
