@@ -18,12 +18,9 @@ export default ({tracks$, DOM, audio}) => {
   const playlistItemClick$ = playlistItem$.map(tracks => tracks.map(x => x.click$))
   const selectedTrack$ = proxy.writer(playlistItemClick$.flatMapLatest(clicks => Observable.merge(clicks)))
   return {
-    DOM: playlistItemVTree$.flatMapLatest(tracks => Observable.combineLatest(tracks)).map(x => div({
-        className: 'tracks',
-        style: {backgroundColor: '#FFF'}
-      },
-      x
-    )),
+    DOM: playlistItemVTree$
+      .flatMapLatest(tracks => Observable.combineLatest(tracks))
+      .map(x => div({className: 'tracks', style: {backgroundColor: '#FFF'}}, x)),
     selectedTrack$
   }
 }

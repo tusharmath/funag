@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {div, i} from '@cycle/dom'
+import {div} from '@cycle/dom'
 import * as S from '../../Utils/StyleUtils'
 import * as T from '../../Utils/Themes'
 

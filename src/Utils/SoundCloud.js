@@ -1,16 +1,16 @@
 /**
  * Created by tushar.mathur on 26/04/16.
  */
-
+/* global fetch */
 'use strict'
 
 import qs from 'qs'
 
-const client_id = '1862b9bf02ed7c80d0f545f835ad8773'
+const CLIENT_ID = '1862b9bf02ed7c80d0f545f835ad8773'
 const baseURL = 'https://api.soundcloud.com'
 
 export const clientIDParams = params => {
-  return '?' + qs.stringify({...params, client_id})
+  return '?' + qs.stringify({...params, client_id: CLIENT_ID})
 }
 
 export const get = (path, params) => {

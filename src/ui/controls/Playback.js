@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {div, i, small} from '@cycle/dom'
+import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import PlaybackInfo from './PlaybackInfo'
 import PlaybackButtons from './PlaybackButtons'
