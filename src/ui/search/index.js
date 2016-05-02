@@ -4,7 +4,8 @@
 
 'use strict'
 
-import {div, input} from '@cycle/dom'
+import {input, form} from '@cycle/dom'
+import {Observable} from 'rx'
 import * as F from '../../Utils/Flexbox'
 import * as S from '../../Utils/StyleUtils'
 import * as U from '../../Utils/DOMUtils'
@@ -33,14 +34,25 @@ const searchBoxContainer = {
   top: 0
 }
 
+const event = event => target => ({target, event})
+
 export default ({DOM}) => {
-  const value$ = U.inputVal(DOM.select('.search')).startWith('')
+  const searchEl = DOM.select('.search')
+  const inputEl = searchEl.select('input')
+  const value$ = U.inputVal(searchEl).startWith('')
+  const events$ = Observable
+    .merge(
+      searchEl.events('submit').map(event('preventDefault')),
+      searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
+        .map(event('blur'))
+    )
+
   return {
     DOM: value$.map(value =>
-      div({className: 'search', style: searchBoxContainer}, [
+      form({className: 'search', style: searchBoxContainer}, [
         input({type: 'text', style: searchBoxSTY, value, placeholder: 'Search'}),
         S.fa('search')
       ])
-    ), value$
+    ), value$, events$
   }
 }

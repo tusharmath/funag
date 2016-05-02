@@ -23,6 +23,7 @@ export default function ({DOM, route, audio}) {
 
   const controls = Controls({audio, selectedTrack$, DOM})
   return {
+    events: searchBox.events$,
     audio: Observable.merge(playStreamURL$, controls.audio$),
     DOM: Observable.combineLatest(
       playlist.DOM.map(view => div({style: {flexGrow: 1, overflow: 'auto'}}, [view])),
