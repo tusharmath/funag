@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {div, i} from '@cycle/dom'
+import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import * as S from '../../Utils/StyleUtils'
 
@@ -15,12 +15,12 @@ export default ({audio, DOM}) => {
     .map(button => div({className: `ctrl-${button}`, style: S.block(50)}, [S.fa(button)]))
 
   const loadStart$ = audio.events('loadstart').map(div({style: S.block(50)}, [div('.loader')]))
-
+  const loadError$ = audio.events('error').map(div({style: S.block(50)}, [S.fa('exclamation-triangle')]))
   const audio$ = Observable.merge(
     DOM.select('.ctrl-play').events('click').map({type: 'PLAY'}),
     DOM.select('.ctrl-pause').events('click').map({type: 'PAUSE'})
   )
   return {
-    audio$, DOM: Observable.merge(playPause$, loadStart$).map(x => div(x))
+    audio$, DOM: Observable.merge(playPause$, loadStart$, loadError$).map(x => div(x))
   }
 }
