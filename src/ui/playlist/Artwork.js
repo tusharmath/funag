@@ -9,10 +9,10 @@ import * as S from '../../Utils/StyleUtils'
 const DefaultArtwork = div({style: {...S.block(50), color: '#ccc', backgroundColor: '#F6F6F6'}}, [
   div(S.fa('music'))
 ])
-export default artwork_url =>
-  artwork_url ? div({
+export default url =>
+  url ? div({
     style: {
-      backgroundImage: `url(${artwork_url})`,
+      backgroundImage: `url(${url})`,
       backgroundRepeat: 'no-repeat',
       backgroundPosition: '50%',
       backgroundSize: '100%',

@@ -5,7 +5,7 @@
 'use strict'
 
 import {Observable} from 'rx'
-import {makeDOMDriver, div} from '@cycle/dom'
+import {div} from '@cycle/dom'
 import Controls from './controls'
 import Playlist from './playlist'
 import SearchBox from './search/index'
