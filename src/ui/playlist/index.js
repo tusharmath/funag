@@ -10,19 +10,20 @@ import PlayListItem from './PlayListItem'
 import Proxy from '../../Utils/Proxy'
 
 export default ({tracks$, DOM, audio}) => {
-  const selectedTrackProxy$ = Proxy(() => selectedTrack$)
+  const proxy = Proxy()
   const playlistItem$ = tracks$.map(tracks => tracks.map((track, i) =>
-    isolate(PlayListItem, track.id.toString())({track, DOM, audio, selectedTrack$: selectedTrackProxy$}, i)
+    isolate(PlayListItem, track.id.toString())({track, DOM, audio, selectedTrack$: proxy.reader()}, i)
   ))
   const playlistItemVTree$ = playlistItem$.map(tracks => tracks.map(x => x.DOM))
   const playlistItemClick$ = playlistItem$.map(tracks => tracks.map(x => x.click$))
-  const selectedTrack$ = playlistItemClick$.flatMapLatest(clicks => Observable.merge(clicks))
+  const selectedTrack$ = proxy.writer(playlistItemClick$.flatMapLatest(clicks => Observable.merge(clicks)))
   return {
     DOM: playlistItemVTree$.flatMapLatest(tracks => Observable.combineLatest(tracks)).map(x => div({
-      className: 'tracks',
-      style: {backgroundColor: '#FFF', margin: '5px 10px'}},
+        className: 'tracks',
+        style: {backgroundColor: '#FFF'}
+      },
       x
     )),
-    selectedTrack$: selectedTrackProxy$
+    selectedTrack$
   }
 }

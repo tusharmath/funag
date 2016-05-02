@@ -20,7 +20,7 @@ const trackInfoSTY = {
   ...F.RowSpaceBetween,
   alignItems: 'center',
   color: T.font.primary,
-  padding: '5px 0px'
+  borderBottom: '1px solid rgb(228, 228, 228)'
 }
 
 // TODO: Move to isTrackPlaying function
@@ -41,7 +41,7 @@ export default ({DOM, track, audio, selectedTrack$}, index) => {
     .map(play => play ? SoundVisualizerIcon : null)
 
   const trackStatus$ = isTrackPlaying$
-    .map(icon => div({style: {position: 'relative', border: '1px solid #bbb'}}, [Artwork(artwork_url), icon]))
+    .map(icon => div({style: {position: 'relative'}}, [Artwork(artwork_url), icon]))
 
   return {
     click$,
