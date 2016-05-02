@@ -17,7 +17,7 @@ export default ({title, user, duration}) =>
       alignItems: 'center'
     }
   }, [
-    div({style: {overflow: 'hidden'}}, [
+    div({style: {overflow: 'hidden', marginRight: '10px'}}, [
       div({style: S.overflowEllipsisSTY}, title),
       div({style: {...S.subtitleSTY, ...S.overflowEllipsisSTY}}, user.username)
     ]),
