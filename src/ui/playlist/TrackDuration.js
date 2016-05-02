@@ -9,4 +9,4 @@ import * as SC from '../../Utils/SoundCloud'
 import * as S from '../../Utils/StyleUtils'
 
 export default duration =>
-  div({style: {...S.subtitleSTY, padding: '0 10px'}}, SC.durationFormat(duration))
+  div({style: {...S.subtitleSTY}}, SC.durationFormat(duration))
