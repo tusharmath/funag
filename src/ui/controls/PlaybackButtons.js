@@ -19,7 +19,7 @@ export default ({audio, DOM}) => {
   const audio$ = Observable.merge(
     DOM.select('.ctrl-play').events('click').map({type: 'PLAY'}),
     DOM.select('.ctrl-pause').events('click').map({type: 'PAUSE'})
-  ).distinctUntilChanged()
+  )
   return {
     audio$, DOM: Observable.merge(playPause$, loadStart$).map(x => div(x))
   }
