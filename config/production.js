@@ -8,7 +8,7 @@ module.exports = {
       policy: 'fastest'
     },
     externalCache: {
-      policy: 'cacheFirst'
+      policy: 'fastest'
     }
   },
   express: {
