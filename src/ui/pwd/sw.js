@@ -1,7 +1,7 @@
 /**
  * Created by tushar.mathur on 24/04/16.
  */
-
+/* global APP_CONFIG */
 'use strict'
 
 import toolbox from 'sw-toolbox'
