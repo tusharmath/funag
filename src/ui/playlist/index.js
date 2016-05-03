@@ -8,6 +8,7 @@ import {Observable} from 'rx'
 import isolate from '@cycle/isolate'
 import PlayListItem from './PlayListItem'
 import Proxy from '../../Utils/Proxy'
+import * as S from '../../Utils/StyleUtils'
 
 export default ({tracks$, DOM, audio}) => {
   const proxy = Proxy()
@@ -20,7 +21,14 @@ export default ({tracks$, DOM, audio}) => {
   return {
     DOM: playlistItemVTree$
       .flatMapLatest(tracks => Observable.combineLatest(tracks))
-      .map(x => div({className: 'tracks', style: {backgroundColor: '#FFF'}}, x)),
+      .map(view => div({
+        className: 'tracks',
+        style: {
+          backgroundColor: '#fff',
+          overflow: 'auto',
+          ...S.absolute(0, 50, 0, 50)
+        }
+      }, [view])),
     selectedTrack$
   }
 }
