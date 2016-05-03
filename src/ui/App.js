@@ -23,6 +23,7 @@ export default function ({DOM, route, audio}) {
 
   const controls = Controls({audio, selectedTrack$, DOM})
   return {
+    title: selectedTrack$.pluck('title'),
     events: searchBox.events$,
     audio: Observable.merge(playStreamURL$, controls.audio$),
     DOM: Observable.combineLatest(
