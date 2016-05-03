@@ -37,7 +37,7 @@ export default ({DOM, track, audio, selectedTrack$}, index) => {
   const isTrackPlaying$ = TrackState({audio$, selectedTrackId$}, id)
     .startWith('STOPPED')
     .distinctUntilChanged()
-    .map(state => ['PLAYING', 'PAUSED', 'LOADING'].includes(state) ? SoundVisualizerIcon(state) : null)
+    .map(state => ['PLAYING', 'PAUSED', 'LOADING'].includes(state) ? SoundVisualizerIcon(state === 'PLAYING') : null)
 
   const trackStatus$ = isTrackPlaying$
     .map(icon => div({style: {position: 'relative'}}, [Artwork(artwork_url), icon]))

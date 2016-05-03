@@ -7,8 +7,8 @@
 import {ul, li, div} from '@cycle/dom'
 import * as S from '../../Utils/StyleUtils'
 
-export default (state) => {
-  const pauseAnimaton = ['PAUSED', 'LOADING'].includes(state) ? '.pause-animation' : null
+export default (isAnimating) => {
+  const pauseAnimaton = isAnimating ? null : '.pause-animation'
   return div({
     className: 'fade-in',
     style: {
