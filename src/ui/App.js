@@ -14,7 +14,7 @@ import * as SC from '../Utils/SoundCloud'
 
 export default function ({DOM, route, audio}) {
   const searchBox = SearchBox({DOM, route})
-  const tracks$ = SC.searchTracks(searchBox.value$)
+  const tracks$ = SC.searchTracks(searchBox.value$.debounce(300))
   const playlist = Playlist({tracks$, DOM, audio})
   const selectedTrack$ = playlist.selectedTrack$
 
