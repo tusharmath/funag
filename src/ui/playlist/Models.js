@@ -1,3 +1,4 @@
+'use strict'
 import {Observable} from 'rx'
 import t from 'argtoob'
 
@@ -8,7 +9,7 @@ const audioEvents = audio => Observable.merge(
   audio.events('playing').map('playing'),
   audio.events('loadstart').map('loadstart')
 )
-export default ({selectedTrackId$, audio, id}) => {
+export const Overlay = ({selectedTrackId$, audio, id}) => {
   const audio$ = audioEvents(audio)
   const event$ = audio$.withLatestFrom(selectedTrackId$, t('event', 'id'))
   const isSelected$ = event$.filter(x => x.id === id)
@@ -17,3 +18,10 @@ export default ({selectedTrackId$, audio, id}) => {
   const showNone$ = event$.filter(x => x.id !== id).map('SHOW_NONE')
   return Observable.merge(animation$, pausedAnimation$, showNone$).startWith('SHOW_NONE')
 }
+
+export const Audio = ({url$}) => url$
+  .scan((last, src) => {
+    if (!last || last.src !== src) return {type: 'LOAD', src}
+    if (last.type === 'PAUSE') return {type: 'PLAY', src}
+    return {type: 'PAUSE', src}
+  }, null)
