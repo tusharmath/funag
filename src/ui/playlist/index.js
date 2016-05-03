@@ -10,6 +10,7 @@ import PlayListItem from './PlayListItem'
 import Proxy from '../../Utils/Proxy'
 import * as S from '../../Utils/StyleUtils'
 import * as M from './Models'
+import * as SC from '../../Utils/SoundCloud'
 
 export default ({tracks$, DOM, audio}) => {
   const proxy = Proxy()
@@ -19,7 +20,7 @@ export default ({tracks$, DOM, audio}) => {
   const playlistItemVTree$ = playlistItem$.map(tracks => tracks.map(x => x.DOM))
   const playlistItemClick$ = playlistItem$.map(tracks => tracks.map(x => x.click$))
   const selectedTrack$ = proxy.writer(playlistItemClick$.flatMapLatest(clicks => Observable.merge(clicks)))
-  const audio$ = M.Audio({selectedTrack$})
+  const audio$ = M.Audio({url$: selectedTrack$.pluck('stream_url').map(url => url + SC.clientIDParams({}))})
   return {
     DOM: playlistItemVTree$
       .flatMapLatest(tracks => Observable.combineLatest(tracks))

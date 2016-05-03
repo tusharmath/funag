@@ -2,7 +2,6 @@
 import {Observable} from 'rx'
 import t from 'argtoob'
 import {partial} from 'funjector'
-import * as SC from '../../Utils/SoundCloud'
 
 export const showSoundVisualization = event$ => event$.map(x => x.event === 'playing')
 export const showPausedSoundVisualization = event$ => event$.map(x => ['pause', 'loadstart'].includes(x.event))
@@ -21,9 +20,9 @@ export const Overlay = ({selectedTrackId$, audio, id}) => {
   return Observable.merge(animation$, pausedAnimation$, showNone$).startWith('SHOW_NONE')
 }
 
-export const Audio = partial((clientID, {selectedTrack$}) => {
-  return selectedTrack$.pluck('stream_url')
-    .map(url => url + clientID)
-    .map(src => ({type: 'LOAD', src}))
-    .scan(last => last.type === 'PAUSE' ? {type: 'PLAY'} : {type: 'PAUSE'})
-}, SC.clientIDParams({}))
+export const Audio = ({url$}) => url$
+  .scan((last, src) => {
+    if (!last || last.src !== src) return {type: 'LOAD', src}
+    if (last.type === 'PAUSE') return {type: 'PLAY', src}
+    return {type: 'PAUSE', src}
+  }, null)
