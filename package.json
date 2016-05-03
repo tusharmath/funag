@@ -29,6 +29,7 @@
     "cycle-snabbdom": "^1.2.1",
     "express": "^4.13.4",
     "file-loader": "^0.8.5",
+    "funjector": "^3.1.0",
     "handlebars": "^4.0.5",
     "handlebars-loader": "^1.2.0",
     "html-webpack-plugin": "^2.16.0",
