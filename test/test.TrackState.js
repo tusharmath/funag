@@ -9,61 +9,80 @@ import test from 'ava'
 import TrackState from '../src/Utils/TrackState'
 const {onNext} = ReactiveTest
 
-test('isSongPlaying():play+pause', t => {
+test('test:PLAYING', t => {
   const sh = new TestScheduler()
   const audio$ = sh.createHotObservable(
     onNext(210, 'play'),
     onNext(220, 'playing'),
-    onNext(230, 'pause'),
-    onNext(240, 'playing'),
-    onNext(260, 'pause')
+    onNext(230, 'play'),
+    onNext(240, 'playing')
   )
-  const selectedTrackId$ = sh.createHotObservable(onNext(205, 5))
+  const selectedTrackId$ = sh.createHotObservable(
+    onNext(205, 5),
+    onNext(225, 4)
+  )
   const out = sh.startScheduler(() => TrackState({audio$, selectedTrackId$}, 5))
   t.deepEqual(out.messages, [
     onNext(210, 'LOADING'),
     onNext(220, 'PLAYING'),
-    onNext(230, 'PAUSED'),
-    onNext(240, 'PLAYING'),
-    onNext(260, 'PAUSED')
+    onNext(230, 'STOPPED'),
+    onNext(240, 'STOPPED')
   ])
 })
-
-test('isSongPlaying():no-match', t => {
+test('test:PAUSED', t => {
   const sh = new TestScheduler()
   const audio$ = sh.createHotObservable(
-    onNext(210, 'play'),
-    onNext(220, 'play')
-  )
-  const selectedTrackId$ = sh.createHotObservable(onNext(205, 4), onNext(215, 1))
-  const out = sh.startScheduler(() => TrackState({audio$, selectedTrackId$}, 5))
-
-  t.deepEqual(out.messages, [
-    onNext(210, 'STOPPED'),
-    onNext(220, 'STOPPED')
-  ])
-})
-
-test('isSongPlaying():song-changed', t => {
-  const sh = new TestScheduler()
-  const audio$ = sh.createHotObservable(
-    onNext(210, 'play'),
-    onNext(220, 'playing'),
-    onNext(240, 'play'),
-    onNext(250, 'playing'),
-    onNext(270, 'play'),
-    onNext(280, 'playing'),
+    onNext(210, 'playing'),
+    onNext(220, 'pause'),
+    onNext(230, 'playing'),
+    onNext(240, 'pause')
   )
   const selectedTrackId$ = sh.createHotObservable(
-    onNext(205, 1),
-    onNext(230, 2),
-    onNext(260, 3),
+    onNext(205, 5),
+    onNext(225, 4)
   )
-  const out = sh.startScheduler(() => TrackState({audio$, selectedTrackId$}, 2))
+  const out = sh.startScheduler(() => TrackState({audio$, selectedTrackId$}, 5))
+  t.deepEqual(out.messages, [
+    onNext(210, 'PLAYING'),
+    onNext(220, 'PAUSED'),
+    onNext(230, 'STOPPED'),
+    onNext(240, 'STOPPED')
+  ])
+})
+test('test:LOADING', t => {
+  const sh = new TestScheduler()
+  const audio$ = sh.createHotObservable(
+    onNext(210, 'playing'),
+    onNext(220, 'play'),
+    onNext(230, 'playing'),
+    onNext(240, 'play')
+  )
+  const selectedTrackId$ = sh.createHotObservable(
+    onNext(205, 3),
+    onNext(215, 5),
+    onNext(225, 4)
+  )
+  const out = sh.startScheduler(() => TrackState({audio$, selectedTrackId$}, 5))
   t.deepEqual(out.messages, [
     onNext(210, 'STOPPED'),
-    onNext(240, 'LOADING'),
-    onNext(250, 'PLAYING'),
-    onNext(270, "STOPPED")
+    onNext(220, 'LOADING'),
+    onNext(230, 'STOPPED'),
+    onNext(240, 'STOPPED')
+  ])
+})
+test('test:STOPPED', t => {
+  const sh = new TestScheduler()
+  const audio$ = sh.createHotObservable(
+    onNext(210, 'play'),
+    onNext(220, 'playing')
+  )
+  const selectedTrackId$ = sh.createHotObservable(
+    onNext(205, 3),
+    onNext(215, 5)
+  )
+  const out = sh.startScheduler(() => TrackState({audio$, selectedTrackId$}, 5))
+  t.deepEqual(out.messages, [
+    onNext(210, 'STOPPED'),
+    onNext(220, 'PLAYING')
   ])
 })
