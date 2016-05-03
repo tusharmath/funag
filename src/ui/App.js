@@ -11,7 +11,14 @@ import Playlist from './playlist'
 import SearchBox from './search/index'
 import * as SC from '../Utils/SoundCloud'
 
-export default function ({DOM, route, audio}) {
+const view = ({playlist, searchBox, controls}) => Observable
+  .combineLatest(
+    playlist.DOM,
+    searchBox.DOM,
+    controls.DOM
+  ).map(views => div(views))
+
+const model = ({DOM, route, audio}) => {
   const searchBox = SearchBox({DOM, route})
   const tracks$ = searchBox.tracks$
   const playlist = Playlist({tracks$, DOM, audio})
@@ -25,10 +32,16 @@ export default function ({DOM, route, audio}) {
     title: selectedTrack$.pluck('title'),
     events: searchBox.events$,
     audio: Observable.merge(playStreamURL$, controls.audio$),
-    DOM: Observable.combineLatest(
-      playlist.DOM,
-      searchBox.DOM,
-      controls.DOM
-    ).map(views => div(views))
+    playlist, searchBox, controls
+  }
+}
+
+export default function (sources) {
+  const m = model(sources)
+  return {
+    title: m.title,
+    events: m.events,
+    audio: m.audio,
+    DOM: view(m)
   }
 }
