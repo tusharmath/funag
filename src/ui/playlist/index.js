@@ -9,6 +9,7 @@ import isolate from '@cycle/isolate'
 import PlayListItem from './PlayListItem'
 import Proxy from '../../Utils/Proxy'
 import * as S from '../../Utils/StyleUtils'
+import * as SC from '../../Utils/SoundCloud'
 
 export default ({tracks$, DOM, audio}) => {
   const proxy = Proxy()
@@ -18,6 +19,10 @@ export default ({tracks$, DOM, audio}) => {
   const playlistItemVTree$ = playlistItem$.map(tracks => tracks.map(x => x.DOM))
   const playlistItemClick$ = playlistItem$.map(tracks => tracks.map(x => x.click$))
   const selectedTrack$ = proxy.writer(playlistItemClick$.flatMapLatest(clicks => Observable.merge(clicks)))
+  const audio$ = selectedTrack$.pluck('stream_url')
+    .map(url => url + SC.clientIDParams({}))
+    .map(src => ({type: 'LOAD', src}))
+    .scan(last => last.type === 'PAUSE' ? {type: 'PLAY'} : {type: 'PAUSE'})
   return {
     DOM: playlistItemVTree$
       .flatMapLatest(tracks => Observable.combineLatest(tracks))
@@ -29,6 +34,6 @@ export default ({tracks$, DOM, audio}) => {
           ...S.absolute(0, 50, 0, 50)
         }
       }, [view])),
-    selectedTrack$
+    selectedTrack$, audio$
   }
 }
