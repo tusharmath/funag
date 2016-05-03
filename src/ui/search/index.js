@@ -4,12 +4,13 @@
 
 'use strict'
 
-import {input, form} from '@cycle/dom'
+import {input, form, div} from '@cycle/dom'
 import {Observable} from 'rx'
 import * as F from '../../Utils/Flexbox'
 import * as S from '../../Utils/StyleUtils'
 import * as U from '../../Utils/DOMUtils'
 import {font} from '../../Utils/Themes'
+import * as SC from '../../Utils/SoundCloud'
 
 const searchBoxSTY = {
   border: 'none',
@@ -39,20 +40,22 @@ const event = event => target => ({target, event})
 export default ({DOM}) => {
   const searchEl = DOM.select('.search')
   const inputEl = searchEl.select('input')
-  const value$ = U.inputVal(searchEl).startWith('')
+  const value$ = U.inputVal(searchEl).debounce(300).startWith('')
   const events$ = Observable
     .merge(
       searchEl.events('submit').map(event('preventDefault')),
       searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
         .map(event('blur'))
     )
+  const tracks$ = SC.searchTracks(value$)
+  const isLoading$ = Observable.merge(value$.map(true), tracks$.map(false)).distinctUntilChanged()
 
   return {
-    DOM: value$.map(value =>
+    DOM: isLoading$.map(isLoading =>
       form({className: 'search', style: searchBoxContainer}, [
-        input({type: 'text', style: searchBoxSTY, value, placeholder: 'Search'}),
-        S.fa('search')
+        input({type: 'text', style: searchBoxSTY, placeholder: 'Search'}),
+        div({style: S.block(30)}, isLoading ? div('.loader') : S.fa('search'))
       ])
-    ), value$, events$
+    ), value$, events$, tracks$
   }
 }
