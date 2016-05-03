@@ -19,7 +19,6 @@ export default ({audio, selectedTrack$, DOM}) => {
     ).map(views => div({
       style: {
         boxShadow: '0px -1px 8px 1px rgba(0, 0, 0, 0.43)',
-        position: 'relative',
         backgroundColor: 'rgb(246, 246, 246)'
       }
     }, views))
