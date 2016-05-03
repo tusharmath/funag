@@ -8,7 +8,7 @@ const audioEvents = audio => Observable.merge(
   audio.events('playing').map('playing'),
   audio.events('loadstart').map('loadstart')
 )
-export default ({selectedTrackId$, audio, id}) => {
+export const Overlay = ({selectedTrackId$, audio, id}) => {
   const audio$ = audioEvents(audio)
   const event$ = audio$.withLatestFrom(selectedTrackId$, t('event', 'id'))
   const isSelected$ = event$.filter(x => x.id === id)
