@@ -1,6 +1,7 @@
 /**
  * Created by tushar.mathur on 26/04/16.
  */
+/* global location */
 
 'use strict'
 

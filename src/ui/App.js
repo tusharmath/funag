@@ -5,16 +5,22 @@
 'use strict'
 
 import {Observable} from 'rx'
-import {makeDOMDriver, div} from '@cycle/dom'
+import {div} from '@cycle/dom'
 import Controls from './controls'
 import Playlist from './playlist'
 import SearchBox from './search/index'
-import * as F from '../Utils/Flexbox'
 import * as SC from '../Utils/SoundCloud'
 
-export default function ({DOM, route, audio}) {
+const view = ({playlist, searchBox, controls}) => Observable
+  .combineLatest(
+    playlist.DOM,
+    searchBox.DOM,
+    controls.DOM
+  ).map(views => div(views))
+
+const model = ({DOM, route, audio}) => {
   const searchBox = SearchBox({DOM, route})
-  const tracks$ = SC.searchTracks(searchBox.value$)
+  const tracks$ = searchBox.tracks$
   const playlist = Playlist({tracks$, DOM, audio})
   const selectedTrack$ = playlist.selectedTrack$
 
@@ -23,14 +29,19 @@ export default function ({DOM, route, audio}) {
 
   const controls = Controls({audio, selectedTrack$, DOM})
   return {
+    title: selectedTrack$.pluck('title'),
     events: searchBox.events$,
     audio: Observable.merge(playStreamURL$, controls.audio$),
-    DOM: Observable.combineLatest(
-      playlist.DOM.map(view => div({style: {flexGrow: 1, overflow: 'auto'}}, [view])),
-      searchBox.DOM,
-      controls.DOM
-    ).map(views =>
-      div({style: {height: '100%', paddingTop: '51px', ...F.ColSpaceBetween}}, views)
-    )
+    playlist, searchBox, controls
+  }
+}
+
+export default function (sources) {
+  const m = model(sources)
+  return {
+    title: m.title,
+    events: m.events,
+    audio: m.audio,
+    DOM: view(m)
   }
 }

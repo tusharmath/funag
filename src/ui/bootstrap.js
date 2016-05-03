@@ -13,6 +13,7 @@ import App from './App'
 import {routerDriver} from '../drivers/router'
 import {audioDriver} from '../drivers/audio'
 import {eventSinkDriver} from '../drivers/eventSink'
+import {documentTitleDriver} from '../drivers/documentTitle'
 
 const manifest = document.createElement('link')
 manifest.href = manifestFile
@@ -29,5 +30,6 @@ Cycle.run(App, {
   DOM: makeDOMDriver('#container'),
   route: routerDriver,
   audio: audioDriver,
-  events: eventSinkDriver
+  events: eventSinkDriver,
+  title: documentTitleDriver
 })

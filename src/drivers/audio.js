@@ -1,7 +1,7 @@
 /**
  * Created by tushar.mathur on 26/04/16.
  */
-
+/* global Audio */
 'use strict'
 
 import {Observable} from 'rx'
