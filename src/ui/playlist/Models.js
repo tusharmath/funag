@@ -1,5 +1,7 @@
+'use strict'
 import {Observable} from 'rx'
 import t from 'argtoob'
+import * as SC from '../../Utils/SoundCloud'
 
 export const showSoundVisualization = event$ => event$.map(x => x.event === 'playing')
 export const showPausedSoundVisualization = event$ => event$.map(x => ['pause', 'loadstart'].includes(x.event))
@@ -16,4 +18,11 @@ export const Overlay = ({selectedTrackId$, audio, id}) => {
   const pausedAnimation$ = showPausedSoundVisualization(isSelected$).filter(Boolean).map('PAUSE_ANIMATION')
   const showNone$ = event$.filter(x => x.id !== id).map('SHOW_NONE')
   return Observable.merge(animation$, pausedAnimation$, showNone$).startWith('SHOW_NONE')
+}
+
+export const Audio = ({selectedTrack$}) => {
+  return selectedTrack$.pluck('stream_url')
+    .map(url => url + SC.clientIDParams({}))
+    .map(src => ({type: 'LOAD', src}))
+    .scan(last => last.type === 'PAUSE' ? {type: 'PLAY'} : {type: 'PAUSE'})
 }
