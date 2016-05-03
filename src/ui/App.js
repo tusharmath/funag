@@ -9,7 +9,6 @@ import {div} from '@cycle/dom'
 import Controls from './controls'
 import Playlist from './playlist'
 import SearchBox from './search/index'
-import * as SC from '../Utils/SoundCloud'
 
 const view = ({playlist, searchBox, controls}) => Observable
   .combineLatest(
@@ -24,14 +23,11 @@ const model = ({DOM, route, audio}) => {
   const playlist = Playlist({tracks$, DOM, audio})
   const selectedTrack$ = playlist.selectedTrack$
 
-  const playStreamURL$ = selectedTrack$.pluck('stream_url')
-    .map(src => ({type: 'LOAD', src: src + SC.clientIDParams({})}))
-
   const controls = Controls({audio, selectedTrack$, DOM})
   return {
     title: selectedTrack$.pluck('title'),
     events: searchBox.events$,
-    audio: Observable.merge(playStreamURL$, controls.audio$),
+    audio: Observable.merge(playlist.audio$, controls.audio$),
     playlist, searchBox, controls
   }
 }
