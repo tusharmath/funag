@@ -1,7 +1,6 @@
 'use strict'
 import {Observable} from 'rx'
 import t from 'argtoob'
-import {partial} from 'funjector'
 
 export const showSoundVisualization = event$ => event$.map(x => x.event === 'playing')
 export const showPausedSoundVisualization = event$ => event$.map(x => ['pause', 'loadstart'].includes(x.event))
