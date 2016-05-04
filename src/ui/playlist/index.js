@@ -11,6 +11,7 @@ import Proxy from '../../Utils/Proxy'
 import * as S from '../../Utils/StyleUtils'
 import * as M from './Models'
 import * as SC from '../../Utils/SoundCloud'
+import * as T from '../../Utils/Themes'
 
 export default ({tracks$, DOM, audio}) => {
   const proxy = Proxy()
@@ -29,7 +30,7 @@ export default ({tracks$, DOM, audio}) => {
         style: {
           backgroundColor: '#fff',
           overflow: 'auto',
-          ...S.absolute(0, 50, 0, 50)
+          ...S.absolute(0, T.tileHeight, 0, T.tileHeight)
         }
       }, [view])),
     selectedTrack$, audio$

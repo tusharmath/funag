@@ -6,10 +6,11 @@
 
 import {ul, li, div} from '@cycle/dom'
 import * as S from '../../Utils/StyleUtils'
+import * as T from '../../Utils/Themes'
 
 const style = {
   ...S.absolute(),
-  ...S.block(50),
+  ...S.block(T.tileHeight),
   backgroundColor: 'rgba(255, 255, 255, 0.8)'
 }
 const overlay = (isAnimated = '') =>

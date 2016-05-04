@@ -20,7 +20,7 @@ const trackInfoSTY = {
   ...F.RowSpaceBetween,
   alignItems: 'center',
   color: T.font.primary,
-  borderBottom: '1px solid rgb(228, 228, 228)'
+  borderBottom: '1px solid rgb(249, 246, 246)'
 }
 export default ({DOM, track, audio, selectedTrack$}, index) => {
   const {title, user, duration, artwork_url, id} = track
@@ -32,7 +32,7 @@ export default ({DOM, track, audio, selectedTrack$}, index) => {
   const clearAnimation$ = status$.filter(x => x === 'SHOW_NONE').map(null)
   const overlayItem$ = Observable.merge(animation$, pausedAnimation$, clearAnimation$).startWith(div()).distinctUntilChanged()
   const trackStatus$ = overlayItem$
-    .map(overlay => div({style: {position: 'relative'}}, [Artwork(artwork_url), overlay]))
+    .map(overlay => div({style: {position: 'relative', padding: '5px'}}, [Artwork(artwork_url), overlay]))
   return {
     click$,
     DOM: trackStatus$.map(status =>
