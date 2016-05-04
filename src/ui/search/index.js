@@ -9,14 +9,14 @@ import {Observable} from 'rx'
 import * as F from '../../Utils/Flexbox'
 import * as S from '../../Utils/StyleUtils'
 import * as U from '../../Utils/DOMUtils'
-import {font} from '../../Utils/Themes'
+import * as T from '../../Utils/Themes'
 import * as SC from '../../Utils/SoundCloud'
 
 const searchBoxSTY = {
   border: 'none',
   width: '100%',
   fontSize: '1em',
-  color: font.primary,
+  color: T.font.primary,
   fontWeight: '600',
   outline: 'none',
   backgroundColor: 'inherit'
@@ -26,8 +26,8 @@ const searchBoxContainer = {
   ...F.RowSpaceAround,
   alignItems: 'center',
   padding: '0 10px',
-  minHeight: '50px',
-  color: font.primary,
+  minHeight: `${T.tileHeight}px`,
+  color: T.font.primary,
   boxShadow: '0px 1px 8px 1px rgba(0, 0, 0, 0.50)',
   backgroundColor: 'rgb(246, 246, 246)',
   position: 'absolute',

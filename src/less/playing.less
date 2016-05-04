@@ -12,6 +12,16 @@
     transform-origin: 0 100%;
     margin-right: 1px;
   }
+  &.pause-animation {
+    li {
+      animation-play-state: paused;
+    }
+  }
+  &.pause-animation {
+    li {
+      animation-play-state: paused;
+    }
+  }
   :nth-child(1) {
     animation: playing-animation 1250ms infinite;
   }
@@ -29,12 +39,12 @@
 
 @keyframes playing-animation {
   0% {
-    transform: scaleY(1)
+    transform: scaleY(0.1)
   }
   50% {
-    transform: scaleY(0.2)
+    transform: scaleY(1)
   }
   100% {
-    transform: scaleY(1)
+    transform: scaleY(0.1)
   }
 }
