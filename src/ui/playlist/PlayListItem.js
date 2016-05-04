@@ -7,10 +7,9 @@ import {Observable} from 'rx'
 import * as F from '../../Utils/Flexbox'
 import Artwork from './Artwork'
 import TrackDetail from './TrackDetail'
-import SoundVisualizerIcon from './SoundVisualizerIcon'
-import {Overlay} from './Models'
+import OverlayStatus from './OverlayStatus'
 import * as T from '../../Utils/Themes'
-import PausedSoundVisualization from './PausedSoundVisualization'
+import {AnimatedOverlay, PausedOverlay} from './ArtworkOverlay'
 
 const playListItemSTY = {
   fontSize: '1em',
@@ -27,9 +26,9 @@ export default ({DOM, track, audio, selectedTrack$}, index) => {
   const {title, user, duration, artwork_url, id} = track
   const click$ = DOM.select('.playlist-item').events('click').map(track)
   const selectedTrackId$ = selectedTrack$.pluck('id')
-  const status$ = Overlay({selectedTrackId$, audio, id})
-  const animation$ = status$.filter(x => x === 'PLAY_ANIMATION').map(SoundVisualizerIcon)
-  const pausedAnimation$ = status$.filter(x => x === 'PAUSE_ANIMATION').map(PausedSoundVisualization)
+  const status$ = OverlayStatus({selectedTrackId$, audio, id})
+  const animation$ = status$.filter(x => x === 'PLAY_ANIMATION').map(AnimatedOverlay)
+  const pausedAnimation$ = status$.filter(x => x === 'PAUSE_ANIMATION').map(PausedOverlay)
   const clearAnimation$ = status$.filter(x => x === 'SHOW_NONE').map(null)
   const overlayItem$ = Observable.merge(animation$, pausedAnimation$, clearAnimation$).startWith(div()).distinctUntilChanged()
   const trackStatus$ = overlayItem$
