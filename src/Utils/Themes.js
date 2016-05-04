@@ -3,4 +3,5 @@ export const font = {
   secondary: 'rgb(85, 85, 85)'
 }
 
-export const tileHeight = 60
+export const BlockHeight = 60
+export const BlockSpace = 10

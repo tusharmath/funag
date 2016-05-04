@@ -32,7 +32,7 @@ export default ({DOM, track, audio, selectedTrack$}, index) => {
   const clearAnimation$ = status$.filter(x => x === 'SHOW_NONE').map(null)
   const overlayItem$ = Observable.merge(animation$, pausedAnimation$, clearAnimation$).startWith(div()).distinctUntilChanged()
   const trackStatus$ = overlayItem$
-    .map(overlay => div({style: {position: 'relative', padding: '5px'}}, [Artwork(artwork_url), overlay]))
+    .map(overlay => div({style: {position: 'relative', padding: `${T.BlockSpace}px`}}, [Artwork(artwork_url), overlay]))
   return {
     click$,
     DOM: trackStatus$.map(status =>

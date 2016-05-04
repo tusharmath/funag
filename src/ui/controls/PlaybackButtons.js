@@ -13,10 +13,10 @@ export default ({audio, DOM}) => {
     audio.events('playing').map('pause'),
     audio.events('pause').map('play')
   ).startWith('play')
-    .map(button => div({className: `ctrl-${button}`, style: S.block(T.tileHeight)}, [S.fa(button)]))
+    .map(button => div({className: `ctrl-${button}`, style: S.block(T.BlockHeight)}, [S.fa(button)]))
 
-  const loadStart$ = audio.events('loadstart').map(div({style: S.block(T.tileHeight)}, [div('.loader')]))
-  const loadError$ = audio.events('error').map(div({style: S.block(T.tileHeight)}, [S.fa('exclamation-triangle')]))
+  const loadStart$ = audio.events('loadstart').map(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
+  const loadError$ = audio.events('error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
   const audio$ = Observable.merge(
     DOM.select('.ctrl-play').events('click').map({type: 'PLAY'}),
     DOM.select('.ctrl-pause').events('click').map({type: 'PAUSE'})

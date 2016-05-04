@@ -25,8 +25,8 @@ const searchBoxSTY = {
 const searchBoxContainer = {
   ...F.RowSpaceAround,
   alignItems: 'center',
-  padding: '0 10px',
-  minHeight: `${T.tileHeight}px`,
+  padding: `0 ${T.BlockSpace}px`,
+  minHeight: `${T.BlockHeight}px`,
   color: T.font.primary,
   boxShadow: '0px 1px 8px 1px rgba(0, 0, 0, 0.50)',
   backgroundColor: 'rgb(246, 246, 246)',

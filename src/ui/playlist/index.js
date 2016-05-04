@@ -30,7 +30,7 @@ export default ({tracks$, DOM, audio}) => {
         style: {
           backgroundColor: '#fff',
           overflow: 'auto',
-          ...S.absolute(0, T.tileHeight, 0, T.tileHeight)
+          ...S.absolute(0, T.BlockHeight, 0, T.BlockHeight)
         }
       }, [view])),
     selectedTrack$, audio$

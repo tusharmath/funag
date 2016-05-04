@@ -12,7 +12,7 @@ const playbackInfoSTY = {
   fontSize: '1em',
   fontWeight: '600',
   overflow: 'hidden',
-  paddingRight: '10px'
+  paddingRight: `${T.BlockSpace}px`
 }
 export default ({selectedTrack$}) => {
   const init = {
