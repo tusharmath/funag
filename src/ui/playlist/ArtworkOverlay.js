@@ -10,7 +10,7 @@ import * as T from '../../Utils/Themes'
 
 const style = {
   ...S.absolute(),
-  ...S.block(T.BlockHeight),
+  ...S.block(T.BlockHeight - T.BlockSpace),
   backgroundColor: 'rgba(255, 255, 255, 0.8)'
 }
 const overlay = (isAnimated = '') =>
