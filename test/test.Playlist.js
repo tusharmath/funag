@@ -33,15 +33,3 @@ test('play/pause', t => {
     onNext(280, 2) // P
   ])
 })
-
-test.only('dynamically sized playlist', t => {
-  const sh = new TestScheduler()
-  const playlist$ = sh.createHotObservable(
-    onNext(220, []),
-    onNext(250, [1])
-  )
-  const instruction$ = sh.createHotObservable()
-  const {messages} = sh.startScheduler(() => currentTrack({instruction$, playlist$}))
-  console.log(messages)
-  t.deepEqual(messages, [onNext(250, 0)])
-})
