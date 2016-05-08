@@ -22,7 +22,6 @@ if (swConfig.externalCache) {
   toolbox.router.get(/^.*snd\.cdn.*$/, toolbox[policy])
 }
 
-toolbox.router.default = toolbox.fastest
 if (swConfig.debug) {
   toolbox.options.debug = true
 }
