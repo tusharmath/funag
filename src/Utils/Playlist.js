@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {Observable, Subject} from 'rx'
+import {Observable} from 'rx'
 import t from 'argtoob'
 
 const AddToBottom = track => playlist => [...playlist, track]
