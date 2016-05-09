@@ -37,20 +37,27 @@ const searchBoxContainer = {
 
 const event = event => target => ({target, event})
 
-export default ({DOM}) => {
+export default ({DOM, HTTP}) => {
+  const tracks$ = HTTP
+    .mergeAll()
+    .pluck('body')
+    .share()
+
   const searchEl = DOM.select('.search')
   const inputEl = searchEl.select('input')
   const value$ = U.inputVal(searchEl).debounce(300).startWith('')
+  const request$ = value$.map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
   const events$ = Observable
     .merge(
       searchEl.events('submit').map(event('preventDefault')),
       searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
         .map(event('blur'))
     )
-  const tracks$ = SC.searchTracks(value$)
+
   const isLoading$ = Observable.merge(value$.map(true), tracks$.map(false)).distinctUntilChanged()
 
   return {
+    HTTP: request$,
     DOM: isLoading$.map(isLoading =>
       form({className: 'search', style: searchBoxContainer}, [
         input({type: 'text', style: searchBoxSTY, placeholder: 'Search'}),

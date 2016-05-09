@@ -6,6 +6,7 @@
 
 import Cycle from '@cycle/core'
 import {makeDOMDriver} from '@cycle/dom'
+import {makeHTTPDriver} from '@cycle/http'
 import manifestFile from 'file!./manifest.json'
 import sw from 'serviceworker!./sw.js'
 import './less/main.less'
@@ -31,5 +32,6 @@ Cycle.run(Main, {
   route: routerDriver,
   audio: audioDriver,
   events: eventSinkDriver,
-  title: documentTitleDriver
+  title: documentTitleDriver,
+  HTTP: makeHTTPDriver()
 })

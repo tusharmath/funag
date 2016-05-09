@@ -16,10 +16,12 @@ export const clientIDParams = params => {
 
 export const toURI = (path, params) => `${baseURL}${path}${clientIDParams(params)}`
 
+// TODO: DEPRECATE
 export const get = (path, params) => {
   return fetch(toURI(path, params)).then(x => x.json())
 }
 
+// TODO: DEPRECATE
 export const searchTracks = partial(
   (get, q$) => q$
     .flatMapLatest(q => get('/tracks', {q}))
