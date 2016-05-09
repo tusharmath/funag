@@ -8,7 +8,7 @@ import qs from 'qs'
 import {partial} from 'funjector'
 
 const CLIENT_ID = '1862b9bf02ed7c80d0f545f835ad8773'
-const baseURL = '//api.soundcloud.com'
+const baseURL = 'https://api.soundcloud.com'
 
 export const clientIDParams = params => {
   return '?' + qs.stringify({...params, client_id: CLIENT_ID})

@@ -44,9 +44,9 @@ export default ({DOM, HTTP}) => {
     .share()
 
   const searchEl = DOM.select('.search')
-  const inputEl = searchEl.select('input')
-  const value$ = U.inputVal(searchEl).debounce(300).startWith('')
-  const request$ = value$.map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
+  const inputEl = DOM.select('.search input')
+  const value$ = U.inputVal(searchEl).debounce(300)
+  const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
   const events$ = Observable
     .merge(
       searchEl.events('submit').map(event('preventDefault')),
@@ -58,7 +58,7 @@ export default ({DOM, HTTP}) => {
 
   return {
     HTTP: request$,
-    DOM: isLoading$.map(isLoading =>
+    DOM: isLoading$.startWith(true).map(isLoading =>
       form({className: 'search', style: searchBoxContainer}, [
         input({type: 'text', style: searchBoxSTY, placeholder: 'Search'}),
         div({style: S.block(30)}, isLoading ? div('.loader') : S.fa('search'))
