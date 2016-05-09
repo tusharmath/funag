@@ -11,7 +11,6 @@ import manifestFile from 'file!./manifest.json'
 import sw from 'serviceworker!./sw.js'
 import './less/main.less'
 import Main from './components/Main'
-import {routerDriver} from './drivers/router'
 import {audioDriver} from './drivers/audio'
 import {eventSinkDriver} from './drivers/eventSink'
 import {documentTitleDriver} from './drivers/documentTitle'
@@ -29,7 +28,6 @@ sw({scope: '/'})
 
 Cycle.run(Main, {
   DOM: makeDOMDriver('#container'),
-  route: routerDriver,
   audio: audioDriver,
   events: eventSinkDriver,
   title: documentTitleDriver,

@@ -26,7 +26,7 @@ if (config.webpack.compression) {
 }
 
 module.exports = {
-  entry: ['./src/bootstrap.js'],
+  entry: ['./src/bootstrapDOM.js'],
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: '[hash].bundle.js'
