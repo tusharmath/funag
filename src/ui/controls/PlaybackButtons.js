@@ -5,8 +5,8 @@
 'use strict'
 import {div} from '@cycle/dom'
 import {Observable} from 'rx'
-import * as S from '../../Utils/StyleUtils'
-import * as T from '../../Utils/Themes'
+import * as S from '../../utils/StyleUtils'
+import * as T from '../../utils/Themes'
 
 export default ({audio, DOM}) => {
   const playPause$ = Observable.merge(

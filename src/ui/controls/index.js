@@ -7,7 +7,7 @@ import {Observable} from 'rx'
 import {div} from '@cycle/dom'
 import Scrobber from './Scrobber'
 import Playback from './Playback'
-import * as S from '../../Utils/StyleUtils'
+import * as S from '../../utils/StyleUtils'
 
 export default ({audio, selectedTrack$, DOM}) => {
   const completion$ = audio.events('timeupdate').map(x => x.currentTime / x.duration).startWith(0)

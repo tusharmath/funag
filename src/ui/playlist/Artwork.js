@@ -4,7 +4,7 @@
 
 'use strict'
 import {div} from '@cycle/dom'
-import * as S from '../../Utils/StyleUtils'
+import * as S from '../../utils/StyleUtils'
 
 const DefaultArtwork = div({style: {...S.block(50), color: '#ccc', backgroundColor: '#F6F6F6'}}, [
   div(S.fa('music'))
