@@ -4,11 +4,11 @@
 
 import {div} from '@cycle/dom'
 import {Observable} from 'rx'
-import * as F from '../../utils/Flexbox'
+import * as F from '../utils/Flexbox'
 import Artwork from './Artwork'
 import TrackDetail from './TrackDetail'
 import OverlayStatus from './OverlayStatus'
-import * as T from '../../utils/Themes'
+import * as T from '../utils/Themes'
 import {AnimatedOverlay, PausedOverlay} from './ArtworkOverlay'
 
 const playListItemSTY = {

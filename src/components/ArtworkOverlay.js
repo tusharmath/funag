@@ -5,8 +5,8 @@
 'use strict'
 
 import {ul, li, div} from '@cycle/dom'
-import * as S from '../../utils/StyleUtils'
-import * as T from '../../utils/Themes'
+import * as S from '../utils/StyleUtils'
+import * as T from '../utils/Themes'
 
 const style = {
   ...S.absolute(),
