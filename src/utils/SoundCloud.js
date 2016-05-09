@@ -14,8 +14,10 @@ export const clientIDParams = params => {
   return '?' + qs.stringify({...params, client_id: CLIENT_ID})
 }
 
+export const toURI = (path, params) => `${baseURL}${path}${clientIDParams(params)}`
+
 export const get = (path, params) => {
-  return fetch(`${baseURL}${path}${clientIDParams(params)}`).then(x => x.json())
+  return fetch(toURI(path, params)).then(x => x.json())
 }
 
 export const searchTracks = partial(
