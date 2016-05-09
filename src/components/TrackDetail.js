@@ -4,9 +4,9 @@
 
 'use strict'
 import {div} from '@cycle/dom'
-import * as S from '../../Utils/StyleUtils'
-import * as F from '../../Utils/Flexbox'
-import * as T from '../../Utils/Themes'
+import * as S from '../utils/StyleUtils'
+import * as F from '../utils/Flexbox'
+import * as T from '../utils/Themes'
 import TrackDuration from './TrackDuration'
 
 export default ({title, user, duration}) =>

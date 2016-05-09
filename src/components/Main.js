@@ -8,7 +8,7 @@ import {Observable} from 'rx'
 import {div} from '@cycle/dom'
 import Controls from './controls'
 import Playlist from './playlist'
-import SearchBox from './search/index'
+import SearchBox from './Search'
 
 const view = ({playlist, searchBox, controls}) => Observable
   .combineLatest(

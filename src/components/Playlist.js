@@ -7,11 +7,11 @@ import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import isolate from '@cycle/isolate'
 import PlayListItem from './PlayListItem'
-import Proxy from '../../Utils/Proxy'
-import * as S from '../../Utils/StyleUtils'
+import Proxy from '../utils/Proxy'
+import * as S from '../utils/StyleUtils'
 import * as M from './Models'
-import * as SC from '../../Utils/SoundCloud'
-import * as T from '../../Utils/Themes'
+import * as SC from '../utils/SoundCloud'
+import * as T from '../utils/Themes'
 
 export default ({tracks$, DOM, audio}) => {
   const proxy = Proxy()

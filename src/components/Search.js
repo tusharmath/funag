@@ -6,11 +6,11 @@
 
 import {input, form, div} from '@cycle/dom'
 import {Observable} from 'rx'
-import * as F from '../../Utils/Flexbox'
-import * as S from '../../Utils/StyleUtils'
-import * as U from '../../Utils/DOMUtils'
-import * as T from '../../Utils/Themes'
-import * as SC from '../../Utils/SoundCloud'
+import * as F from '../utils/Flexbox'
+import * as S from '../utils/StyleUtils'
+import * as U from '../utils/DOMUtils'
+import * as T from '../utils/Themes'
+import * as SC from '../utils/SoundCloud'
 
 const searchBoxSTY = {
   border: 'none',

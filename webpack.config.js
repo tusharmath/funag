@@ -26,7 +26,7 @@ if (config.webpack.compression) {
 }
 
 module.exports = {
-  entry: ['./src/ui/bootstrap.js'],
+  entry: ['./src/bootstrap.js'],
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: '[hash].bundle.js'
@@ -38,7 +38,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Funag',
-      template: './src/ui/pwd/index.template.hbs'
+      template: './src/index.template.hbs'
     }),
     new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(config)})
   ].concat(plugins),
