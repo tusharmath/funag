@@ -8,7 +8,7 @@
     "build": "webpack",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "gh-pages": "scripts/gh-pages.js",
-    "lint": "eslint src/**"
+    "lint": "eslint src"
   },
   "author": "",
   "license": "ISC",
