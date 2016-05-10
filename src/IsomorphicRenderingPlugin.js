@@ -33,7 +33,7 @@ class IsomorphicRenderPlugin {
     const emit$ = Observable.fromCallback(compiler.plugin, compiler)('emit')
     const compilation$ = emit$.map(x => x[0])
     const callback$ = emit$.map(x => x[1])
-    const bundleJS$ = compilation$.map(({assets, hash}) => Object.keys(assets).find(x => x.match(hash)))
+    const bundleJS$ = compilation$.map(({outputOptions, hash}) => outputOptions.filename.replace('[hash]', hash))
 
     const boilerplate = appFn => sources => {
       const app = appFn(sources)
