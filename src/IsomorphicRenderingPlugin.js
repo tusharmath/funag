@@ -33,7 +33,8 @@ class IsomorphicRenderPlugin {
     const emit$ = Observable.fromCallback(compiler.plugin, compiler)('emit')
     const compilation$ = emit$.map(x => x[0])
     const callback$ = emit$.map(x => x[1])
-    const bundleJS$ = compilation$.map(({outputOptions, hash}) => outputOptions.filename.replace('[hash]', hash))
+    const bundleJS$ = compilation$
+      .map(({outputOptions, hash}) => outputOptions.filename.replace('[hash]', hash))
 
     const boilerplate = appFn => sources => {
       const app = appFn(sources)
@@ -44,7 +45,6 @@ class IsomorphicRenderPlugin {
 
     const {sources: {DOM}} = Cycle.run(boilerplate(Main), sources)
     DOM.withLatestFrom(compilation$, callback$, t('html', 'compilation', 'callback'))
-      .shareReplay(1)
       .subscribe(({html, compilation, callback}) => {
         compilation.assets['index.html'] = {source: () => html, size: () => html.length}
         return callback()
