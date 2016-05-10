@@ -5,7 +5,7 @@ module.exports = {
     debug: false,
     preCache: false,
     appCache: {
-      policy: 'networkFirst'
+      policy: 'networkOnly'
     },
     externalCache: {
       policy: 'fastest'
