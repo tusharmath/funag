@@ -28,7 +28,7 @@ const searchBoxContainer = {
   padding: `0 ${T.BlockSpace}px`,
   minHeight: `${T.BlockHeight}px`,
   color: T.font.primary,
-  boxShadow: '0px 1px 8px 1px rgba(0, 0, 0, 0.50)',
+  boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.50)',
   backgroundColor: 'rgb(246, 246, 246)',
   position: 'absolute',
   width: '100%',
