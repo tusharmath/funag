@@ -2,7 +2,7 @@ module.exports = {
   env: 'development',
   port: 9000,
   sw: {
-    debug: true,
+    debug: false,
     preCache: false,
     appCache: {
       policy: 'networkFirst'
