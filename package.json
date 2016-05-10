@@ -32,8 +32,6 @@
     "express": "^4.13.4",
     "file-loader": "^0.8.5",
     "funjector": "^3.1.0",
-    "handlebars": "^4.0.5",
-    "handlebars-loader": "^1.2.0",
     "less": "^2.6.1",
     "less-loader": "^2.2.3",
     "qs": "^6.1.0",

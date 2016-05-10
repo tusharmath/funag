@@ -41,7 +41,6 @@ module.exports = {
   ].concat(plugins),
   module: {
     loaders: [
-      {test: /\.hbs$/, loader: 'handlebars'},
       {test: /\.less$/, loader: 'style!css!less'},
       {test: /\.css$/, loader: 'style-loader!css-loader'},
       {
