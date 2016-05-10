@@ -12,6 +12,7 @@ import * as S from '../utils/StyleUtils'
 import * as M from './Models'
 import * as SC from '../utils/SoundCloud'
 import * as T from '../utils/Themes'
+import * as P from '../layouts/Placeholders'
 
 export default ({tracks$, DOM, audio}) => {
   const proxy = Proxy()
@@ -25,6 +26,13 @@ export default ({tracks$, DOM, audio}) => {
   return {
     DOM: playlistItemVTree$
       .flatMapLatest(tracks => Observable.combineLatest(tracks))
+      .startWith([
+        div([
+          P.PlaylistItem,
+          P.PlaylistItem,
+          P.PlaylistItem
+        ])
+      ])
       .map(view => div({
         className: 'tracks',
         style: {

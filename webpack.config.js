@@ -8,7 +8,7 @@ const webpack = require('webpack')
 const config = require('config')
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
 const CompressionPlugin = require('compression-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const {IsomorphicRenderPlugin} = require('./src/IsomorphicRenderingPlugin')
 
 const plugins = []
 if (config.webpack.optimizeJS) {
@@ -26,7 +26,7 @@ if (config.webpack.compression) {
 }
 
 module.exports = {
-  entry: ['./src/bootstrap.js'],
+  entry: ['./src/bootstrapDOM.js'],
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: '[hash].bundle.js'
@@ -36,15 +36,11 @@ module.exports = {
     contentBase: './public'
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Funag',
-      template: './src/index.template.hbs'
-    }),
+    new IsomorphicRenderPlugin(),
     new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(config)})
   ].concat(plugins),
   module: {
     loaders: [
-      {test: /\.hbs$/, loader: 'handlebars'},
       {test: /\.less$/, loader: 'style!css!less'},
       {test: /\.css$/, loader: 'style-loader!css-loader'},
       {

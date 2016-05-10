@@ -30,3 +30,11 @@ export const audioDriver = instruction$ => {
     }
   }
 }
+
+export const mockAudioDriver = () => {
+  return {
+    events () {
+      return Observable.empty()
+    }
+  }
+}

@@ -28,7 +28,7 @@ const searchBoxContainer = {
   padding: `0 ${T.BlockSpace}px`,
   minHeight: `${T.BlockHeight}px`,
   color: T.font.primary,
-  boxShadow: '0px 1px 8px 1px rgba(0, 0, 0, 0.50)',
+  boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.50)',
   backgroundColor: 'rgb(246, 246, 246)',
   position: 'absolute',
   width: '100%',
@@ -37,21 +37,28 @@ const searchBoxContainer = {
 
 const event = event => target => ({target, event})
 
-export default ({DOM}) => {
+export default ({DOM, HTTP}) => {
+  const tracks$ = HTTP
+    .mergeAll()
+    .pluck('body')
+    .share()
+
   const searchEl = DOM.select('.search')
-  const inputEl = searchEl.select('input')
-  const value$ = U.inputVal(searchEl).debounce(300).startWith('')
+  const inputEl = DOM.select('.search input')
+  const value$ = U.inputVal(searchEl).debounce(300)
+  const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
   const events$ = Observable
     .merge(
       searchEl.events('submit').map(event('preventDefault')),
       searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
         .map(event('blur'))
     )
-  const tracks$ = SC.searchTracks(value$)
+
   const isLoading$ = Observable.merge(value$.map(true), tracks$.map(false)).distinctUntilChanged()
 
   return {
-    DOM: isLoading$.map(isLoading =>
+    HTTP: request$,
+    DOM: isLoading$.startWith(true).map(isLoading =>
       form({className: 'search', style: searchBoxContainer}, [
         input({type: 'text', style: searchBoxSTY, placeholder: 'Search'}),
         div({style: S.block(30)}, isLoading ? div('.loader') : S.fa('search'))

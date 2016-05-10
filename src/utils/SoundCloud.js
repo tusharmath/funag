@@ -8,7 +8,7 @@ import qs from 'qs'
 import {partial} from 'funjector'
 
 const CLIENT_ID = '1862b9bf02ed7c80d0f545f835ad8773'
-const baseURL = '//api.soundcloud.com'
+const baseURL = 'https://api.soundcloud.com'
 
 export const clientIDParams = params => {
   return '?' + qs.stringify({...params, client_id: CLIENT_ID})
@@ -16,10 +16,12 @@ export const clientIDParams = params => {
 
 export const toURI = (path, params) => `${baseURL}${path}${clientIDParams(params)}`
 
+// TODO: DEPRECATE
 export const get = (path, params) => {
   return fetch(toURI(path, params)).then(x => x.json())
 }
 
+// TODO: DEPRECATE
 export const searchTracks = partial(
   (get, q$) => q$
     .flatMapLatest(q => get('/tracks', {q}))

@@ -17,14 +17,17 @@ const view = ({playlist, searchBox, controls}) => Observable
     controls.DOM
   ).map(views => div(views))
 
-const model = ({DOM, route, audio}) => {
-  const searchBox = SearchBox({DOM, route})
+// TODO: Split into intent + model
+const model = ({DOM, route, audio, HTTP}) => {
+  // TODO: Pass HTTP.share()
+  const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const playlist = Playlist({tracks$, DOM, audio})
   const selectedTrack$ = playlist.selectedTrack$
 
   const controls = Controls({audio, selectedTrack$, DOM})
   return {
+    HTTP: searchBox.HTTP,
     title: selectedTrack$.pluck('title'),
     events: searchBox.events$,
     audio: Observable.merge(playlist.audio$, controls.audio$),
@@ -35,6 +38,7 @@ const model = ({DOM, route, audio}) => {
 export default function (sources) {
   const m = model(sources)
   return {
+    HTTP: m.HTTP.map(params => ({...params, accept: 'application/json'})),
     title: m.title,
     events: m.events,
     audio: m.audio,
