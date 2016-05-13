@@ -22,7 +22,7 @@ const trackInfoSTY = {
   color: T.font.primary,
   borderBottom: '1px solid rgb(249, 246, 246)'
 }
-export default ({DOM, track, audio, selectedTrack$}, index) => {
+export default ({DOM, track, audio, selectedTrack$}) => {
   const {title, user, duration, artwork_url, id} = track
   const click$ = DOM.select('.playlist-item').events('click').map(track)
   const selectedTrackId$ = selectedTrack$.pluck('id')
@@ -30,8 +30,8 @@ export default ({DOM, track, audio, selectedTrack$}, index) => {
   const animation$ = status$.filter(x => x === 'PLAY_ANIMATION').map(AnimatedOverlay)
   const pausedAnimation$ = status$.filter(x => x === 'PAUSE_ANIMATION').map(PausedOverlay)
   const clearAnimation$ = status$.filter(x => x === 'SHOW_NONE').map(null)
-  const overlayItem$ = Observable.merge(animation$, pausedAnimation$, clearAnimation$).startWith(div()).distinctUntilChanged()
-  const trackStatus$ = overlayItem$
+  const overlayItem$ = Observable.merge(animation$, pausedAnimation$, clearAnimation$)
+  const trackStatus$ = overlayItem$.startWith(null)
     .map(overlay => div({style: {padding: `${T.BlockSpace}px`}}, [
       div({style: {position: 'relative'}}, [
         Artwork(artwork_url),
