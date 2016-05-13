@@ -3,12 +3,33 @@
  */
 
 'use strict'
+
+require('babel-register')({
+  presets: ['es2015'],
+  plugins: [
+    'transform-object-rest-spread'
+  ]
+})
 const path = require('path')
 const webpack = require('webpack')
 const config = require('config')
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
 const CompressionPlugin = require('compression-webpack-plugin')
-const {IsomorphicRenderPlugin} = require('./src/IsomorphicRenderingPlugin')
+const {ApplicationShell} = require('./src/utils/ApplicationShell')
+const Main = require('./src/components/Main').default
+const {makeHTMLDriver} = require('@cycle/dom')
+const {makeHTTPDriver} = require('@cycle/http')
+const {mockAudioDriver} = require('./src/drivers/audio')
+const {eventSinkDriver} = require('./src/drivers/eventSink')
+const {documentTitleDriver} = require('./src/drivers/documentTitle')
+
+const sources = {
+  DOM: makeHTMLDriver(),
+  audio: mockAudioDriver,
+  events: eventSinkDriver,
+  title: documentTitleDriver,
+  HTTP: makeHTTPDriver()
+}
 
 const plugins = []
 if (config.webpack.optimizeJS) {
@@ -36,7 +57,7 @@ module.exports = {
     contentBase: './public'
   },
   plugins: [
-    new IsomorphicRenderPlugin(),
+    new ApplicationShell({Main, sources}),
     new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(config)})
   ].concat(plugins),
   module: {

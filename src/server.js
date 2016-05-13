@@ -13,7 +13,7 @@ const webpackConfig = require('../webpack.config')
 const app = express()
 
 if (config.webpack.middleware) {
-  app.use(webpackMiddleware(webpack(webpackConfig), {noInfo: true}))
+  app.use(webpackMiddleware(webpack(webpackConfig)))
 }
 
 if (config.express.useGzipped) {
