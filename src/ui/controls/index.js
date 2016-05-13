@@ -10,12 +10,12 @@ import Playback from './Playback'
 import * as S from '../../Utils/StyleUtils'
 
 export default ({audio, selectedTrack$, DOM}) => {
-  const completion$ = audio.events('timeupdate').map(x => x.currentTime / x.duration).startWith(0)
   const playback = Playback({selectedTrack$, audio, DOM})
+  const scrobber = Scrobber({DOM, audio})
   return {
-    audio$: playback.audio$,
+    audio$: Observable.merge(playback.audio$, scrobber.audio$),
     DOM: Observable.combineLatest(
-      Scrobber({completion$}).DOM,
+      scrobber.DOM,
       playback.DOM
     ).map(views =>
         div({

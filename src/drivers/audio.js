@@ -15,6 +15,7 @@ export const LOAD = src => ({type: 'PAUSE', src})
 export const audioDriver = instruction$ => {
   const audio = new Audio()
   Observable.merge(
+    instruction$.filter(x => x.type === 'SEEK').tap((x) => audio.currentTime = audio.duration * x.time),
     instruction$.filter(x => x.type === 'PLAY').tap(() => audio.play()),
     instruction$.filter(x => x.type === 'PAUSE').tap(() => audio.pause()),
     instruction$.filter(x => x.type === 'LOAD').tap(x => {
