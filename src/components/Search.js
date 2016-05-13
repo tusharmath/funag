@@ -38,8 +38,9 @@ const searchBoxContainer = {
 const event = event => target => ({target, event})
 
 export default ({DOM, HTTP}) => {
+  // TODO: Add unit tests
   const tracks$ = HTTP
-    .mergeAll()
+    .switch()
     .pluck('body')
     .share()
 
