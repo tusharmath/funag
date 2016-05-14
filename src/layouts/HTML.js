@@ -23,8 +23,7 @@ export default ({__html, __title, bundle}) =>
           font-weight: 400;
           color: rgb(51, 51, 51);
           -webkit-font-smoothing: antialiased;
-          -webkit-user-select: none;
-          overflow: hidden;
+          -webkit-user-select: none;          
         }
         
         input {
