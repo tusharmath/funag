@@ -5,3 +5,5 @@
 
 [pwd]: https://developers.google.com/web/progressive-web-apps?hl=en#learnmore
 The project is a POC on building really sophisticated [progressive web applications][pwd]. We want to test the limits of the web in terms of performance, features and also our own software development abilities.
+
+<img src="http://s32.postimg.org/h8evi15bp/Screen_Shot_2016_05_14_at_12_59_03_PM.png" width="412">
