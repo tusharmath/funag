@@ -8,10 +8,8 @@ import {Observable} from 'rx'
 import isolate from '@cycle/isolate'
 import PlayListItem from './PlayListItem'
 import Proxy from '../utils/Proxy'
-import * as S from '../utils/StyleUtils'
 import * as M from './Models'
 import * as SC from '../utils/SoundCloud'
-import * as T from '../utils/Themes'
 import * as P from '../layouts/Placeholders'
 
 export default ({tracks$, DOM, audio}) => {
@@ -34,11 +32,10 @@ export default ({tracks$, DOM, audio}) => {
         ])
       ])
       .map(view => div({
-        className: 'tracks',
+        className: 'playlist',
         style: {
           backgroundColor: '#fff',
-          overflow: 'auto',
-          ...S.absolute(0, T.BlockHeight, 0, T.BlockHeight - 4)
+          margin: '62px 0'
         }
       }, [view])),
     selectedTrack$, audio$

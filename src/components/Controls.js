@@ -9,6 +9,10 @@ import Scrobber from './Scrobber'
 import Playback from './Playback'
 import * as S from '../utils/StyleUtils'
 
+const ControlSTY = {
+  ...S.position({bottom: 0, left: 0, right: 0}),
+  position: 'fixed'
+}
 export default ({audio, selectedTrack$, DOM}) => {
   const completion$ = audio.events('timeupdate').map(x => x.currentTime / x.duration).startWith(0)
   const playback = Playback({selectedTrack$, audio, DOM})
@@ -24,6 +28,6 @@ export default ({audio, selectedTrack$, DOM}) => {
             backgroundColor: 'rgb(246, 246, 246)'
           }
         }, views))
-      .map(view => div({style: S.absolute(0, null, 0, 0)}, [view]))
+      .map(view => div({style: ControlSTY}, [view]))
   }
 }

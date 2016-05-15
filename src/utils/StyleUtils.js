@@ -9,10 +9,18 @@ import * as F from './Flexbox'
 import * as T from './Themes'
 
 export const size = (height, width = height) => ({height: `${height}px`, width: `${width}px`})
-export const absolute = (left = 0, top = 0, right = 0, bottom = 0) => ({
-  top: `${top}px`, bottom: `${bottom}px`, left: `${left}px`, right: `${right}px`,
-  position: 'absolute'
-})
+export const position = coords => {
+  const positions = {}
+  Object.keys(coords)
+    .filter(x => coords[x] !== null)
+    .forEach(key => {
+      positions[key] = coords[key]
+    })
+  return positions
+}
+export const absolute = (left = 0, top = 0, right = 0, bottom = 0) => {
+  return {...position({left, top, right, bottom}), position: 'absolute'}
+}
 export const fa = (name, dim = 1) => i(`.fa.fa-${name}`, {
   style: {
     fontSize: `${dim}em`,

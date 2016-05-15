@@ -30,9 +30,9 @@ const searchBoxContainer = {
   color: T.font.primary,
   boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.50)',
   backgroundColor: 'rgb(246, 246, 246)',
-  position: 'absolute',
-  width: '100%',
-  top: 0
+  ...S.position({top: 0, left: 0, right: 0}),
+  position: 'fixed',
+  margin: 0
 }
 
 const event = event => target => ({target, event})
