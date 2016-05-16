@@ -11,21 +11,22 @@ import * as S from '../utils/StyleUtils'
 import * as U from '../utils/DOMUtils'
 import * as T from '../utils/Themes'
 import * as SC from '../utils/SoundCloud'
+import SearchIcon from './SearchIcon'
 
 const searchBoxSTY = {
   border: 'none',
-  width: '100%',
+  flex: '1 0 0',
   fontSize: '1em',
   color: T.font.primary,
   fontWeight: '600',
   outline: 'none',
-  backgroundColor: 'inherit'
+  backgroundColor: 'inherit',
+  paddingLeft: `${T.BlockSpace}px`
 }
 
-const searchBoxContainer = {
+const searchBoxContainerSTY = {
   ...F.RowSpaceAround,
   alignItems: 'center',
-  padding: `0 ${T.BlockSpace}px`,
   minHeight: `${T.BlockHeight}px`,
   color: T.font.primary,
   boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.50)',
@@ -43,7 +44,7 @@ export default ({DOM, HTTP}) => {
     .switch()
     .pluck('body')
     .share()
-
+  
   const searchEl = DOM.select('.search')
   const inputEl = DOM.select('.search input')
   const value$ = U.inputVal(searchEl).debounce(300)
@@ -55,15 +56,21 @@ export default ({DOM, HTTP}) => {
         .map(event('blur'))
     )
 
-  const isLoading$ = Observable.merge(value$.map(true), tracks$.map(false)).distinctUntilChanged()
+  const searchIcon = SearchIcon({value$, tracks$, DOM})
+  const Form = ({icon, value}) =>
+    form({className: 'search', style: searchBoxContainerSTY}, [
+      input({type: 'text', style: searchBoxSTY, placeholder: 'Search', value}),
+      icon
+    ])
+  const vTree$ = Observable.merge(
+    searchIcon.DOM.map(icon => Form({icon})),
+    searchIcon.clear$
+      .withLatestFrom(searchIcon.DOM)
+      .map(([_, icon]) => Form({icon, value: ''}))
+  )
 
   return {
     HTTP: request$,
-    DOM: isLoading$.startWith(true).map(isLoading =>
-      form({className: 'search', style: searchBoxContainer}, [
-        input({type: 'text', style: searchBoxSTY, placeholder: 'Search'}),
-        div({style: S.block(30)}, isLoading ? div('.loader') : S.fa('search'))
-      ])
-    ), value$, events$, tracks$
+    DOM: vTree$, value$, events$, tracks$
   }
 }
