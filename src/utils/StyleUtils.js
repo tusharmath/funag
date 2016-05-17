@@ -21,6 +21,10 @@ export const position = coords => {
 export const absolute = (left = 0, top = 0, right = 0, bottom = 0) => {
   return {...position({left, top, right, bottom}), position: 'absolute'}
 }
+export const fixed = x => {
+  return {...position(x), position: 'fixed'}
+}
+
 export const fa = (name, dim = 1) => i(`.fa.fa-${name}`, {
   style: {
     fontSize: `${dim}em`,
