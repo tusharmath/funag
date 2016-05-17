@@ -10,30 +10,43 @@ import Playback from './Playback'
 import * as S from '../utils/StyleUtils'
 
 const ControlSTY = show => ({
-  ...S.position({bottom: 0, left: 0, right: 0}),
-  position: 'fixed',
-  transform: show ? 'translateY(0%)' : 'translateY(100%)',
+  ...S.fixed({bottom: 0, left: 0, right: 0}),
+  transform: show ? 'translateY(0%)' : 'translateY(105%)',
   transition: 'transform ease-in 300ms'
 })
+
+const view = ({playback, scrobber, showControls$}) => {
+  return Observable
+    .combineLatest(
+      showControls$,
+      scrobber.DOM,
+      playback.DOM
+    )
+    .map(([show, scrobber, playback]) =>
+      div({style: ControlSTY(show)}, [
+        div({
+          style: {
+            boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.5)',
+            backgroundColor: 'rgb(246, 246, 246)'
+          }
+        }, [scrobber, playback])])
+    )
+}
+
+const model = ({audio, selectedTrack$}) => {
+  const completion$ = audio.events('timeupdate')
+    .throttle(1000)
+    .map(x => x.currentTime / x.duration).startWith(0)
+  const showControls$ = selectedTrack$.map(Boolean).startWith(false)
+  return {completion$, showControls$}
+}
+
 export default ({audio, selectedTrack$, DOM}) => {
-  const completion$ = audio.events('timeupdate').map(x => x.currentTime / x.duration).startWith(0)
+  const {completion$, showControls$} = model({audio, selectedTrack$})
   const playback = Playback({selectedTrack$, audio, DOM})
+  const scrobber = Scrobber({completion$})
   return {
     audio$: playback.audio$,
-    DOM: Observable
-      .combineLatest(
-        selectedTrack$.startWith(null),
-        Scrobber({completion$}).DOM,
-        playback.DOM
-      )
-      .map(([selected, scrobber, playback]) =>
-        div({style: ControlSTY(Boolean(selected))}, [
-          div({
-            style: {
-              boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.5)',
-              backgroundColor: 'rgb(246, 246, 246)'
-            }
-          }, [scrobber, playback])])
-      )
+    DOM: view({playback, scrobber, showControls$})
   }
 }
