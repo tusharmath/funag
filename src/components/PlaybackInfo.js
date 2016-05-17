@@ -15,13 +15,8 @@ const playbackInfoSTY = {
   paddingRight: `${T.BlockSpace}px`
 }
 export default ({selectedTrack$}) => {
-  const init = {
-    title: ' ',
-    user: {username: ' '},
-    genre: ' '
-  }
   return {
-    DOM: selectedTrack$.startWith(init).map(track =>
+    DOM: selectedTrack$.map(track =>
       div({style: playbackInfoSTY}, [
         div({style: S.overflowEllipsisSTY}, [track.title]),
         div({style: {...S.overflowEllipsisSTY, fontSize: '0.8em', color: T.font.secondary}}, track.user.username)
