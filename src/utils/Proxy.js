@@ -6,6 +6,7 @@
 
 import {Observable, Subject} from 'rx'
 
+// TODO: Deprecate
 export default () => {
   const subject = new Subject()
   return {

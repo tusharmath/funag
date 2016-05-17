@@ -12,8 +12,8 @@ import * as SC from '../utils/SoundCloud'
 import * as P from '../layouts/Placeholders'
 import * as A from '../utils/Actions'
 
-const view = ({playlistItem$, hasMargin$}) => {
-  const list$ = playlistItem$
+const view = ({playlistItem$}) => {
+  return playlistItem$
     .map(tracks => tracks.map(x => x.DOM))
     .flatMapLatest(tracks => Observable.combineLatest(tracks))
     .startWith([
@@ -23,14 +23,13 @@ const view = ({playlistItem$, hasMargin$}) => {
         P.PlaylistItem
       ])
     ])
-  return Observable.combineLatest(list$, hasMargin$)
-    .map(([list, margin]) => div('.playlist', {
+    .map(view => div({
       className: 'playlist',
       style: {
         backgroundColor: '#fff',
-        padding: margin ? '62px 0' : '62px 0 0 0'
+        margin: '62px 0'
       }
-    }, list))
+    }, [view]))
 }
 
 const model = ({tracks$, DOM, audio, selectedTrack$}) => {
@@ -52,17 +51,14 @@ const model = ({tracks$, DOM, audio, selectedTrack$}) => {
     .map(selectedTrack => ({selectedTrack}))
     .map(A.CONSTANT())
 
-  const hasMargin$ = selectedTrack$.map(Boolean).startWith(false)
-
-  return {MODEL, audio$, playlistItem$, hasMargin$}
+  return {MODEL, audio$, playlistItem$}
 }
 
 export default sources => {
-  const {playlistItem$, MODEL, audio$, hasMargin$} = model(sources)
-  const vTree$ = view({playlistItem$, hasMargin$})
+  const {playlistItem$, MODEL, audio$} = model(sources)
+  const vTree$ = view({playlistItem$})
 
   return {
     MODEL, DOM: vTree$, audio$
   }
 }
-

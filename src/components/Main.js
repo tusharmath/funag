@@ -17,21 +17,25 @@ const view = ({playlist, searchBox, controls}) => Observable
     searchBox.DOM,
     controls.DOM
   ).map(views => div(views))
-  .flatMapLatest(view => Observable.fromCallback(setTimeout)().map(view))
 
 // TODO: Split into intent + model
-const model = ({DOM, route, audio, HTTP}) => {
+const model = ({DOM, route, audio, HTTP, MODEL}) => {
   // TODO: Pass HTTP.share()
+
+  const selectedTrack$ = MODEL
+    .filter(x => !x.isServer)
+    .pluck('selectedTrack')
+    .filter(Boolean)
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
-  const playlist = Playlist({tracks$, DOM, audio})
-  const selectedTrack$ = playlist.selectedTrack$
+  const playlist = Playlist({tracks$, DOM, audio, selectedTrack$})
   const controls = Controls({audio, selectedTrack$, DOM})
   return {
-    HTTP: searchBox.HTTP,
+    HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
     events: searchBox.events$,
     audio: Observable.merge(playlist.audio$, controls.audio$),
+    MODEL: MODEL.mod(playlist.MODEL),
     playlist, searchBox, controls
   }
 }
@@ -39,10 +43,11 @@ const model = ({DOM, route, audio, HTTP}) => {
 export default function (sources) {
   const m = model(sources)
   return {
-    HTTP: m.HTTP.map(params => ({...params, accept: 'application/json'})),
+    HTTP: m.HTTP,
     title: m.title,
     events: m.events,
     audio: m.audio,
-    DOM: BatchDOM(view(m))
+    DOM: BatchDOM(view(m)),
+    MODEL: m.MODEL
   }
 }
