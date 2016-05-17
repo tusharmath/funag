@@ -9,6 +9,7 @@ import {div} from '@cycle/dom'
 import Controls from './Controls'
 import Playlist from './Playlist'
 import SearchBox from './Search'
+import BatchDOM from '../utils/BatchDOM'
 
 const view = ({playlist, searchBox, controls}) => Observable
   .combineLatest(
@@ -42,6 +43,6 @@ export default function (sources) {
     title: m.title,
     events: m.events,
     audio: m.audio,
-    DOM: view(m)
+    DOM: BatchDOM(view(m))
   }
 }
