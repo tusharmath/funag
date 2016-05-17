@@ -16,6 +16,7 @@ const view = ({playlist, searchBox, controls}) => Observable
     searchBox.DOM,
     controls.DOM
   ).map(views => div(views))
+  .flatMapLatest(view => Observable.fromCallback(setTimeout)().map(view))
 
 // TODO: Split into intent + model
 const model = ({DOM, route, audio, HTTP}) => {
@@ -24,7 +25,6 @@ const model = ({DOM, route, audio, HTTP}) => {
   const tracks$ = searchBox.tracks$
   const playlist = Playlist({tracks$, DOM, audio})
   const selectedTrack$ = playlist.selectedTrack$
-
   const controls = Controls({audio, selectedTrack$, DOM})
   return {
     HTTP: searchBox.HTTP,
