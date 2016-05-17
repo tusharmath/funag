@@ -15,20 +15,22 @@ const webpack = require('webpack')
 const config = require('config')
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
 const CompressionPlugin = require('compression-webpack-plugin')
+const {Model} = require('stanga')
 const {ApplicationShell} = require('./src/utils/ApplicationShell')
 const Main = require('./src/components/Main').default
 const {makeHTMLDriver} = require('@cycle/dom')
 const {makeHTTPDriver} = require('@cycle/http')
 const {mockAudioDriver} = require('./src/drivers/audio')
 const {eventSinkDriver} = require('./src/drivers/eventSink')
-const {documentTitleDriver} = require('./src/drivers/documentTitle')
+const noop = require('./src/utils/Noop')
 
 const sources = {
   DOM: makeHTMLDriver(),
   audio: mockAudioDriver,
   events: eventSinkDriver,
-  title: documentTitleDriver,
-  HTTP: makeHTTPDriver()
+  title: noop,
+  HTTP: makeHTTPDriver(),
+  MODEL: Model({selectedTrack: null, isServer: true})
 }
 
 const plugins = []

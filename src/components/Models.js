@@ -19,6 +19,7 @@ export const Overlay = ({selectedTrackId$, audio, id}) => {
   return Observable.merge(animation$, pausedAnimation$, showNone$).startWith('SHOW_NONE')
 }
 
+// TODO: Move to Playlist component
 export const Audio = ({url$}) => url$
   .scan((last, src) => {
     if (!last || last.src !== src) return {type: 'LOAD', src}
