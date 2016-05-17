@@ -27,7 +27,7 @@ const view = ({playlistItem$}) => {
       className: 'playlist',
       style: {
         backgroundColor: '#fff',
-        margin: '62px 0'
+        padding: '62px 0'
       }
     }, [view]))
 }
