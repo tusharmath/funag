@@ -16,4 +16,5 @@ export default ({selectedTrackId$, audio, id}) => {
   const pausedAnimation$ = showPausedSoundVisualization(isSelected$).filter(Boolean).map('PAUSE_ANIMATION')
   const showNone$ = event$.filter(x => x.id !== id).map('SHOW_NONE')
   return Observable.merge(animation$, pausedAnimation$, showNone$).startWith('SHOW_NONE')
+    .distinctUntilChanged()
 }

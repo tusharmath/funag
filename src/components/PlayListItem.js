@@ -32,7 +32,6 @@ const PlayListItem = ({DOM, track, audio, selectedTrack$}) => {
   const pausedAnimation$ = status$.filter(x => x === 'PAUSE_ANIMATION').map(PausedOverlay)
   const clearAnimation$ = status$.filter(x => x === 'SHOW_NONE').map(null)
   const overlayItem$ = Observable.merge(animation$, pausedAnimation$, clearAnimation$)
-    .distinctUntilChanged()
   const trackStatus$ = overlayItem$.startWith(null)
     .map(overlay => div({style: {padding: `${T.BlockSpace}px`}}, [
       div({style: {position: 'relative'}}, [
