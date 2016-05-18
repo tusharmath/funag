@@ -19,7 +19,7 @@ export default ({selectedTrack$}) => {
     DOM: selectedTrack$.map(track =>
       div({style: playbackInfoSTY}, [
         div({style: S.overflowEllipsisSTY}, [track.title]),
-        div({style: {...S.overflowEllipsisSTY, fontSize: '0.8em', color: T.font.secondary}}, track.user.username)
+        div({style: {...S.overflowEllipsisSTY, fontSize: '0.8em', color: T.Pallete.primaryColorSecondaryFont}}, track.user.username)
       ])
     ).startWith(null)
   }

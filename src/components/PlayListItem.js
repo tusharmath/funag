@@ -20,8 +20,8 @@ const playListItemSTY = {
 const trackInfoSTY = {
   ...F.RowSpaceBetween,
   alignItems: 'center',
-  color: T.font.primary,
-  borderBottom: '1px solid rgb(249, 246, 246)'
+  color: T.Pallete.baseColorPrimaryFont,
+  borderBottom: T.Pallete.divider
 }
 const PlayListItem = ({DOM, track, audio, selectedTrack$}) => {
   const {title, user, duration, artwork_url, id} = track

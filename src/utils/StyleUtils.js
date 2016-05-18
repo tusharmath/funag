@@ -38,7 +38,7 @@ export const overflowEllipsisSTY = {
 }
 
 export const subtitleSTY = {
-  color: T.font.secondary, fontSize: '0.8em'
+  opacity: 0.5, fontSize: '0.8em'
 }
 
 export const block = (height, width = height) => ({
