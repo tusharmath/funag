@@ -23,6 +23,7 @@ const model = ({DOM, route, audio, HTTP, MODEL}) => {
   // TODO: Pass HTTP.share()
 
   const selectedTrack$ = MODEL
+    .value$
     .filter(x => !x.isServer)
     .pluck('selectedTrack')
     .filter(Boolean)
@@ -35,7 +36,9 @@ const model = ({DOM, route, audio, HTTP, MODEL}) => {
     title: selectedTrack$.pluck('title'),
     events: searchBox.events$,
     audio: Observable.merge(playlist.audio$, controls.audio$),
-    MODEL: MODEL.mod(playlist.MODEL),
+    MODEL: Observable
+      .combineLatest(MODEL.value$, playlist.selectedTrack$.map(selectedTrack => ({selectedTrack})))
+      .map(([canary, next]) => ({...canary, ...next})),
     playlist, searchBox, controls
   }
 }
