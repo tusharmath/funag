@@ -11,6 +11,12 @@ import Playlist from './Playlist'
 import SearchBox from './Search'
 import BatchDOM from '../utils/BatchDOM'
 
+const getSelectedTrack$ = MODEL => MODEL
+  .value$
+  .filter(x => !x.isServer)
+  .pluck('selectedTrack')
+  .filter(Boolean)
+
 const view = ({playlist, searchBox, controls}) => Observable
   .combineLatest(
     playlist.DOM,
@@ -22,11 +28,7 @@ const view = ({playlist, searchBox, controls}) => Observable
 const model = ({DOM, route, audio, HTTP, MODEL}) => {
   // TODO: Pass HTTP.share()
 
-  const selectedTrack$ = MODEL
-    .value$
-    .filter(x => !x.isServer)
-    .pluck('selectedTrack')
-    .filter(Boolean)
+  const selectedTrack$ = getSelectedTrack$(MODEL)
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const playlist = Playlist({tracks$, DOM, audio, selectedTrack$})
