@@ -28,7 +28,7 @@ const intent = ({DOM}) => ({
   touchEnd$: DOM.select('.controls').events('touchend')
 })
 
-const model = ({touchMove$, touchEnd$, swipe$_, selectedTrack$, bottom$}) => {
+const model = ({touchMove$, touchEnd$, swipe$_, selectedTrack$}) => {
   const clientY$ = touchMove$.pluck('changedTouches').map(x => window.innerHeight - x[0].clientY)
   const swipedMag$ = clientY$.map(x => x / window.innerHeight)
   const slideStyle$ = clientY$
@@ -73,12 +73,12 @@ export const view = ({slideStyle$, swipe$, playback, scrobber, showControls$}) =
           }
         }, [scrobber, playback])))
 
-export default ({audio, selectedTrack$, DOM, completion$, bottom$}) => {
+export default ({audio, selectedTrack$, DOM, completion$}) => {
   const playback = Playback({selectedTrack$, audio, DOM})
   const scrobber = Scrobber({completion$})
   const {touchMove$, touchEnd$} = intent({DOM})
   const swipe$_ = D.swipe({DOM, select: '.controls'})
-  const {slideStyle$, swipe$, showControls$} = model({touchMove$, touchEnd$, swipe$_, selectedTrack$, bottom$})
+  const {slideStyle$, swipe$, showControls$} = model({touchMove$, touchEnd$, swipe$_, selectedTrack$})
   return {
     audio$: playback.audio$,
     DOM$: view({slideStyle$, swipe$, playback, scrobber, showControls$}),

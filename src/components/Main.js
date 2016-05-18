@@ -30,7 +30,7 @@ const model = ({DOM, route, audio, HTTP, MODEL}) => {
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const playlist = Playlist({tracks$, DOM, audio, selectedTrack$})
-  const controls = Controls({audio, selectedTrack$, DOM, MODEL})
+  const controls = Controls({audio, selectedTrack$, DOM})
   return {
     HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
