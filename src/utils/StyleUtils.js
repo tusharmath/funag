@@ -6,7 +6,6 @@
 
 import {i} from '@cycle/dom'
 import * as F from './Flexbox'
-import * as T from './Themes'
 
 export const size = (height, width = height) => ({height: `${height}px`, width: `${width}px`})
 export const position = coords => {
