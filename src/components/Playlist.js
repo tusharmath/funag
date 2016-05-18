@@ -10,7 +10,7 @@ import * as M from './Models'
 import * as SC from '../utils/SoundCloud'
 import * as P from '../layouts/Placeholders'
 
-const view = ({playlistItem$}) => {
+const view = ({playlistItem$, bottomPadding$}) => {
   return playlistItem$
     .map(tracks => tracks.map(x => x.DOM))
     .flatMapLatest(tracks => Observable.combineLatest(tracks))
@@ -21,16 +21,18 @@ const view = ({playlistItem$}) => {
         P.PlaylistItem
       ])
     ])
-    .map(view => div({
+    .combineLatest(bottomPadding$)
+    .map(([view, bottomPadding]) => div({
       className: 'playlist',
       style: {
         backgroundColor: '#fff',
-        padding: '62px 0'
+        padding: '62px 0',
+        paddingBottom: bottomPadding ? '62px' : 0
       }
     }, [view]))
 }
 
-const model = ({tracks$, DOM, audio, selectedTrack$, MODEL}) => {
+const model = ({tracks$, DOM, audio, selectedTrack$}) => {
   const playlistItem$ = tracks$.map(tracks => tracks.map((track, i) =>
     PlayListItem({track, DOM, audio, selectedTrack$}, i)
   ))
@@ -44,8 +46,10 @@ const model = ({tracks$, DOM, audio, selectedTrack$, MODEL}) => {
     .pluck('stream_url').map(url => url + SC.clientIDParams({}))
 
   const audio$ = M.Audio({url$})
+  const bottomPadding$ = selectedTrack$.map(Boolean).startWith(false)
 
   return {
+    bottomPadding$,
     selectedTrack$: click$,
     audio$,
     playlistItem$
@@ -53,8 +57,8 @@ const model = ({tracks$, DOM, audio, selectedTrack$, MODEL}) => {
 }
 
 export default sources => {
-  const {playlistItem$, audio$, selectedTrack$} = model(sources)
-  const vTree$ = view({playlistItem$})
+  const {playlistItem$, audio$, selectedTrack$, bottomPadding$} = model(sources)
+  const vTree$ = view({playlistItem$, bottomPadding$})
 
   return {
     DOM: vTree$, audio$, selectedTrack$
