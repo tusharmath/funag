@@ -41,57 +41,66 @@ const ArtWork = url => div({
     ...S.size(100)
   }
 })
+
+const model = ({slide$, playbackBtns, scrobber, selectedTrack$, playbackInfo}) =>
+  Observable.combineLatest(slide$, playbackBtns.DOM, scrobber.DOM, (slide, playbackBtns, scrobber) => ({
+    slide,
+    playbackBtns,
+    scrobber
+  }))
+    .withLatestFrom(selectedTrack$, playbackInfo.DOM, (control, selectedTrack, info) => ({
+      ...control,
+      selectedTrack,
+      info
+    }))
+
+const view = m => m
+  .map(x => div({
+    style: {
+      position: 'fixed',
+      height: '100%',
+      width: '100%',
+      backgroundColor: '#fff',
+      bottom: `-${window.innerHeight - x.slide.bottom - 62}`,
+      transition: x.slide.transition,
+      ...F.FlexCol
+    }
+  }, [
+    div({
+      style: {
+        position: 'absolute',
+        width: '100%',
+        height: '60%',
+        filter: 'blur(5px)',
+        '-webkitFilter': 'blur(5px)',
+        overflow: 'hidden'
+      }
+    }, [
+      x.selectedTrack.artwork_url ? ArtWorkLarge(x.selectedTrack.artwork_url) : DefaultArtWorkLarge
+    ]),
+    div({
+      style: {height: '60%', position: 'relative', ...F.RowMiddle}
+    }, [
+      x.selectedTrack.artwork_url ? ArtWork(x.selectedTrack.artwork_url) : A.DefaultArtwork(100)
+    ]),
+    div({
+      style: {
+        padding: '10px 0 10 10',
+        borderBottom: '1px solid #ededed',
+        marginTop: '10px'
+      }
+    }, x.info),
+    x.scrobber,
+    div({style: {...F.RowMiddle}}, x.playbackBtns)
+  ])).startWith(div())
+
 export default ({audio, selectedTrack$, DOM, completion$, slide$}) => {
   const playbackBtns = PlaybackButtons({selectedTrack$, audio, DOM})
+  const scrobber = Scrobber({completion$})
+  const playbackInfo = PlaybackInfo({selectedTrack$})
+  const m = model({slide$, playbackBtns, scrobber, selectedTrack$, playbackInfo})
   return {
-    DOM$: Observable.combineLatest(slide$, playbackBtns.DOM, Scrobber({completion$}).DOM, (slide, playbackBtns, scrobber) => ({
-        slide,
-        playbackBtns,
-        scrobber
-      }))
-      .withLatestFrom(selectedTrack$, PlaybackInfo({selectedTrack$}).DOM, (control, selectedTrack, info) => ({
-        ...control,
-        selectedTrack,
-        info
-      }))
-      .map(x => div({
-        style: {
-          position: 'fixed',
-          height: '100%',
-          width: '100%',
-          backgroundColor: '#fff',
-          bottom: `-${window.innerHeight - x.slide.bottom - 62}`,
-          transition: x.slide.transition,
-          ...F.FlexCol
-        }
-      }, [
-        div({
-          style: {
-            position: 'absolute',
-            width: '100%',
-            height: '60%',
-            filter: 'blur(5px)',
-            '-webkitFilter': 'blur(5px)',
-            overflow: 'hidden'
-          }
-        }, [
-          x.selectedTrack.artwork_url ? ArtWorkLarge(x.selectedTrack.artwork_url) : DefaultArtWorkLarge
-        ]),
-        div({
-          style: {height: '60%', position: 'relative', ...F.RowMiddle}
-        }, [
-          x.selectedTrack.artwork_url ? ArtWork(x.selectedTrack.artwork_url) : A.DefaultArtwork(100)
-        ]),
-        div({
-          style: {
-            padding: '10px 0 10 10',
-            borderBottom: '1px solid #ededed',
-            marginTop: '10px'
-          }
-        }, x.info),
-        x.scrobber,
-        div({style: {...F.RowMiddle}}, x.playbackBtns)
-      ])).startWith(div()),
+    DOM$: view(m),
     event$: DOM.select(':root').events('click'),
     audio: playbackBtns.audio$
   }
