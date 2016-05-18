@@ -5,7 +5,8 @@ export const showSoundVisualization = event$ => event$.map(x => x.event === 'pla
 export const showPausedSoundVisualization = event$ => event$.map(x => ['pause', 'loadstart'].includes(x.event))
 const audioEvents = audio => Observable.merge(
   audio.events('pause').map('pause'),
-  audio.events('playing').map('playing'),
+  audio.events('playing')
+    .flatMapLatest(() => audio.events('timeupdate').first()).map('playing'),
   audio.events('loadstart').map('loadstart')
 )
 export default ({selectedTrackId$, audio, id}) => {
