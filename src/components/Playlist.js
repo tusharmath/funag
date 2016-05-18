@@ -32,9 +32,9 @@ const view = ({playlistItem$, bottomPadding$}) => {
     }, [view]))
 }
 
-const model = ({tracks$, DOM, audio, selectedTrack$}) => {
+const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
   const playlistItem$ = tracks$.map(tracks => tracks.map((track, i) =>
-    PlayListItem({track, DOM, audio, selectedTrack$}, i)
+    PlayListItem({track, DOM, audio$, selectedTrack$}, i)
   ))
 
   const click$ = playlistItem$
@@ -45,13 +45,12 @@ const model = ({tracks$, DOM, audio, selectedTrack$}) => {
     .combineLatest(selectedTrack$, (_, b) => b)
     .pluck('stream_url').map(url => url + SC.clientIDParams({}))
 
-  const audio$ = M.Audio({url$})
   const bottomPadding$ = selectedTrack$.map(Boolean).startWith(false)
 
   return {
     bottomPadding$,
     selectedTrack$: click$,
-    audio$,
+    audio$: M.Audio({url$}),
     playlistItem$
   }
 }

@@ -35,22 +35,23 @@ const view = ({playback, scrobber, showControls$}) => {
     )
 }
 
-const model = ({audio, selectedTrack$}) => {
-  const completion$ = Observable.merge(audio
-    .events('timeupdate')
+const model = ({audio$, selectedTrack$}) => {
+  const completion$ = Observable.merge(audio$
+    .filter(({event}) => event === 'timeUpdate')
+    .pluck('audio')
     .throttle(1000)
     .map(x => x.currentTime / x.duration),
-    audio
-      .events('ended')
+    audio$
+      .filter(({event}) => event === 'ended')
       .map(1)
   ).startWith(0)
   const showControls$ = selectedTrack$.map(Boolean).startWith(false)
   return {completion$, showControls$}
 }
 
-export default ({audio, selectedTrack$, DOM}) => {
-  const {completion$, showControls$} = model({audio, selectedTrack$})
-  const playback = Playback({selectedTrack$, audio, DOM})
+export default ({audio$, selectedTrack$, DOM}) => {
+  const {completion$, showControls$} = model({audio$, selectedTrack$})
+  const playback = Playback({selectedTrack$, audio$, DOM})
   const scrobber = Scrobber({completion$})
   return {
     audio$: playback.audio$,

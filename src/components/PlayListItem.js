@@ -23,11 +23,11 @@ const trackInfoSTY = {
   color: T.Pallete.baseColorPrimaryFont,
   borderBottom: T.Pallete.divider
 }
-const PlayListItem = ({DOM, track, audio, selectedTrack$}) => {
+const PlayListItem = ({DOM, track, audio$, selectedTrack$}) => {
   const {title, user, duration, artwork_url, id} = track
   const click$ = DOM.select('.playlist-item').events('click').map(track)
   const selectedTrackId$ = selectedTrack$.pluck('id')
-  const status$ = OverlayStatus({selectedTrackId$, audio, id})
+  const status$ = OverlayStatus({selectedTrackId$, audio$, id})
   const animation$ = status$.filter(x => x === 'PLAY_ANIMATION').map(AnimatedOverlay)
   const pausedAnimation$ = status$.filter(x => x === 'PAUSE_ANIMATION').map(PausedOverlay)
   const clearAnimation$ = status$.filter(x => x === 'SHOW_NONE').map(null)
