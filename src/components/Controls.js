@@ -8,9 +8,13 @@ import {div} from '@cycle/dom'
 import ControlLarge from './ControlLarge'
 import ControlMini from './ControlMini'
 
-export default ({audio, selectedTrack$, DOM}) => {
+export default ({audio, selectedTrack$, DOM, MODEL}) => {
   const completion$ = audio.events('timeupdate').map(x => x.currentTime / x.duration).startWith(0)
-  const mini = ControlMini({audio, selectedTrack$, DOM, completion$})
+  const bottom$ = MODEL
+    .value$
+    .filter(x => !x.isServer)
+    .pluck('controlBottom')
+  const mini = ControlMini({audio, selectedTrack$, DOM, completion$, bottom$})
   const large = ControlLarge({audio, selectedTrack$, DOM, completion$, slide$: mini.slide$})
 
   return {

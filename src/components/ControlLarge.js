@@ -31,7 +31,7 @@ const ArtWorkLarge = url => div({
     width: '100%',
     height: '100%',
     backgroundImage: `url(${url})`,
-    backgroundSize: '200%',
+    backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat'
   }
 })
@@ -71,7 +71,8 @@ export default ({audio, selectedTrack$, DOM, completion$, slide$}) => {
             width: '100%',
             height: '60%',
             filter: 'blur(5px)',
-            '-webkitFilter': 'blur(5px)'
+            '-webkitFilter': 'blur(5px)',
+            overflow: 'hidden'
           }
         }, [
           x.selectedTrack.artwork_url ? ArtWorkLarge(x.selectedTrack.artwork_url) : DefaultArtWorkLarge

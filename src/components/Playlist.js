@@ -5,12 +5,10 @@
 'use strict'
 import {div} from '@cycle/dom'
 import {Observable} from 'rx'
-import isolate from '@cycle/isolate'
 import PlayListItem from './PlayListItem'
 import * as M from './Models'
 import * as SC from '../utils/SoundCloud'
 import * as P from '../layouts/Placeholders'
-import * as A from '../utils/Actions'
 
 const view = ({playlistItem$}) => {
   return playlistItem$
@@ -27,14 +25,14 @@ const view = ({playlistItem$}) => {
       className: 'playlist',
       style: {
         backgroundColor: '#fff',
-        margin: '62px 0'
+        padding: '62px 0'
       }
     }, [view]))
 }
 
-const model = ({tracks$, DOM, audio, selectedTrack$}) => {
+const model = ({tracks$, DOM, audio, selectedTrack$, MODEL}) => {
   const playlistItem$ = tracks$.map(tracks => tracks.map((track, i) =>
-    isolate(PlayListItem, track.id.toString())({track, DOM, audio, selectedTrack$}, i)
+    PlayListItem({track, DOM, audio, selectedTrack$}, i)
   ))
 
   const click$ = playlistItem$
@@ -47,18 +45,18 @@ const model = ({tracks$, DOM, audio, selectedTrack$}) => {
 
   const audio$ = M.Audio({url$})
 
-  const MODEL = click$
-    .map(selectedTrack => ({selectedTrack}))
-    .map(A.CONSTANT())
-
-  return {MODEL, audio$, playlistItem$}
+  return {
+    selectedTrack$: click$,
+    audio$,
+    playlistItem$
+  }
 }
 
 export default sources => {
-  const {playlistItem$, MODEL, audio$} = model(sources)
+  const {playlistItem$, audio$, selectedTrack$} = model(sources)
   const vTree$ = view({playlistItem$})
 
   return {
-    MODEL, DOM: vTree$, audio$
+    DOM: vTree$, audio$, selectedTrack$
   }
 }

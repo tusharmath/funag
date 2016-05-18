@@ -10,29 +10,35 @@ import Playback from './Playback'
 import * as S from '../utils/StyleUtils'
 import * as D from '../utils/DOMUtils'
 
-const ControlSTY = ({bottom, swipedMag, transition}) => {
+const ControlSTY = ({bottom, swipedMag, transition, show}) => {
   const opacity = (1 - swipedMag)
   return {
-    ...S.position({bottom, left: 0, right: 0}),
-    position: 'fixed',
+    ...S.fixed({bottom, left: 0, right: 0}),
+    transform: show ? 'translateY(0%)' : 'translateY(105%)',
     opacity: opacity,
-    transition
+    transition: transition || 'transform 300ms cubic-bezier(0.2, 0.9, 0.3, 1)'
   }
 }
+
 const event = event => target => ({target, event})
 var bottom_ = 0
-export default ({audio, selectedTrack$, DOM, completion$}) => {
-  const playback = Playback({selectedTrack$, audio, DOM})
-  const touchMove$ = DOM.select('.controls').events('touchmove')
-  const touchEnd$ = DOM.select('.controls').events('touchend')
+
+const intent = ({DOM}) => ({
+  touchMove$: DOM.select('.controls').events('touchmove'),
+  touchEnd$: DOM.select('.controls').events('touchend')
+})
+
+const model = ({touchMove$, touchEnd$, swipe$_, selectedTrack$, bottom$}) => {
   const clientY$ = touchMove$.pluck('changedTouches').map(x => window.innerHeight - x[0].clientY)
-  const slide$ = clientY$.map(x => {
-    bottom_ = bottom_ + (x - bottom_) * 0.3
-    return {bottom: bottom_, swipedMag: x / window.innerHeight}
-  })
+  const swipedMag$ = clientY$.map(x => x / window.innerHeight)
+  const slideStyle$ = clientY$
+    .withLatestFrom(swipedMag$)
+    .map(([clientY, swipedMag]) => {
+      bottom_ = bottom_ + (clientY - bottom_) * 0.3
+      return {bottom: bottom_, transition: 'none', swipedMag}
+    })
   const touchLeave$ = touchEnd$
-    .withLatestFrom(slide$, (a, b) => b.swipedMag > 0.5 ? 'SWIPE-UP' : 'SWIPE-DOWN')
-  const swipe$_ = D.swipe({DOM, select: '.controls'})
+    .withLatestFrom(swipedMag$, (a, b) => b > 0.5 ? 'SWIPE-UP' : 'SWIPE-DOWN')
   const swipe$ = Observable.merge(touchLeave$, swipe$_)
     .map(x => x === 'SWIPE-UP' ? {
       bottom: window.innerHeight - 62,
@@ -44,26 +50,40 @@ export default ({audio, selectedTrack$, DOM, completion$}) => {
       swipedMag: 0
     })
     .tap(x => bottom_ = x.bottom)
+  const showControls$ = selectedTrack$.map(Boolean).startWith(false)
+  return {slideStyle$, swipe$, showControls$}
+}
 
-  return {
-    audio$: playback.audio$,
-    DOM$: Observable.combineLatest(
-      Scrobber({completion$}).DOM,
-      playback.DOM,
-      Observable.merge(slide$, swipe$).startWith({bottom: 0})
+export const view = ({slideStyle$, swipe$, playback, scrobber, showControls$}) =>
+  Observable.combineLatest(
+    scrobber.DOM,
+    playback.DOM,
+    Observable.merge(slideStyle$, swipe$).startWith({bottom: 0}),
+    showControls$
     )
-      .map(([scrobber, playback, touch]) =>
+    .map(([scrobber, playback, touch, show]) =>
       div({
           className: 'controls',
-          style: ControlSTY(touch)
+          style: ControlSTY({...touch, show})
         },
         div({
           style: {
             boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.5)',
             backgroundColor: 'rgb(246, 246, 246)'
           }
-        }, [scrobber, playback]))),
+        }, [scrobber, playback])))
+
+export default ({audio, selectedTrack$, DOM, completion$, bottom$}) => {
+  const playback = Playback({selectedTrack$, audio, DOM})
+  const scrobber = Scrobber({completion$})
+  const {touchMove$, touchEnd$} = intent({DOM})
+  const swipe$_ = D.swipe({DOM, select: '.controls'})
+  const {slideStyle$, swipe$, showControls$} = model({touchMove$, touchEnd$, swipe$_, selectedTrack$, bottom$})
+  return {
+    audio$: playback.audio$,
+    DOM$: view({slideStyle$, swipe$, playback, scrobber, showControls$}),
     event$: touchMove$.map(event('preventDefault')),
-    slide$: Observable.merge(slide$, swipe$)
+    slide$: Observable.merge(slideStyle$, swipe$)
   }
 }
+
