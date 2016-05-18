@@ -7,7 +7,7 @@ import {div} from '@cycle/dom'
 
 export default ({completion$}) => {
   return {
-    DOM: completion$.throttle(500).map(completion =>
+    DOM: completion$.map(completion =>
       div([
         div({style: {height: '2px', width: '100%'}}, [
           div({

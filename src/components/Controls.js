@@ -34,9 +34,14 @@ const view = ({playback, scrobber, showControls$}) => {
 }
 
 const model = ({audio, selectedTrack$}) => {
-  const completion$ = audio.events('timeupdate')
+  const completion$ = Observable.merge(audio
+    .events('timeupdate')
     .throttle(1000)
-    .map(x => x.currentTime / x.duration).startWith(0)
+    .map(x => x.currentTime / x.duration),
+    audio
+      .events('ended')
+      .map(1)
+  ).startWith(0)
   const showControls$ = selectedTrack$.map(Boolean).startWith(false)
   return {completion$, showControls$}
 }
