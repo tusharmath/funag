@@ -40,7 +40,7 @@
     "route-parser": "0.0.5",
     "rx": "^4.1.0",
     "serviceworker-loader": "^0.1.0",
-    "stanga": "^1.0.0",
+    "stanga": "^2.0.0",
     "style-loader": "^0.13.1",
     "sw-toolbox": "^3.1.1",
     "webpack": "^1.13.0",
