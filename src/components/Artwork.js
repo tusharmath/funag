@@ -6,7 +6,7 @@
 import {div} from '@cycle/dom'
 import * as S from '../utils/StyleUtils'
 
-const DefaultArtwork = div({style: {...S.block(50), color: '#ccc', backgroundColor: '#F6F6F6'}}, [
+export const DefaultArtwork = size => div({style: {...S.block(size), color: '#ccc', backgroundColor: '#F6F6F6'}}, [
   div(S.fa('music'))
 ])
 export default url =>
@@ -18,4 +18,4 @@ export default url =>
       backgroundSize: '100%',
       ...S.size(50)
     }
-  }) : DefaultArtwork
+  }) : DefaultArtwork(50)

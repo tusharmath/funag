@@ -33,7 +33,7 @@ const model = ({DOM, route, audio, HTTP, MODEL}) => {
   return {
     HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
-    events: searchBox.events$,
+    events: Observable.merge(searchBox.events$, controls.event$),
     audio: Observable.merge(playlist.audio$, controls.audio$),
     MODEL: MODEL.mod(playlist.MODEL),
     playlist, searchBox, controls
