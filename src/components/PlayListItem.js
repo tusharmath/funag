@@ -10,6 +10,7 @@ import TrackDetail from './TrackDetail'
 import OverlayStatus from './OverlayStatus'
 import * as T from '../utils/Themes'
 import {AnimatedOverlay, PausedOverlay} from './ArtworkOverlay'
+import isolate from '@cycle/isolate'
 
 const playListItemSTY = {
   fontSize: '1em',
@@ -22,7 +23,7 @@ const trackInfoSTY = {
   color: T.font.primary,
   borderBottom: '1px solid rgb(249, 246, 246)'
 }
-export default ({DOM, track, audio, selectedTrack$}) => {
+const PlayListItem = ({DOM, track, audio, selectedTrack$}) => {
   const {title, user, duration, artwork_url, id} = track
   const click$ = DOM.select('.playlist-item').events('click').map(track)
   const selectedTrackId$ = selectedTrack$.pluck('id')
@@ -31,7 +32,6 @@ export default ({DOM, track, audio, selectedTrack$}) => {
   const pausedAnimation$ = status$.filter(x => x === 'PAUSE_ANIMATION').map(PausedOverlay)
   const clearAnimation$ = status$.filter(x => x === 'SHOW_NONE').map(null)
   const overlayItem$ = Observable.merge(animation$, pausedAnimation$, clearAnimation$)
-    .distinctUntilChanged()
   const trackStatus$ = overlayItem$.startWith(null)
     .map(overlay => div({style: {padding: `${T.BlockSpace}px`}}, [
       div({style: {position: 'relative'}}, [
@@ -50,3 +50,5 @@ export default ({DOM, track, audio, selectedTrack$}) => {
       ]))
   }
 }
+
+export default sources => isolate(PlayListItem, sources.track.id.toString())(sources)
