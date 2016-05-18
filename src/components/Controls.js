@@ -12,7 +12,7 @@ import * as S from '../utils/StyleUtils'
 const ControlSTY = show => ({
   ...S.fixed({bottom: 0, left: 0, right: 0}),
   transform: show ? 'translateY(0%)' : 'translateY(105%)',
-  transition: 'transform ease-in 300ms'
+  transition: 'transform 300ms cubic-bezier(0.2, 0.9, 0.3, 1.5)'
 })
 
 const view = ({playback, scrobber, showControls$}) => {
