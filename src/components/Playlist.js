@@ -9,7 +9,6 @@ import PlayListItem from './PlayListItem'
 import * as M from './Models'
 import * as SC from '../utils/SoundCloud'
 import * as P from '../layouts/Placeholders'
-import * as A from '../utils/Actions'
 
 const view = ({playlistItem$}) => {
   return playlistItem$
@@ -31,7 +30,7 @@ const view = ({playlistItem$}) => {
     }, [view]))
 }
 
-const model = ({tracks$, DOM, audio, selectedTrack$}) => {
+const model = ({tracks$, DOM, audio, selectedTrack$, MODEL}) => {
   const playlistItem$ = tracks$.map(tracks => tracks.map((track, i) =>
     PlayListItem({track, DOM, audio, selectedTrack$}, i)
   ))
@@ -46,18 +45,18 @@ const model = ({tracks$, DOM, audio, selectedTrack$}) => {
 
   const audio$ = M.Audio({url$})
 
-  const MODEL = click$
-    .map(selectedTrack => ({selectedTrack}))
-    .map(A.CONSTANT())
-
-  return {MODEL, audio$, playlistItem$}
+  return {
+    selectedTrack$: click$,
+    audio$,
+    playlistItem$
+  }
 }
 
 export default sources => {
-  const {playlistItem$, MODEL, audio$} = model(sources)
+  const {playlistItem$, audio$, selectedTrack$} = model(sources)
   const vTree$ = view({playlistItem$})
 
   return {
-    MODEL, DOM: vTree$, audio$
+    DOM: vTree$, audio$, selectedTrack$
   }
 }
