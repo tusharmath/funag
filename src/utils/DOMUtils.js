@@ -17,3 +17,5 @@ export const swipe = ({DOM, select}) => {
     .withLatestFrom(touchStart$, touchEnd$)
     .map(([, start, end]) => start.changedTouches[0].clientY > end.changedTouches[0].clientY ? 'SWIPE-UP' : 'SWIPE-DOWN')
 }
+
+export const event = event => target => ({target, event})

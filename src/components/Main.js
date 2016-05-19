@@ -27,18 +27,19 @@ const model = ({DOM, route, audio, HTTP, MODEL}) => {
     .filter(x => !x.isServer)
     .pluck('selectedTrack')
     .filter(Boolean)
+    .distinctUntilChanged()
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const playlist = Playlist({tracks$, DOM, audio, selectedTrack$})
-  const controls = Controls({audio, selectedTrack$, DOM})
+  const controls = Controls({audio, selectedTrack$, DOM, MODEL})
   return {
     HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
     events: Observable.merge(searchBox.events$, controls.event$),
     audio: Observable.merge(playlist.audio$, controls.audio$),
     MODEL: Observable
-      .combineLatest(MODEL.value$, playlist.selectedTrack$.map(selectedTrack => ({selectedTrack})))
-      .map(([canary, next]) => ({...canary, ...next})),
+      .combineLatest(MODEL.value$, playlist.selectedTrack$.map(selectedTrack => ({selectedTrack})), controls.control$.map(control => ({control})))
+      .map(([canary, next, control]) => ({...canary, ...next, ...control})),
     playlist, searchBox, controls
   }
 }

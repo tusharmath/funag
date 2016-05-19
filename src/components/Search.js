@@ -35,8 +35,6 @@ const searchBoxContainer = {
   margin: 0
 }
 
-const event = event => target => ({target, event})
-
 export default ({DOM, HTTP}) => {
   // TODO: Add unit tests
   const tracks$ = HTTP
@@ -50,9 +48,9 @@ export default ({DOM, HTTP}) => {
   const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
   const events$ = Observable
     .merge(
-      searchEl.events('submit').map(event('preventDefault')),
+      searchEl.events('submit').map(U.event('preventDefault')),
       searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
-        .map(event('blur'))
+        .map(U.event('blur'))
     )
 
   const isLoading$ = Observable.merge(value$.map(true), tracks$.map(false)).distinctUntilChanged()

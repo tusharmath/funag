@@ -21,6 +21,7 @@ export default ({selectedTrack$, audio, DOM}) => {
       )
       .map(views => div({
         style: {...F.RowLeft, alignItems: 'center'}
-      }, views))
+      }, views)),
+    event$: playbackButtons.event$
   }
 }

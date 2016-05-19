@@ -6,45 +6,14 @@
 import {Observable} from 'rx'
 import {div} from '@cycle/dom'
 import Scrobber from './Scrobber'
-import * as S from '../utils/StyleUtils'
 import * as F from '../utils/Flexbox'
 import * as A from './Artwork'
+import ArtWork from './ArtWork'
 import PlaybackButtons from './PlaybackButtons'
 import PlaybackInfo from './PlaybackInfo'
 
-const DefaultArtWorkLarge = div({
-  style: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    color: '#ccc',
-    backgroundColor: 'rgb(249, 249, 249)',
-    ...F.RowMiddle
-  }
-}, [
-  div(S.fa('music', 2))
-])
-
-const ArtWorkLarge = url => div({
-  style: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundImage: `url(${url})`,
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat'
-  }
-})
-const ArtWork = url => div({
-  style: {
-    background: `url(${url})`,
-    ...S.size(100)
-  }
-})
-
-const model = ({slide$, playbackBtns, scrobber, selectedTrack$, playbackInfo}) =>
-  Observable.combineLatest(slide$, playbackBtns.DOM, scrobber.DOM, (slide, playbackBtns, scrobber) => ({
-    slide,
+const model = ({playbackBtns, scrobber, selectedTrack$, playbackInfo}) =>
+  Observable.combineLatest(playbackBtns.DOM, scrobber.DOM, (playbackBtns, scrobber) => ({
     playbackBtns,
     scrobber
   }))
@@ -54,54 +23,69 @@ const model = ({slide$, playbackBtns, scrobber, selectedTrack$, playbackInfo}) =
       info
     }))
 
-const view = m => m
-  .map(x => div({
-    style: {
-      position: 'fixed',
-      height: '100%',
-      width: '100%',
-      backgroundColor: '#fff',
-      bottom: `-${window.innerHeight - x.slide.bottom - 62}`,
-      transition: x.slide.transition,
-      ...F.FlexCol
-    }
-  }, [
-    div({
+const view = ({m$, control$, selectedTrack$}) => {
+  const show$ = control$.map(x => x === 'LARGE')
+  return Observable
+    .combineLatest(show$, m$, (show, m) => ({show, m}))
+    .withLatestFrom(selectedTrack$, (a, selectedTrack) => ({...a, selectedTrack}))
+    .map(x => div({
+      className: 'controlLarge',
       style: {
-        position: 'absolute',
+        position: 'fixed',
+        top: 0,
+        height: '100%',
         width: '100%',
-        height: '60%',
-        filter: 'blur(5px)',
-        '-webkitFilter': 'blur(5px)',
-        overflow: 'hidden'
+        backgroundColor: '#fff',
+        transition: 'all 200ms cubic-bezier(0, 0.6, 0.34, 1)',
+        transform: x.show ? 'translateY(0%)' : 'translateY(100%)',
+        ...F.FlexCol
       }
     }, [
-      x.selectedTrack.artwork_url ? ArtWorkLarge(x.selectedTrack.artwork_url) : DefaultArtWorkLarge
-    ]),
-    div({
-      style: {height: '60%', position: 'relative', ...F.RowMiddle}
-    }, [
-      x.selectedTrack.artwork_url ? ArtWork(x.selectedTrack.artwork_url) : A.DefaultArtwork(100)
-    ]),
-    div({
-      style: {
-        padding: '10px 0 10 10',
-        borderBottom: '1px solid #ededed',
-        marginTop: '10px'
-      }
-    }, x.info),
-    x.scrobber,
-    div({style: {...F.RowMiddle}}, x.playbackBtns)
-  ])).startWith(div())
+      div({
+        style: {
+          position: 'absolute',
+          width: '100%',
+          height: '60%',
+          filter: 'blur(5px)',
+          '-webkitFilter': 'blur(5px)',
+          overflow: 'hidden'
+        }
+      }, [
+        x.selectedTrack.artwork_url ? A.ArtWorkLarge(x.selectedTrack.artwork_url) : A.DefaultArtWorkLarge
+      ]),
+      div({
+        style: {height: '60%', position: 'relative', ...F.RowMiddle}
+      }, [
+        x.selectedTrack.artwork_url ? ArtWork(x.selectedTrack.artwork_url, 100) : A.DefaultArtwork(100)
+      ]),
+      div({
+        style: {
+          padding: '10px 0 10 10',
+          borderBottom: '1px solid #ededed',
+          marginTop: '10px'
+        }
+      }, x.m.info),
+      x.m.scrobber,
+      div({style: {...F.RowMiddle, flex: '1 0 0'}}, x.m.playbackBtns)
+    ]))
+    .tap(x => console.log('HELL-LARGE'))
+    .startWith(null)
+}
 
-export default ({audio, selectedTrack$, DOM, completion$, slide$}) => {
+export const intent = ({DOM}) => ({
+  click$: DOM.select('.controlLarge').events('click')
+})
+
+export default ({audio, selectedTrack$, DOM, completion$, control$}) => {
+  const {click$} = intent({DOM})
   const playbackBtns = PlaybackButtons({selectedTrack$, audio, DOM})
   const scrobber = Scrobber({completion$})
   const playbackInfo = PlaybackInfo({selectedTrack$})
-  const m = model({slide$, playbackBtns, scrobber, selectedTrack$, playbackInfo})
+  const m$ = model({playbackBtns, scrobber, selectedTrack$, playbackInfo})
   return {
-    DOM$: view(m),
-    event$: DOM.select(':root').events('click'),
-    audio: playbackBtns.audio$
+    DOM$: view({m$, control$, selectedTrack$, scrobber, playbackInfo}),
+    event$: playbackBtns.event$,
+    audio$: playbackBtns.audio$,
+    click$
   }
 }
