@@ -13,8 +13,8 @@ import PlaybackButtonsLarge from './PlaybackButtonsLarge'
 import PlaybackInfo from './PlaybackInfo'
 import Playtime from './Playtime'
 
-const model = ({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime}) =>
-  Observable.combineLatest(playbackBtns.DOM, scrobber.DOM, playtime.DOM, (playbackBtns, scrobber, playtime) => ({
+const model = ({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime, control$}) =>
+  Observable.combineLatest(control$, playbackBtns.DOM, scrobber.DOM, playtime.DOM, (a, playbackBtns, scrobber, playtime) => ({
     playbackBtns,
     scrobber,
     playtime
@@ -83,8 +83,8 @@ export default ({audio, selectedTrack$, DOM, completion$, control$, timeupdate$}
   const playbackBtns = PlaybackButtonsLarge({selectedTrack$, audio, DOM})
   const scrobber = Scrobber({completion$})
   const playbackInfo = PlaybackInfo({selectedTrack$})
-  const playtime = Playtime({selectedTrack$, timeupdate$})
-  const m$ = model({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime})
+  const playtime = Playtime({selectedTrack$, timeupdate$, control$})
+  const m$ = model({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime, control$})
   return {
     DOM$: view({m$, control$, selectedTrack$, scrobber, playbackInfo}),
     event$: playbackBtns.event$,

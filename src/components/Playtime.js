@@ -3,26 +3,29 @@
  */
 
 'use strict'
+import {Observable} from 'rx'
 import {div} from '@cycle/dom'
 import * as F from '../utils/Flexbox'
 import * as S from '../utils/SoundCloud'
 
-const view = ({timeupdate$}) => timeupdate$
-  .throttle(1000)
-  .map(x =>
-  div({
-    style: {
-      ...F.RowSpaceBetween,
-      padding: '5px',
-      fontSize: '0.5em',
-      fontWeight: '100'
-    }
-  }, [div(S.durationFormat(x.currentTime, 'sec')), div(S.durationFormat(x.duration, 'sec'))])
-)
+const view = ({selectedTrack$, timeupdate$, control$}) => {
+  return Observable.combineLatest(control$, timeupdate$.throttle(500).startWith({currentTime: 0}), (a, b) => b)
+    .withLatestFrom(selectedTrack$)
+    .map(([audio, selected]) =>
+      div({
+        style: {
+          ...F.RowSpaceBetween,
+          padding: '5px',
+          fontSize: '0.5em',
+          fontWeight: '100'
+        }
+      }, [div(S.durationFormat(audio.currentTime, 'sec')), div(S.durationFormat(selected.duration))])
+    )
+}
 
-export default ({timeupdate$}) => {
+export default sources => {
   return {
-    DOM: view({timeupdate$})
+    DOM: view(sources)
   }
 }
 
