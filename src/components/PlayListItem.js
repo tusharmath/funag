@@ -25,7 +25,7 @@ const trackInfoSTY = {
 }
 const PlayListItem = ({DOM, track, audio, selectedTrack$}) => {
   const {title, user, duration, artwork_url, id} = track
-  const click$ = DOM.select('.playlist-item').events('click').map(track).tap(x => console.log(x))
+  const click$ = DOM.select('.playlist-item').events('click').map(track)
   const selectedTrackId$ = selectedTrack$.pluck('id')
   const status$ = OverlayStatus({selectedTrackId$, audio, id})
   const animation$ = status$.filter(x => x === 'PLAY_ANIMATION').map(AnimatedOverlay)

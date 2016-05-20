@@ -9,13 +9,15 @@ import Scrobber from './Scrobber'
 import * as F from '../utils/Flexbox'
 import * as A from './Artwork'
 import ArtWork from './ArtWork'
-import PlaybackButtons from './PlaybackButtons'
+import PlaybackButtonsLarge from './PlaybackButtonsLarge'
 import PlaybackInfo from './PlaybackInfo'
+import Playtime from './Playtime'
 
-const model = ({playbackBtns, scrobber, selectedTrack$, playbackInfo}) =>
-  Observable.combineLatest(playbackBtns.DOM, scrobber.DOM, (playbackBtns, scrobber) => ({
+const model = ({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime}) =>
+  Observable.combineLatest(playbackBtns.DOM, scrobber.DOM, playtime.DOM, (playbackBtns, scrobber, playtime) => ({
     playbackBtns,
-    scrobber
+    scrobber,
+    playtime
   }))
     .withLatestFrom(selectedTrack$, playbackInfo.DOM, (control, selectedTrack, info) => ({
       ...control,
@@ -65,10 +67,10 @@ const view = ({m$, control$, selectedTrack$}) => {
           marginTop: '10px'
         }
       }, x.m.info),
+      x.m.playtime,
       x.m.scrobber,
-      div({style: {...F.RowMiddle, flex: '1 0 0'}}, x.m.playbackBtns)
+      x.m.playbackBtns
     ]))
-    .tap(x => console.log('HELL-LARGE'))
     .startWith(null)
 }
 
@@ -76,12 +78,13 @@ export const intent = ({DOM}) => ({
   click$: DOM.select('.controlLarge').events('click')
 })
 
-export default ({audio, selectedTrack$, DOM, completion$, control$}) => {
+export default ({audio, selectedTrack$, DOM, completion$, control$, timeupdate$}) => {
   const {click$} = intent({DOM})
-  const playbackBtns = PlaybackButtons({selectedTrack$, audio, DOM})
+  const playbackBtns = PlaybackButtonsLarge({selectedTrack$, audio, DOM})
   const scrobber = Scrobber({completion$})
   const playbackInfo = PlaybackInfo({selectedTrack$})
-  const m$ = model({playbackBtns, scrobber, selectedTrack$, playbackInfo})
+  const playtime = Playtime({selectedTrack$, timeupdate$})
+  const m$ = model({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime})
   return {
     DOM$: view({m$, control$, selectedTrack$, scrobber, playbackInfo}),
     event$: playbackBtns.event$,
