@@ -20,6 +20,7 @@ const model = ({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime, 
     scrobber,
     playtime
   }))
+    .distinctUntilChanged()
     .withLatestFrom(selectedTrack$, playbackInfo.DOM, (control, selectedTrack, info) => ({
       ...control,
       selectedTrack,
@@ -36,7 +37,7 @@ const view = ({m$}) => {
         height: '100%',
         width: '100%',
         backgroundColor: '#fff',
-        transition: 'all 200ms cubic-bezier(0, 0.6, 0.34, 1)',
+        transition: 'all 300ms cubic-bezier(0, 0.6, 0.34, 1)',
         transform: x.control === 'LARGE' ? 'translateY(0%)' : 'translateY(100%)',
         ...F.FlexCol
       }
@@ -84,7 +85,7 @@ export default ({audio, selectedTrack$, DOM, completion$, control$, timeupdate$}
   const playtime = Playtime({selectedTrack$, timeupdate$, control$})
   const m$ = model({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime, control$})
   return {
-    DOM$: view({m$, control$, selectedTrack$, scrobber, playbackInfo}),
+    DOM$: view({m$}),
     event$: playbackBtns.event$,
     audio$: playbackBtns.audio$,
     click$
