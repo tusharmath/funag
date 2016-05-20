@@ -1,25 +1,28 @@
+'use strict'
+
 import {Observable} from 'rx'
 
-export const isSelected = (event$, id) => event$
-  .filter(([event, _id]) => _id === id)
+export const DEFAULT = -1
+export const PLAYING = 0
+export const PAUSED = 1
 
-export const playing = (event$, id) => isSelected(event$, id)
-  .filter(([{event}]) => event === 'reallyPlaying')
-  .map('PLAY_ANIMATION')
+// TODO: Use numbers instead of strings to represent states
+export const getStatus$ = ({selectedTrackId$, audio$, tracks$}) => {
+  const getStatus = ([event, id, tracks]) => tracks
+    .map(track => {
+      const isSelected = track === id
+      if ([isSelected, event === 'reallyPlaying'].every(Boolean)) {
+        return PLAYING
+      }
+      if ([isSelected, ['pause', 'loadStart'].includes(event)].every(Boolean)) {
+        return PAUSED
+      }
+      return DEFAULT
+    })
 
-export const paused = (event$, id) => isSelected(event$, id)
-  .filter(([{event}]) => ['pause', 'loadStart'].includes(event))
-  .map('PAUSE_ANIMATION')
-
-export const noAnime = (event$, id) => event$
-  .filter(([{event}, _id]) => [_id !== id, event === 'ended'].some(Boolean))
-  .map('SHOW_NONE')
-
-export default ({selectedTrackId$, audio$, id}) => {
-  const event$ = audio$.withLatestFrom(selectedTrackId$)
-  const animation$ = playing(event$, id)
-  const pauseAnime$ = paused(event$, id)
-  const noAnime$ = noAnime(event$, id)
-  return Observable.merge(animation$, pauseAnime$, noAnime$).startWith('SHOW_NONE')
-    .distinctUntilChanged()
+  const iniStatus$ = tracks$.map(tracks => tracks.map(() => DEFAULT)).first()
+  const isRequired = x => ['reallyPlaying', 'pause', 'loadStart', 'ended'].includes(x)
+  const requiredAudio$ = audio$.pluck('event').filter(isRequired)
+  const status$ = Observable.combineLatest(requiredAudio$, selectedTrackId$, tracks$).map(getStatus)
+  return Observable.merge(iniStatus$, status$)
 }

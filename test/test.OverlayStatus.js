@@ -6,13 +6,17 @@
 
 import {ReactiveTest, TestScheduler} from 'rx'
 import test from 'ava'
-import OverlayStatus from '../src/utils/OverlayStatus'
-const {onNext, onCompleted} = ReactiveTest
+import {getStatus$, DEFAULT, PLAYING, PAUSED} from '../src/utils/OverlayStatus'
+const {onNext} = ReactiveTest
 
-test(t => {
+test('all statuses', t => {
   const sh = new TestScheduler()
   const selectedTrackId$ = sh.createColdObservable(
     onNext(0, 10)
+  )
+
+  const tracks$ = sh.createColdObservable(
+    onNext(0, [10, 11])
   )
   const audio$ = sh.createHotObservable(
     onNext(210, {event: 'reallyPlaying'}),
@@ -20,15 +24,62 @@ test(t => {
     onNext(230, {event: 'reallyPlaying'}),
     onNext(240, {event: 'ended'})
   )
-  const {messages} = sh.startScheduler(() => OverlayStatus({selectedTrackId$, audio$, id: 10}))
-  t.deepEqual(
-    messages, [
-      onNext(200, 'SHOW_NONE'),
+  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
+  t.deepEqual(messages, [
+    onNext(201, [DEFAULT, DEFAULT]),
+    onNext(210, [PLAYING, DEFAULT]),
+    onNext(220, [PAUSED, DEFAULT]),
+    onNext(230, [PLAYING, DEFAULT]),
+    onNext(240, [DEFAULT, DEFAULT])
+  ])
+})
 
-      onNext(210, 'PLAY_ANIMATION'),
-      onNext(220, 'PAUSE_ANIMATION'),
-      onNext(230, 'PLAY_ANIMATION'),
-      onNext(240, 'SHOW_NONE')
-    ]
+test('dynamic tracks', t => {
+  const sh = new TestScheduler()
+  const selectedTrackId$ = sh.createColdObservable(
+    onNext(0, 10)
   )
+
+  const tracks$ = sh.createHotObservable(
+    onNext(205, [10, 11]),
+    onNext(300, [11, 12]),
+    onNext(400, [12, 10])
+  )
+  const audio$ = sh.createHotObservable(
+    onNext(210, {event: 'reallyPlaying'})
+  )
+  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
+  t.deepEqual(messages, [
+    // 10, 11
+    onNext(205, [DEFAULT, DEFAULT]),
+    onNext(210, [PLAYING, DEFAULT]),
+
+    // 11, 12
+    onNext(300, [DEFAULT, DEFAULT]),
+
+    // 12, 10
+    onNext(400, [DEFAULT, PLAYING])
+  ])
+})
+
+test('ignore timeUpdate', t => {
+  const sh = new TestScheduler()
+  const selectedTrackId$ = sh.createColdObservable(
+    onNext(0, 10)
+  )
+
+  const tracks$ = sh.createHotObservable(
+    onNext(205, [10, 11])
+  )
+  const audio$ = sh.createHotObservable(
+    onNext(210, {event: 'reallyPlaying'}),
+    onNext(220, {event: 'timeUpdate'}),
+    onNext(230, {event: 'timeUpdate'})
+  )
+  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
+  t.deepEqual(messages, [
+    // 10, 11
+    onNext(205, [DEFAULT, DEFAULT]),
+    onNext(210, [PLAYING, DEFAULT])
+  ])
 })
