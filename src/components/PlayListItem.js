@@ -51,4 +51,5 @@ const PlayListItem = ({DOM, track, audio$, selectedTrack$}) => {
   }
 }
 
+// TODO: Rename file PlayListItem => Track
 export default sources => isolate(PlayListItem, sources.track.id.toString())(sources)
