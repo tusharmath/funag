@@ -14,7 +14,8 @@ import PlaybackInfo from './PlaybackInfo'
 import Playtime from './Playtime'
 
 const model = ({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime, control$}) =>
-  Observable.combineLatest(control$, playbackBtns.DOM, scrobber.DOM, playtime.DOM, (a, playbackBtns, scrobber, playtime) => ({
+  Observable.combineLatest(control$, playbackBtns.DOM, scrobber.DOM, playtime.DOM, (control, playbackBtns, scrobber, playtime) => ({
+    control,
     playbackBtns,
     scrobber,
     playtime
@@ -25,10 +26,8 @@ const model = ({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime, 
       info
     }))
 
-const view = ({m$, control$, selectedTrack$}) => {
-  const show$ = control$.map(x => x === 'LARGE')
-  return Observable
-    .combineLatest(show$, m$, (show, m) => ({show, m}))
+const view = ({m$}) => {
+  return m$
     .map(x => div({
       className: 'controlLarge',
       style: {
@@ -38,7 +37,7 @@ const view = ({m$, control$, selectedTrack$}) => {
         width: '100%',
         backgroundColor: '#fff',
         transition: 'all 200ms cubic-bezier(0, 0.6, 0.34, 1)',
-        transform: x.show ? 'translateY(0%)' : 'translateY(100%)',
+        transform: x.control === 'LARGE' ? 'translateY(0%)' : 'translateY(100%)',
         ...F.FlexCol
       }
     }, [
@@ -52,12 +51,12 @@ const view = ({m$, control$, selectedTrack$}) => {
           overflow: 'hidden'
         }
       }, [
-        x.m.selectedTrack.artwork_url ? A.ArtWorkLarge(x.m.selectedTrack.artwork_url) : A.DefaultArtWorkLarge
+        x.selectedTrack.artwork_url ? A.ArtWorkLarge(x.selectedTrack.artwork_url) : A.DefaultArtWorkLarge
       ]),
       div({
         style: {height: '60%', position: 'relative', ...F.RowMiddle}
       }, [
-        x.m.selectedTrack.artwork_url ? ArtWork(x.m.selectedTrack.artwork_url, 100) : A.DefaultArtwork(100)
+        x.selectedTrack.artwork_url ? ArtWork(x.selectedTrack.artwork_url, 100) : A.DefaultArtwork(100)
       ]),
       div({
         style: {
@@ -65,10 +64,10 @@ const view = ({m$, control$, selectedTrack$}) => {
           borderBottom: '1px solid #ededed',
           marginTop: '10px'
         }
-      }, x.m.info),
-      x.m.playtime,
-      x.m.scrobber,
-      x.m.playbackBtns
+      }, x.info),
+      x.playtime,
+      x.scrobber,
+      x.playbackBtns
     ]))
     .startWith(null)
 }
