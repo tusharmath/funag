@@ -29,7 +29,6 @@ const view = ({m$, control$, selectedTrack$}) => {
   const show$ = control$.map(x => x === 'LARGE')
   return Observable
     .combineLatest(show$, m$, (show, m) => ({show, m}))
-    .withLatestFrom(selectedTrack$, (a, selectedTrack) => ({...a, selectedTrack}))
     .map(x => div({
       className: 'controlLarge',
       style: {
@@ -53,12 +52,12 @@ const view = ({m$, control$, selectedTrack$}) => {
           overflow: 'hidden'
         }
       }, [
-        x.selectedTrack.artwork_url ? A.ArtWorkLarge(x.selectedTrack.artwork_url) : A.DefaultArtWorkLarge
+        x.m.selectedTrack.artwork_url ? A.ArtWorkLarge(x.m.selectedTrack.artwork_url) : A.DefaultArtWorkLarge
       ]),
       div({
         style: {height: '60%', position: 'relative', ...F.RowMiddle}
       }, [
-        x.selectedTrack.artwork_url ? ArtWork(x.selectedTrack.artwork_url, 100) : A.DefaultArtwork(100)
+        x.m.selectedTrack.artwork_url ? ArtWork(x.m.selectedTrack.artwork_url, 100) : A.DefaultArtwork(100)
       ]),
       div({
         style: {
