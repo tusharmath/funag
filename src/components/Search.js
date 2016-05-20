@@ -16,10 +16,10 @@ const searchBoxSTY = {
   border: 'none',
   width: '100%',
   fontSize: '1em',
-  color: T.font.primary,
+  color: T.Pallete.primaryColorPrimaryFont,
   fontWeight: '600',
   outline: 'none',
-  backgroundColor: 'inherit'
+  backgroundColor: 'transparent'
 }
 
 const searchBoxContainer = {
@@ -27,9 +27,9 @@ const searchBoxContainer = {
   alignItems: 'center',
   padding: `0 ${T.BlockSpace}px`,
   minHeight: `${T.BlockHeight}px`,
-  color: T.font.primary,
-  boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.50)',
-  backgroundColor: 'rgb(246, 246, 246)',
+  boxShadow: T.Pallete.shadow,
+  backgroundColor: T.Pallete.primaryColor,
+  color: T.Pallete.primaryColorPrimaryFont,
   ...S.position({top: 0, left: 0, right: 0}),
   position: 'fixed',
   margin: 0

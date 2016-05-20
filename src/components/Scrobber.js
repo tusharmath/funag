@@ -4,22 +4,34 @@
 
 'use strict'
 import {div} from '@cycle/dom'
+import * as S from '../utils/StyleUtils'
+import {Pallete} from '../utils/Themes'
 
 export default ({completion$}) => {
   return {
-    DOM: completion$.throttle(500).map(completion =>
+    DOM: completion$.map(completion =>
       div([
         div({style: {height: '2px', width: '100%'}}, [
           div({
             style: {
               transition: 'transform 100ms linear',
-              background: '#f00',
+              background: Pallete.primaryDarkColor,
               height: '100%',
               width: '100%',
               transform: `translateX(${100 * completion - 100}%)`,
               transformOrigin: 'left'
             }
-          })
+          }, [
+            div({
+              style: {
+                ... {top: 0, right: 0, position: 'absolute'},
+                ...{...S.block(15), borderRadius: '20px'},
+                backgroundColor: Pallete.accentColor,
+                transform: 'translateY(-50%)',
+                boxShadow: Pallete.shadow
+              }
+            })
+          ])
         ])
       ])
     )

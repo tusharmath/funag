@@ -6,7 +6,6 @@
 
 import {i} from '@cycle/dom'
 import * as F from './Flexbox'
-import * as T from './Themes'
 
 export const size = (height, width = height) => ({height: `${height}px`, width: `${width}px`})
 export const position = coords => {
@@ -38,7 +37,7 @@ export const overflowEllipsisSTY = {
 }
 
 export const subtitleSTY = {
-  color: T.font.secondary, fontSize: '0.8em'
+  opacity: 0.5, fontSize: '0.8em'
 }
 
 export const block = (height, width = height) => ({
