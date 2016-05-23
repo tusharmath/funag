@@ -7,7 +7,6 @@ import {Observable} from 'rx'
 import {div} from '@cycle/dom'
 import * as F from '../utils/Flexbox'
 import * as S from '../utils/SoundCloud'
-import * as T from '../utils/Themes'
 
 const view = ({selectedTrack$, timeupdate$}) => {
   return Observable.combineLatest(selectedTrack$, timeupdate$.startWith({audio: {currentTime: 0}}).throttle(500))
