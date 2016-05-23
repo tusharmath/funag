@@ -14,8 +14,8 @@ export default ({audio, selectedTrack$, DOM, MODEL}) => {
     .pluck('control')
   const timeupdate$ = audio.events('timeupdate')
   const completion$ = timeupdate$.map(x => x.currentTime / x.duration).startWith(0)
-  const mini = ControlMini({audio, selectedTrack$, DOM, completion$, control$})
-  const large = ControlLarge({audio, selectedTrack$, DOM, completion$, slide$: mini.slide$, control$, timeupdate$})
+  const mini = ControlMini({audio, selectedTrack$, DOM, completion$})
+  const large = ControlLarge({audio, selectedTrack$, DOM, completion$, slide$: mini.slide$, timeupdate$, show$: control$.map(x => x === 'LARGE')})
 
   return {
     audio$: Observable.merge(mini.audio$, large.audio$).distinctUntilChanged(),
@@ -24,3 +24,4 @@ export default ({audio, selectedTrack$, DOM, MODEL}) => {
     control$: Observable.merge(mini.click$.map('LARGE'), large.click$.map('MINI')).startWith('MINI')
   }
 }
+

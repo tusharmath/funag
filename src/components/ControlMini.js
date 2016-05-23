@@ -28,12 +28,10 @@ const model = ({selectedTrack$}) => {
   return {showControls$}
 }
 
-export const view = ({playback, scrobber, showControls$, control$}) => {
-  const hide$ = control$.filter(x => x !== 'MINI').map(div())
-  const show$ = Observable
-    .combineLatest(control$, scrobber.DOM, playback.DOM, showControls$)
-    .filter(x => x[0] === 'MINI')
-    .map(([, scrobber, playback, show]) =>
+export const view = ({playback, scrobber, showControls$}) => {
+  return Observable
+    .combineLatest(scrobber.DOM, playback.DOM, showControls$)
+    .map(([scrobber, playback, show]) =>
       div({
         className: 'controls',
         style: ControlSTY({show})
@@ -45,17 +43,16 @@ export const view = ({playback, scrobber, showControls$, control$}) => {
           }
         }, [scrobber, playback]))
     )
-  return Observable.merge(show$, hide$)
 }
 
-export default ({audio, selectedTrack$, DOM, completion$, control$}) => {
+export default ({audio, selectedTrack$, DOM, completion$}) => {
   const playback = Playback({selectedTrack$, audio, DOM})
   const scrobber = Scrobber({completion$})
   const {click$} = intent({DOM})
   const {showControls$} = model({selectedTrack$})
   return {
     audio$: playback.audio$,
-    DOM$: view({playback, scrobber, showControls$, control$}).distinctUntilChanged(),
+    DOM$: view({playback, scrobber, showControls$}).distinctUntilChanged(),
     event$: playback.event$,
     click$
   }
