@@ -8,7 +8,6 @@ import {div} from '@cycle/dom'
 import Scrobber from './Scrobber'
 import Playback from './Playback'
 import * as S from '../utils/StyleUtils'
-import * as D from '../utils/DOMUtils'
 
 const ControlSTY = ({bottom, transition, show}) => {
   return {
