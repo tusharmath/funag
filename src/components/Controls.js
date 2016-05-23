@@ -43,7 +43,8 @@ const model = ({audio$, selectedTrack$}) => {
     .map(x => x.currentTime / x.duration),
     audio$
       .filter(({event}) => event === 'ended')
-      .map(1)
+      .map(1),
+    selectedTrack$.map(0)
   ).startWith(0)
   const showControls$ = selectedTrack$.map(Boolean).startWith(false)
   return {completion$, showControls$}
