@@ -1,7 +1,7 @@
 /**
  * Created by tushar.mathur on 24/04/16.
  */
-
+// TODO: Rename to TrackList
 'use strict'
 import {div} from '@cycle/dom'
 import {Observable} from 'rx'
@@ -9,8 +9,9 @@ import PlayListItem from './PlayListItem'
 import * as M from './Models'
 import * as SC from '../utils/SoundCloud'
 import * as P from '../layouts/Placeholders'
+import {getStatus$} from '../utils/OverlayStatus'
 
-const view = ({playlistItem$}) => {
+const view = ({playlistItem$, bottomPadding$}) => {
   return playlistItem$
     .map(tracks => tracks.map(x => x.DOM))
     .flatMapLatest(tracks => Observable.combineLatest(tracks))
@@ -21,19 +22,34 @@ const view = ({playlistItem$}) => {
         P.PlaylistItem
       ])
     ])
-    .map(view => div({
+    .combineLatest(bottomPadding$)
+    .map(([view, bottomPadding]) => div({
       className: 'playlist',
       style: {
         backgroundColor: '#fff',
-        padding: '62px 0'
+        padding: '62px 0',
+        paddingBottom: bottomPadding ? '62px' : 0
       }
     }, [view]))
 }
 
-const model = ({tracks$, DOM, audio, selectedTrack$, MODEL}) => {
-  const playlistItem$ = tracks$.map(tracks => tracks.map((track, i) =>
-    PlayListItem({track, DOM, audio, selectedTrack$}, i)
-  ))
+const createPlaylistItem = ({track, index, statuses, DOM}) => {
+  const status = statuses[index]
+  return PlayListItem({track, DOM, status})
+}
+
+const toPlaylistItem = ({tracks, statuses, DOM}) => {
+  return tracks.map((track, index) => createPlaylistItem({track, index, statuses, DOM}))
+}
+
+const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
+  const trackIds$ = tracks$.map(x => x.map(x => x.id))
+  const selectedTrackId$ = selectedTrack$.pluck('id')
+  const status$ = getStatus$({selectedTrackId$, audio$, tracks$: trackIds$})
+
+  const playlistItem$ = Observable
+    .combineLatest(tracks$, status$)
+    .map(([tracks, statuses]) => toPlaylistItem({tracks, statuses, DOM}))
 
   const click$ = playlistItem$
     .map(tracks => tracks.map(x => x.click$))
@@ -43,18 +59,19 @@ const model = ({tracks$, DOM, audio, selectedTrack$, MODEL}) => {
     .combineLatest(selectedTrack$, (_, b) => b)
     .pluck('stream_url').map(url => url + SC.clientIDParams({}))
 
-  const audio$ = M.Audio({url$})
+  const bottomPadding$ = selectedTrack$.map(Boolean).startWith(false)
 
   return {
+    bottomPadding$,
     selectedTrack$: click$,
-    audio$,
+    audio$: M.Audio({url$}),
     playlistItem$
   }
 }
 
 export default sources => {
-  const {playlistItem$, audio$, selectedTrack$} = model(sources)
-  const vTree$ = view({playlistItem$})
+  const {playlistItem$, audio$, selectedTrack$, bottomPadding$} = model(sources)
+  const vTree$ = view({playlistItem$, bottomPadding$})
 
   return {
     DOM: vTree$, audio$, selectedTrack$

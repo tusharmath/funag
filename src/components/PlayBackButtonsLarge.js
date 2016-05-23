@@ -10,32 +10,37 @@ import * as T from '../utils/Themes'
 import * as D from '../utils/DOMUtils'
 import * as F from '../utils/Flexbox'
 
-const disabled = element => div({style: {color: '#e4e4e4'}}, element)
+const disabled = element => div({style: {color: 'rgb(195, 194, 194)'}}, element)
 
 const intent = ({DOM}) => ({
   play$: DOM.select('.ctrl-play-large').events('click'),
   pause$: DOM.select('.ctrl-pause-large').events('click')
 })
 
-const model = ({play$, pause$, audio}) => {
+const model = ({play$, pause$, audio$}) => {
+  const event$ = audio$.pluck('event')
   const playPause$ = Observable.merge(
-    audio.events('playing').map('pause'),
-    audio.events('pause').map('play')
-  ).startWith('play')
+    event$.filter(x => x === 'playing').map('pause'),
+    event$.filter(x => x === 'pause').map('play')
+    )
+    .startWith('play')
     .map(button => div({className: `ctrl-${button}-large`, style: S.block(T.BlockHeight)}, [S.fa(button, 1.5)]))
 
-  const loadStart$ = audio.events('loadstart').map(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
-  const loadError$ = audio.events('error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
-  const audio$ = Observable.merge(
-    play$.map({type: 'PLAY'}),
-    pause$.map({type: 'PAUSE'})
-  )
-  return {playPause$, loadStart$, loadError$, audio$}
+  const loadStart$ = event$.filter(x => x === 'loadStart').map(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
+  const loadError$ = event$
+    .filter(x => x === 'error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
+  return {
+    playPause$, loadStart$, loadError$,
+    audio_$: Observable.merge(
+      play$.map({type: 'PLAY'}),
+      pause$.map({type: 'PAUSE'})
+    )
+  }
 }
 
 const view = ({playPause$, loadStart$, loadError$}) =>
   Observable.merge(playPause$, loadStart$, loadError$).map(x =>
-    div({style: {flex: '1 0 0', ...F.ColSpaceAround}}, [
+    div({style: {flex: '1 0 0', ...F.ColSpaceAround, color: '#fff'}}, [
       div({
         style: {
           ...F.RowSpaceAround,
@@ -51,11 +56,11 @@ const view = ({playPause$, loadStart$, loadError$}) =>
       }, [disabled(S.fa('random')), S.fa('repeat'), disabled(S.fa('list'))])
     ]))
 
-export default ({audio, DOM}) => {
+export default ({audio$, DOM}) => {
   const {play$, pause$} = intent({DOM})
-  const {playPause$, loadStart$, loadError$, audio$} = model({play$, pause$, audio})
+  const {playPause$, loadStart$, loadError$, audio_$} = model({play$, pause$, audio$})
   return {
-    audio$,
+    audio$: audio_$,
     DOM: view({playPause$, loadStart$, loadError$}),
     event$: Observable.merge(play$, pause$).map(D.event('stopPropagation'))
   }

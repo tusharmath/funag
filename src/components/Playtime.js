@@ -9,18 +9,17 @@ import * as F from '../utils/Flexbox'
 import * as S from '../utils/SoundCloud'
 import * as T from '../utils/Themes'
 
-const view = ({selectedTrack$, timeupdate$, show$}) => {
-  return Observable.combineLatest(selectedTrack$, timeupdate$.throttle(500).startWith({currentTime: 0}))
+const view = ({selectedTrack$, timeupdate$}) => {
+  return Observable.combineLatest(selectedTrack$, timeupdate$.startWith({audio: {currentTime: 0}}).throttle(500))
     .map(([selected, audio]) =>
       div({
         style: {
           ...F.RowSpaceBetween,
           padding: '5px',
           fontSize: '0.8em',
-          fontWeight: '100',
-          color: T.font.secondary
+          fontWeight: '100'
         }
-      }, [div(S.durationFormat(audio.currentTime * 1000)), div(S.durationFormat(selected.duration))])
+      }, [div(S.durationFormat(audio.audio.currentTime * 1000)), div(S.durationFormat(selected.duration))])
     )
 }
 

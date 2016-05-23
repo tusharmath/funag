@@ -8,14 +8,23 @@ import {div} from '@cycle/dom'
 import ControlLarge from './ControlLarge'
 import ControlMini from './ControlMini'
 
-export default ({audio, selectedTrack$, DOM, MODEL}) => {
+export default ({audio$, selectedTrack$, DOM, MODEL}) => {
   const control$ = MODEL
     .value$
     .pluck('control')
-  const timeupdate$ = audio.events('timeupdate')
-  const completion$ = timeupdate$.map(x => x.currentTime / x.duration).startWith(0)
-  const mini = ControlMini({audio, selectedTrack$, DOM, completion$})
-  const large = ControlLarge({audio, selectedTrack$, DOM, completion$, slide$: mini.slide$, timeupdate$, show$: control$.map(x => x === 'LARGE')})
+  const timeupdate$ = audio$
+    .filter(({event}) => event === 'timeUpdate')
+  const completion$ = Observable.merge(audio$
+    .filter(({event}) => event === 'timeUpdate')
+    .pluck('audio')
+    .throttle(1000)
+    .map(x => x.currentTime / x.duration),
+    audio$
+      .filter(({event}) => event === 'ended')
+      .map(1)
+  ).startWith(0)
+  const mini = ControlMini({audio$, selectedTrack$, DOM, completion$})
+  const large = ControlLarge({audio$, selectedTrack$, DOM, completion$, timeupdate$, show$: control$.map(x => x === 'LARGE')})
 
   return {
     audio$: Observable.merge(mini.audio$, large.audio$).distinctUntilChanged(),

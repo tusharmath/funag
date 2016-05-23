@@ -10,6 +10,7 @@ import * as F from '../utils/Flexbox'
 import PlaybackButtonsLarge from './PlaybackButtonsLarge'
 import PlaybackInfo from './PlaybackInfo'
 import Playtime from './Playtime'
+import {Pallete} from '../utils/Themes'
 
 const model = ({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime, show$}) =>
   Observable.combineLatest(show$, playbackBtns.DOM, scrobber.DOM, playtime.DOM, (show, playbackBtns, scrobber, playtime) => ({
@@ -34,11 +35,12 @@ const view = ({m$}) => {
         bottom: 0,
         height: '50%',
         width: '100%',
-        backgroundColor: '#fff',
+        backgroundColor: Pallete.primaryColor,
         transition: 'all 400ms cubic-bezier(0, 0.6, 0.34, 1)',
         transform: x.show ? 'translateY(0%)' : 'translateY(100%)',
         boxShadow: x.show ? '0px 2px 6px 3px' : null,
-        ...F.FlexCol
+        ...F.FlexCol,
+        color: '#fff'
       }
     }, [
       x.playtime,
@@ -58,9 +60,9 @@ export const intent = ({DOM}) => ({
   click$: DOM.select('.controlLarge').events('click')
 })
 
-export default ({audio, selectedTrack$, DOM, completion$, timeupdate$, show$}) => {
+export default ({audio$, selectedTrack$, DOM, completion$, timeupdate$, show$}) => {
   const {click$} = intent({DOM})
-  const playbackBtns = PlaybackButtonsLarge({selectedTrack$, audio, DOM})
+  const playbackBtns = PlaybackButtonsLarge({selectedTrack$, audio$, DOM})
   const scrobber = Scrobber({completion$})
   const playbackInfo = PlaybackInfo({selectedTrack$})
   const playtime = Playtime({selectedTrack$, timeupdate$, show$})

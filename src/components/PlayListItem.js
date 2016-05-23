@@ -2,15 +2,17 @@
  * Created by imamudin.naseem on 27/04/16.
  */
 
+'use strict'
+
 import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import * as F from '../utils/Flexbox'
 import Artwork from './Artwork'
 import TrackDetail from './TrackDetail'
-import OverlayStatus from './OverlayStatus'
 import * as T from '../utils/Themes'
 import {AnimatedOverlay, PausedOverlay} from './ArtworkOverlay'
 import isolate from '@cycle/isolate'
+import {DEFAULT, PLAYING, PAUSED} from '../utils/OverlayStatus'
 
 const playListItemSTY = {
   fontSize: '1em',
@@ -20,18 +22,20 @@ const playListItemSTY = {
 const trackInfoSTY = {
   ...F.RowSpaceBetween,
   alignItems: 'center',
-  color: T.font.primary,
-  borderBottom: '1px solid rgb(249, 246, 246)'
+  color: T.Pallete.baseColorPrimaryFont,
+  borderBottom: T.Pallete.divider
 }
-const PlayListItem = ({DOM, track, audio, selectedTrack$}) => {
-  const {title, user, duration, artwork_url, id} = track
+
+const OverlayMap = {
+  [DEFAULT]: null,
+  [PLAYING]: AnimatedOverlay,
+  [PAUSED]: PausedOverlay
+}
+
+const PlayListItem = ({DOM, track, status}) => {
+  const {title, user, duration, artwork_url} = track
   const click$ = DOM.select('.playlist-item').events('click').map(track)
-  const selectedTrackId$ = selectedTrack$.pluck('id')
-  const status$ = OverlayStatus({selectedTrackId$, audio, id})
-  const animation$ = status$.filter(x => x === 'PLAY_ANIMATION').map(AnimatedOverlay)
-  const pausedAnimation$ = status$.filter(x => x === 'PAUSE_ANIMATION').map(PausedOverlay)
-  const clearAnimation$ = status$.filter(x => x === 'SHOW_NONE').map(null)
-  const overlayItem$ = Observable.merge(animation$, pausedAnimation$, clearAnimation$)
+  const overlayItem$ = Observable.just(OverlayMap[status])
   const trackStatus$ = overlayItem$.startWith(null)
     .map(overlay => div({style: {padding: `${T.BlockSpace}px`}}, [
       div({style: {position: 'relative'}}, [
@@ -51,4 +55,5 @@ const PlayListItem = ({DOM, track, audio, selectedTrack$}) => {
   }
 }
 
+// TODO: Rename file PlayListItem => Track
 export default sources => isolate(PlayListItem, sources.track.id.toString())(sources)
