@@ -28,15 +28,10 @@ export const searchTracks = partial(
     .share(),
   get)
 
-const doubleDigit = digit => digit.toString().length < 2 ? '0' + digit : digit
-export const durationFormat = (time, format = 'ms') => {
-  const value = {
-    ms: 1000,
-    sec: 1
-  }
-  const mins = Math.floor(time / (60 * value[format]))
-  const secs = Math.round((time - (mins * 60 * value[format])) / value[format])
-  return `${doubleDigit(mins)}:${doubleDigit(secs)}`
+export const durationFormat = time => {
+  const mins = Math.floor(time / 60000)
+  const secs = Math.round((time - mins * 60000) / 1000)
+  return `${mins}:${secs.toString().length < 2 ? '0' + secs : secs}`
 }
 
 export const findTrack = ({id$, tracks$}) => {
