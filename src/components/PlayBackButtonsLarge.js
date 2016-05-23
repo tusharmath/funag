@@ -12,7 +12,12 @@ import * as F from '../utils/Flexbox'
 
 const disabled = element => div({style: {color: '#e4e4e4'}}, element)
 
-export default ({audio, DOM}) => {
+const intent = ({DOM}) => ({
+  play$: DOM.select('.ctrl-play-large').events('click'),
+  pause$: DOM.select('.ctrl-pause-large').events('click')
+})
+
+const model = ({play$, pause$, audio}) => {
   const playPause$ = Observable.merge(
     audio.events('playing').map('pause'),
     audio.events('pause').map('play')
@@ -21,30 +26,37 @@ export default ({audio, DOM}) => {
 
   const loadStart$ = audio.events('loadstart').map(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
   const loadError$ = audio.events('error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
-  const play$ = DOM.select('.ctrl-play-large').events('click')
-  const pause$ = DOM.select('.ctrl-pause-large').events('click')
   const audio$ = Observable.merge(
     play$.map({type: 'PLAY'}),
     pause$.map({type: 'PAUSE'})
   )
+  return {playPause$, loadStart$, loadError$, audio$}
+}
+
+const view = ({playPause$, loadStart$, loadError$}) =>
+  Observable.merge(playPause$, loadStart$, loadError$).map(x =>
+    div({style: {flex: '1 0 0', ...F.ColSpaceAround}}, [
+      div({
+        style: {
+          ...F.RowSpaceAround,
+          alignItems: 'Center',
+          padding: '0 40px'
+        }
+      }, [disabled(S.fa('backward')), x, disabled(S.fa('forward'))]),
+      div({
+        style: {
+          ...F.RowSpaceBetween,
+          padding: '10px 20px'
+        }
+      }, [disabled(S.fa('random')), S.fa('repeat'), disabled(S.fa('list'))])
+    ]))
+
+export default ({audio, DOM}) => {
+  const {play$, pause$} = intent({DOM})
+  const {playPause$, loadStart$, loadError$, audio$} = model({play$, pause$, audio})
   return {
     audio$,
-    DOM: Observable.merge(playPause$, loadStart$, loadError$).map(x =>
-      div({style: {flex: '1 0 0', ...F.ColSpaceAround}}, [
-        div({
-          style: {
-            ...F.RowSpaceAround,
-            alignItems: 'Center',
-            padding: '0 40px'
-          }
-        }, [disabled(S.fa('backward')), x, disabled(S.fa('forward'))]),
-        div({
-          style: {
-            ...F.RowSpaceBetween,
-            padding: '10px 20px'
-          }
-        }, [disabled(S.fa('random')), S.fa('repeat'), disabled(S.fa('list'))])
-      ])),
+    DOM: view({playPause$, loadStart$, loadError$}),
     event$: Observable.merge(play$, pause$).map(D.event('stopPropagation'))
   }
 }
