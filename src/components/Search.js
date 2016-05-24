@@ -5,7 +5,7 @@
 'use strict'
 
 import {input, form} from '@cycle/dom'
-import {Observable} from 'rx'
+import {Observable as O} from 'rx'
 import * as F from '../utils/Flexbox'
 import * as S from '../utils/StyleUtils'
 import * as U from '../utils/DOMUtils'
@@ -45,7 +45,7 @@ const Form = ({icon, value}) =>
   ])
 
 const view = ({searchIcon}) => {
-  return Observable.merge(
+  return O.merge(
     searchIcon.DOM.map(icon => Form({icon})),
     searchIcon.clear$
       .withLatestFrom(searchIcon.DOM)
@@ -64,7 +64,7 @@ const model = ({HTTP, DOM}) => {
   const inputEl = DOM.select('.search input')
   const value$ = U.inputVal(searchEl).debounce(300)
   const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
-  const events$ = Observable
+  const events$ = O
     .merge(
       searchEl.events('submit').map(event('preventDefault')),
       searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
@@ -80,6 +80,6 @@ export default ({DOM, HTTP}) => {
 
   return {
     HTTP: request$,
-    DOM: vTree$, value$, events$, tracks$
+    DOM: vTree$, events$, tracks$
   }
 }
