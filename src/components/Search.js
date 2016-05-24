@@ -5,12 +5,13 @@
 'use strict'
 
 import {input, form} from '@cycle/dom'
-import {Observable as O, Subject} from 'rx'
+import {Observable as O} from 'rx'
 import * as F from '../utils/Flexbox'
 import * as S from '../utils/StyleUtils'
 import * as U from '../utils/DOMUtils'
 import * as T from '../utils/Themes'
 import * as SC from '../utils/SoundCloud'
+import RxProxy from '../utils/RxProxy'
 import SearchIcon from './SearchIcon'
 
 const searchBoxSTY = {
@@ -73,10 +74,10 @@ const model = ({HTTP, DOM, clear$}) => {
 }
 
 export default ({DOM, HTTP}) => {
-  const s0 = new Subject()
+  const s0 = RxProxy()
   const {request$, events$, tracks$, value$} = model({HTTP, DOM, clear$: s0})
   const searchIcon = SearchIcon({value$, tracks$, DOM})
-  const clear$ = searchIcon.clear$.multicast(s0).refCount()
+  const clear$ = s0.merge(searchIcon.clear$)
   const icon$ = searchIcon.DOM
   const vTree$ = view({clear$, icon$})
 
