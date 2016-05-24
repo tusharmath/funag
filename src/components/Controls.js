@@ -21,7 +21,8 @@ export default ({audio$, selectedTrack$, DOM, MODEL}) => {
     .map(x => x.currentTime / x.duration),
     audio$
       .filter(({event}) => event === 'ended')
-      .map(1)
+      .map(1),
+    selectedTrack$.map(0)
   ).startWith(0)
   const mini = ControlMini({audio$, selectedTrack$, DOM, completion$})
   const large = ControlLarge({audio$, selectedTrack$, DOM, completion$, timeupdate$, show$: control$.map(x => x === 'LARGE')})

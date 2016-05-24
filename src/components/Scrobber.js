@@ -17,9 +17,9 @@ export default ({completion$}) => {
               transition: 'transform 100ms linear',
               background: Pallete.primaryDarkColor,
               height: '100%',
-              width: '100%',
               transform: `translateX(${100 * completion - 100}%)`,
-              transformOrigin: 'left'
+              transformOrigin: 'left',
+              marginRight: '15px'
             }
           }, [
             div({
@@ -27,7 +27,7 @@ export default ({completion$}) => {
                 ... {top: 0, right: 0, position: 'absolute'},
                 ...{...S.block(15), borderRadius: '20px'},
                 backgroundColor: Pallete.accentColor,
-                transform: 'translateY(-50%)',
+                transform: 'translateY(-50%) translateX(100%)',
                 boxShadow: Pallete.shadow
               }
             })
