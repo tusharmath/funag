@@ -9,7 +9,7 @@ import {Observable} from 'rx'
 import * as S from '../utils/StyleUtils'
 
 export default ({value$, tracks$, DOM}) => {
-  const clear$ = DOM.select('.fa-times').events('click').map('')
+  const clear$ = DOM.select('.fa-times-circle').events('click').map('')
   const isLoading$ = Observable.merge(value$.map(true), tracks$.map(false))
     .startWith(true)
     .distinctUntilChanged()
@@ -23,7 +23,7 @@ export default ({value$, tracks$, DOM}) => {
     hasValue$.filter(x => x === true),
     clear$
   ).map(S.fa('search'))
-  const closeIconVTree$ = hasValue$.filter(x => x === false).map(S.fa('times'))
+  const closeIconVTree$ = hasValue$.filter(x => x === false).map(S.fa('times-circle'))
 
   const vTree$ = Observable
     .merge(searchIconVTree$, closeIconVTree$, loaderIconVTree$)

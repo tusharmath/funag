@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {input, form, div} from '@cycle/dom'
+import {input, form} from '@cycle/dom'
 import {Observable} from 'rx'
 import * as F from '../utils/Flexbox'
 import * as S from '../utils/StyleUtils'
@@ -44,7 +44,7 @@ export default ({DOM, HTTP}) => {
     .switch()
     .pluck('body')
     .share()
-  
+
   const searchEl = DOM.select('.search')
   const inputEl = DOM.select('.search input')
   const value$ = U.inputVal(searchEl).debounce(300)
