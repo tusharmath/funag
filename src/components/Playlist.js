@@ -1,43 +1,79 @@
 /**
  * Created by tushar.mathur on 24/04/16.
  */
-
+// TODO: Rename to TrackList
 'use strict'
 import {div} from '@cycle/dom'
 import {Observable} from 'rx'
-import isolate from '@cycle/isolate'
 import PlayListItem from './PlayListItem'
-import Proxy from '../utils/Proxy'
 import * as M from './Models'
 import * as SC from '../utils/SoundCloud'
 import * as P from '../layouts/Placeholders'
+import {getStatus$} from '../utils/OverlayStatus'
 
-export default ({tracks$, DOM, audio}) => {
-  const proxy = Proxy()
-  const playlistItem$ = tracks$.map(tracks => tracks.map((track, i) =>
-    isolate(PlayListItem, track.id.toString())({track, DOM, audio, selectedTrack$: proxy.reader()}, i)
-  ))
-  const playlistItemVTree$ = playlistItem$.map(tracks => tracks.map(x => x.DOM))
-  const playlistItemClick$ = playlistItem$.map(tracks => tracks.map(x => x.click$))
-  const selectedTrack$ = proxy.writer(playlistItemClick$.flatMapLatest(clicks => Observable.merge(clicks)))
-  const audio$ = M.Audio({url$: selectedTrack$.pluck('stream_url').map(url => url + SC.clientIDParams({}))})
-  return {
-    DOM: playlistItemVTree$
-      .flatMapLatest(tracks => Observable.combineLatest(tracks))
-      .startWith([
-        div([
-          P.PlaylistItem,
-          P.PlaylistItem,
-          P.PlaylistItem
-        ])
+const view = ({playlistItem$, bottomPadding$}) => {
+  return playlistItem$
+    .map(tracks => tracks.map(x => x.DOM))
+    .flatMapLatest(tracks => Observable.combineLatest(tracks))
+    .startWith([
+      div([
+        P.PlaylistItem,
+        P.PlaylistItem,
+        P.PlaylistItem
       ])
-      .map(view => div({
-        className: 'playlist',
-        style: {
-          backgroundColor: '#fff',
-          margin: '62px 0'
-        }
-      }, [view])),
-    selectedTrack$, audio$
+    ])
+    .combineLatest(bottomPadding$)
+    .map(([view, bottomPadding]) => div({
+      className: 'playlist',
+      style: {
+        backgroundColor: '#fff',
+        padding: '62px 0',
+        paddingBottom: bottomPadding ? '62px' : 0
+      }
+    }, [view]))
+}
+
+const createPlaylistItem = ({track, index, statuses, DOM}) => {
+  const status = statuses[index]
+  return PlayListItem({track, DOM, status})
+}
+
+const toPlaylistItem = ({tracks, statuses, DOM}) => {
+  return tracks.map((track, index) => createPlaylistItem({track, index, statuses, DOM}))
+}
+
+const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
+  const trackIds$ = tracks$.map(x => x.map(x => x.id))
+  const selectedTrackId$ = selectedTrack$.pluck('id')
+  const status$ = getStatus$({selectedTrackId$, audio$, tracks$: trackIds$})
+
+  const playlistItem$ = Observable
+    .combineLatest(tracks$, status$)
+    .map(([tracks, statuses]) => toPlaylistItem({tracks, statuses, DOM}))
+
+  const click$ = playlistItem$
+    .map(tracks => tracks.map(x => x.click$))
+    .flatMapLatest(clicks => Observable.merge(clicks))
+
+  const url$ = click$
+    .combineLatest(selectedTrack$, (_, b) => b)
+    .pluck('stream_url').map(url => url + SC.clientIDParams({}))
+
+  const bottomPadding$ = selectedTrack$.map(Boolean).startWith(false)
+
+  return {
+    bottomPadding$,
+    selectedTrack$: click$,
+    audio$: M.Audio({url$}),
+    playlistItem$
+  }
+}
+
+export default sources => {
+  const {playlistItem$, audio$, selectedTrack$, bottomPadding$} = model(sources)
+  const vTree$ = view({playlistItem$, bottomPadding$})
+
+  return {
+    DOM: vTree$, audio$, selectedTrack$
   }
 }

@@ -14,6 +14,7 @@ import Main from './components/Main'
 import {audioDriver} from './drivers/audio'
 import {eventSinkDriver} from './drivers/eventSink'
 import {documentTitleDriver} from './drivers/documentTitle'
+import {makeModelDriver} from './drivers/model'
 
 const manifest = document.createElement('link')
 manifest.href = manifestFile
@@ -31,5 +32,6 @@ Cycle.run(Main, {
   audio: audioDriver,
   events: eventSinkDriver,
   title: documentTitleDriver,
-  HTTP: makeHTTPDriver()
+  HTTP: makeHTTPDriver(),
+  MODEL: makeModelDriver({isServer: false})
 })

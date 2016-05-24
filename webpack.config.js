@@ -21,14 +21,16 @@ const {makeHTMLDriver} = require('@cycle/dom')
 const {makeHTTPDriver} = require('@cycle/http')
 const {mockAudioDriver} = require('./src/drivers/audio')
 const {eventSinkDriver} = require('./src/drivers/eventSink')
-const {documentTitleDriver} = require('./src/drivers/documentTitle')
+const {makeModelDriver} = require('./src/drivers/model')
+const noop = require('./src/utils/Noop')
 
 const sources = {
   DOM: makeHTMLDriver(),
   audio: mockAudioDriver,
   events: eventSinkDriver,
-  title: documentTitleDriver,
-  HTTP: makeHTTPDriver()
+  title: noop,
+  HTTP: makeHTTPDriver(),
+  MODEL: makeModelDriver({isServer: true})
 }
 
 const plugins = []
