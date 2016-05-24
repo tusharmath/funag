@@ -44,11 +44,11 @@ const Form = ({icon, value}) =>
     icon
   ])
 
-const view = ({searchIcon}) => {
+const view = ({icon$, clear$}) => {
   return O.merge(
-    searchIcon.DOM.map(icon => Form({icon})),
-    searchIcon.clear$
-      .withLatestFrom(searchIcon.DOM)
+    icon$.map(icon => Form({icon})),
+    clear$
+      .withLatestFrom(icon$)
       .map(([_, icon]) => Form({icon, value: ''}))
   )
 }
@@ -76,7 +76,9 @@ const model = ({HTTP, DOM}) => {
 export default ({DOM, HTTP}) => {
   const {request$, events$, tracks$, value$} = model({HTTP, DOM})
   const searchIcon = SearchIcon({value$, tracks$, DOM})
-  const vTree$ = view({searchIcon})
+  const icon$ = searchIcon.DOM
+  const clear$ = searchIcon.clear$
+  const vTree$ = view({icon$, clear$})
 
   return {
     HTTP: request$,
