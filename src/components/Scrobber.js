@@ -17,6 +17,7 @@ export default ({completion$}) => {
               transition: 'transform 100ms linear',
               background: Pallete.primaryDarkColor,
               height: '100%',
+              willChange: 'transform',
               transform: `translateX(${100 * completion - 100}%)`,
               transformOrigin: 'left',
               marginRight: '15px'
