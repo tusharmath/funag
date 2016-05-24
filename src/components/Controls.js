@@ -27,7 +27,7 @@ export default ({audio$, selectedTrack$, DOM, MODEL}) => {
   const large = ControlLarge({audio$, selectedTrack$, DOM, completion$, timeupdate$, show$: control$.map(x => x === 'LARGE')})
 
   return {
-    audio$: Observable.merge(mini.audio$, large.audio$).distinctUntilChanged(),
+    audio$: Observable.merge(mini.audio$, large.audio$),
     DOM: Observable.combineLatest(mini.DOM$, large.DOM$).map(x => div(x)),
     event$: Observable.merge(mini.event$, large.event$),
     control$: Observable.merge(mini.click$.map('LARGE'), large.click$.map('MINI')).startWith('MINI')

@@ -36,11 +36,12 @@ const view = ({m$}) => {
         height: '50%',
         width: '100%',
         backgroundColor: Pallete.primaryColor,
-        transition: 'all 400ms cubic-bezier(0, 0.6, 0.34, 1)',
+        transition: 'all 300ms cubic-bezier(0, 0.6, 0.34, 1)',
         transform: x.show ? 'translateY(0%)' : 'translateY(100%)',
         boxShadow: x.show ? '0px 2px 6px 3px' : null,
         ...F.FlexCol,
-        color: '#fff'
+        color: '#fff',
+        willChange: 'transform'
       }
     }, [
       x.playtime,

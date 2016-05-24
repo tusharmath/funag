@@ -21,6 +21,14 @@ export const audioDriver = instruction$ => {
       audio.src = x.src
       audio.load()
       audio.play()
+    }),
+    instruction$.filter(x => x.type === 'REPLAY').tap(() => {
+      audio.currentTime = 0
+      audio.play()
+    }),
+    instruction$.filter(x => x.type === 'RELOAD').tap(() => {
+      audio.load()
+      audio.play()
     })
   ).subscribe(noop)
 
