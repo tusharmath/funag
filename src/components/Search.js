@@ -38,7 +38,22 @@ const searchBoxContainerSTY = {
 
 const event = event => target => ({target, event})
 
-export default ({DOM, HTTP}) => {
+const Form = ({icon, value}) =>
+  form({className: 'search', style: searchBoxContainerSTY}, [
+    input({type: 'text', style: searchBoxSTY, placeholder: 'Search', value}),
+    icon
+  ])
+
+const view = ({searchIcon}) => {
+  return Observable.merge(
+    searchIcon.DOM.map(icon => Form({icon})),
+    searchIcon.clear$
+      .withLatestFrom(searchIcon.DOM)
+      .map(([_, icon]) => Form({icon, value: ''}))
+  )
+}
+
+const model = ({HTTP, DOM}) => {
   // TODO: Add unit tests
   const tracks$ = HTTP
     .switch()
@@ -55,19 +70,13 @@ export default ({DOM, HTTP}) => {
       searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
         .map(event('blur'))
     )
+  return {request$, events$, tracks$, value$}
+}
 
+export default ({DOM, HTTP}) => {
+  const {request$, events$, tracks$, value$} = model({HTTP, DOM})
   const searchIcon = SearchIcon({value$, tracks$, DOM})
-  const Form = ({icon, value}) =>
-    form({className: 'search', style: searchBoxContainerSTY}, [
-      input({type: 'text', style: searchBoxSTY, placeholder: 'Search', value}),
-      icon
-    ])
-  const vTree$ = Observable.merge(
-    searchIcon.DOM.map(icon => Form({icon})),
-    searchIcon.clear$
-      .withLatestFrom(searchIcon.DOM)
-      .map(([_, icon]) => Form({icon, value: ''}))
-  )
+  const vTree$ = view({searchIcon})
 
   return {
     HTTP: request$,
