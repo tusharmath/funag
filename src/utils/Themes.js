@@ -1,6 +1,6 @@
 export const Pallete = {
   accentColor: 'rgb(153, 145, 255)',
-  primaryDarkColor: 'rgb(118, 100, 239)',
+  primaryDarkColor: 'rgba(0, 0, 0, 0.3)',
 
   primaryColor: '#2196F3',
   primaryColorPrimaryFont: 'rgb(255, 255, 255)',
