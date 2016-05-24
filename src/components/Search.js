@@ -5,7 +5,7 @@
 'use strict'
 
 import {input, form} from '@cycle/dom'
-import {Observable as O} from 'rx'
+import {Observable as O, Subject} from 'rx'
 import * as F from '../utils/Flexbox'
 import * as S from '../utils/StyleUtils'
 import * as U from '../utils/DOMUtils'
@@ -44,16 +44,15 @@ const Form = ({icon, value}) =>
     icon
   ])
 
-const view = ({icon$, clear$}) => {
+const view = ({clear$, icon$}) => {
   return O.merge(
     icon$.map(icon => Form({icon})),
-    clear$
-      .withLatestFrom(icon$)
+    clear$.withLatestFrom(icon$)
       .map(([_, icon]) => Form({icon, value: ''}))
   )
 }
 
-const model = ({HTTP, DOM}) => {
+const model = ({HTTP, DOM, clear$}) => {
   // TODO: Add unit tests
   const tracks$ = HTTP
     .switch()
@@ -62,7 +61,7 @@ const model = ({HTTP, DOM}) => {
 
   const searchEl = DOM.select('.search')
   const inputEl = DOM.select('.search input')
-  const value$ = U.inputVal(searchEl).debounce(300)
+  const value$ = O.merge(U.inputVal(searchEl).debounce(300), clear$)
   const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
   const events$ = O
     .merge(
@@ -74,11 +73,12 @@ const model = ({HTTP, DOM}) => {
 }
 
 export default ({DOM, HTTP}) => {
-  const {request$, events$, tracks$, value$} = model({HTTP, DOM})
+  const s0 = new Subject()
+  const {request$, events$, tracks$, value$} = model({HTTP, DOM, clear$: s0})
   const searchIcon = SearchIcon({value$, tracks$, DOM})
+  const clear$ = searchIcon.clear$.multicast(s0).refCount()
   const icon$ = searchIcon.DOM
-  const clear$ = searchIcon.clear$
-  const vTree$ = view({icon$, clear$})
+  const vTree$ = view({clear$, icon$})
 
   return {
     HTTP: request$,
