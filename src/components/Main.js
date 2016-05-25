@@ -4,22 +4,17 @@
 
 'use strict'
 
-import {Observable} from 'rx'
+import {Observable as O} from 'rx'
 import {div} from '@cycle/dom'
 import Controls from './Controls'
 import Playlist from './Playlist'
 import SearchBox from './Search'
 import BatchDOM from '../utils/BatchDOM'
-
-const getSelectedTrack$ = MODEL => MODEL
-  .value$
-  .filter(x => !x.isServer)
-  .pluck('selectedTrack')
-  .filter(Boolean)
+import RxProxy from '../utils/RxProxy'
 
 const getAudio$ = audio => {
   const t = event => audio => ({event, audio})
-  return Observable.merge(
+  return O.merge(
     audio.events('pause').map(t('pause')),
     audio.events('ended').map(t('ended')),
     audio.events('playing').map(t('playing')),
@@ -32,7 +27,7 @@ const getAudio$ = audio => {
   )
 }
 
-const view = ({playlist, searchBox, controls}) => Observable
+const view = ({playlist, searchBox, controls}) => O
   .combineLatest(
     playlist.DOM,
     searchBox.DOM,
@@ -40,22 +35,20 @@ const view = ({playlist, searchBox, controls}) => Observable
   ).map(views => div(views))
 
 // TODO: Split into intent + model
-const model = ({DOM, route, audio, HTTP, MODEL}) => {
+const model = ({DOM, route, audio, HTTP}) => {
+  const __selectedTrack$ = RxProxy()
   // TODO: Pass HTTP.share()
   const audio$ = getAudio$(audio)
-  const selectedTrack$ = getSelectedTrack$(MODEL)
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
-  const playlist = Playlist({tracks$, DOM, audio$, selectedTrack$})
+  const playlist = Playlist({tracks$, DOM, audio$, selectedTrack$: __selectedTrack$})
+  const selectedTrack$ = __selectedTrack$.merge(playlist.selectedTrack$)
   const controls = Controls({audio$, selectedTrack$, DOM})
   return {
     HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
     events: searchBox.events$,
-    audio: Observable.merge(playlist.audio$, controls.audio$),
-    MODEL: Observable
-      .combineLatest(MODEL.value$, playlist.selectedTrack$.map(selectedTrack => ({selectedTrack})))
-      .map(([canary, next]) => ({...canary, ...next})),
+    audio: O.merge(playlist.audio$, controls.audio$),
     playlist, searchBox, controls
   }
 }
@@ -67,7 +60,6 @@ export default function (sources) {
     title: m.title,
     events: m.events,
     audio: m.audio,
-    DOM: BatchDOM(view(m)),
-    MODEL: m.MODEL
+    DOM: BatchDOM(view(m))
   }
 }
