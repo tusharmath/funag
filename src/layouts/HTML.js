@@ -23,7 +23,8 @@ export default ({__html, __title, bundle}) =>
           font-weight: 400;
           color: rgb(51, 51, 51);
           -webkit-font-smoothing: antialiased;
-          -webkit-user-select: none;          
+          -webkit-user-select: none;
+          background-color: #eee;
         }
         
         input {
@@ -41,6 +42,12 @@ export default ({__html, __title, bundle}) =>
         
         #container {
           height: 100%;
+          max-width: 600px;
+          margin: auto;
+          box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5);
+          background-color: #fff;
+        }
+
         }
         @keyframes horizontal-motion { 
           0%{background-position:0% 50%}
