@@ -17,7 +17,7 @@ const playbackInfoSTY = {
 export default ({selectedTrack$}) => {
   return {
     DOM: selectedTrack$.map(track =>
-      div({style: playbackInfoSTY}, [
+      div('.info', {style: playbackInfoSTY}, [
         div({style: S.overflowEllipsisSTY}, [track.title]),
         div({style: {...S.overflowEllipsisSTY, fontSize: '0.8em', color: T.Pallete.primaryColorSecondaryFont}}, track.user.username)
       ])

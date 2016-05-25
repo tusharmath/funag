@@ -55,8 +55,8 @@ const model = ({DOM, route, audio, HTTP, MODEL}) => {
     events: Observable.merge(searchBox.events$, controls.event$),
     audio: Observable.merge(playlist.audio$, controls.audio$),
     MODEL: Observable
-      .combineLatest(MODEL.value$, playlist.selectedTrack$.map(selectedTrack => ({selectedTrack})), controls.control$.map(control => ({control})))
-      .map(([canary, next, control]) => ({...canary, ...next, ...control})),
+      .combineLatest(MODEL.value$, playlist.selectedTrack$.map(selectedTrack => ({selectedTrack})))
+      .map(([canary, next]) => ({...canary, ...next})),
     playlist, searchBox, controls
   }
 }

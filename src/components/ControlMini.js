@@ -10,34 +10,36 @@ import Playback from './Playback'
 import * as S from '../utils/StyleUtils'
 import {Pallete} from '../utils/Themes'
 
-const ControlSTY = show => ({
+const ControlSTY = () => ({
   ...S.fixed({bottom: 0, left: 0, right: 0}),
-  transform: show ? 'translateY(0%)' : 'translateY(115%)',
-  transition: 'transform 300ms cubic-bezier(0.2, 0.9, 0.3, 1.5)',
   backgroundColor: Pallete.primaryColor,
   color: '#FFF'
 })
 
 const intent = ({DOM}) => ({
-  click$: DOM.select('.controls').events('click')
+  click$: DOM.select('.controlMini').events('click'),
+  animationEnd$: DOM.select('.controlMini').events('animationend')
 })
 
-const model = ({selectedTrack$}) => {
-  const showControls$ = selectedTrack$.map(Boolean).startWith(false)
+const model = ({selectedTrack$, state$}) => {
+  const showControls$ = Observable.merge(selectedTrack$.map(0), state$.startWith(2))
   return {showControls$}
 }
 
 const view = ({playback, scrobber, showControls$}) => {
-  return Observable
+  const delete$ = showControls$.filter(x => x === 2).map(div())
+  const animationClass = ['pop-up', 'slide-down']
+  const show$ = Observable
     .combineLatest(
       showControls$,
       scrobber.DOM,
       playback.DOM
     )
+    .filter(([s, , ]) => s !== 2)
     .map(([show, scrobber, playback]) =>
       div({
-        className: 'controls',
-        style: ControlSTY(show)
+        className: `controlMini ${animationClass[show]}`
+        //style: ControlSTY()
       }, [
         div({
           style: {
@@ -45,18 +47,19 @@ const view = ({playback, scrobber, showControls$}) => {
           }
         }, [scrobber, playback])])
     )
+  return Observable.merge(delete$, show$)
 }
 
-export default ({audio$, selectedTrack$, DOM, completion$}) => {
+export default ({audio$, selectedTrack$, DOM, completion$, state$}) => {
   const playback = Playback({selectedTrack$, audio$, DOM})
   const scrobber = Scrobber({completion$})
-  const {click$} = intent({DOM})
-  const {showControls$} = model({selectedTrack$})
+  const {click$, animationEnd$} = intent({DOM})
+  const {showControls$} = model({selectedTrack$, state$})
   return {
     audio$: playback.audio$,
-    DOM$: view({playback, scrobber, showControls$}).distinctUntilChanged(),
+    DOM$: view({playback, scrobber, showControls$}),
     event$: playback.event$,
-    click$
+    click$,animationEnd$
   }
 }
 
