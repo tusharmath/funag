@@ -30,6 +30,11 @@ export default ({__html, __title, bundle}) =>
           font-family: Open Sans, sans-serif;
         }
         
+        input::-webkit-input-placeholder{
+          color: inherit;
+          opacity: 0.5;
+        }
+        
         div, form {
           box-sizing: border-box;
         }

@@ -11,7 +11,7 @@ const webpack = require('webpack')
 const webpackMiddleware = require('webpack-dev-middleware')
 const webpackConfig = require('../webpack.config')
 const app = express()
-
+require('rx').config.longStackSupport = true
 if (config.webpack.middleware) {
   app.use(webpackMiddleware(webpack(webpackConfig)))
 }
