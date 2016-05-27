@@ -19,5 +19,7 @@ module.exports = {
     middleware: false,
     optimizeJS: true,
     compression: true
-  }
+  },
+  baseURI: 'https://api.soundcloud.com',
+  proxy: false
 }
