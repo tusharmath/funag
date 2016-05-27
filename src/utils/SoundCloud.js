@@ -8,13 +8,15 @@ import qs from 'qs'
 import {partial} from 'funjector'
 
 const CLIENT_ID = '1862b9bf02ed7c80d0f545f835ad8773'
-const baseURL = APP_CONFIG.baseURI
 
 export const clientIDParams = params => {
   return '?' + qs.stringify({...params, client_id: CLIENT_ID})
 }
 
-export const toURI = (path, params) => `${baseURL}${path}${clientIDParams(params)}`
+export const toURI = (path, params) => {
+  const baseURL = APP_CONFIG.baseURI
+  return `${baseURL}${path}${clientIDParams(params)}`
+}
 
 // TODO: DEPRECATE
 export const get = (path, params) => {
