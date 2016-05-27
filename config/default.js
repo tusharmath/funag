@@ -20,6 +20,7 @@ module.exports = {
     optimizeJS: false,
     compression: false
   },
+  baseURI: '//localhost:9000/api',
   proxy: {
     target: 'https://api.soundcloud.com',
     headers: [

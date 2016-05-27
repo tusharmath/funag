@@ -10,15 +10,16 @@ require('babel-register')({
     'transform-object-rest-spread'
   ]
 })
+
 const path = require('path')
 const webpack = require('webpack')
-const config = require('config')
+const config = global.APP_CONFIG = require('config')
+const {Observable} = require('rx')
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
 const CompressionPlugin = require('compression-webpack-plugin')
 const {ApplicationShell} = require('./src/utils/ApplicationShell')
 const Main = require('./src/components/Main').default
 const {makeHTMLDriver} = require('@cycle/dom')
-const {makeHTTPDriver} = require('@cycle/http')
 const {mockAudioDriver} = require('./src/drivers/audio')
 const {eventSinkDriver} = require('./src/drivers/eventSink')
 const noop = require('./src/utils/Noop')
@@ -28,7 +29,7 @@ const sources = {
   audio: mockAudioDriver,
   events: eventSinkDriver,
   title: noop,
-  HTTP: makeHTTPDriver()
+  HTTP: () => Observable.never()
 }
 
 const plugins = []
