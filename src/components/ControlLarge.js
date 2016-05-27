@@ -9,28 +9,30 @@ import Scrobber from './Scrobber'
 import PlaybackButtonsLarge from './PlaybackButtonsLarge'
 import PlaybackInfo from './PlaybackInfo'
 import Playtime from './Playtime'
+import * as D from '../utils/DOMUtils'
 
-const model = ({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime}) => {
-  return {
-    m$: Observable.combineLatest(playbackBtns.DOM, scrobber.DOM, playtime.DOM, (playbackBtns, scrobber, playtime) => ({
-      playbackBtns,
-      scrobber,
-      playtime
+const model = ({selectedTrack$, audio$, DOM, completion$, timeupdate$}) => ({
+  playbackBtns: PlaybackButtonsLarge({selectedTrack$, audio$, DOM}),
+  scrobber: Scrobber({completion$}),
+  playbackInfo: PlaybackInfo({selectedTrack$}),
+  playtime: Playtime({selectedTrack$, timeupdate$})
+})
+
+const view = ({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime, state$}) => {
+  const v$ = Observable.combineLatest(playbackBtns.DOM, scrobber.DOM, playtime.DOM, (playbackBtns, scrobber, playtime) => ({
+    playbackBtns,
+    scrobber,
+    playtime
+  }))
+    .distinctUntilChanged()
+    .withLatestFrom(selectedTrack$, playbackInfo.DOM, (control, selectedTrack, info) => ({
+      ...control,
+      selectedTrack,
+      info
     }))
-      .distinctUntilChanged()
-      .withLatestFrom(selectedTrack$, playbackInfo.DOM, (control, selectedTrack, info) => ({
-        ...control,
-        selectedTrack,
-        info
-      }))
-
-  }
-}
-
-const view = ({m$, state$}) => {
   const delete$ = state$.filter(x => x === 2).map(div())
   const animationClass = ['slide-up', 'slide-down']
-  const vTree$ = m$
+  const vTree$ = v$
     .combineLatest(state$)
     .filter(([, v]) => v !== 2)
     .map(([x, v]) => div({
@@ -56,14 +58,10 @@ export const intent = ({DOM}) => ({
 
 export default ({audio$, selectedTrack$, DOM, completion$, timeupdate$, state$}) => {
   const {click$, animationEnd$} = intent({DOM})
-  const playbackBtns = PlaybackButtonsLarge({selectedTrack$, audio$, DOM})
-  const scrobber = Scrobber({completion$})
-  const playbackInfo = PlaybackInfo({selectedTrack$})
-  const playtime = Playtime({selectedTrack$, timeupdate$})
-  const {m$} = model({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime})
+  const {playbackBtns, scrobber, playbackInfo, playtime} = model({selectedTrack$, audio$, DOM, completion$, timeupdate$})
   return {
-    DOM$: view({m$, state$}),
-    event$: playbackBtns.event$,
+    DOM$: view({playbackBtns, scrobber, selectedTrack$, playbackInfo, playtime, state$}),
+    event$: Observable.merge(playbackBtns.event$, click$.map(D.event('stopPropagation'))),
     audio$: playbackBtns.audio$,
     click$, animationEnd$
   }

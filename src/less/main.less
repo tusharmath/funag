@@ -13,6 +13,18 @@
     opacity: 1
   }
 }
+.fade-out {
+  animation: fade-out 500ms 1 linear;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1
+  }
+  to {
+    opacity: 0
+  }
+}
 
 .controlLarge {
   position: fixed;
@@ -24,7 +36,7 @@
   will-change: transform;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 2px 6px 3px #2D2D2D
+  box-shadow: 0px 2px 6px 3px #2D2D2D;
 }
 
 .controlMini {
@@ -33,5 +45,7 @@
   right: 0px;
   position: fixed;
   color: rgb(255, 255, 255);
-  background-color: rgb(33, 150, 243)
+  background-color: rgb(33, 150, 243);
+  will-change: transform;
+
 }

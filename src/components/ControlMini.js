@@ -9,6 +9,7 @@ import Scrobber from './Scrobber'
 import Playback from './Playback'
 import * as S from '../utils/StyleUtils'
 import {Pallete} from '../utils/Themes'
+import * as D from '../utils/DOMUtils'
 
 const ControlSTY = () => ({
   ...S.fixed({bottom: 0, left: 0, right: 0}),
@@ -22,13 +23,13 @@ const intent = ({DOM}) => ({
 })
 
 const model = ({selectedTrack$, state$}) => {
-  const showControls$ = Observable.merge(selectedTrack$.map(0), state$.startWith(2))
+  const showControls$ = Observable.merge(selectedTrack$.map(0).take(1), state$.startWith(2))
   return {showControls$}
 }
 
 const view = ({playback, scrobber, showControls$}) => {
   const delete$ = showControls$.filter(x => x === 2).map(div())
-  const animationClass = ['pop-up', 'slide-down']
+  const animationClass = ['fade-in', 'fade-out']
   const show$ = Observable
     .combineLatest(
       showControls$,
@@ -58,7 +59,7 @@ export default ({audio$, selectedTrack$, DOM, completion$, state$}) => {
   return {
     audio$: playback.audio$,
     DOM$: view({playback, scrobber, showControls$}),
-    event$: playback.event$,
+    event$: Observable.merge(playback.event$, click$.map(D.event('stopPropagation'))),
     click$,animationEnd$
   }
 }
