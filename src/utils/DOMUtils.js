@@ -3,5 +3,6 @@
  */
 
 'use strict'
-
+import _ from 'lodash'
 export const inputVal = $el => $el.events('keyup').map(x => x.target.value).distinctUntilChanged()
+export const action = _.curry((event, target) => ({target, event}))

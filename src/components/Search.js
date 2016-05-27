@@ -37,8 +37,6 @@ const searchBoxContainerSTY = {
   margin: 0
 }
 
-const event = event => target => ({target, event})
-
 const Form = ({icon, value}) =>
   form({className: 'search', style: searchBoxContainerSTY}, [
     input({type: 'text', style: searchBoxSTY, placeholder: 'Search', value}),
@@ -66,9 +64,9 @@ const model = ({HTTP, DOM, clear$}) => {
   const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
   const events$ = O
     .merge(
-      searchEl.events('submit').map(event('preventDefault')),
+      searchEl.events('submit').map(U.action('preventDefault')),
       searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
-        .map(event('blur'))
+        .map(U.action('blur'))
     )
   return {request$, events$, tracks$, value$}
 }
