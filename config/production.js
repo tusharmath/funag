@@ -19,5 +19,6 @@ module.exports = {
     middleware: false,
     optimizeJS: true,
     compression: true
-  }
+  },
+  proxy: false
 }

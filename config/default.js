@@ -19,5 +19,11 @@ module.exports = {
     middleware: true,
     optimizeJS: false,
     compression: false
+  },
+  proxy: {
+    target: 'https://api.soundcloud.com',
+    headers: [
+      {name: 'host', value: 'api.soundcloud.com'}
+    ]
   }
 }
