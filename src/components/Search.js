@@ -30,10 +30,10 @@ const searchBoxContainerSTY = {
   alignItems: 'center',
   minHeight: `${T.BlockHeight}px`,
   boxShadow: T.Pallete.shadow,
+  transform: 'translateZ(0)',
   backgroundColor: T.Pallete.primaryColor,
   color: T.Pallete.primaryColorPrimaryFont,
   ...S.position({top: 0, left: 0, right: 0}),
-  position: 'fixed',
   margin: 0
 }
 

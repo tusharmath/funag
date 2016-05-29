@@ -7,13 +7,11 @@ import {Observable} from 'rx'
 import {div} from '@cycle/dom'
 import Scrobber from './Scrobber'
 import Playback from './Playback'
-import * as S from '../utils/StyleUtils'
 import {Pallete} from '../utils/Themes'
 
 const ControlSTY = show => ({
-  ...S.fixed({bottom: 0, left: 0, right: 0}),
-  transform: show ? 'translateY(0%)' : 'translateY(115%)',
-  transition: 'transform 300ms cubic-bezier(0.2, 0.9, 0.3, 1.5)',
+  transform: 'translateZ(0)',
+  boxShadow: Pallete.shadow,
   backgroundColor: Pallete.primaryColor,
   color: '#FFF'
 })
@@ -27,20 +25,17 @@ const view = ({playback, scrobber, showControls$}) => {
     )
     .map(([show, scrobber, playback]) =>
       div({style: ControlSTY(show)}, [
-        div({
-          style: {
-            boxShadow: Pallete.shadow
-          }
-        }, [scrobber, playback])])
+        scrobber, playback
+      ])
     )
 }
 
 const model = ({audio$, selectedTrack$}) => {
   const completion$ = Observable.merge(audio$
-    .filter(({event}) => event === 'timeUpdate')
-    .pluck('audio')
-    .throttle(1000)
-    .map(x => x.currentTime / x.duration),
+      .filter(({event}) => event === 'timeUpdate')
+      .pluck('audio')
+      .throttle(1000)
+      .map(x => x.currentTime / x.duration),
     audio$
       .filter(({event}) => event === 'ended')
       .map(1),

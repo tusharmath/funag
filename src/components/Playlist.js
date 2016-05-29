@@ -11,7 +11,7 @@ import * as SC from '../utils/SoundCloud'
 import * as P from '../layouts/Placeholders'
 import {getStatus$} from '../utils/OverlayStatus'
 
-const view = ({playlistItem$, bottomPadding$}) => {
+const view = ({playlistItem$}) => {
   return playlistItem$
     .map(tracks => tracks.map(x => x.DOM))
     .flatMapLatest(tracks => Observable.combineLatest(tracks))
@@ -22,15 +22,7 @@ const view = ({playlistItem$, bottomPadding$}) => {
         P.PlaylistItem
       ])
     ])
-    .combineLatest(bottomPadding$)
-    .map(([view, bottomPadding]) => div({
-      className: 'playlist',
-      style: {
-        backgroundColor: '#fff',
-        padding: '62px 0',
-        paddingBottom: bottomPadding ? '62px' : 0
-      }
-    }, [view]))
+    .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, [view]))
 }
 
 const createPlaylistItem = ({track, index, statuses, DOM}) => {
@@ -59,10 +51,7 @@ const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
     .combineLatest(selectedTrack$, (_, b) => b)
     .pluck('stream_url').map(url => url + SC.clientIDParams({}))
 
-  const bottomPadding$ = selectedTrack$.map(Boolean).startWith(false)
-
   return {
-    bottomPadding$,
     selectedTrack$: click$,
     audio$: M.Audio({url$}),
     playlistItem$
@@ -70,8 +59,8 @@ const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
 }
 
 export default sources => {
-  const {playlistItem$, audio$, selectedTrack$, bottomPadding$} = model(sources)
-  const vTree$ = view({playlistItem$, bottomPadding$})
+  const {playlistItem$, audio$, selectedTrack$} = model(sources)
+  const vTree$ = view({playlistItem$})
 
   return {
     DOM: vTree$, audio$, selectedTrack$

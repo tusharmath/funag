@@ -11,6 +11,7 @@ import Playlist from './Playlist'
 import SearchBox from './Search'
 import BatchDOM from '../utils/BatchDOM'
 import RxProxy from '../utils/RxProxy'
+import * as  F from '../utils/Flexbox'
 
 const getAudio$ = audio => {
   const t = event => audio => ({event, audio})
@@ -29,10 +30,10 @@ const getAudio$ = audio => {
 
 const view = ({playlist, searchBox, controls}) => O
   .combineLatest(
-    playlist.DOM,
     searchBox.DOM,
+    playlist.DOM,
     controls.DOM
-  ).map(views => div(views))
+  ).map(views => div({style: {height: '100%', ...F.FlexCol}}, views))
 
 // TODO: Split into intent + model
 const model = ({DOM, route, audio, HTTP}) => {
