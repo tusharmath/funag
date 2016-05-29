@@ -29,7 +29,7 @@ sw({scope: '/'})
 
 Cycle.run(Main, {
   DOM: makeDOMDriver('#container'),
-  audio: audioDriver,
+  AUDIO: audioDriver,
   events: eventSinkDriver,
   title: documentTitleDriver,
   HTTP: makeHTTPDriver(),

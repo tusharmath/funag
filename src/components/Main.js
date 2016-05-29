@@ -14,6 +14,7 @@ import BatchDOM from '../utils/BatchDOM'
 import proxy from '../utils/RxProxy'
 import * as F from '../utils/Flexbox'
 
+// TODO: Use muxer
 const getAudio$ = audio => {
   const t = event => audio => ({event, audio})
   return O.merge(
@@ -37,13 +38,13 @@ const view = ({playlist, searchBox, controls}) => O
   ).map(views => div({style: {height: '100%', ...F.FlexCol}}, views))
 
 // TODO: Split into intent + model
-const model = ({DOM, route, audio, HTTP}) => {
+const model = ({DOM, route, AUDIO, HTTP}) => {
   // TODO: Pass HTTP.share()
-  const audio$ = getAudio$(audio)
+  const audio$ = getAudio$(AUDIO)
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const __selectedTrack$ = proxy()
-  const playlist = Playlist({tracks$, DOM, audio$, selectedTrack$: __selectedTrack$})
+  const playlist = Playlist({tracks$, DOM, audio$, selectedTrack$: __selectedTrack$, AUDIO})
   const selectedTrack$ = __selectedTrack$.merge(
     (playlist.selectedTrack$),
     tracks$.first().map(R.head)
@@ -53,7 +54,7 @@ const model = ({DOM, route, audio, HTTP}) => {
     HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
     events: searchBox.events$,
-    audio: O.merge(playlist.audio$, controls.audio$),
+    AUDIO: O.merge(playlist.audio$, controls.audio$),
     playlist, searchBox, controls
   }
 }
@@ -64,7 +65,7 @@ export default function (sources) {
     HTTP: m.HTTP,
     title: m.title,
     events: m.events,
-    audio: m.audio,
+    AUDIO: m.AUDIO,
     DOM: BatchDOM(view(m))
   }
 }

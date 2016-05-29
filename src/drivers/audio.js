@@ -18,7 +18,6 @@ export const matches = R.compose(
 
 export const audioDriver = instruction$ => {
   const audio = new Audio()
-
   instruction$.filter(matches('PLAY')).subscribe(({src}) => {
     if (audio.src !== src) {
       audio.src = src
@@ -37,9 +36,10 @@ export const audioDriver = instruction$ => {
 }
 
 export const mockAudioDriver = () => {
+  const noop = R.always()
   return {
     events () {
       return Observable.empty()
-    }
+    }, Play: noop, Pause: noop
   }
 }
