@@ -4,8 +4,7 @@
 
 'use strict'
 
-const {forEach, map} = require('lodash/fp')
-const {curry, spread, values} = require('lodash')
+const {forEach, map, curry, apply, values} = require('ramda')
 
 const httpProxy = require('http-proxy')
 const config = require('config')
@@ -30,7 +29,7 @@ if (config.express.useGzipped) {
 }
 
 const setHeaders = curry((headers, req) => {
-  const setHeader = spread(req.setHeader.bind(req))
+  const setHeader = apply(req.setHeader.bind(req))
   const headerParams = map(values)(headers)
   forEach(setHeader, headerParams)
 })
