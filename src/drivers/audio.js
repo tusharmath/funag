@@ -7,10 +7,14 @@
 import {Observable} from 'rx'
 import R from 'ramda'
 
-export const PLAY = {type: 'PLAY'}
-export const PAUSE = {type: 'PAUSE'}
-export const LOAD = src => ({type: 'PAUSE', src})
-const matches = value => R.where({type: R.equals(value)})
+const params = R.zipObj(['type', 'src'])
+const tuple = R.curry((a, b) => [a, b])
+export const Play = R.compose(params, tuple('PLAY'))
+export const Pause = R.compose(params, tuple('PAUSE'))
+export const matches = R.compose(
+  R.whereEq,
+  R.objOf('type')
+)
 
 export const audioDriver = instruction$ => {
   const audio = new Audio()
@@ -28,7 +32,7 @@ export const audioDriver = instruction$ => {
   return {
     events (type) {
       return Observable.fromEvent(audio, type).map(audio)
-    }
+    }, Play, Pause
   }
 }
 
