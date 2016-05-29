@@ -6,12 +6,13 @@
 
 import {Observable as O} from 'rx'
 import {div} from '@cycle/dom'
+import R from 'ramda'
 import Controls from './Controls'
 import Playlist from './Playlist'
 import SearchBox from './Search'
 import BatchDOM from '../utils/BatchDOM'
-import RxProxy from '../utils/RxProxy'
-import * as  F from '../utils/Flexbox'
+import proxy from '../utils/RxProxy'
+import * as F from '../utils/Flexbox'
 
 const getAudio$ = audio => {
   const t = event => audio => ({event, audio})
@@ -37,13 +38,16 @@ const view = ({playlist, searchBox, controls}) => O
 
 // TODO: Split into intent + model
 const model = ({DOM, route, audio, HTTP}) => {
-  const __selectedTrack$ = RxProxy()
   // TODO: Pass HTTP.share()
   const audio$ = getAudio$(audio)
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
+  const __selectedTrack$ = proxy()
   const playlist = Playlist({tracks$, DOM, audio$, selectedTrack$: __selectedTrack$})
-  const selectedTrack$ = __selectedTrack$.merge(playlist.selectedTrack$)
+  const selectedTrack$ = __selectedTrack$.merge(
+    (playlist.selectedTrack$),
+    tracks$.first().map(R.head)
+  ).distinctUntilChanged()
   const controls = Controls({audio$, selectedTrack$, DOM})
   return {
     HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),

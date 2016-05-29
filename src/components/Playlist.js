@@ -4,12 +4,22 @@
 // TODO: Rename to TrackList
 'use strict'
 import {div} from '@cycle/dom'
+import R from 'ramda'
 import {Observable} from 'rx'
 import PlayListItem from './PlayListItem'
-import * as M from './Models'
 import * as SC from '../utils/SoundCloud'
 import * as P from '../layouts/Placeholders'
 import {getStatus$} from '../utils/OverlayStatus'
+
+export const Audio = ({url$}) => url$.scan((last, src) => {
+  const canPlay = R.anyPass([
+    ({last}) => !last,
+    ({last}) => last.type === 'PAUSE',
+    ({last, src}) => last.src !== src
+  ])
+  if (canPlay({last, src})) return {type: 'PLAY', src}
+  return {type: 'PAUSE', src}
+}, null)
 
 const view = ({playlistItem$}) => {
   return playlistItem$
@@ -49,11 +59,11 @@ const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
 
   const url$ = click$
     .combineLatest(selectedTrack$, (_, b) => b)
-    .pluck('stream_url').map(url => url + SC.clientIDParams({}))
+    .map(SC.trackStreamURL)
 
   return {
     selectedTrack$: click$,
-    audio$: M.Audio({url$}),
+    audio$: Audio({url$}),
     playlistItem$
   }
 }
