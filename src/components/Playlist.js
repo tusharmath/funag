@@ -11,14 +11,14 @@ import * as SC from '../utils/SoundCloud'
 import * as P from '../layouts/Placeholders'
 import {getStatus$} from '../utils/OverlayStatus'
 
-export const Audio = ({url$}) => url$.scan((last, src) => {
+export const Audio = ({url$, AUDIO: {Play, Pause}}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([
     ({last}) => !last,
     ({last}) => last.type === 'PAUSE',
     ({last, src}) => last.src !== src
   ])
-  if (canPlay({last, src})) return {type: 'PLAY', src}
-  return {type: 'PAUSE', src}
+  if (canPlay({last, src})) return Play(src)
+  return Pause(src)
 }, null)
 
 const view = ({playlistItem$}) => {
@@ -44,7 +44,7 @@ const toPlaylistItem = ({tracks, statuses, DOM}) => {
   return tracks.map((track, index) => createPlaylistItem({track, index, statuses, DOM}))
 }
 
-const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
+const model = ({tracks$, DOM, audio$, selectedTrack$, AUDIO}) => {
   const trackIds$ = tracks$.map(x => x.map(x => x.id))
   const selectedTrackId$ = selectedTrack$.pluck('id')
   const status$ = getStatus$({selectedTrackId$, audio$, tracks$: trackIds$})
@@ -63,7 +63,7 @@ const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
 
   return {
     selectedTrack$: click$,
-    audio$: Audio({url$}),
+    audio$: Audio({url$, AUDIO}),
     playlistItem$
   }
 }
