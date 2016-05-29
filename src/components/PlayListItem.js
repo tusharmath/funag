@@ -5,12 +5,11 @@
 'use strict'
 
 import {div} from '@cycle/dom'
-import {Observable} from 'rx'
+import {Observable as O} from 'rx'
 import * as F from '../utils/Flexbox'
-import Artwork from './Artwork'
+import {DefaultArtwork, PausedArtwork, PlayingArtwork} from './Artwork'
 import TrackDetail from './TrackDetail'
 import * as T from '../utils/Themes'
-import {AnimatedOverlay, PausedOverlay} from './ArtworkOverlay'
 import isolate from '@cycle/isolate'
 import {DEFAULT, PLAYING, PAUSED} from '../utils/OverlayStatus'
 
@@ -26,33 +25,39 @@ const trackInfoSTY = {
   borderBottom: T.Pallete.divider
 }
 
-const OverlayMap = {
-  [DEFAULT]: null,
-  [PLAYING]: AnimatedOverlay,
-  [PAUSED]: PausedOverlay
+const view = ({icon$, trackDetail}) => {
+  return icon$.map(icon =>
+    div({className: 'playlist-item', style: {...playListItemSTY}}, [
+      div({style: trackInfoSTY}, [
+        icon,
+        trackDetail
+      ])
+    ])
+  )
+}
+
+const model = ({track: {artwork_url}, status}) => {
+  const OverlayMap = {
+    [DEFAULT]: DefaultArtwork(artwork_url),
+    [PAUSED]: PausedArtwork,
+    [PLAYING]: PlayingArtwork
+  }
+
+  const icon$ = O.just(OverlayMap[status])
+  return {icon$}
+}
+
+const intent = ({DOM, track}) => {
+  const click$ = DOM.select('.playlist-item').events('click').map(track)
+  return {click$}
 }
 
 const PlayListItem = ({DOM, track, status}) => {
-  const {title, user, duration, artwork_url} = track
-  const click$ = DOM.select('.playlist-item').events('click').map(track)
-  const overlayItem$ = Observable.just(OverlayMap[status])
-  const trackStatus$ = overlayItem$.startWith(null)
-    .map(overlay => div({style: {padding: `${T.BlockSpace}px`}}, [
-      div({style: {position: 'relative'}}, [
-        Artwork(artwork_url),
-        overlay
-      ])
-    ]))
-  return {
-    click$,
-    DOM: trackStatus$.map(status =>
-      div({className: 'playlist-item', style: {...playListItemSTY}}, [
-        div({style: trackInfoSTY}, [
-          status,
-          TrackDetail({title, user, duration})
-        ])
-      ]))
-  }
+  const {icon$} = model({track, status})
+  const trackDetail = TrackDetail(track)
+  const vTree$ = view({icon$, trackDetail})
+  const {click$} = intent({DOM, track})
+  return {click$, DOM: vTree$}
 }
 
 // TODO: Rename file PlayListItem => Track
