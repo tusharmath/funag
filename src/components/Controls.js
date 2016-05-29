@@ -45,9 +45,9 @@ const model = ({audio$, selectedTrack$}) => {
   return {completion$, showControls$}
 }
 
-export default ({audio$, selectedTrack$, DOM}) => {
+export default ({audio$, selectedTrack$, DOM, AUDIO}) => {
   const {completion$, showControls$} = model({audio$, selectedTrack$})
-  const playback = Playback({selectedTrack$, audio$, DOM})
+  const playback = Playback({selectedTrack$, audio$, DOM, AUDIO})
   const scrobber = Scrobber({completion$})
   return {
     audio$: playback.audio$,

@@ -49,7 +49,7 @@ const model = ({DOM, route, AUDIO, HTTP}) => {
     (playlist.selectedTrack$),
     tracks$.first().map(R.head)
   ).distinctUntilChanged()
-  const controls = Controls({audio$, selectedTrack$, DOM})
+  const controls = Controls({audio$, selectedTrack$, DOM, AUDIO})
   return {
     HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
