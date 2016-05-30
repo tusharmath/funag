@@ -66,9 +66,9 @@ const model = ({HTTP, DOM, clear$}) => {
   const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
   const events$ = O
     .merge(
-      searchEl.events('submit').map(event('preventDefault')),
+      searchEl.events('submit').map(U.event('preventDefault')),
       searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
-        .map(event('blur'))
+        .map(U.event('blur'))
     )
   return {request$, events$, tracks$, value$}
 }

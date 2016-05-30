@@ -11,7 +11,7 @@ import * as SC from '../src/utils/SoundCloud'
 const {onNext, onCompleted} = ReactiveTest
 
 test('durationFormat()', t => {
-  t.is(SC.durationFormat(5000), '0:50')
+  t.is(SC.durationFormat(5000), '0:05')
   t.is(SC.durationFormat(60000), '1:00')
   t.is(SC.durationFormat(645000), '10:45')
 })

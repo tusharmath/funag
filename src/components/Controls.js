@@ -3,39 +3,24 @@
  */
 
 'use strict'
-import {Observable} from 'rx'
+import {Observable, Subject} from 'rx'
 import {div} from '@cycle/dom'
-import Scrobber from './Scrobber'
-import Playback from './Playback'
-import * as S from '../utils/StyleUtils'
-import {Pallete} from '../utils/Themes'
+import ControlLarge from './ControlLarge'
+import ControlMini from './ControlMini'
+import * as A from './Animate'
 
-const ControlSTY = show => ({
-  ...S.fixed({bottom: 0, left: 0, right: 0}),
-  transform: show ? 'translateY(0%)' : 'translateY(115%)',
-  transition: 'transform 300ms cubic-bezier(0.2, 0.9, 0.3, 1.5)',
-  backgroundColor: Pallete.primaryColor,
-  color: '#FFF'
-})
-
-const view = ({playback, scrobber, showControls$}) => {
-  return Observable
-    .combineLatest(
-      showControls$,
-      scrobber.DOM,
-      playback.DOM
-    )
-    .map(([show, scrobber, playback]) =>
-      div({style: ControlSTY(show)}, [
-        div({
-          style: {
-            boxShadow: Pallete.shadow
-          }
-        }, [scrobber, playback])])
-    )
+export const RxProxy = () => {
+  const sub = new Subject()
+  const _sub = sub.asObservable()
+  _sub.merge = src => src.multicast(sub).refCount()
+  return _sub
 }
 
-const model = ({audio$, selectedTrack$}) => {
+export default ({audio$, selectedTrack$, DOM}) => {
+  const proxy = RxProxy()
+  const state$ = proxy.startWith({mini: 2, large: 2})
+  const timeupdate$ = audio$
+    .filter(({event}) => event === 'timeUpdate')
   const completion$ = Observable.merge(audio$
     .filter(({event}) => event === 'timeUpdate')
     .pluck('audio')
@@ -46,16 +31,19 @@ const model = ({audio$, selectedTrack$}) => {
       .map(1),
     selectedTrack$.map(0)
   ).startWith(0)
-  const showControls$ = selectedTrack$.map(Boolean).startWith(false)
-  return {completion$, showControls$}
+  const mini = ControlMini({audio$, selectedTrack$, DOM, completion$, state$: state$.pluck('mini')})
+  const large = ControlLarge({audio$, selectedTrack$, DOM, completion$, timeupdate$, state$: state$.pluck('large')})
+  const _state$ = proxy.merge(state({mini, large}))
+  return {
+    audio$: Observable.merge(mini.audio$, large.audio$),
+    DOM: Observable.combineLatest(mini.DOM$, large.DOM$).map(x => div(x)).withLatestFrom(_state$.startWith(null), (a, b) => a),
+    event$: Observable.merge(mini.event$, large.event$)
+  }
 }
 
-export default ({audio$, selectedTrack$, DOM}) => {
-  const {completion$, showControls$} = model({audio$, selectedTrack$})
-  const playback = Playback({selectedTrack$, audio$, DOM})
-  const scrobber = Scrobber({completion$})
-  return {
-    audio$: playback.audio$,
-    DOM: view({playback, scrobber, showControls$})
-  }
+export const state = ({mini, large}) => {
+  const miniLarge$ = Observable.merge(mini.click$.map('MINI'), large.click$.map('LARGE'))
+  const miniStatus$ = A.visibility({isVisible$: miniLarge$.map(x => x === 'LARGE'), animationEnd$: mini.animationEnd$})
+  const largeStatus$ = A.visibility({isVisible$: miniLarge$.map(x => x === 'MINI'), animationEnd$: large.animationEnd$})
+  return Observable.combineLatest(miniStatus$, largeStatus$).map(([mini, large]) => ({mini, large})).distinctUntilChanged()
 }

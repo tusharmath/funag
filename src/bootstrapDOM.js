@@ -33,5 +33,5 @@ Cycle.run(Main, {
   events: eventSinkDriver,
   title: documentTitleDriver,
   HTTP: makeHTTPDriver(),
-  MODEL: makeModelDriver({isServer: false})
+  MODEL: makeModelDriver({isServer: false, control: {mini: 2, large: 2}})
 })
