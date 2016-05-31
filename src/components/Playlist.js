@@ -35,23 +35,10 @@ const view = ({playlistItem$}) => {
     .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, [view]))
 }
 
-const createPlaylistItem = ({track, index, statuses, DOM}) => {
-  const status = statuses[index]
-  return PlayListItem({track, DOM, status})
-}
-
-const toPlaylistItem = ({tracks, statuses, DOM}) => {
-  return tracks.map((track, index) => createPlaylistItem({track, index, statuses, DOM}))
-}
-
 const model = ({tracks$, DOM, audio$, selectedTrack$, AUDIO}) => {
-  const trackIds$ = tracks$.map(x => x.map(x => x.id))
   const selectedTrackId$ = selectedTrack$.pluck('id')
-  const status$ = getStatus$({selectedTrackId$, audio$, tracks$: trackIds$})
-
-  const playlistItem$ = Observable
-    .combineLatest(tracks$, status$)
-    .map(([tracks, statuses]) => toPlaylistItem({tracks, statuses, DOM}))
+  const playlistItem$ = getStatus$({selectedTrackId$, audio$, tracks$: tracks$})
+    .map(R.map(R.compose(PlayListItem, R.merge({DOM}))))
 
   const click$ = playlistItem$
     .map(tracks => tracks.map(x => x.click$))
