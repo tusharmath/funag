@@ -18,6 +18,6 @@ export const getStatus$ = ({selectedTrackId$, audio$, tracks$}) => {
   const iniStatus$ = tracks$.map(tracks => tracks.map(track => ({status: DEFAULT, track}))).first()
   const isRequired = x => ['reallyPlaying', 'pause', 'loadStart', 'ended'].includes(x)
   const requiredAudio$ = audio$.pluck('event').filter(isRequired)
-  const status$ = Observable.combineLatest(requiredAudio$, selectedTrackId$, tracks$).map(getStatus)
+  const status$ = Observable.combineLatest(requiredAudio$.startWith('pause'), selectedTrackId$, tracks$).map(getStatus)
   return Observable.merge(iniStatus$, status$)
 }
