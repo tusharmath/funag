@@ -3,6 +3,7 @@
  */
 
 'use strict'
+import R from 'ramda'
 import {div} from 'cycle-snabbdom'
 import {Observable} from 'rx'
 import * as S from '../utils/StyleUtils'
@@ -25,8 +26,9 @@ export default ({selectedTrack$, audio$, DOM, AUDIO: {Play, Pause}}) => {
   return {
     DOM: Observable.merge(playPause$, loadStart$, loadError$).map(x => div([x])),
     audio$: Observable.merge(
-      DOM.select('.ctrl-play').events('click').map(Play),
-      DOM.select('.ctrl-pause').events('click').map(Pause)
-    ).withLatestFrom(url$, (type, src) => type(src))
+      DOM.select('.ctrl-play').events('click').map(R.always(Play)),
+      DOM.select('.ctrl-pause').events('click').map(R.always(Pause))
+    )
+      .withLatestFrom(url$, (type, src) => type(src))
   }
 }
