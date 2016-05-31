@@ -28,7 +28,6 @@ export default ({selectedTrack$, audio$, DOM, AUDIO: {Play, Pause}}) => {
     audio$: Observable.merge(
       DOM.select('.ctrl-play').events('click').map(R.always(Play)),
       DOM.select('.ctrl-pause').events('click').map(R.always(Pause))
-    )
-      .withLatestFrom(url$, (type, src) => type(src))
+    ).withLatestFrom(url$, R.nthArg(1))
   }
 }
