@@ -44,12 +44,12 @@ const model = ({DOM, route, AUDIO, HTTP}) => {
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const __selectedTrack$ = proxy()
-  const playlist = Playlist({tracks$, DOM, audio$, selectedTrack$: __selectedTrack$, AUDIO})
+  const playlist = Playlist({tracks$, DOM, audio$, selectedTrack$: __selectedTrack$})
   const selectedTrack$ = __selectedTrack$.merge(
     (playlist.selectedTrack$),
     tracks$.first().map(R.head)
   ).distinctUntilChanged()
-  const controls = Controls({audio$, selectedTrack$, DOM, AUDIO})
+  const controls = Controls({audio$, selectedTrack$, DOM})
   return {
     HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),

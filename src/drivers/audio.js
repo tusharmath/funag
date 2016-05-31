@@ -6,19 +6,12 @@
 
 import {Observable} from 'rx'
 import R from 'ramda'
-
-const params = R.zipObj(['type', 'src'])
-const tuple = R.curry((a, b) => [a, b])
-export const Play = R.compose(params, tuple('PLAY'))
-export const Pause = R.compose(params, tuple('PAUSE'))
-export const matches = R.compose(
-  R.whereEq,
-  R.objOf('type')
-)
+import {demux} from 'muxer'
 
 export const audioDriver = instruction$ => {
   const audio = new Audio()
-  instruction$.filter(matches('PLAY')).subscribe(({src}) => {
+  const [{play, pause}] = demux(instruction$.shareReplay(1), 'play', 'pause')
+  play.subscribe(({src}) => {
     if (audio.src !== src) {
       audio.src = src
       audio.load()
@@ -26,12 +19,12 @@ export const audioDriver = instruction$ => {
     audio.play()
   })
 
-  instruction$.filter(matches('PAUSE')).subscribe(() => audio.pause())
+  pause.subscribe(() => audio.pause())
 
   return {
     events (type) {
       return Observable.fromEvent(audio, type).map(audio)
-    }, Play, Pause
+    }
   }
 }
 

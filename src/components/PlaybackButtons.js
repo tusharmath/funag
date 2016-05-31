@@ -4,13 +4,22 @@
 
 'use strict'
 import R from 'ramda'
+import {mux} from 'muxer'
 import {div} from 'cycle-snabbdom'
 import {Observable} from 'rx'
 import * as S from '../utils/StyleUtils'
 import * as T from '../utils/Themes'
 import * as SC from '../utils/SoundCloud'
 
-export default ({selectedTrack$, audio$, DOM, AUDIO: {Play, Pause}}) => {
+const intent = ({DOM, url$}) => {
+  const select = R.compose(R.objOf('src'), R.nthArg(1))
+  const audio$ = mux({
+    play: DOM.select('.ctrl-play').events('click').withLatestFrom(url$, select),
+    pause: DOM.select('.ctrl-pause').events('click').withLatestFrom(url$, select)
+  })
+  return {audio$}
+}
+export default ({selectedTrack$, audio$, DOM}) => {
   const event$ = audio$.pluck('event')
   const playPause$ = Observable.merge(
     event$.filter(x => x === 'playing').map('pause'),
@@ -22,12 +31,9 @@ export default ({selectedTrack$, audio$, DOM, AUDIO: {Play, Pause}}) => {
   const loadStart$ = event$.filter(x => x === 'loadStart').map(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
   const loadError$ = event$.filter(x => x === 'error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
   const url$ = selectedTrack$.map(SC.trackStreamURL)
-
+  const actions = intent({DOM, url$})
   return {
-    DOM: Observable.merge(playPause$, loadStart$, loadError$).map(x => div([x])),
-    audio$: Observable.merge(
-      DOM.select('.ctrl-play').events('click').map(R.always(Play)),
-      DOM.select('.ctrl-pause').events('click').map(R.always(Pause))
-    ).withLatestFrom(url$, R.nthArg(1))
+    ...actions,
+    DOM: Observable.merge(playPause$, loadStart$, loadError$).map(x => div(x))
   }
 }

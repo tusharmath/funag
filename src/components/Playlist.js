@@ -6,19 +6,20 @@
 import {div} from 'cycle-snabbdom'
 import R from 'ramda'
 import {Observable} from 'rx'
+import {mux} from 'muxer'
 import PlayListItem from './PlayListItem'
 import * as SC from '../utils/SoundCloud'
 import * as P from '../layouts/Placeholders'
 import {getStatus$} from '../utils/OverlayStatus'
 
-export const Audio = ({url$, AUDIO: {Play, Pause}}) => url$.scan((last, src) => {
+export const Audio = ({url$}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([
     ({last}) => !last,
     ({last}) => last.type === 'PAUSE',
     ({last, src}) => last.src !== src
   ])
-  if (canPlay({last, src})) return Play(src)
-  return Pause(src)
+  if (canPlay({last, src})) return {src, type: 'PLAY'}
+  return {src, type: 'PAUSE'}
 }, null)
 
 const view = ({playlistItem$}) => {
@@ -35,35 +36,24 @@ const view = ({playlistItem$}) => {
     .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, view))
 }
 
-const createPlaylistItem = ({track, index, statuses, DOM}) => {
-  const status = statuses[index]
-  return PlayListItem({track, DOM, status})
-}
-
-const toPlaylistItem = ({tracks, statuses, DOM}) => {
-  return tracks.map((track, index) => createPlaylistItem({track, index, statuses, DOM}))
-}
-
-const model = ({tracks$, DOM, audio$, selectedTrack$, AUDIO}) => {
-  const trackIds$ = tracks$.map(x => x.map(x => x.id))
+const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
   const selectedTrackId$ = selectedTrack$.pluck('id')
-  const status$ = getStatus$({selectedTrackId$, audio$, tracks$: trackIds$})
-
-  const playlistItem$ = Observable
-    .combineLatest(tracks$, status$)
-    .map(([tracks, statuses]) => toPlaylistItem({tracks, statuses, DOM}))
+  const playlistItem$ = getStatus$({selectedTrackId$, audio$, tracks$})
+    .map(R.map(R.compose(PlayListItem, R.merge({DOM}))))
 
   const click$ = playlistItem$
     .map(tracks => tracks.map(x => x.click$))
     .flatMapLatest(clicks => Observable.merge(clicks))
 
-  const url$ = click$
-    .combineLatest(selectedTrack$, (_, b) => b)
-    .map(SC.trackStreamURL)
+  const url$ = click$.map(SC.trackStreamURL)
 
+  const audioAction$ = Audio({url$}).tap(x => console.log(x))
+  const ofType = R.compose(R.whereEq, R.objOf('type'))
+  const play = audioAction$.filter(ofType('PLAY'))
+  const pause = audioAction$.filter(ofType('PAUSE'))
   return {
     selectedTrack$: click$,
-    audio$: Audio({url$, AUDIO}),
+    audio$: mux({play, pause}),
     playlistItem$
   }
 }
@@ -71,7 +61,6 @@ const model = ({tracks$, DOM, audio$, selectedTrack$, AUDIO}) => {
 export default sources => {
   const {playlistItem$, audio$, selectedTrack$} = model(sources)
   const vTree$ = view({playlistItem$})
-
   return {
     DOM: vTree$, audio$, selectedTrack$
   }
