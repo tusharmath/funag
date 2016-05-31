@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
+import {div} from 'cycle-snabbdom'
 import {Observable} from 'rx'
 import * as F from '../utils/Flexbox'
 import Artwork from './Artwork'
@@ -46,7 +46,7 @@ const PlayListItem = ({DOM, track, status}) => {
   return {
     click$,
     DOM: trackStatus$.map(status =>
-      div({className: 'playlist-item', style: {...playListItemSTY}}, [
+      div('.playlist-item', {style: {...playListItemSTY}}, [
         div({style: trackInfoSTY}, [
           status,
           TrackDetail({title, user, duration})

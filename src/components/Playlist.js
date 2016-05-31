@@ -3,7 +3,7 @@
  */
 // TODO: Rename to TrackList
 'use strict'
-import {div} from '@cycle/dom'
+import {div} from 'cycle-snabbdom'
 import {Observable} from 'rx'
 import PlayListItem from './PlayListItem'
 import * as M from './Models'
@@ -23,17 +23,19 @@ const view = ({playlistItem$, bottomPadding$}) => {
       ])
     ])
     .combineLatest(bottomPadding$)
-    .map(([view, bottomPadding]) => div({
-      className: 'playlist',
-      style: {
-        backgroundColor: '#fff',
-        padding: '62px 0',
-        paddingBottom: bottomPadding ? '62px' : 0
-      }
-    }, [view]))
+    .map(([view, bottomPadding]) => {
+      return div('.playlist', {
+        style: {
+          backgroundColor: '#fff',
+          padding: '62px 0',
+          paddingBottom: bottomPadding ? '62px' : 0
+        }
+      }, view)
+    })
 }
 
 const createPlaylistItem = ({track, index, statuses, DOM}) => {
+  console.log(index, statuses[index])
   const status = statuses[index]
   return PlayListItem({track, DOM, status})
 }

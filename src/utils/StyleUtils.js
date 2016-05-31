@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {i} from '@cycle/dom'
+import {i} from 'cycle-snabbdom'
 import * as F from './Flexbox'
 
 export const size = (height, width = height) => ({height: `${height}px`, width: `${width}px`})
@@ -17,7 +17,7 @@ export const position = coords => {
     })
   return positions
 }
-export const absolute = (left = 0, top = 0, right = 0, bottom = 0) => {
+export const absolute = (left = '0', top = '0', right = '0', bottom = '0') => {
   return {...position({left, top, right, bottom}), position: 'absolute'}
 }
 export const fixed = x => {
@@ -37,7 +37,7 @@ export const overflowEllipsisSTY = {
 }
 
 export const subtitleSTY = {
-  opacity: 0.5, fontSize: '0.8em'
+  opacity: '0.5', fontSize: '0.8em'
 }
 
 export const block = (height, width = height) => ({

@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {ul, li, div} from '@cycle/dom'
+import {ul, li, div} from 'cycle-snabbdom'
 import * as S from '../utils/StyleUtils'
 import * as T from '../utils/Themes'
 
@@ -14,9 +14,9 @@ const style = {
   backgroundColor: 'rgba(255, 255, 255, 0.8)'
 }
 const overlay = (isAnimated = '') =>
-  div({className: 'fade-in', style}, [
+  div('.fade-in', {style}, [
     ul('.playing-animation' + isAnimated, {style: {...S.size(17)}}, [
-      li(), li(), li()
+      li({}), li({}), li({})
     ])
   ])
 

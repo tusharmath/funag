@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
+import {div} from 'cycle-snabbdom'
 import {Observable} from 'rx'
 import * as S from '../utils/StyleUtils'
 
@@ -27,7 +27,7 @@ export default ({value$, tracks$, DOM}) => {
 
   const vTree$ = Observable
     .merge(searchIconVTree$, closeIconVTree$, loaderIconVTree$)
-    .map(icon => div({style: S.block(60)}, [icon]))
+    .map(icon => div({style: S.block('60')}, [icon]))
 
   return {DOM: vTree$, clear$}
 }

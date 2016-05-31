@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {div} from '@cycle/dom'
+import {div} from 'cycle-snabbdom'
 import * as S from '../utils/StyleUtils'
 import {Pallete} from '../utils/Themes'
 
@@ -25,7 +25,7 @@ export default ({completion$}) => {
           }, [
             div({
               style: {
-                ... {top: 0, right: 0, position: 'absolute'},
+                ... {top: '0', right: '0', position: 'absolute'},
                 ...{...S.block(15), borderRadius: '20px'},
                 backgroundColor: Pallete.accentColor,
                 transform: 'translateY(-50%) translateX(100%)',

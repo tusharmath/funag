@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {input, form} from '@cycle/dom'
+import {input, form} from 'cycle-snabbdom'
 import {Observable as O} from 'rx'
 import * as F from '../utils/Flexbox'
 import * as S from '../utils/StyleUtils'
@@ -32,22 +32,21 @@ const searchBoxContainerSTY = {
   boxShadow: T.Pallete.shadow,
   backgroundColor: T.Pallete.primaryColor,
   color: T.Pallete.primaryColorPrimaryFont,
-  ...S.position({top: 0, left: 0, right: 0}),
+  ...S.position({top: '0', left: '0', right: '0'}),
   position: 'fixed',
-  margin: 0
+  margin: '0'
 }
 
 const event = event => target => ({target, event})
 
-const Form = ({icon, value}) =>
-  form({className: 'search', style: searchBoxContainerSTY}, [
-    input({type: 'text', style: searchBoxSTY, placeholder: 'Search', value}),
-    icon
-  ])
+const Form = ({icon, value}) => form('.search', {style: searchBoxContainerSTY}, [
+  input({props: {type: 'text', placeholder: 'Search', value}, style: searchBoxSTY}),
+  icon
+])
 
 const view = ({clear$, icon$}) => {
   return O.merge(
-    icon$.map(icon => Form({icon})),
+    icon$.map(icon => Form({icon, value: null})),
     clear$.withLatestFrom(icon$)
       .map(([_, icon]) => Form({icon, value: ''}))
   )

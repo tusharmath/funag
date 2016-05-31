@@ -5,7 +5,7 @@
 'use strict'
 
 import {Observable as O} from 'rx'
-import {div} from '@cycle/dom'
+import {div} from 'cycle-snabbdom'
 import Controls from './Controls'
 import Playlist from './Playlist'
 import SearchBox from './Search'
