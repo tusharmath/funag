@@ -6,12 +6,15 @@
 
 import {Observable as O} from 'rx'
 import {div} from 'cycle-snabbdom'
+import R from 'ramda'
 import Controls from './Controls'
 import Playlist from './Playlist'
 import SearchBox from './Search'
 import BatchDOM from '../utils/BatchDOM'
-import RxProxy from '../utils/RxProxy'
+import proxy from '../utils/RxProxy'
+import * as F from '../utils/Flexbox'
 
+// TODO: Use muxer
 const getAudio$ = audio => {
   const t = event => audio => ({event, audio})
   return O.merge(
@@ -29,26 +32,29 @@ const getAudio$ = audio => {
 
 const view = ({playlist, searchBox, controls}) => O
   .combineLatest(
-    playlist.DOM,
     searchBox.DOM,
+    playlist.DOM,
     controls.DOM
-  ).map(views => div(views))
+  ).map(views => div({style: {height: '100%', ...F.FlexCol}}, views))
 
 // TODO: Split into intent + model
-const model = ({DOM, route, audio, HTTP}) => {
-  const __selectedTrack$ = RxProxy()
+const model = ({DOM, route, AUDIO, HTTP}) => {
   // TODO: Pass HTTP.share()
-  const audio$ = getAudio$(audio)
+  const audio$ = getAudio$(AUDIO)
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
-  const playlist = Playlist({tracks$, DOM, audio$, selectedTrack$: __selectedTrack$})
-  const selectedTrack$ = __selectedTrack$.merge(playlist.selectedTrack$)
-  const controls = Controls({audio$, selectedTrack$, DOM})
+  const __selectedTrack$ = proxy()
+  const playlist = Playlist({tracks$, DOM, audio$, selectedTrack$: __selectedTrack$, AUDIO})
+  const selectedTrack$ = __selectedTrack$.merge(
+    (playlist.selectedTrack$),
+    tracks$.first().map(R.head)
+  ).distinctUntilChanged()
+  const controls = Controls({audio$, selectedTrack$, DOM, AUDIO})
   return {
     HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
     events: searchBox.events$,
-    audio: O.merge(playlist.audio$, controls.audio$),
+    AUDIO: O.merge(playlist.audio$, controls.audio$),
     playlist, searchBox, controls
   }
 }
@@ -59,7 +65,7 @@ export default function (sources) {
     HTTP: m.HTTP,
     title: m.title,
     events: m.events,
-    audio: m.audio,
+    AUDIO: m.AUDIO,
     DOM: BatchDOM(view(m))
   }
 }

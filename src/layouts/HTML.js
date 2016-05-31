@@ -23,7 +23,8 @@ export default ({__html, __title, bundle}) => {
           font-weight: 400;
           color: rgb(51, 51, 51);
           -webkit-font-smoothing: antialiased;
-          -webkit-user-select: none;          
+          -webkit-user-select: none;
+          overflow: hidden;
         }
         
         input {
@@ -49,7 +50,7 @@ export default ({__html, __title, bundle}) => {
         }
         `
       ]),
-      meta({name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no'}),
+      meta({props: {name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no'}}),
       link({
         props: {
           rel: 'stylesheet',

@@ -5,36 +5,42 @@
 'use strict'
 import {div} from 'cycle-snabbdom'
 import * as S from '../utils/StyleUtils'
+import * as F from '../utils/Flexbox'
 import {Pallete} from '../utils/Themes'
 
-export default ({completion$}) => {
-  return {
-    DOM: completion$.map(completion =>
-      div([
-        div({style: {height: '2px', width: '100%'}}, [
+const view = ({completion$}) => {
+  return completion$.map(completion =>
+    div([
+      div({style: {height: '4px', width: '100%'}}, [
+        div({
+          style: {
+            ...F.RowRight,
+            transition: 'transform 100ms linear',
+            background: Pallete.primaryDarkColor,
+            height: '100%',
+            willChange: 'transform',
+            transform: `translateX(${100 * completion - 100}%)`,
+            transformOrigin: 'left',
+            marginRight: '15px'
+          }
+        }, [
           div({
             style: {
-              transition: 'transform 100ms linear',
-              background: Pallete.primaryDarkColor,
-              height: '100%',
-              willChange: 'transform',
-              transform: `translateX(${100 * completion - 100}%)`,
-              transformOrigin: 'left',
-              marginRight: '15px'
+              ...{...S.block(15), borderRadius: '20px'},
+              backgroundColor: Pallete.accentColor,
+              transform: 'translateY(-50%) translateX(100%)',
+              boxShadow: Pallete.shadow
             }
-          }, [
-            div({
-              style: {
-                ... {top: '0', right: '0', position: 'absolute'},
-                ...{...S.block(15), borderRadius: '20px'},
-                backgroundColor: Pallete.accentColor,
-                transform: 'translateY(-50%) translateX(100%)',
-                boxShadow: Pallete.shadow
-              }
-            })
-          ])
+          })
         ])
       ])
-    )
+    ])
+  )
+}
+
+export default ({completion$}) => {
+  const vTree$ = view({completion$})
+  return {
+    DOM: vTree$
   }
 }

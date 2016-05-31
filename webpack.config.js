@@ -26,7 +26,7 @@ const noop = require('./src/utils/Noop')
 
 const sources = {
   DOM: makeHTMLDriver(),
-  audio: mockAudioDriver,
+  AUDIO: mockAudioDriver,
   events: eventSinkDriver,
   title: noop,
   HTTP: () => Observable.never()

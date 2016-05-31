@@ -5,36 +5,41 @@
 'use strict'
 
 import {Observable} from 'rx'
-const noop = function () {
-}
+import R from 'ramda'
 
-export const PLAY = {type: 'PLAY'}
-export const PAUSE = {type: 'PAUSE'}
-export const LOAD = src => ({type: 'PAUSE', src})
+const params = R.zipObj(['type', 'src'])
+const tuple = R.curry((a, b) => [a, b])
+export const Play = R.compose(params, tuple('PLAY'))
+export const Pause = R.compose(params, tuple('PAUSE'))
+export const matches = R.compose(
+  R.whereEq,
+  R.objOf('type')
+)
 
 export const audioDriver = instruction$ => {
   const audio = new Audio()
-  Observable.merge(
-    instruction$.filter(x => x.type === 'PLAY').tap(() => audio.play()),
-    instruction$.filter(x => x.type === 'PAUSE').tap(() => audio.pause()),
-    instruction$.filter(x => x.type === 'LOAD').tap(x => {
-      audio.src = x.src
+  instruction$.filter(matches('PLAY')).subscribe(({src}) => {
+    if (audio.src !== src) {
+      audio.src = src
       audio.load()
-      audio.play()
-    })
-  ).subscribe(noop)
+    }
+    audio.play()
+  })
+
+  instruction$.filter(matches('PAUSE')).subscribe(() => audio.pause())
 
   return {
     events (type) {
       return Observable.fromEvent(audio, type).map(audio)
-    }
+    }, Play, Pause
   }
 }
 
 export const mockAudioDriver = () => {
+  const noop = R.always()
   return {
     events () {
       return Observable.empty()
-    }
+    }, Play: noop, Pause: noop
   }
 }

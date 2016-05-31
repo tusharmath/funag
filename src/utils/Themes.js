@@ -13,7 +13,7 @@ export const Pallete = {
 
   // Misc
   divider: '1px solid rgb(249, 246, 246)',
-  shadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.50)'
+  shadow: '0px 0px 4px 2px rgba(0, 0, 0, 0.70)'
 }
 
 export const BlockHeight = 60
