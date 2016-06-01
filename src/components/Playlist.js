@@ -44,10 +44,11 @@ const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
   const click$ = playlistItem$
     .map(tracks => tracks.map(x => x.click$))
     .flatMapLatest(clicks => Observable.merge(clicks))
+    .shareReplay(1)
 
   const url$ = click$.map(SC.trackStreamURL)
 
-  const audioAction$ = Audio({url$}).tap(x => console.log(x))
+  const audioAction$ = Audio({url$})
   const ofType = R.compose(R.whereEq, R.objOf('type'))
   const play = audioAction$.filter(ofType('PLAY'))
   const pause = audioAction$.filter(ofType('PAUSE'))
