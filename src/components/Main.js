@@ -67,6 +67,6 @@ export default function (sources) {
     title: m.title,
     events: m.events,
     AUDIO: m.AUDIO,
-    DOM: BatchDOM(view(m)))
+    DOM: BatchDOM(view(m))
   }
 }
