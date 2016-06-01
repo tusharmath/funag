@@ -33,27 +33,20 @@ const view = ({playlistItem$, bottomPadding$}) => {
     }, [view]))
 }
 
-const createPlaylistItem = ({track, index, statuses, DOM}) => {
-  const status = statuses[index]
-  return PlayListItem({track, DOM, status})
-}
-
-const toPlaylistItem = ({tracks, statuses, DOM}) => {
-  return tracks.map((track, index) => createPlaylistItem({track, index, statuses, DOM}))
+const toPlaylistItem = ({status, DOM}) => {
+  return status.map(track => PlayListItem({track, DOM}))
 }
 
 const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
-  const trackIds$ = tracks$.map(x => x.map(x => x.id))
   const selectedTrackId$ = selectedTrack$.pluck('id')
-  const status$ = getStatus$({selectedTrackId$, audio$, tracks$: trackIds$})
+  const status$ = getStatus$({selectedTrackId$, audio$, tracks$})
 
-  const playlistItem$ = Observable
-    .combineLatest(tracks$, status$)
-    .map(([tracks, statuses]) => toPlaylistItem({tracks, statuses, DOM}))
+  const playlistItem$ = status$
+    .map(status => toPlaylistItem({status, DOM}))
 
   const click$ = playlistItem$
     .map(tracks => tracks.map(x => x.click$))
-    .flatMapLatest(clicks => Observable.merge(clicks))
+    .flatMapLatest(clicks => Observable.merge(clicks)).shareReplay(1)
 
   const url$ = click$
     .combineLatest(selectedTrack$, (_, b) => b)
