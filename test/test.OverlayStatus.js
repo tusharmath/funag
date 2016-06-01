@@ -27,7 +27,7 @@ test('all statuses', t => {
   )
   const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
   t.deepEqual(messages, [
-    onNext(201, [{status: DEFAULT, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(201, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
     onNext(210, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
     onNext(220, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
     onNext(230, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
@@ -52,7 +52,7 @@ test('dynamic tracks', t => {
   const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
   t.deepEqual(messages, [
     // 10, 11
-    onNext(205, [{status: DEFAULT, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(205, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
     onNext(210, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
 
     // 11, 12
@@ -80,7 +80,7 @@ test('ignore timeUpdate', t => {
   const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
   t.deepEqual(messages, [
     // 10, 11
-    onNext(205, [{status: DEFAULT, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(205, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
     onNext(210, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}])
   ])
 })
