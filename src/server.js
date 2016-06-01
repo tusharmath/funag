@@ -4,8 +4,7 @@
 
 'use strict'
 
-const {forEach, map} = require('lodash/fp')
-const {curry, spread, values} = require('lodash')
+const {forEach, map, curry, apply, values, compose, nthArg} = require('ramda')
 
 const httpProxy = require('http-proxy')
 const config = require('config')
@@ -30,7 +29,7 @@ if (config.express.useGzipped) {
 }
 
 const setHeaders = curry((headers, req) => {
-  const setHeader = spread(req.setHeader.bind(req))
+  const setHeader = apply(req.setHeader.bind(req))
   const headerParams = map(values)(headers)
   forEach(setHeader, headerParams)
 })
@@ -38,8 +37,11 @@ const setHeaders = curry((headers, req) => {
 app.use('/', express.static(path.resolve(__dirname, 'public')))
 
 if (config.proxy) {
+  const consoleError = console.error.bind(console, 'PROXY:')
   const proxy = httpProxy.createProxyServer({secure: false})
   proxy.on('proxyReq', setHeaders(config.proxy.headers))
+  // proxy.on('error', err => console.error.bind(console, 'PROXY:')(err))
+  proxy.on('error', compose(consoleError, nthArg(0)))
   app.use('/api', (req, res) => proxy.web(req, res, {target: config.proxy.target}))
 }
 

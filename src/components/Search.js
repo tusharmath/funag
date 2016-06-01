@@ -30,14 +30,12 @@ const searchBoxContainerSTY = {
   alignItems: 'center',
   minHeight: `${T.BlockHeight}px`,
   boxShadow: T.Pallete.shadow,
+  transform: 'translateZ(0)',
   backgroundColor: T.Pallete.primaryColor,
   color: T.Pallete.primaryColorPrimaryFont,
   ...S.position({top: 0, left: 0, right: 0}),
-  position: 'fixed',
   margin: 0
 }
-
-const event = event => target => ({target, event})
 
 const Form = ({icon, value}) =>
   form({className: 'search', style: searchBoxContainerSTY}, [
@@ -66,9 +64,9 @@ const model = ({HTTP, DOM, clear$}) => {
   const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
   const events$ = O
     .merge(
-      searchEl.events('submit').map(event('preventDefault')),
+      searchEl.events('submit').map(U.action('preventDefault')),
       searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
-        .map(event('blur'))
+        .map(U.action('blur'))
     )
   return {request$, events$, tracks$, value$}
 }

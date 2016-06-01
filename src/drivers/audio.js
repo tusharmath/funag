@@ -5,24 +5,21 @@
 'use strict'
 
 import {Observable} from 'rx'
-const noop = function () {
-}
-
-export const PLAY = {type: 'PLAY'}
-export const PAUSE = {type: 'PAUSE'}
-export const LOAD = src => ({type: 'PAUSE', src})
+import R from 'ramda'
+import {demux} from 'muxer'
 
 export const audioDriver = instruction$ => {
   const audio = new Audio()
-  Observable.merge(
-    instruction$.filter(x => x.type === 'PLAY').tap(() => audio.play()),
-    instruction$.filter(x => x.type === 'PAUSE').tap(() => audio.pause()),
-    instruction$.filter(x => x.type === 'LOAD').tap(x => {
-      audio.src = x.src
+  const [{play, pause}] = demux(instruction$, 'play', 'pause')
+  play.subscribe(({src}) => {
+    if (audio.src !== src) {
+      audio.src = src
       audio.load()
-      audio.play()
-    })
-  ).subscribe(noop)
+    }
+    audio.play()
+  })
+
+  pause.subscribe(() => audio.pause())
 
   return {
     events (type) {
@@ -32,9 +29,10 @@ export const audioDriver = instruction$ => {
 }
 
 export const mockAudioDriver = () => {
+  const noop = R.always()
   return {
     events () {
       return Observable.empty()
-    }
+    }, Play: noop, Pause: noop
   }
 }

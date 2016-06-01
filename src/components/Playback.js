@@ -11,7 +11,7 @@ import PlaybackButtons from './PlaybackButtons'
 import * as F from '../utils/Flexbox'
 
 export default ({selectedTrack$, audio$, DOM}) => {
-  const playbackButtons = PlaybackButtons({audio$, DOM})
+  const playbackButtons = PlaybackButtons({audio$, selectedTrack$, DOM})
   return {
     audio$: playbackButtons.audio$,
     DOM: Observable

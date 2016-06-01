@@ -13,6 +13,8 @@ export const clientIDParams = params => {
   return '?' + qs.stringify({...params, client_id: CLIENT_ID})
 }
 
+export const trackStreamURL = track => track.stream_url + clientIDParams({})
+
 export const toURI = (path, params) => {
   const baseURL = APP_CONFIG.baseURI
   return `${baseURL}${path}${clientIDParams(params)}`

@@ -3,7 +3,6 @@
  */
 
 'use strict'
-
 import {ReactiveTest, TestScheduler} from 'rx'
 import test from 'ava'
 import {getStatus$, DEFAULT, PLAYING, PAUSED} from '../src/utils/OverlayStatus'
@@ -16,7 +15,7 @@ test('all statuses', t => {
   )
 
   const tracks$ = sh.createColdObservable(
-    onNext(0, [10, 11])
+    onNext(0, [{id: 10}, {id: 11}])
   )
   const audio$ = sh.createHotObservable(
     onNext(210, {event: 'reallyPlaying'}),
@@ -26,11 +25,11 @@ test('all statuses', t => {
   )
   const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
   t.deepEqual(messages, [
-    onNext(201, [DEFAULT, DEFAULT]),
-    onNext(210, [PLAYING, DEFAULT]),
-    onNext(220, [PAUSED, DEFAULT]),
-    onNext(230, [PLAYING, DEFAULT]),
-    onNext(240, [DEFAULT, DEFAULT])
+    onNext(201, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(210, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(220, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(230, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(240, [{status: DEFAULT, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}])
   ])
 })
 
@@ -41,9 +40,9 @@ test('dynamic tracks', t => {
   )
 
   const tracks$ = sh.createHotObservable(
-    onNext(205, [10, 11]),
-    onNext(300, [11, 12]),
-    onNext(400, [12, 10])
+    onNext(205, [{id: 10}, {id: 11}]),
+    onNext(300, [{id: 11}, {id: 12}]),
+    onNext(400, [{id: 12}, {id: 10}])
   )
   const audio$ = sh.createHotObservable(
     onNext(210, {event: 'reallyPlaying'})
@@ -51,14 +50,14 @@ test('dynamic tracks', t => {
   const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
   t.deepEqual(messages, [
     // 10, 11
-    onNext(205, [DEFAULT, DEFAULT]),
-    onNext(210, [PLAYING, DEFAULT]),
+    onNext(205, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(210, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
 
     // 11, 12
-    onNext(300, [DEFAULT, DEFAULT]),
+    onNext(300, [{status: DEFAULT, track: {id: 11}}, {status: DEFAULT, track: {id: 12}}]),
 
     // 12, 10
-    onNext(400, [DEFAULT, PLAYING])
+    onNext(400, [{status: DEFAULT, track: {id: 12}}, {status: PLAYING, track: {id: 10}}])
   ])
 })
 
@@ -69,7 +68,7 @@ test('ignore timeUpdate', t => {
   )
 
   const tracks$ = sh.createHotObservable(
-    onNext(205, [10, 11])
+    onNext(205, [{id: 10}, {id: 11}])
   )
   const audio$ = sh.createHotObservable(
     onNext(210, {event: 'reallyPlaying'}),
@@ -79,7 +78,7 @@ test('ignore timeUpdate', t => {
   const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
   t.deepEqual(messages, [
     // 10, 11
-    onNext(205, [DEFAULT, DEFAULT]),
-    onNext(210, [PLAYING, DEFAULT])
+    onNext(205, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(210, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}])
   ])
 })

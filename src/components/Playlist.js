@@ -4,14 +4,25 @@
 // TODO: Rename to TrackList
 'use strict'
 import {div} from '@cycle/dom'
+import R from 'ramda'
 import {Observable} from 'rx'
+import {mux} from 'muxer'
 import PlayListItem from './PlayListItem'
-import * as M from './Models'
 import * as SC from '../utils/SoundCloud'
 import * as P from '../layouts/Placeholders'
 import {getStatus$} from '../utils/OverlayStatus'
 
-const view = ({playlistItem$, bottomPadding$}) => {
+export const Audio = ({url$}) => url$.scan((last, src) => {
+  const canPlay = R.anyPass([
+    ({last}) => !last,
+    ({last}) => last.type === 'PAUSE',
+    ({last, src}) => last.src !== src
+  ])
+  if (canPlay({last, src})) return {src, type: 'PLAY'}
+  return {src, type: 'PAUSE'}
+}, null)
+
+const view = ({playlistItem$}) => {
   return playlistItem$
     .map(tracks => tracks.map(x => x.DOM))
     .flatMapLatest(tracks => Observable.combineLatest(tracks))
@@ -22,57 +33,35 @@ const view = ({playlistItem$, bottomPadding$}) => {
         P.PlaylistItem
       ])
     ])
-    .combineLatest(bottomPadding$)
-    .map(([view, bottomPadding]) => div({
-      className: 'playlist',
-      style: {
-        backgroundColor: '#fff',
-        padding: '62px 0',
-        paddingBottom: bottomPadding ? '62px' : 0
-      }
-    }, [view]))
-}
-
-const createPlaylistItem = ({track, index, statuses, DOM}) => {
-  const status = statuses[index]
-  return PlayListItem({track, DOM, status})
-}
-
-const toPlaylistItem = ({tracks, statuses, DOM}) => {
-  return tracks.map((track, index) => createPlaylistItem({track, index, statuses, DOM}))
+    .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, [view]))
 }
 
 const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
-  const trackIds$ = tracks$.map(x => x.map(x => x.id))
   const selectedTrackId$ = selectedTrack$.pluck('id')
-  const status$ = getStatus$({selectedTrackId$, audio$, tracks$: trackIds$})
-
-  const playlistItem$ = Observable
-    .combineLatest(tracks$, status$)
-    .map(([tracks, statuses]) => toPlaylistItem({tracks, statuses, DOM}))
+  const playlistItem$ = getStatus$({selectedTrackId$, audio$, tracks$})
+    .map(R.map(R.compose(PlayListItem, R.merge({DOM}))))
 
   const click$ = playlistItem$
     .map(tracks => tracks.map(x => x.click$))
     .flatMapLatest(clicks => Observable.merge(clicks))
+    .shareReplay(1)
 
-  const url$ = click$
-    .combineLatest(selectedTrack$, (_, b) => b)
-    .pluck('stream_url').map(url => url + SC.clientIDParams({}))
+  const url$ = click$.map(SC.trackStreamURL)
 
-  const bottomPadding$ = selectedTrack$.map(Boolean).startWith(false)
-
+  const audioAction$ = Audio({url$})
+  const ofType = R.compose(R.whereEq, R.objOf('type'))
+  const play = audioAction$.filter(ofType('PLAY'))
+  const pause = audioAction$.filter(ofType('PAUSE'))
   return {
-    bottomPadding$,
     selectedTrack$: click$,
-    audio$: M.Audio({url$}),
+    audio$: mux({play, pause}),
     playlistItem$
   }
 }
 
 export default sources => {
-  const {playlistItem$, audio$, selectedTrack$, bottomPadding$} = model(sources)
-  const vTree$ = view({playlistItem$, bottomPadding$})
-
+  const {playlistItem$, audio$, selectedTrack$} = model(sources)
+  const vTree$ = view({playlistItem$})
   return {
     DOM: vTree$, audio$, selectedTrack$
   }
