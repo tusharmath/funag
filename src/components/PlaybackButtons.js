@@ -26,7 +26,7 @@ export default ({selectedTrack$, audio$, DOM}) => {
     event$.filter(x => x === 'pause').map('play')
   )
     .startWith('play')
-    .map(button => div({class: `ctrl-${button}`, style: S.stringifyStyle(S.block(T.BlockHeight))}, [S.fa(button)]))
+    .map(button => div({classes: {'ctrl-play': button === 'play', 'ctrl-pause': button === 'pause'}, style: S.stringifyStyle(S.block(T.BlockHeight))}, [S.fa(button)]))
 
   const loadStart$ = event$.filter(x => x === 'loadStart').map(div({style: S.stringifyStyle(S.block(T.BlockHeight))}, [div('.loader')]))
   const loadError$ = event$.filter(x => x === 'error').map(div({style: S.stringifyStyle(S.block(T.BlockHeight))}, [S.fa('exclamation-triangle')]))
