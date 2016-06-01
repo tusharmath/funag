@@ -54,7 +54,7 @@ const model = ({DOM, route, AUDIO, HTTP}) => {
   return {
     HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
-    events: searchBox.events$,
+    events: O.merge(searchBox.events$, controls.event$),
     AUDIO: O.merge(playlist.audio$, controls.audio$),
     playlist, searchBox, controls
   }
