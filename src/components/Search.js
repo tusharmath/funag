@@ -37,15 +37,10 @@ const searchBoxContainerSTY = {
   'margin': 0
 }
 
-const Form = ({icon, value}) => {
-  const style1 = S.stringifyStyle(searchBoxContainerSTY)
-  debugger
-  return form({class: 'search', style: S.stringifyStyle(searchBoxContainerSTY)}, [
-    input({type: 'text', style: S.stringifyStyle(searchBoxSTY), placeholder: 'Search', value}),
-    icon
-  ])
-}
-
+const Form = ({icon, value}) => form({class: 'search', style: S.stringifyStyle(searchBoxContainerSTY)}, [
+  input({type: 'text', style: S.stringifyStyle(searchBoxSTY), placeholder: 'Search', value}),
+  icon
+])
 
 const view = ({clear$, icon$}) => {
   return O.merge(

@@ -26,9 +26,9 @@ const trackInfoSTY = {
   'border-bottom': T.Pallete.divider
 }
 
-const view = ({icon$, trackDetail}) => {
+const view = ({icon$, trackDetail, key}) => {
   return icon$.map(icon =>
-    div({class: 'playlist-item', style: S.stringifyStyle({...playListItemSTY})}, [
+    div({class: 'playlist-item', key, style: S.stringifyStyle({...playListItemSTY})}, [
       div({style: S.stringifyStyle(trackInfoSTY)}, [
         icon,
         trackDetail
@@ -56,7 +56,7 @@ const intent = ({DOM, track}) => {
 const PlayListItem = ({DOM, track, status}) => {
   const {icon$} = model({track, status})
   const trackDetail = TrackDetail(track)
-  const vTree$ = view({icon$, trackDetail})
+  const vTree$ = view({icon$, trackDetail, key: track.id})
   const {click$} = intent({DOM, track})
   return {click$, DOM: vTree$}
 }
