@@ -10,7 +10,7 @@ import {demux} from 'muxer'
 
 export const audioDriver = instruction$ => {
   const audio = new Audio()
-  const [{play, pause}] = demux(instruction$, 'play', 'pause')
+  const [{play, pause}] = demux(instruction$.shareReplay(1), 'play', 'pause')
   play.subscribe(({src}) => {
     if (audio.src !== src) {
       audio.src = src

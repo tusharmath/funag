@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {div} from '@cycle/dom'
+import {div} from 'cycle-snabbdom'
 import * as F from '../utils/Flexbox'
 
 const PlayListItemSTY = {

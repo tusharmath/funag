@@ -3,10 +3,10 @@
  */
 
 'use strict'
-import {html, head, title, body, div, meta, link, style, script} from '@cycle/dom'
+import {html, head, title, body, div, meta, link, style, script, h} from 'cycle-snabbdom'
 
-export default ({__html, __title, bundle}) =>
-  html([
+export default ({__html, __title, bundle}) => {
+  return html([
     head([
       title(__title),
       style([
@@ -50,16 +50,26 @@ export default ({__html, __title, bundle}) =>
         }
         `
       ]),
-      meta({name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no'}),
-      link({rel: 'stylesheet', type: 'text/css', href: '//fonts.googleapis.com/css?family=Open+Sans:300,400,600'}),
+      meta({props: {name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no'}}),
       link({
-        rel: 'stylesheet',
-        type: 'text/css',
-        href: '//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'
+        props: {
+          rel: 'stylesheet',
+          type: 'text/css',
+          href: '//fonts.googleapis.com/css?family=Open+Sans:300,400,600'
+        }
+      }),
+      link({
+        props: {
+          rel: 'stylesheet',
+          type: 'text/css',
+          href: '//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'
+        }
       })
     ]),
     body([
       div('#container', [__html]),
-      script({src: bundle})
+      script({props: {src: bundle}})
     ])
   ])
+}
+

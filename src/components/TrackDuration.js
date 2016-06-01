@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
+import {div} from 'cycle-snabbdom'
 import * as SC from '../utils/SoundCloud'
 import * as S from '../utils/StyleUtils'
 

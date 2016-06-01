@@ -3,10 +3,10 @@
  */
 
 'use strict'
-import {div} from '@cycle/dom'
-import {Observable} from 'rx'
 import R from 'ramda'
 import {mux} from 'muxer'
+import {div} from 'cycle-snabbdom'
+import {Observable} from 'rx'
 import * as S from '../utils/StyleUtils'
 import * as T from '../utils/Themes'
 import * as SC from '../utils/SoundCloud'
@@ -26,7 +26,7 @@ export default ({selectedTrack$, audio$, DOM}) => {
     event$.filter(x => x === 'pause').map('play')
   )
     .startWith('play')
-    .map(button => div({className: `ctrl-${button}`, style: S.block(T.BlockHeight)}, [S.fa(button)]))
+    .map(button => div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)]))
 
   const loadStart$ = event$.filter(x => x === 'loadStart').map(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
   const loadError$ = event$.filter(x => x === 'error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))

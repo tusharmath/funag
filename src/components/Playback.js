@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
+import {div} from 'cycle-snabbdom'
 import {Observable} from 'rx'
 import PlaybackInfo from './PlaybackInfo'
 import PlaybackButtons from './PlaybackButtons'

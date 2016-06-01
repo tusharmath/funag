@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
+import {div} from 'cycle-snabbdom'
 import {Observable as O} from 'rx'
 import * as F from '../utils/Flexbox'
 import {DefaultArtwork, PausedArtwork, PlayingArtwork} from './Artwork'
@@ -27,7 +27,7 @@ const trackInfoSTY = {
 
 const view = ({icon$, trackDetail}) => {
   return icon$.map(icon =>
-    div({className: 'playlist-item', style: {...playListItemSTY}}, [
+    div('.playlist-item', {style: {...playListItemSTY}}, [
       div({style: trackInfoSTY}, [
         icon,
         trackDetail

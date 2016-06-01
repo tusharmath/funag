@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "@cycle/core": "^6.0.3",
-    "@cycle/dom": "^9.4.0",
     "@cycle/http": "^8.2.2",
     "@cycle/isolate": "^1.2.0",
     "argtoob": "^1.0.2",

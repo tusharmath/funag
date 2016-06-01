@@ -5,7 +5,7 @@
 'use strict'
 
 import Cycle from '@cycle/core'
-import {makeDOMDriver} from '@cycle/dom'
+import {makeDOMDriver} from 'cycle-snabbdom'
 import {makeHTTPDriver} from '@cycle/http'
 import manifestFile from 'file!./manifest.json'
 import sw from 'serviceworker!./sw.js'
@@ -25,7 +25,6 @@ sw({scope: '/'})
     x => console.log(x.active),
     x => console.error(x)
   )
-
 Cycle.run(Main, {
   DOM: makeDOMDriver('#container'),
   AUDIO: audioDriver,

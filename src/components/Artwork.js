@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {div, ul, li} from '@cycle/dom'
+import {div, ul, li} from 'cycle-snabbdom'
 import * as S from '../utils/StyleUtils'
 import * as T from '../utils/Themes'
 
@@ -24,7 +24,7 @@ export const ArtworkOverlay = isAnimated => {
 
   return div('.fade-in', {style}, [
     ul('.playing-animation' + isAnimated, {style: {...S.size(17)}}, [
-      li(), li(), li()
+      li({}), li({}), li({})
     ])
   ])
 }

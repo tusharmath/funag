@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {div} from '@cycle/dom'
+import {div} from 'cycle-snabbdom'
 import * as S from '../utils/StyleUtils'
 import * as F from '../utils/Flexbox'
 import * as T from '../utils/Themes'
