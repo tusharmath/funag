@@ -15,7 +15,7 @@ import RAFThrottle from '../utils/RAFThrottle'
 const view = ({transition$, translate$}) => {
   return O.combineLatest(transition$, translate$).map(([transition, translate]) =>
     div([
-      div({style: S.stringifyStyle({height: '15px', width: '100%'})}, [
+      div({style: S.stringifyStyle({height: '4px', width: '100%'})}, [
         div('.scrobber-container', {
           style: S.stringifyStyle({
             'transition': transition ? 'transform 100ms linear' : null,
