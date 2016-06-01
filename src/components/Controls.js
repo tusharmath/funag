@@ -48,9 +48,10 @@ const model = ({audio$, selectedTrack$}) => {
 export default ({audio$, selectedTrack$, DOM, AUDIO}) => {
   const {completion$, showControls$} = model({audio$, selectedTrack$})
   const playback = Playback({selectedTrack$, audio$, DOM, AUDIO})
-  const scrobber = Scrobber({completion$})
+  const scrobber = Scrobber({completion$, DOM})
   return {
     audio$: playback.audio$,
-    DOM: view({playback, scrobber, showControls$})
+    DOM: view({playback, scrobber, showControls$}),
+    event$: scrobber.event$
   }
 }
