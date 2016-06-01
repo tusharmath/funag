@@ -5,7 +5,7 @@
 'use strict'
 
 import {Observable as O} from 'rx'
-import {div} from '@cycle/dom'
+import {div} from 'cycle-maquette'
 import R from 'ramda'
 import Controls from './Controls'
 import Playlist from './Playlist'
@@ -13,6 +13,7 @@ import SearchBox from './Search'
 import BatchDOM from '../utils/BatchDOM'
 import proxy from '../utils/RxProxy'
 import * as F from '../utils/Flexbox'
+import * as S from '../utils/StyleUtils'
 
 // TODO: Use muxer
 const getAudio$ = audio => {
@@ -35,7 +36,7 @@ const view = ({playlist, searchBox, controls}) => O
     searchBox.DOM,
     playlist.DOM,
     controls.DOM
-  ).map(views => div({style: {height: '100%', ...F.FlexCol}}, views))
+  ).map(views => div({style: S.stringifyStyle({height: '100%', ...F.FlexCol})}, views))
 
 // TODO: Split into intent + model
 const model = ({DOM, route, AUDIO, HTTP}) => {
@@ -66,6 +67,6 @@ export default function (sources) {
     title: m.title,
     events: m.events,
     AUDIO: m.AUDIO,
-    DOM: BatchDOM(view(m))
+    DOM: BatchDOM(view(m)).tap(x => console.log(x))
   }
 }

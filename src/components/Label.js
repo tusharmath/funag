@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
+import {div} from 'cycle-maquette'
 import * as S from '../utils/StyleUtils'
 
 export default ({width, text}) =>

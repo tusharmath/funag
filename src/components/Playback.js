@@ -4,11 +4,12 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
+import {div} from 'cycle-maquette'
 import {Observable} from 'rx'
 import PlaybackInfo from './PlaybackInfo'
 import PlaybackButtons from './PlaybackButtons'
 import * as F from '../utils/Flexbox'
+import * as S from '../utils/StyleUtils'
 
 export default ({selectedTrack$, audio$, DOM}) => {
   const playbackButtons = PlaybackButtons({audio$, selectedTrack$, DOM})
@@ -20,7 +21,7 @@ export default ({selectedTrack$, audio$, DOM}) => {
         PlaybackInfo({selectedTrack$}).DOM
       )
       .map(views => div({
-        style: {...F.RowLeft, alignItems: 'center'}
+        style: S.stringifyStyle({...F.RowLeft, alignItems: 'center'})
       }, views))
   }
 }

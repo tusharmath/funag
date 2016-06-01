@@ -3,23 +3,23 @@
  */
 
 'use strict'
-import {div} from '@cycle/dom'
+import {div} from 'cycle-maquette'
 import * as S from '../utils/StyleUtils'
 import * as T from '../utils/Themes'
 
 const playbackInfoSTY = {
-  textTransform: 'capitalize',
-  fontSize: '1em',
-  fontWeight: '600',
-  overflow: 'hidden',
-  paddingRight: `${T.BlockSpace}px`
+  'text-transform': 'capitalize',
+  'font-size': '1em',
+  'font-weight': '600',
+  'overflow': 'hidden',
+  'padding-right': `${T.BlockSpace}px`
 }
 export default ({selectedTrack$}) => {
   return {
     DOM: selectedTrack$.map(track =>
-      div({style: playbackInfoSTY}, [
-        div({style: S.overflowEllipsisSTY}, [track.title]),
-        div({style: {...S.overflowEllipsisSTY, fontSize: '0.8em', color: T.Pallete.primaryColorSecondaryFont}}, track.user.username)
+      div({style: S.stringifyStyle(playbackInfoSTY)}, [
+        div({style: S.stringifyStyle(S.overflowEllipsisSTY)}, [track.title]),
+        div({style: S.stringifyStyle({...S.overflowEllipsisSTY, 'font-size': '0.8em', color: T.Pallete.primaryColorSecondaryFont})}, track.user.username)
       ])
     ).startWith(null)
   }

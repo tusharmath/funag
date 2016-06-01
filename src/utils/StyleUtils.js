@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {i} from '@cycle/dom'
+import {i} from 'cycle-maquette'
 import * as F from './Flexbox'
 import {Pallete} from './Themes'
 
@@ -26,22 +26,26 @@ export const fixed = x => {
 }
 
 export const fa = (name, dim = 1) => i(`.fa.fa-${name}`, {
-  style: {
-    fontSize: `${dim}em`,
+  style: stringifyStyle({
+    'font-size': `${dim}em`,
     ...F.ColMiddle
-  }
+  })
 })
 export const overflowEllipsisSTY = {
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis'
+  'overflow': 'hidden',
+  'white-space': 'nowrap',
+  'text-overflow': 'ellipsis'
 }
 
 export const subtitleSTY = {
-  color: Pallete.baseColorSecondaryFont, fontSize: '0.8em'
+  color: Pallete.baseColorSecondaryFont, 'font-size': '0.8em'
 }
 
 export const block = (height, width = height) => ({
   ...size(height, width),
   ...F.ColMiddle
 })
+
+export const stringifyStyle = json => {
+  return JSON.stringify(json).replace(/,"|"}/g, ';').replace(/"/g, '').replace(/}/g, ';').substring(1)
+}

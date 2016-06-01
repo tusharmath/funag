@@ -4,31 +4,32 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
+import {div} from 'cycle-maquette'
 import {Observable as O} from 'rx'
 import * as F from '../utils/Flexbox'
 import {DefaultArtwork, PausedArtwork, PlayingArtwork} from './Artwork'
 import TrackDetail from './TrackDetail'
 import * as T from '../utils/Themes'
+import * as S from '../utils/StyleUtils'
 import isolate from '@cycle/isolate'
 import {DEFAULT, PLAYING, PAUSED} from '../utils/OverlayStatus'
 
 const playListItemSTY = {
-  fontSize: '1em',
-  overflow: 'hidden'
+  'font-size': '1em',
+  'overflow': 'hidden'
 }
 
 const trackInfoSTY = {
   ...F.RowSpaceBetween,
-  alignItems: 'center',
-  color: T.Pallete.baseColorPrimaryFont,
-  borderBottom: T.Pallete.divider
+  'align-items': 'center',
+  'color': T.Pallete.baseColorPrimaryFont,
+  'border-bottom': T.Pallete.divider
 }
 
 const view = ({icon$, trackDetail}) => {
   return icon$.map(icon =>
-    div({className: 'playlist-item', style: {...playListItemSTY}}, [
-      div({style: trackInfoSTY}, [
+    div({class: 'playlist-item', style: S.stringifyStyle({...playListItemSTY})}, [
+      div({style: S.stringifyStyle(trackInfoSTY)}, [
         icon,
         trackDetail
       ])

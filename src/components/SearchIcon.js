@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
+import {div} from 'cycle-maquette'
 import {Observable} from 'rx'
 import * as S from '../utils/StyleUtils'
 

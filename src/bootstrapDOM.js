@@ -5,7 +5,7 @@
 'use strict'
 
 import Cycle from '@cycle/core'
-import {makeDOMDriver} from '@cycle/dom'
+import {makeDOMDriver} from 'cycle-maquette'
 import {makeHTTPDriver} from '@cycle/http'
 import manifestFile from 'file!./manifest.json'
 import sw from 'serviceworker!./sw.js'
