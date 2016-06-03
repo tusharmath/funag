@@ -82,3 +82,21 @@ test('ignore timeUpdate', t => {
     onNext(210, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}])
   ])
 })
+
+test('tracks changed', t => {
+  const sh = new TestScheduler()
+  const selectedTrackId$ = sh.createColdObservable(
+    onNext(0, 10)
+  )
+
+  const tracks$ = sh.createHotObservable(
+    onNext(205, [{id: 10}, {id: 11}]),
+    onNext(300, [{id: 11}, {id: 12}])
+  )
+  const audio$ = sh.createHotObservable()
+  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
+  t.deepEqual(messages, [
+    onNext(205, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(300, [{status: DEFAULT, track: {id: 11}}, {status: DEFAULT, track: {id: 12}}])
+  ])
+})
