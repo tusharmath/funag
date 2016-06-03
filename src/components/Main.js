@@ -13,6 +13,7 @@ import SearchBox from './Search'
 import BatchDOM from '../utils/BatchDOM'
 import proxy from '../utils/RxProxy'
 import * as F from '../utils/Flexbox'
+import * as C from '../utils/Stream'
 
 // TODO: Use muxer
 const getAudio$ = audio => {
@@ -30,12 +31,12 @@ const getAudio$ = audio => {
   )
 }
 
-const view = ({playlist, searchBox, controls}) => O
+const view = ({playlist, searchBox, controls}) => C.toMost(O
   .combineLatest(
     searchBox.DOM,
     playlist.DOM,
     controls.DOM
-  ).map(views => div({style: {height: '100%', ...F.FlexCol}}, views))
+  ).map(views => div({style: {height: '100%', ...F.FlexCol}}, views)))
 
 // TODO: Split into intent + model
 const model = ({DOM, route, AUDIO, HTTP}) => {
@@ -51,10 +52,10 @@ const model = ({DOM, route, AUDIO, HTTP}) => {
   ).distinctUntilChanged()
   const controls = Controls({audio$, selectedTrack$, DOM})
   return {
-    HTTP: searchBox.HTTP.map(params => ({...params, accept: 'application/json'})),
-    title: selectedTrack$.pluck('title'),
-    events: searchBox.events$,
-    AUDIO: O.merge(playlist.audio$, controls.audio$),
+    HTTP: C.toMost(searchBox.HTTP.map(params => ({...params, accept: 'application/json'}))),
+    title: C.toMost(selectedTrack$.pluck('title')),
+    events: C.toMost(searchBox.events$),
+    AUDIO: C.toMost(O.merge(playlist.audio$, controls.audio$)),
     playlist, searchBox, controls
   }
 }
@@ -62,10 +63,10 @@ const model = ({DOM, route, AUDIO, HTTP}) => {
 export default function (sources) {
   const m = model(sources)
   return {
-    HTTP: m.HTTP,
-    title: m.title,
-    events: m.events,
-    AUDIO: m.AUDIO,
-    DOM: BatchDOM(view(m))
+    HTTP: C.toRx(m.HTTP),
+    title: C.toRx(m.title),
+    events: C.toRx(m.events),
+    AUDIO: C.toRx(m.AUDIO),
+    DOM: BatchDOM(C.toRx(view(m)))
   }
 }

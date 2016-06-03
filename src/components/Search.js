@@ -11,6 +11,7 @@ import * as S from '../utils/StyleUtils'
 import * as U from '../utils/DOMUtils'
 import * as T from '../utils/Themes'
 import * as SC from '../utils/SoundCloud'
+import * as C from '../utils/Stream'
 import RxProxy from '../utils/RxProxy'
 import SearchIcon from './SearchIcon'
 
@@ -75,8 +76,8 @@ export default ({DOM, HTTP}) => {
   const s0 = RxProxy()
   const {request$, events$, tracks$, value$} = model({HTTP, DOM, clear$: s0})
   const searchIcon = SearchIcon({value$, tracks$, DOM})
-  const clear$ = s0.merge(searchIcon.clear$)
-  const icon$ = searchIcon.DOM
+  const clear$ = s0.merge(C.toRx(searchIcon.clear$))
+  const icon$ = C.toRx(searchIcon.DOM)
   const vTree$ = view({clear$, icon$})
 
   return {

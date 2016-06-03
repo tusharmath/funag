@@ -15,7 +15,6 @@ export const toMost = signal$ => {
 
 export const toRx = signal$ => {
   return O.create(observer => {
-    console.log(observer.onNext)
     const disposable = signal$.subscribe({
       next: observer.onNext.bind(observer),
       complete: observer.onCompleted.bind(observer),
