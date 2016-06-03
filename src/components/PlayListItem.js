@@ -6,10 +6,12 @@
 
 import {div} from '@cycle/dom'
 import {Observable as O} from 'rx'
+import M from 'most'
 import * as F from '../utils/Flexbox'
 import {DefaultArtwork, PausedArtwork, PlayingArtwork} from './Artwork'
 import TrackDetail from './TrackDetail'
 import * as T from '../utils/Themes'
+import * as C from '../utils/Stream'
 import isolate from '@cycle/isolate'
 import {DEFAULT, PLAYING, PAUSED} from '../utils/OverlayStatus'
 
@@ -43,12 +45,12 @@ const model = ({track: {artwork_url}, status}) => {
     [PLAYING]: PlayingArtwork
   }
 
-  const icon$ = O.just(OverlayMap[status])
+  const icon$ = M.just(OverlayMap[status])
   return {icon$}
 }
 
 const intent = ({DOM, track}) => {
-  const click$ = DOM.select('.playlist-item').events('click').map(track)
+  const click$ = C.toMost(DOM.select('.playlist-item').events('click').map(track)).tap(x => console.log(x))
   return {click$}
 }
 
@@ -57,7 +59,7 @@ const PlayListItem = ({DOM, track, status}) => {
   const trackDetail = TrackDetail(track)
   const vTree$ = view({icon$, trackDetail})
   const {click$} = intent({DOM, track})
-  return {click$, DOM: vTree$}
+  return {click$: C.toRx(click$), DOM: C.toRx(vTree$)}
 }
 
 // TODO: Rename file PlayListItem => Track
