@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {div} from '@cycle/dom'
+import {div} from 'cycle-maquette'
 import {Observable} from 'rx'
 import R from 'ramda'
 import {mux} from 'muxer'
@@ -26,10 +26,10 @@ export default ({selectedTrack$, audio$, DOM}) => {
     event$.filter(x => x === 'pause').map('play')
   )
     .startWith('play')
-    .map(button => div({className: `ctrl-${button}`, style: S.block(T.BlockHeight)}, [S.fa(button)]))
+    .map(button => div({classes: {'ctrl-play': button === 'play', 'ctrl-pause': button === 'pause'}, style: S.stringifyStyle(S.block(T.BlockHeight))}, [S.fa(button)]))
 
-  const loadStart$ = event$.filter(x => x === 'loadStart').map(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
-  const loadError$ = event$.filter(x => x === 'error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
+  const loadStart$ = event$.filter(x => x === 'loadStart').map(div({style: S.stringifyStyle(S.block(T.BlockHeight))}, [div('.loader')]))
+  const loadError$ = event$.filter(x => x === 'error').map(div({style: S.stringifyStyle(S.block(T.BlockHeight))}, [S.fa('exclamation-triangle')]))
   const url$ = selectedTrack$.map(SC.trackStreamURL)
   const actions = intent({DOM, url$})
   return {

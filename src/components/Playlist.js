@@ -3,7 +3,7 @@
  */
 // TODO: Rename to TrackList
 'use strict'
-import {div} from '@cycle/dom'
+import {div} from 'cycle-maquette'
 import R from 'ramda'
 import {Observable} from 'rx'
 import {mux} from 'muxer'
@@ -33,7 +33,7 @@ const view = ({playlistItem$}) => {
         P.PlaylistItem
       ])
     ])
-    .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, [view]))
+    .map(view => div('.playlist', {style: 'background-color: #fff; overflow: auto; height: 100%'}, view))
 }
 
 const model = ({tracks$, DOM, audio$, selectedTrack$}) => {

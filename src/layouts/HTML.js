@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {html, head, title, body, div, meta, link, style, script} from '@cycle/dom'
+import {html, head, title, body, div, meta, link, style, script} from 'cycle-maquette'
 
 export default ({__html, __title, bundle}) =>
   html([
@@ -59,7 +59,7 @@ export default ({__html, __title, bundle}) =>
       })
     ]),
     body([
-      div('#container', [__html]),
+      div({id: 'container'}, [__html]),
       script({src: bundle})
     ])
   ])

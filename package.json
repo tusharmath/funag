@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "@cycle/core": "^6.0.3",
-    "@cycle/dom": "^9.4.0",
     "@cycle/http": "^8.2.2",
     "@cycle/isolate": "^1.2.0",
     "argtoob": "^1.0.2",
@@ -28,6 +27,7 @@
     "config": "^1.20.1",
     "css-loader": "^0.23.1",
     "cycle": "^1.0.3",
+    "cycle-maquette": "^1.1.0",
     "cycle-snabbdom": "^1.2.1",
     "express": "^4.13.4",
     "file-loader": "^0.8.5",

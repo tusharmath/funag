@@ -4,16 +4,17 @@
 
 'use strict'
 import {Observable} from 'rx'
-import {div} from '@cycle/dom'
+import {div} from 'cycle-maquette'
 import Scrobber from './Scrobber'
 import Playback from './Playback'
 import {Pallete} from '../utils/Themes'
+import * as S from '../utils/StyleUtils'
 
 const ControlSTY = show => ({
-  transform: 'translateZ(0)',
-  boxShadow: Pallete.shadow,
-  backgroundColor: Pallete.primaryColor,
-  color: '#FFF'
+  'transform': 'translateZ(0)',
+  'boxShadow': Pallete.shadow,
+  'background-color': Pallete.primaryColor,
+  'color': '#FFF'
 })
 
 const view = ({playback, scrobber, showControls$}) => {
@@ -24,7 +25,7 @@ const view = ({playback, scrobber, showControls$}) => {
       playback.DOM
     )
     .map(([show, scrobber, playback]) =>
-      div({style: ControlSTY(show)}, [
+      div({style: S.stringifyStyle(ControlSTY(show))}, [
         scrobber, playback
       ])
     )
@@ -48,9 +49,10 @@ const model = ({audio$, selectedTrack$}) => {
 export default ({audio$, selectedTrack$, DOM, AUDIO}) => {
   const {completion$, showControls$} = model({audio$, selectedTrack$})
   const playback = Playback({selectedTrack$, audio$, DOM, AUDIO})
-  const scrobber = Scrobber({completion$})
+  const scrobber = Scrobber({completion$, DOM})
   return {
     audio$: playback.audio$,
-    DOM: view({playback, scrobber, showControls$})
+    DOM: view({playback, scrobber, showControls$}),
+    event$: scrobber.event$
   }
 }
