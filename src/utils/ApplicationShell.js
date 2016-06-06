@@ -12,8 +12,7 @@ require('babel-register')({
   ]
 })
 const {Observable} = require('rx')
-const Cycle = require('@cycle/core')
-
+const Cycle = require('@cycle/rxjs-run')
 const {name} = require('../../package.json')
 const HTML = require('./../layouts/HTML').default
 
@@ -45,7 +44,7 @@ class ApplicationShell {
 
     emit$
       .withLatestFrom(bundle$)
-      .flatMapLatest(([[com, cb], bundle]) => {
+      .switchMap(([[com, cb], bundle]) => {
         const html$ = Cycle.run(boilerplate({Main, bundle}), sources).sources.DOM
         return html$.map(html => ({html, com, cb}))
       })

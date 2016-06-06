@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {ReactiveTest, TestScheduler, Observable} from 'rx'
+import {ReactiveTest, TestScheduler, Observable} from 'rxjs'
 import test from 'ava'
 import Proxy from '../src/utils/Proxy'
 const {onNext, onCompleted} = ReactiveTest

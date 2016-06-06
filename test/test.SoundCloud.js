@@ -6,7 +6,7 @@
 
 import test from 'ava'
 import {orig} from 'funjector'
-import {ReactiveTest, TestScheduler, Observable} from 'rx'
+import {ReactiveTest, TestScheduler, Observable} from 'rxjs'
 import * as SC from '../src/utils/SoundCloud'
 const {onNext, onCompleted} = ReactiveTest
 

@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {Observable as O} from 'rx'
+import {Observable as O} from 'rxjs'
 import {div} from '@cycle/dom'
 import R from 'ramda'
 import Controls from './Controls'
@@ -22,7 +22,7 @@ const getAudio$ = audio => {
     audio.events('ended').map(t('ended')),
     audio.events('playing').map(t('playing')),
     audio.events('playing')
-      .flatMapLatest(() => audio.events('timeupdate').first())
+      .switchMap(() => audio.events('timeupdate').first())
       .map(t('reallyPlaying')),
     audio.events('loadstart').map(t('loadStart')),
     audio.events('error').map(t('error')),

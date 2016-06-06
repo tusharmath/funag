@@ -28,7 +28,7 @@ export const get = (path, params) => {
 // TODO: DEPRECATE
 export const searchTracks = partial(
   (get, q$) => q$
-    .flatMapLatest(q => get('/tracks', {q}))
+    .switchMap(q => get('/tracks', {q}))
     .share(),
   get)
 

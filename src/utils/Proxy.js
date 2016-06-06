@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {Observable, Subject} from 'rx'
+import {Observable, Subject} from 'rxjs'
 
 // TODO: Deprecate
 export default () => {

@@ -5,7 +5,7 @@
 'use strict'
 
 import {div} from '@cycle/dom'
-import {Observable as O} from 'rx'
+import {Observable as O} from 'rxjs'
 import * as F from '../utils/Flexbox'
 import {DefaultArtwork, PausedArtwork, PlayingArtwork} from './Artwork'
 import TrackDetail from './TrackDetail'

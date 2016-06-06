@@ -4,7 +4,7 @@
 /* global Audio */
 'use strict'
 
-import {Observable} from 'rx'
+import {Observable} from 'rxjs'
 import R from 'ramda'
 import {demux} from 'muxer'
 

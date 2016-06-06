@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {ReactiveTest, TestScheduler} from 'rx'
+import {ReactiveTest, TestScheduler} from 'rxjs'
 import test from 'ava'
 import {orig} from 'funjector'
 import {Audio} from '../src/components/Playlist'

@@ -5,7 +5,7 @@
 'use strict'
 
 import {input, form} from '@cycle/dom'
-import {Observable as O} from 'rx'
+import {Observable as O} from 'rxjs'
 import * as F from '../utils/Flexbox'
 import * as S from '../utils/StyleUtils'
 import * as U from '../utils/DOMUtils'

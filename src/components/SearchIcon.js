@@ -5,16 +5,19 @@
 'use strict'
 
 import {div} from '@cycle/dom'
-import {Observable} from 'rx'
+import {Observable} from 'rxjs'
 import * as S from '../utils/StyleUtils'
 
 export default ({value$, tracks$, DOM}) => {
   const clear$ = DOM.select('.fa-times-circle').events('click').map('')
-  const isLoading$ = Observable.merge(value$.map(true), tracks$.map(false))
+  const isLoading$ = Observable.merge(
+    value$.mapTo(true),
+    tracks$.map(false)
+  )
     .startWith(true)
     .distinctUntilChanged()
 
-  const loaderIconVTree$ = isLoading$.filter(x => x === true).map(div('.loader'))
+  const loaderIconVTree$ = isLoading$.filter(x => x === true).mapTo(div('.loader'))
   const hasValue$ = isLoading$.combineLatest(value$.startWith(''))
     .filter(([loading]) => loading === false)
     .map(([_, val]) => val.length === 0)
@@ -22,8 +25,8 @@ export default ({value$, tracks$, DOM}) => {
   const searchIconVTree$ = Observable.merge(
     hasValue$.filter(x => x === true),
     clear$
-  ).map(S.fa('search'))
-  const closeIconVTree$ = hasValue$.filter(x => x === false).map(S.fa('times-circle'))
+  ).mapTo(S.fa('search'))
+  const closeIconVTree$ = hasValue$.filter(x => x === false).mapTo(S.fa('times-circle'))
 
   const vTree$ = Observable
     .merge(searchIconVTree$, closeIconVTree$, loaderIconVTree$)
