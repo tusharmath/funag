@@ -26,7 +26,7 @@ export default ({selectedTrack$, audio$, DOM}) => {
     event$.filter(x => x === 'pause').mapTo('play')
   )
     .startWith('play')
-    .map(button => div({className: `ctrl-${button}`, style: S.block(T.BlockHeight)}, [S.fa(button)]))
+    .map(button => div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)]))
 
   const loadStart$ = event$.filter(x => x === 'loadStart').mapTo(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
   const loadError$ = event$.filter(x => x === 'error').mapTo(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
@@ -34,6 +34,6 @@ export default ({selectedTrack$, audio$, DOM}) => {
   const actions = intent({DOM, url$})
   return {
     ...actions,
-    DOM: Observable.merge(playPause$, loadStart$, loadError$).map(x => div(x))
+    DOM: Observable.merge(playPause$, loadStart$, loadError$).map(x => div([x]))
   }
 }

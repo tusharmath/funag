@@ -4,7 +4,7 @@
 
 'use strict'
 
-import Cycle from '@cycle/core'
+import Cycle from '@cycle/rxjs-run'
 import {makeDOMDriver} from '@cycle/dom'
 import {makeHTTPDriver} from '@cycle/http'
 import manifestFile from 'file!./manifest.json'
@@ -25,11 +25,10 @@ sw({scope: '/'})
     x => console.log(x.active),
     x => console.error(x)
   )
-
-Cycle.run(Main, {
+Cycle(Main, {
   DOM: makeDOMDriver('#container'),
   AUDIO: audioDriver,
   events: eventSinkDriver,
   title: documentTitleDriver,
   HTTP: makeHTTPDriver()
-})
+}).run()

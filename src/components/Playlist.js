@@ -27,13 +27,11 @@ const view = ({playlistItem$}) => {
     .map(tracks => tracks.map(x => x.DOM))
     .switchMap(tracks => Observable.combineLatest(tracks))
     .startWith([
-      div([
-        P.PlaylistItem,
-        P.PlaylistItem,
-        P.PlaylistItem
-      ])
+      P.PlaylistItem,
+      P.PlaylistItem,
+      P.PlaylistItem
     ])
-    .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, [view]))
+    .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, view))
 }
 
 const model = ({tracks$, DOM, audio$, selectedTrack$}) => {

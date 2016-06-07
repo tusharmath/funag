@@ -20,7 +20,7 @@ test('searchTracks()', t => {
   const searchTracks = orig(SC.searchTracks)
   const sh = new TestScheduler()
 
-  const get = (_, {q}) => Observable.just(q).delay(q * 100, sh)
+  const get = (_, {q}) => Observable.of(q).delay(q * 100, sh)
 
   const q$ = sh.createHotObservable(
     onNext(210, 5),

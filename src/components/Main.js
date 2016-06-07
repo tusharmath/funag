@@ -39,6 +39,7 @@ const view = ({playlist, searchBox, controls}) => O
 
 // TODO: Split into intent + model
 const model = ({DOM, route, AUDIO, HTTP}) => {
+
   // TODO: Pass HTTP.share()
   const audio$ = getAudio$(AUDIO)
   const searchBox = SearchBox({DOM, route, HTTP})

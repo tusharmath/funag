@@ -6,5 +6,5 @@ import {Observable} from 'rxjs'
 import raf from 'raf'
 
 export default DOM$ => {
-  return DOM$.switchMap(view => Observable.fromCallback(raf)().map(view))
+  return DOM$.switchMap(view => Observable.bindCallback(raf)().mapTo(view))
 }

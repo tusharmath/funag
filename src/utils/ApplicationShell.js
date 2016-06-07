@@ -11,7 +11,7 @@ require('babel-register')({
     'transform-object-rest-spread'
   ]
 })
-const {Observable} = require('rx')
+const {Observable} = require('rxjs')
 const Cycle = require('@cycle/rxjs-run')
 const {name} = require('../../package.json')
 const HTML = require('./../layouts/HTML').default
@@ -19,7 +19,7 @@ const HTML = require('./../layouts/HTML').default
 const select = compiler => {
   return {
     events (event) {
-      return Observable.fromEventPattern(cb => compiler.plugin(event, (...i) => cb(i)))
+      return Observable.fromEventPattern(cb => compiler.plugin(event, (...i) => cb(i)), x => x)
     }
   }
 }
@@ -31,27 +31,31 @@ const boilerplate = ({Main, bundle}) => sources => {
 }
 
 class ApplicationShell {
-  constructor ({Main, sources}) {
+  constructor({Main, sources}) {
     this.Main = Main
     this.sources = sources
   }
 
-  apply (compiler) {
+  apply(compiler) {
     const {Main, sources} = this
     const emit$ = select(compiler).events('emit')
     const bundle$ = emit$
       .map(([{outputOptions, hash}]) => outputOptions.filename.replace('[hash]', hash))
 
     emit$
-      .withLatestFrom(bundle$)
-      .switchMap(([[com, cb], bundle]) => {
-        const html$ = Cycle.run(boilerplate({Main, bundle}), sources).sources.DOM
-        return html$.map(html => ({html, com, cb}))
+      .switchMap(([com, cb]) => {
+        const {outputOptions, hash} = com
+        const bundle = outputOptions.filename.replace('[hash]', hash)
+        const out = Cycle.default(boilerplate({Main, bundle}), sources)
+        const html$ = out.sources.DOM.elements
+        const disposable = out.run()
+      //  html$.subscribe(x => console.log(x))
+        return html$.map(html => ({html, com, cb, disposable}))
       })
-      .subscribe(({com, cb, html}) => {
+      .subscribe(({com, cb, html, disposable}) => {
         com.assets['index.html'] = {source: () => html, size: () => html.length}
         return cb()
-      })
+      }, x => console.log(x), x => console.log(x))
   }
 }
 

@@ -9,10 +9,10 @@ import {Observable} from 'rxjs'
 import * as S from '../utils/StyleUtils'
 
 export default ({value$, tracks$, DOM}) => {
-  const clear$ = DOM.select('.fa-times-circle').events('click').map('')
+  const clear$ = DOM.select('.fa-times-circle').events('click').mapTo('')
   const isLoading$ = Observable.merge(
     value$.mapTo(true),
-    tracks$.map(false)
+    tracks$.mapTo(false)
   )
     .startWith(true)
     .distinctUntilChanged()

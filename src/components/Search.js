@@ -38,8 +38,8 @@ const searchBoxContainerSTY = {
 }
 
 const Form = ({icon, value}) =>
-  form({className: 'search', style: searchBoxContainerSTY}, [
-    input({type: 'text', style: searchBoxSTY, placeholder: 'Search', value}),
+  form('.search', {style: searchBoxContainerSTY}, [
+    input({props: {type: 'text', placeholder: 'Search', value}, style: searchBoxSTY}),
     icon
   ])
 
@@ -54,6 +54,7 @@ const view = ({clear$, icon$}) => {
 const model = ({HTTP, DOM, clear$}) => {
   // TODO: Add unit tests
   const tracks$ = HTTP
+    .response$$
     .switch()
     .pluck('body')
     .share()
@@ -65,10 +66,10 @@ const model = ({HTTP, DOM, clear$}) => {
   const events$ = O
     .merge(
       searchEl.events('submit').map(U.action('preventDefault')),
-      searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
+      searchEl.events('submit').withLatestFrom(inputEl.elements, (_, a) => a[0])
         .map(U.action('blur'))
     )
-  return {request$, events$, tracks$, value$}
+  return {request$, events$: O.never(), tracks$, value$}
 }
 
 export default ({DOM, HTTP}) => {

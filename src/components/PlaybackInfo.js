@@ -21,6 +21,6 @@ export default ({selectedTrack$}) => {
         div({style: S.overflowEllipsisSTY}, [track.title]),
         div({style: {...S.overflowEllipsisSTY, fontSize: '0.8em', color: T.Pallete.primaryColorSecondaryFont}}, track.user.username)
       ])
-    ).startWith(null)
+    ).startWith('')
   }
 }
