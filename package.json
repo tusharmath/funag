@@ -30,7 +30,7 @@
     "cycle": "^1.0.3",
     "cycle-snabbdom": "^1.2.1",
     "express": "^4.13.4",
-    "file-loader": "^0.8.5",
+    "file-loader": "^0.9.0",
     "funjector": "^3.1.0",
     "less": "^2.6.1",
     "less-loader": "^2.2.3",
