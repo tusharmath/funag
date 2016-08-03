@@ -5,7 +5,7 @@
 'use strict'
 import R from 'ramda'
 
-export default (config) => {
+export default config => {
   const ofPath = R.path(R.__, config)
   const _appendToPath = R.useWith(R.over, [R.lensPath, R.append])
   const _plugin = _appendToPath(['plugins'])
