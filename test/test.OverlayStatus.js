@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {ReactiveTest, TestScheduler} from 'rx'
+import {ReactiveTest, TestScheduler} from 'rxjs'
 import test from 'ava'
 import {getStatus$, DEFAULT, PLAYING, PAUSED} from '../src/utils/OverlayStatus'
 const {onNext} = ReactiveTest

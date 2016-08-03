@@ -6,7 +6,7 @@
 
 import test from 'ava'
 import {orig} from 'funjector'
-import {ReactiveTest, TestScheduler, Observable} from 'rx'
+import {ReactiveTest, TestScheduler, Observable} from 'rxjs'
 import * as SC from '../src/utils/SoundCloud'
 const {onNext, onCompleted} = ReactiveTest
 
@@ -20,7 +20,7 @@ test('searchTracks()', t => {
   const searchTracks = orig(SC.searchTracks)
   const sh = new TestScheduler()
 
-  const get = (_, {q}) => Observable.just(q).delay(q * 100, sh)
+  const get = (_, {q}) => Observable.of(q).delay(q * 100, sh)
 
   const q$ = sh.createHotObservable(
     onNext(210, 5),

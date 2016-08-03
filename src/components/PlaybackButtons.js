@@ -4,7 +4,7 @@
 
 'use strict'
 import {div} from '@cycle/dom'
-import {Observable} from 'rx'
+import {Observable} from 'rxjs'
 import R from 'ramda'
 import {mux} from 'muxer'
 import * as S from '../utils/StyleUtils'
@@ -22,18 +22,18 @@ const intent = ({DOM, url$}) => {
 export default ({selectedTrack$, audio$, DOM}) => {
   const event$ = audio$.pluck('event')
   const playPause$ = Observable.merge(
-    event$.filter(x => x === 'playing').map('pause'),
-    event$.filter(x => x === 'pause').map('play')
+    event$.filter(x => x === 'playing').mapTo('pause'),
+    event$.filter(x => x === 'pause').mapTo('play')
   )
     .startWith('play')
-    .map(button => div({className: `ctrl-${button}`, style: S.block(T.BlockHeight)}, [S.fa(button)]))
+    .map(button => div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)]))
 
-  const loadStart$ = event$.filter(x => x === 'loadStart').map(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
-  const loadError$ = event$.filter(x => x === 'error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
+  const loadStart$ = event$.filter(x => x === 'loadStart').mapTo(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
+  const loadError$ = event$.filter(x => x === 'error').mapTo(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
   const url$ = selectedTrack$.map(SC.trackStreamURL)
   const actions = intent({DOM, url$})
   return {
     ...actions,
-    DOM: Observable.merge(playPause$, loadStart$, loadError$).map(x => div(x))
+    DOM: Observable.merge(playPause$, loadStart$, loadError$).map(x => div([x]))
   }
 }

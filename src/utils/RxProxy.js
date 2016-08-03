@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {Subject, Observable as O} from 'rx'
+import {Subject, Observable as O} from 'rxjs'
 
 export default () => {
   const sub = new Subject()

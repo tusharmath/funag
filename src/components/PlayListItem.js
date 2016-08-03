@@ -5,7 +5,7 @@
 'use strict'
 
 import {div} from '@cycle/dom'
-import {Observable as O} from 'rx'
+import {Observable as O} from 'rxjs'
 import * as F from '../utils/Flexbox'
 import {DefaultArtwork, PausedArtwork, PlayingArtwork} from './Artwork'
 import TrackDetail from './TrackDetail'
@@ -27,7 +27,7 @@ const trackInfoSTY = {
 
 const view = ({icon$, trackDetail}) => {
   return icon$.map(icon =>
-    div({className: 'playlist-item', style: {...playListItemSTY}}, [
+    div('.playlist-item', {style: playListItemSTY}, [
       div({style: trackInfoSTY}, [
         icon,
         trackDetail
@@ -43,12 +43,12 @@ const model = ({track: {artwork_url}, status}) => {
     [PLAYING]: PlayingArtwork
   }
 
-  const icon$ = O.just(OverlayMap[status])
+  const icon$ = O.of(OverlayMap[status])
   return {icon$}
 }
 
 const intent = ({DOM, track}) => {
-  const click$ = DOM.select('.playlist-item').events('click').map(track)
+  const click$ = DOM.select('.playlist-item').events('click').mapTo(track)
   return {click$}
 }
 

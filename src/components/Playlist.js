@@ -5,7 +5,7 @@
 'use strict'
 import {div} from '@cycle/dom'
 import R from 'ramda'
-import {Observable} from 'rx'
+import {Observable} from 'rxjs'
 import {mux} from 'muxer'
 import PlayListItem from './PlayListItem'
 import * as SC from '../utils/SoundCloud'
@@ -25,15 +25,13 @@ export const Audio = ({url$}) => url$.scan((last, src) => {
 const view = ({playlistItem$}) => {
   return playlistItem$
     .map(tracks => tracks.map(x => x.DOM))
-    .flatMapLatest(tracks => Observable.combineLatest(tracks))
+    .switchMap(tracks => Observable.combineLatest(tracks))
     .startWith([
-      div([
-        P.PlaylistItem,
-        P.PlaylistItem,
-        P.PlaylistItem
-      ])
+      P.PlaylistItem,
+      P.PlaylistItem,
+      P.PlaylistItem
     ])
-    .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, [view]))
+    .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, view))
 }
 
 const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
@@ -43,8 +41,8 @@ const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
 
   const click$ = playlistItem$
     .map(tracks => tracks.map(x => x.click$))
-    .flatMapLatest(clicks => Observable.merge(clicks))
-    .shareReplay(1)
+    .switchMap(clicks => Observable.merge(clicks))
+    .publishReplay(1)
 
   const url$ = click$.map(SC.trackStreamURL)
 

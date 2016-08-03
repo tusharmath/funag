@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {Observable} from 'rx'
+import {Observable} from 'rxjs'
 import {div} from '@cycle/dom'
 import Scrobber from './Scrobber'
 import Playback from './Playback'
@@ -38,8 +38,8 @@ const model = ({audio$, selectedTrack$}) => {
       .map(x => x.currentTime / x.duration),
     audio$
       .filter(({event}) => event === 'ended')
-      .map(1),
-    selectedTrack$.map(0)
+      .mapTo(1),
+    selectedTrack$.mapTo(0)
   ).startWith(0)
   const showControls$ = selectedTrack$.map(Boolean).startWith(false)
   return {completion$, showControls$}

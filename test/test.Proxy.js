@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {ReactiveTest, TestScheduler, Observable} from 'rx'
+import {ReactiveTest, TestScheduler, Observable} from 'rxjs'
 import test from 'ava'
 import Proxy from '../src/utils/Proxy'
 const {onNext, onCompleted} = ReactiveTest
@@ -69,7 +69,7 @@ test(t => {
   const sh = new TestScheduler()
   const observer0 = sh.createObserver()
   const observer1 = sh.createObserver()
-  const out = obProxy.writer(Observable.just(100).tap(x => sideEffects.push(x)))
+  const out = obProxy.writer(Observable.of(100).tap(x => sideEffects.push(x)))
   out.subscribe(observer0)
   out.subscribe(observer1)
   t.deepEqual(sideEffects, [100])

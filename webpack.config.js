@@ -14,7 +14,7 @@ require('babel-register')({
 const path = require('path')
 const webpack = require('webpack')
 const config = global.APP_CONFIG = require('config')
-const {Observable} = require('rx')
+const {Observable} = require('rxjs')
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
 const CompressionPlugin = require('compression-webpack-plugin')
 const {ApplicationShell} = require('./src/utils/ApplicationShell')
@@ -29,7 +29,7 @@ const sources = {
   AUDIO: mockAudioDriver,
   events: eventSinkDriver,
   title: noop,
-  HTTP: () => Observable.never()
+  HTTP: () => ({response$$: Observable.never()})
 }
 
 const plugins = []

@@ -4,7 +4,7 @@
 
 'use strict'
 import _ from 'ramda'
-import {Observable as O} from 'rx'
+import {Observable as O} from 'rxjs'
 import raf from 'raf'
 
 export const inputVal = $el => $el.events('keyup').map(x => x.target.value).distinctUntilChanged()

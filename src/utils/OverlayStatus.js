@@ -1,6 +1,6 @@
 'use strict'
 
-import {Observable} from 'rx'
+import {Observable} from 'rxjs'
 import R from 'ramda'
 
 export const DEFAULT = -1

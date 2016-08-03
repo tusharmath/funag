@@ -5,7 +5,7 @@
 'use strict'
 
 import {div} from '@cycle/dom'
-import {Observable} from 'rx'
+import {Observable} from 'rxjs'
 import PlaybackInfo from './PlaybackInfo'
 import PlaybackButtons from './PlaybackButtons'
 import * as F from '../utils/Flexbox'

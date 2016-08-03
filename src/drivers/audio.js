@@ -4,11 +4,12 @@
 /* global Audio */
 'use strict'
 
-import {Observable} from 'rx'
+import {Observable} from 'rxjs'
 import R from 'ramda'
 import {demux} from 'muxer'
 
 export const audioDriver = instruction$ => {
+  instruction$.subscribe(x => console.log(x))
   const audio = new Audio()
   const [{play, pause}] = demux(instruction$, 'play', 'pause')
   play.subscribe(({src}) => {
@@ -23,7 +24,7 @@ export const audioDriver = instruction$ => {
 
   return {
     events (type) {
-      return Observable.fromEvent(audio, type).map(audio)
+      return Observable.fromEvent(audio, type).mapTo(audio)
     }
   }
 }
