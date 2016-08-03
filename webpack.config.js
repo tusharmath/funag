@@ -4,12 +4,7 @@
 
 'use strict'
 
-require('babel-register')({
-  presets: ['es2015'],
-  plugins: [
-    'transform-object-rest-spread'
-  ]
-})
+require('babel-register')()
 
 const path = require('path')
 const webpack = require('webpack')
