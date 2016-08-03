@@ -5,81 +5,29 @@
 'use strict'
 
 require('babel-register')()
-
-const path = require('path')
-const webpack = require('webpack')
 const config = global.APP_CONFIG = require('config')
-const {Observable} = require('rx')
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
 const CompressionPlugin = require('compression-webpack-plugin')
-const {ApplicationShell} = require('./src/utils/ApplicationShell')
-const Main = require('./src/components/Main').default
-const {makeHTMLDriver} = require('@cycle/dom')
-const {mockAudioDriver} = require('./src/drivers/audio')
-const {eventSinkDriver} = require('./src/drivers/eventSink')
-const noop = require('./src/utils/Noop')
+const Configurator = require('./src/utils/Configurator').default
+const BaseConfig = require('./src/utils/WebpackConfig.base').default
+const R = require('ramda')
 
-const sources = {
-  DOM: makeHTMLDriver(),
-  AUDIO: mockAudioDriver,
-  events: eventSinkDriver,
-  title: noop,
-  HTTP: () => Observable.never()
-}
-
-const plugins = []
-if (config.webpack.optimizeJS) {
-  plugins.push(new ClosureCompilerPlugin({
-    compiler: {language_in: 'ECMASCRIPT6', language_out: 'ECMASCRIPT5', compilation_level: 'SIMPLE'},
-    concurrency: 3
-  }))
-}
-
-if (config.webpack.compression) {
-  plugins.push(new CompressionPlugin({
-    algorithm: 'gzip',
-    test: /\.js$|\.html$/
-  }))
-}
-
-module.exports = {
-  entry: ['./src/bootstrapDOM.js'],
-  output: {
-    path: path.resolve(__dirname, 'public'),
-    filename: '[hash].bundle.js'
+const closureCompilerPlugin = new ClosureCompilerPlugin({
+  compiler: {
+    language_in: 'ECMASCRIPT6',
+    language_out: 'ECMASCRIPT5',
+    compilation_level: 'SIMPLE'
   },
-  devtool: config.webpack.devtool,
-  devServer: {
-    contentBase: './public'
-  },
-  plugins: [
-    new ApplicationShell({Main, sources}),
-    new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(config)})
-  ].concat(plugins),
-  module: {
-    loaders: [
-      {test: /\.less$/, loader: 'style!css!less'},
-      {test: /\.css$/, loader: 'style-loader!css-loader'},
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: [
-          'file?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
-        ]
-      },
-      {
-        test: /.js$/,
-        loader: 'babel',
-        exclude: /node_modules/,
-        query: {
-          cacheDirectory: true,
-          // TODO: Read from package.json
-          presets: ['es2015'],
-          plugins: [
-            'transform-object-rest-spread'
-          ]
-        }
-      }
-    ]
-  }
-}
+  concurrency: 3
+})
+const compressionPlugin = new CompressionPlugin({
+  algorithm: 'gzip', test: /\.js$|\.html$/
+})
+
+const w = Configurator(config.webpack)
+const configFactory = R.compose(
+  w.ok(['optimizeJS'], w.plugin(closureCompilerPlugin)),
+  w.ok(['compression'], w.plugin(compressionPlugin))
+)
+
+module.exports = configFactory(BaseConfig)
