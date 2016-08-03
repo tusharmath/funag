@@ -4,18 +4,10 @@
 
 'use strict'
 
-// TODO: Move babel setting to one place only
-require('babel-register')({
-  presets: ['es2015'],
-  plugins: [
-    'transform-object-rest-spread'
-  ]
-})
-const {Observable} = require('rx')
-const Cycle = require('@cycle/core')
-
-const {name} = require('../../package.json')
-const HTML = require('./../layouts/HTML').default
+import {Observable} from 'rx'
+import Cycle from '@cycle/core'
+import {name} from '../../package.json'
+import HTML from './../layouts/HTML'
 
 const select = compiler => {
   return {
@@ -31,7 +23,7 @@ const boilerplate = ({Main, bundle}) => sources => {
   return Object.assign({}, main, {DOM: vTree$})
 }
 
-class ApplicationShell {
+export class ApplicationShell {
   constructor ({Main, sources}) {
     this.Main = Main
     this.sources = sources

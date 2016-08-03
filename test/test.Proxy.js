@@ -6,7 +6,7 @@
 
 import {ReactiveTest, TestScheduler, Observable} from 'rx'
 import test from 'ava'
-import Proxy from '../src/utils/Proxy'
+import Proxy from '../src/lib/Proxy'
 const {onNext, onCompleted} = ReactiveTest
 
 const testFunction = source$ => source$.map(x => x * 2)

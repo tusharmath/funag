@@ -10,9 +10,9 @@ import R from 'ramda'
 import Controls from './Controls'
 import Playlist from './Playlist'
 import SearchBox from './Search'
-import BatchDOM from '../utils/BatchDOM'
-import proxy from '../utils/RxProxy'
-import * as F from '../utils/Flexbox'
+import BatchDOM from '../lib/BatchDOM'
+import proxy from '../lib/RxProxy'
+import * as F from '../lib/Flexbox'
 
 // TODO: Use muxer
 const getAudio$ = audio => {

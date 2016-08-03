@@ -6,12 +6,12 @@
 
 import {input, form} from '@cycle/dom'
 import {Observable as O} from 'rx'
-import * as F from '../utils/Flexbox'
-import * as S from '../utils/StyleUtils'
-import * as U from '../utils/DOMUtils'
-import * as T from '../utils/Themes'
-import * as SC from '../utils/SoundCloud'
-import RxProxy from '../utils/RxProxy'
+import * as F from '../lib/Flexbox'
+import * as S from '../lib/StyleUtils'
+import * as U from '../lib/DOMUtils'
+import * as T from '../lib/Themes'
+import * as SC from '../lib/SoundCloud'
+import RxProxy from '../lib/RxProxy'
 import SearchIcon from './SearchIcon'
 
 const searchBoxSTY = {

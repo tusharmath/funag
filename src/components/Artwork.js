@@ -4,8 +4,8 @@
 
 'use strict'
 import {div, ul, li} from '@cycle/dom'
-import * as S from '../utils/StyleUtils'
-import * as T from '../utils/Themes'
+import * as S from '../lib/StyleUtils'
+import * as T from '../lib/Themes'
 
 export const Placeholder = div({
   style: {

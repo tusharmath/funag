@@ -5,7 +5,7 @@
 'use strict'
 
 import {div} from '@cycle/dom'
-import * as S from '../utils/StyleUtils'
+import * as S from '../lib/StyleUtils'
 
 export default ({width, text}) =>
   div({style: {...S.subtitleSTY, width: `${width}px`, textAlign: 'center'}}, [text])

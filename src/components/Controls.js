@@ -7,7 +7,7 @@ import {Observable} from 'rx'
 import {div} from '@cycle/dom'
 import Scrobber from './Scrobber'
 import Playback from './Playback'
-import {Pallete} from '../utils/Themes'
+import {Pallete} from '../lib/Themes'
 
 const ControlSTY = show => ({
   transform: 'translateZ(0)',
