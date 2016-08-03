@@ -8,8 +8,8 @@ require('babel-register')()
 const config = global.APP_CONFIG = require('config')
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
 const CompressionPlugin = require('compression-webpack-plugin')
-const Configurator = require('./src/utils/Configurator').default
-const BaseConfig = require('./src/utils/WebpackConfig.base').default
+const Configurator = require('./src/lib/Configurator').default
+const BaseConfig = require('./src/lib/WebpackConfig.base').default
 const R = require('ramda')
 
 const closureCompilerPlugin = new ClosureCompilerPlugin({

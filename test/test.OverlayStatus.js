@@ -5,7 +5,7 @@
 'use strict'
 import {ReactiveTest, TestScheduler} from 'rx'
 import test from 'ava'
-import {getStatus$, DEFAULT, PLAYING, PAUSED} from '../src/utils/OverlayStatus'
+import {getStatus$, DEFAULT, PLAYING, PAUSED} from '../src/lib/OverlayStatus'
 const {onNext} = ReactiveTest
 
 test('all statuses', t => {

@@ -4,7 +4,7 @@
 
 'use strict'
 import {div} from '@cycle/dom'
-import * as F from '../utils/Flexbox'
+import * as F from '../lib/Flexbox'
 
 const PlayListItemSTY = {
   ...F.RowLeft,

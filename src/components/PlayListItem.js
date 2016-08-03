@@ -6,12 +6,12 @@
 
 import {div} from '@cycle/dom'
 import {Observable as O} from 'rx'
-import * as F from '../utils/Flexbox'
+import * as F from '../lib/Flexbox'
 import {DefaultArtwork, PausedArtwork, PlayingArtwork} from './Artwork'
 import TrackDetail from './TrackDetail'
-import * as T from '../utils/Themes'
+import * as T from '../lib/Themes'
 import isolate from '@cycle/isolate'
-import {DEFAULT, PLAYING, PAUSED} from '../utils/OverlayStatus'
+import {DEFAULT, PLAYING, PAUSED} from '../lib/OverlayStatus'
 
 const playListItemSTY = {
   fontSize: '1em',

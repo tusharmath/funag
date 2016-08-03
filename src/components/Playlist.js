@@ -8,9 +8,9 @@ import R from 'ramda'
 import {Observable} from 'rx'
 import {mux} from 'muxer'
 import PlayListItem from './PlayListItem'
-import * as SC from '../utils/SoundCloud'
+import * as SC from '../lib/SoundCloud'
 import * as P from '../layouts/Placeholders'
-import {getStatus$} from '../utils/OverlayStatus'
+import {getStatus$} from '../lib/OverlayStatus'
 
 export const Audio = ({url$}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([

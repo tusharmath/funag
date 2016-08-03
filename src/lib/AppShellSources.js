@@ -8,7 +8,7 @@ import {Observable} from 'rx'
 import {makeHTMLDriver} from '@cycle/dom'
 import {mockAudioDriver} from '../drivers/audio'
 import {eventSinkDriver} from '../drivers/eventSink'
-import noop from '../utils/Noop'
+import noop from './/Noop'
 
 export default {
   DOM: makeHTMLDriver(),

@@ -8,7 +8,7 @@ import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import PlaybackInfo from './PlaybackInfo'
 import PlaybackButtons from './PlaybackButtons'
-import * as F from '../utils/Flexbox'
+import * as F from '../lib/Flexbox'
 
 export default ({selectedTrack$, audio$, DOM}) => {
   const playbackButtons = PlaybackButtons({audio$, selectedTrack$, DOM})

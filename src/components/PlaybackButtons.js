@@ -7,9 +7,9 @@ import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import R from 'ramda'
 import {mux} from 'muxer'
-import * as S from '../utils/StyleUtils'
-import * as T from '../utils/Themes'
-import * as SC from '../utils/SoundCloud'
+import * as S from '../lib/StyleUtils'
+import * as T from '../lib/Themes'
+import * as SC from '../lib/SoundCloud'
 
 const intent = ({DOM, url$}) => {
   const select = R.compose(R.objOf('src'), R.nthArg(1))
