@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "ava",
-    "start": "node-dev src/server",
+    "start": "nodemon src/server",
     "build": "webpack",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "gh-pages": "scripts/gh-pages.js",
