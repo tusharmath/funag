@@ -33,12 +33,12 @@ const searchBoxContainerSTY = {
   transform: 'translateZ(0)',
   backgroundColor: T.Pallete.primaryColor,
   color: T.Pallete.primaryColorPrimaryFont,
-  ...S.position({top: 0, left: 0, right: 0}),
-  margin: 0
+  ...S.position({top: '0', left: '0', right: '0'}),
+  margin: '0'
 }
 
 const Form = ({icon, value}) =>
-  form({className: 'search', style: searchBoxContainerSTY}, [
+  form('.search', {style: searchBoxContainerSTY}, [
     input({type: 'text', style: searchBoxSTY, placeholder: 'Search', value}),
     icon
   ])
