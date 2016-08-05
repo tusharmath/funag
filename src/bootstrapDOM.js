@@ -4,7 +4,7 @@
 
 'use strict'
 
-import Cycle from '@cycle/core'
+import Cycle from '@cycle/rx-run'
 import {makeDOMDriver} from '@cycle/dom'
 import {makeHTTPDriver} from '@cycle/http'
 import manifestFile from 'file!./manifest.json'

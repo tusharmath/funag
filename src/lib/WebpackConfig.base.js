@@ -7,9 +7,7 @@
 import config from 'config'
 import path from 'path'
 import webpack from 'webpack'
-import Main from '../components/Main'
 import {ApplicationShell} from './AppShellPlugin'
-import AppShellSources from './AppShellSources'
 
 /**
  * Loaders
@@ -40,7 +38,7 @@ export default {
   },
   devServer: {contentBase: './public'},
   plugins: [
-    new ApplicationShell({Main, sources: AppShellSources}),
+    new ApplicationShell(),
     new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(config)})
   ],
   module: {

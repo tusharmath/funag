@@ -54,6 +54,7 @@ const view = ({clear$, icon$}) => {
 const model = ({HTTP, DOM, clear$}) => {
   // TODO: Add unit tests
   const tracks$ = HTTP
+    .select('tracks')
     .switch()
     .pluck('body')
     .share()
@@ -61,11 +62,14 @@ const model = ({HTTP, DOM, clear$}) => {
   const searchEl = DOM.select('.search')
   const inputEl = DOM.select('.search input')
   const value$ = O.merge(U.inputVal(searchEl).debounce(300), clear$)
-  const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
+  const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({
+    url,
+    category: 'tracks'
+  }))
   const events$ = O
     .merge(
       searchEl.events('submit').map(U.action('preventDefault')),
-      searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
+      searchEl.events('submit').withLatestFrom(inputEl.elements(), (_, a) => a[0])
         .map(U.action('blur'))
     )
   return {request$, events$, tracks$, value$}

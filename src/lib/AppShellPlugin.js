@@ -4,18 +4,24 @@
 
 'use strict'
 
-import Cycle from '@cycle/core'
+import Cycle from '@cycle/rx-run'
 import {name} from '../../package.json'
 import HTML from './../layouts/HTML'
+import Main from '../components/Main'
+import {Observable} from 'rx'
+import {makeHTMLDriver} from '@cycle/dom'
+import {mockAudioDriver} from '../drivers/audio'
+import {eventSinkDriver} from '../drivers/eventSink'
+import noop from './Noop'
 import * as R from 'ramda'
 
 export const wrapHTML = R.curry((bundle, __html) => HTML({
   __html, __title: name, bundle
 }))
-export const boilerplate = R.curry((Main, bundle, sources) => {
+export const createWrappedMain = R.curry((Main, bundle, sources) => {
   const main = Main(sources)
-  const vTree$ = main.DOM.first().map(wrapHTML(bundle))
-  return R.merge(main, {DOM: vTree$})
+  const DOM = main.DOM.first().map(wrapHTML(bundle))
+  return R.merge(main, {DOM})
 })
 export const getBundleName = ({outputOptions, hash}) => outputOptions.filename.replace('[hash]', hash)
 export const createAsset = (html) => ({
@@ -27,17 +33,17 @@ export const onHTML = R.curry((compilation, cb, html) => {
   cb()
 })
 export class ApplicationShell {
-  constructor ({Main, sources}) {
-    this.Main = Main
-    this.sources = sources
-  }
-
   apply (compiler) {
-    const {Main, sources} = this
     const onEmit = (compilation, cb) => {
       const bundle = getBundleName(compilation)
-      const html$ = Cycle.run(boilerplate(Main, bundle), sources).sources.DOM
-      return html$.subscribe(onHTML(compilation, cb))
+      const sources = {
+        DOM: makeHTMLDriver(onHTML(compilation, cb)),
+        AUDIO: mockAudioDriver,
+        events: eventSinkDriver,
+        title: noop,
+        HTTP: () => Observable.never()
+      }
+      Cycle.run(createWrappedMain(Main, bundle), sources)
     }
     compiler.plugin('emit', onEmit)
   }
