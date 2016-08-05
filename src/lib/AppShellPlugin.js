@@ -24,7 +24,7 @@ export const createWrappedMain = R.curry((Main, bundle, sources) => {
   return R.merge(main, {DOM})
 })
 export const getBundleName = ({outputOptions, hash}) => outputOptions.filename.replace('[hash]', hash)
-export const createAsset = (html) => ({
+export const createAsset = html => ({
   source: () => html,
   size: () => html.length
 })
