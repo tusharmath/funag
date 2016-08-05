@@ -28,7 +28,7 @@
     "config": "^1.20.1",
     "css-loader": "^0.23.1",
     "cycle": "^1.0.3",
-    "cycle-snabbdom": "^1.2.1",
+    "cycle-snabbdom": "^3.0.0",
     "express": "^4.13.4",
     "file-loader": "^0.9.0",
     "funjector": "^3.1.0",
