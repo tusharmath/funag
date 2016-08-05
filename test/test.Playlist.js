@@ -6,12 +6,11 @@
 
 import {ReactiveTest, TestScheduler} from 'rx'
 import test from 'ava'
-import {orig} from 'funjector'
 import {Audio} from '../src/components/Playlist'
 const {onNext} = ReactiveTest
 
 test('Audio()', t => {
-  const audio = orig(Audio)
+  const audio = Audio
   const sh = new TestScheduler()
   const url$ = sh.createHotObservable(
     onNext(210, '/*')
@@ -23,7 +22,7 @@ test('Audio()', t => {
 })
 
 test('Audio():pause/play', t => {
-  const audio = orig(Audio)
+  const audio = Audio
   const sh = new TestScheduler()
   const url$ = sh.createHotObservable(
     onNext(210, '/*'),
@@ -41,7 +40,7 @@ test('Audio():pause/play', t => {
 })
 
 test('Audio():reset', t => {
-  const audio = orig(Audio)
+  const audio = Audio
   const sh = new TestScheduler()
   const url$ = sh.createHotObservable(
     onNext(210, '/*'),
