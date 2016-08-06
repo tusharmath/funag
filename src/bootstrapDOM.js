@@ -21,10 +21,6 @@ manifest.rel = 'manifest'
 document.head.appendChild(manifest)
 
 sw({scope: '/'})
-  .then(
-    x => console.log(x.active),
-    x => console.error(x)
-  )
 
 Cycle.run(Main, {
   DOM: makeDOMDriver('#container'),
