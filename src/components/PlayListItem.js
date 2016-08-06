@@ -27,7 +27,7 @@ const trackInfoSTY = {
 
 const view = ({icon$, trackDetail}) => {
   return icon$.map(icon =>
-    div({className: 'playlist-item', style: {...playListItemSTY}}, [
+    div('.playlist-item', {style: {...playListItemSTY}}, [
       div({style: trackInfoSTY}, [
         icon,
         trackDetail

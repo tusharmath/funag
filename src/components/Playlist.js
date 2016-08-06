@@ -33,7 +33,7 @@ const view = ({playlistItem$}) => {
         P.PlaylistItem
       ])
     ])
-    .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, [view]))
+    .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, view))
 }
 
 const model = ({tracks$, DOM, audio$, selectedTrack$}) => {

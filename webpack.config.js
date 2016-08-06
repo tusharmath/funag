@@ -26,8 +26,11 @@ const compressionPlugin = new CompressionPlugin({
 
 const w = Configurator(config.webpack)
 const configFactory = R.compose(
+  // Plugins
   w.ok(['optimizeJS'], w.plugin(closureCompilerPlugin)),
-  w.ok(['compression'], w.plugin(compressionPlugin))
+  w.ok(['compression'], w.plugin(compressionPlugin)),
+
+  w.copy(['devtool'])
 )
 
 module.exports = configFactory(BaseConfig)

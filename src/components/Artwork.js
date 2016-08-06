@@ -14,7 +14,7 @@ export const Placeholder = div({
     color: '#ccc',
     backgroundColor: '#F6F6F6'
   }
-}, [div(S.fa('music'))])
+}, [div([S.fa('music')])])
 export const ArtworkOverlay = isAnimated => {
   const style = {
     ...S.block(T.BlockHeight - T.BlockSpace),

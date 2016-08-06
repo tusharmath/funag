@@ -3,7 +3,17 @@
  */
 
 'use strict'
-import {html, head, title, body, div, meta, link, style, script} from '@cycle/dom'
+import {
+  html,
+  head,
+  title,
+  body,
+  div,
+  meta,
+  link,
+  style,
+  script
+} from '@cycle/dom'
 
 export default ({__html, __title, bundle}) =>
   html([
@@ -50,16 +60,29 @@ export default ({__html, __title, bundle}) =>
         }
         `
       ]),
-      meta({name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no'}),
-      link({rel: 'stylesheet', type: 'text/css', href: '//fonts.googleapis.com/css?family=Open+Sans:300,400,600'}),
+      meta({
+        attrs: {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1, user-scalable=no'
+        }
+      }),
       link({
-        rel: 'stylesheet',
-        type: 'text/css',
-        href: '//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'
+        attrs: {
+          rel: 'stylesheet',
+          type: 'text/css',
+          href: '//fonts.googleapis.com/css?family=Open+Sans:300,400,600'
+        }
+      }),
+      link({
+        attrs: {
+          rel: 'stylesheet',
+          type: 'text/css',
+          href: '//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'
+        }
       })
     ]),
     body([
       div('#container', [__html]),
-      script({src: bundle})
+      script({attrs: {src: bundle}})
     ])
   ])

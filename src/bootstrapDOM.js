@@ -4,7 +4,7 @@
 
 'use strict'
 
-import Cycle from '@cycle/core'
+import Cycle from '@cycle/rx-run'
 import {makeDOMDriver} from '@cycle/dom'
 import {makeHTTPDriver} from '@cycle/http'
 import manifestFile from 'file!./manifest.json'
@@ -21,10 +21,6 @@ manifest.rel = 'manifest'
 document.head.appendChild(manifest)
 
 sw({scope: '/'})
-  .then(
-    x => console.log(x.active),
-    x => console.error(x)
-  )
 
 Cycle.run(Main, {
   DOM: makeDOMDriver('#container'),

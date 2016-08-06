@@ -4,7 +4,6 @@
 
 'use strict'
 
-import {input, form} from '@cycle/dom'
 import {Observable as O} from 'rx'
 import * as F from '../lib/Flexbox'
 import * as S from '../lib/StyleUtils'
@@ -24,7 +23,6 @@ const searchBoxSTY = {
   backgroundColor: 'transparent',
   paddingLeft: `${T.BlockSpace}px`
 }
-
 const searchBoxContainerSTY = {
   ...F.RowSpaceAround,
   alignItems: 'center',
@@ -33,27 +31,28 @@ const searchBoxContainerSTY = {
   transform: 'translateZ(0)',
   backgroundColor: T.Pallete.primaryColor,
   color: T.Pallete.primaryColorPrimaryFont,
-  ...S.position({top: 0, left: 0, right: 0}),
-  margin: 0
+  ...S.position({top: '0', left: '0', right: '0'}),
+  margin: '0'
 }
 
-const Form = ({icon, value}) =>
-  form({className: 'search', style: searchBoxContainerSTY}, [
-    input({type: 'text', style: searchBoxSTY, placeholder: 'Search', value}),
-    icon
-  ])
+const Form = ({icon, value = ''}) =>
+  <form className='search' style={searchBoxContainerSTY}>
+    <input type='text' style={searchBoxSTY} placeholder='Search' value={value}/>
+    {icon}
+  </form>
 
 const view = ({clear$, icon$}) => {
   return O.merge(
     icon$.map(icon => Form({icon})),
     clear$.withLatestFrom(icon$)
-      .map(([_, icon]) => Form({icon, value: ''}))
+      .map(([_, icon]) => Form({icon, value: null}))
   )
 }
 
 const model = ({HTTP, DOM, clear$}) => {
   // TODO: Add unit tests
   const tracks$ = HTTP
+    .select('tracks')
     .switch()
     .pluck('body')
     .share()
@@ -61,11 +60,14 @@ const model = ({HTTP, DOM, clear$}) => {
   const searchEl = DOM.select('.search')
   const inputEl = DOM.select('.search input')
   const value$ = O.merge(U.inputVal(searchEl).debounce(300), clear$)
-  const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({url}))
+  const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({
+    url,
+    category: 'tracks'
+  }))
   const events$ = O
     .merge(
       searchEl.events('submit').map(U.action('preventDefault')),
-      searchEl.events('submit').withLatestFrom(inputEl.observable, (_, a) => a[0])
+      searchEl.events('submit').withLatestFrom(inputEl.elements(), (_, a) => a[0])
         .map(U.action('blur'))
     )
   return {request$, events$, tracks$, value$}
