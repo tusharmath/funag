@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {Observable} from 'rx'
+import {Observable as O} from 'rx'
 import {div} from '@cycle/dom'
 import Scrobber from './Scrobber'
 import Playback from './Playback'
@@ -17,7 +17,7 @@ const ControlSTY = show => ({
 })
 
 const view = ({playback, scrobber, showControls$}) => {
-  return Observable
+  return O
     .combineLatest(
       showControls$,
       scrobber.DOM,
@@ -31,16 +31,15 @@ const view = ({playback, scrobber, showControls$}) => {
 }
 
 const model = ({audio$, selectedTrack$}) => {
-  const completion$ = Observable.merge(audio$
+  const completion$ = O.merge(audio$
       .filter(({event}) => event === 'timeUpdate')
       .pluck('audio')
-      .throttle(1000)
       .map(x => x.currentTime / x.duration),
     audio$
       .filter(({event}) => event === 'ended')
       .map(1),
     selectedTrack$.map(0)
-  ).startWith(0)
+  )
   const showControls$ = selectedTrack$.map(Boolean).startWith(false)
   return {completion$, showControls$}
 }
@@ -48,9 +47,9 @@ const model = ({audio$, selectedTrack$}) => {
 export default ({audio$, selectedTrack$, DOM, AUDIO}) => {
   const {completion$, showControls$} = model({audio$, selectedTrack$})
   const playback = Playback({selectedTrack$, audio$, DOM, AUDIO})
-  const scrobber = Scrobber({completion$})
+  const scrobber = Scrobber({completion$, DOM})
   return {
-    audio$: playback.audio$,
+    audio$: O.merge(playback.audio$, scrobber.audio$),
     DOM: view({playback, scrobber, showControls$})
   }
 }
