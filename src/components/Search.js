@@ -4,7 +4,6 @@
 
 'use strict'
 
-import {input, form} from '@cycle/dom'
 import {Observable as O} from 'rx'
 import * as F from '../lib/Flexbox'
 import * as S from '../lib/StyleUtils'
@@ -24,7 +23,6 @@ const searchBoxSTY = {
   backgroundColor: 'transparent',
   paddingLeft: `${T.BlockSpace}px`
 }
-
 const searchBoxContainerSTY = {
   ...F.RowSpaceAround,
   alignItems: 'center',
@@ -37,17 +35,17 @@ const searchBoxContainerSTY = {
   margin: '0'
 }
 
-const Form = ({icon, value}) =>
-  form('.search', {style: searchBoxContainerSTY}, [
-    input({type: 'text', style: searchBoxSTY, placeholder: 'Search', value}),
-    icon
-  ])
+const Form = ({icon, value = ''}) =>
+  <form className='search' style={searchBoxContainerSTY}>
+    <input type='text' style={searchBoxSTY} placeholder='Search' value={value}/>
+    {icon}
+  </form>
 
 const view = ({clear$, icon$}) => {
   return O.merge(
     icon$.map(icon => Form({icon})),
     clear$.withLatestFrom(icon$)
-      .map(([_, icon]) => Form({icon, value: ''}))
+      .map(([_, icon]) => Form({icon, value: null}))
   )
 }
 
