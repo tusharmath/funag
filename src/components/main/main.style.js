@@ -3,13 +3,13 @@
  */
 
 'use strict'
+
 import {create} from '../../lib/CreateStyle'
-import {Pallete} from '../../lib/Themes'
+import * as F from '../../lib/Flexbox'
 
 export default create({
-  playlist: {
-    height: '100%',
-    overflow: 'auto',
-    backgroundColor: Pallete.baseColor
+  main: {
+    ...F.FlexCol,
+    height: '100%'
   }
 })
