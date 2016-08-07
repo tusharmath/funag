@@ -4,10 +4,10 @@
 
 'use strict'
 
-import {createStyle} from '../../lib/CreateStyle'
+import {create} from '../../lib/CreateStyle'
 import * as F from '../../lib/Flexbox'
 
-export default createStyle({
+export default create({
   animatedBG: {
     background: 'linear-gradient(to right , rgb(245, 245, 245), #fff)',
     animation: 'horizontal-motion 1000ms linear infinite',

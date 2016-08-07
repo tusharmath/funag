@@ -1,11 +1,11 @@
-import {createGlobalStyle} from '../../lib/CreateStyle'
+import {createGlobal} from '../../lib/CreateStyle'
 /**
  * Created by tushar.mathur on 07/08/16.
  */
 
 'use strict'
 
-export default createGlobalStyle({
+export default createGlobal({
   'body, html': {
     height: '100%',
     width: '100%',
