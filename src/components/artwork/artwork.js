@@ -7,14 +7,11 @@ import {div} from '@cycle/dom'
 import * as S from '../../lib/StyleUtils'
 import * as T from '../../lib/Themes'
 import css from './artwork.style'
-export const Placeholder = div({
-  style: {
-    ...S.block(50),
-    margin: T.BlockSpace,
-    color: '#ccc',
-    backgroundColor: '#F6F6F6'
-  }
-}, [div([S.fa('music')])])
+export const Placeholder = (
+  <div className={css.placeholder}>
+    <div>{S.fa('music')}</div>
+  </div>
+)
 export const ArtworkOverlay = isAnimated => (
   <div className={S.css('fade-in', css.container)}>
     <ul className={S.css(css.playingAnimation, isAnimated)}>
@@ -24,7 +21,6 @@ export const ArtworkOverlay = isAnimated => (
     </ul>
   </div>
 )
-
 export const PlayingArtwork = ArtworkOverlay('')
 export const PausedArtwork = ArtworkOverlay('pause-animation')
 export const DefaultArtwork = url =>
