@@ -19,19 +19,18 @@ const intent = ({DOM, url$}) => {
   })
   return {audio$}
 }
-export default ({selectedTrack$, audio$, DOM}) => {
-  const event$ = audio$.pluck('event')
+export default ({selectedTrack$, AUDIO, DOM}) => {
   const playPause$ = Observable.merge(
-    event$.filter(x => x === 'playing').map('pause'),
-    event$.filter(x => x === 'pause').map('play'),
-    event$.filter(x => x === 'loadedData').map('play'),
-    event$.filter(x => x === 'seeked').map('play')
+    AUDIO.events('playing').map('pause'),
+    AUDIO.events('pause').map('play'),
+    AUDIO.events('loadedData').map('play'),
+    AUDIO.events('seeked').map('play')
   )
     .startWith('play')
     .map(button => div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)]))
 
-  const loadStart$ = event$.filter(x => x === 'loadStart').map(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
-  const loadError$ = event$.filter(x => x === 'error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
+  const loadStart$ = AUDIO.events('loadStart').map(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
+  const loadError$ = AUDIO.events('error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
   const url$ = selectedTrack$.map(SC.trackStreamURL)
   const actions = intent({DOM, url$})
   return {

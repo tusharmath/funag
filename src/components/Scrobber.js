@@ -75,8 +75,9 @@ export default ({completion$, DOM}) => {
 
   const vTree$ = view({
     completion$: O.merge(
-      seekD$.flatMapLatest(() =>
-        completion$.map(setTransition(true))
+      seekD$.startWith(null).flatMapLatest(() =>
+        completion$
+          .map(setTransition(true))
           .throttle(1000)
           .takeUntil(touchStart$)
       ),

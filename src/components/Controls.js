@@ -9,47 +9,41 @@ import Scrobber from './Scrobber'
 import Playback from './Playback'
 import {Pallete} from '../lib/Themes'
 
-const ControlSTY = show => ({
+const ControlSTY = {
   transform: 'translateZ(0)',
   boxShadow: Pallete.shadow,
   backgroundColor: Pallete.primaryColor,
   color: '#FFF'
-})
+}
 
-const view = ({playback, scrobber, showControls$}) => {
+const view = ({playback, scrobber}) => {
   return O
     .combineLatest(
-      showControls$,
       scrobber.DOM,
       playback.DOM
     )
-    .map(([show, scrobber, playback]) =>
-      div({style: ControlSTY(show)}, [
+    .map(([scrobber, playback]) =>
+      div({style: ControlSTY}, [
         scrobber, playback
       ])
     )
 }
 
-const model = ({audio$, selectedTrack$}) => {
-  const completion$ = O.merge(audio$
-      .filter(({event}) => event === 'timeUpdate')
-      .pluck('audio')
-      .map(x => x.currentTime / x.duration),
-    audio$
-      .filter(({event}) => event === 'ended')
-      .map(1),
+const model = ({AUDIO, selectedTrack$}) => {
+  const completion$ = O.merge(
+    AUDIO.events('timeUpdate').map(x => x.currentTime / x.duration),
+    AUDIO.events('ended').map(1),
     selectedTrack$.map(0)
   )
-  const showControls$ = selectedTrack$.map(Boolean).startWith(false)
-  return {completion$, showControls$}
+  return {completion$}
 }
 
-export default ({audio$, selectedTrack$, DOM, AUDIO}) => {
-  const {completion$, showControls$} = model({audio$, selectedTrack$})
-  const playback = Playback({selectedTrack$, audio$, DOM, AUDIO})
+export default ({selectedTrack$, DOM, AUDIO}) => {
+  const {completion$} = model({AUDIO, selectedTrack$})
+  const playback = Playback({selectedTrack$, DOM, AUDIO})
   const scrobber = Scrobber({completion$, DOM})
   return {
     audio$: O.merge(playback.audio$, scrobber.audio$),
-    DOM: view({playback, scrobber, showControls$})
+    DOM: view({playback, scrobber})
   }
 }

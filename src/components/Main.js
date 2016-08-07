@@ -14,7 +14,6 @@ import SearchBox from './Search'
 import Empty from '../lib/RxProxy'
 import * as F from '../lib/Flexbox'
 import * as SC from '../lib/SoundCloud'
-import GetAudioEvents from '../lib/GetAudioEvents'
 
 const view = ({playlist, searchBox, controls}) => O
   .combineLatest(searchBox.DOM, playlist.DOM, controls.DOM)
@@ -32,15 +31,14 @@ const getAudioSink = selectedTrack$ => mux({
 })
 
 export default function ({DOM, route, AUDIO, HTTP}) {
-  const audio$ = GetAudioEvents(AUDIO)
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const defaultTrack$ = Empty()
   const playlist = Playlist({
-    tracks$, DOM, audio$, selectedTrack$: defaultTrack$
+    tracks$, DOM, AUDIO, selectedTrack$: defaultTrack$
   })
   const selectedTrack$ = getSelectedTrack(defaultTrack$, playlist, tracks$)
-  const controls = Controls({audio$, selectedTrack$, DOM})
+  const controls = Controls({AUDIO, selectedTrack$, DOM})
   const audioSink$ = getAudioSink(selectedTrack$)
   return {
     HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),
