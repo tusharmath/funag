@@ -4,17 +4,15 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
 import {Observable as O} from 'rx'
 import {DefaultArtwork, PausedArtwork, PlayingArtwork} from '../artwork/artwork'
 import TrackDetail from '../track-details/track-details'
 import isolate from '@cycle/isolate'
 import {DEFAULT, PLAYING, PAUSED} from '../../lib/OverlayStatus'
 import css from './playlist-item.style'
-
 const view = ({icon$, trackDetail}) => {
   return icon$.map(icon =>
-    <div className={css.playlistItem}>
+    <div className={css(css.playlistItem, 'playlist-item')}>
       <div className={css.trackInfo}>
         {icon}
         {trackDetail}
