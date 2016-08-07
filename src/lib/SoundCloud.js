@@ -1,7 +1,7 @@
 /**
  * Created by tushar.mathur on 26/04/16.
  */
-/* global APP_CONFIG */
+
 'use strict'
 
 import qs from 'qs'

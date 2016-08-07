@@ -7,7 +7,7 @@
 require('./lib/env')
 const {forEach, map, curry, apply, values, compose, nthArg} = require('ramda')
 const httpProxy = require('http-proxy')
-const config = require('config')
+const config = APP_CONFIG
 const path = require('path')
 const express = require('express')
 const webpack = require('webpack')
