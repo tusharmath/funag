@@ -28,10 +28,13 @@ const babelLoader = {
  * Base config
  */
 export default {
-  entry: ['./src/bootstrapDOM.js'],
+  entry: {
+    client: './src/bootstrapDOM.js',
+    sw: './src/sw.js'
+  },
   output: {
     path: path.resolve(process.cwd(), 'public'),
-    filename: '[hash].bundle.js'
+    filename: '[chunkhash].[name].js'
   },
   devServer: {contentBase: './public'},
   plugins: [
