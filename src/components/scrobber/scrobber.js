@@ -3,7 +3,6 @@
  */
 
 'use strict'
-import {div} from '@cycle/dom'
 import {Observable as O} from 'rx'
 import {mux} from 'muxer'
 import R from 'ramda'

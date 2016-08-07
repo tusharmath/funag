@@ -6,19 +6,18 @@
 
 import {create} from '../../lib/CreateStyle'
 import * as F from '../../lib/Flexbox'
-import * as T from '../../lib/Themes'
-import {Palette} from '../../lib/Themes'
+import {Palette, BlockSpace} from '../../lib/Themes'
 import * as S from '../../lib/StyleUtils'
 
 export default create({
   trackDetailContainer: {
     flex: '1 0 0',
     overflow: 'hidden', ...F.RowSpaceBetween,
-    marginRight: `${T.BlockSpace}px`,
+    marginRight: `${BlockSpace}px`,
     alignItems: 'center'
   },
   trackDetail: {
-    overflow: 'hidden', marginRight: `${T.BlockSpace}px`
+    overflow: 'hidden', marginRight: `${BlockSpace}px`
   },
   title: {
     ...S.overflowEllipsisSTY

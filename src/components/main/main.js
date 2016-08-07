@@ -5,7 +5,6 @@
 'use strict'
 
 import {Observable as O} from 'rx'
-import {div} from '@cycle/dom'
 import R from 'ramda'
 import {mux} from 'muxer'
 import Controls from '../Controls'

@@ -4,7 +4,6 @@
 
 'use strict'
 import {create} from '../../lib/CreateStyle'
-import {Palette} from '../../lib/Themes'
 
 export default create({
   playlist: {
