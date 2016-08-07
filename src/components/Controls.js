@@ -7,12 +7,12 @@ import {Observable as O} from 'rx'
 import {div} from '@cycle/dom'
 import Scrobber from './Scrobber'
 import Playback from './Playback'
-import {Pallete} from '../lib/Themes'
+import {Palette} from '../lib/Themes'
 
 const ControlSTY = {
   transform: 'translateZ(0)',
-  boxShadow: Pallete.shadow,
-  backgroundColor: Pallete.primaryColor,
+  boxShadow: Palette.darkShadow,
+  backgroundColor: Palette.control_bg,
   color: '#FFF'
 }
 

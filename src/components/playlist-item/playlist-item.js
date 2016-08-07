@@ -7,7 +7,7 @@
 import {div} from '@cycle/dom'
 import {Observable as O} from 'rx'
 import {DefaultArtwork, PausedArtwork, PlayingArtwork} from '../artwork/artwork'
-import TrackDetail from '../TrackDetail'
+import TrackDetail from '../track-details/track-details'
 import isolate from '@cycle/isolate'
 import {DEFAULT, PLAYING, PAUSED} from '../../lib/OverlayStatus'
 import css from './playlist-item.style'

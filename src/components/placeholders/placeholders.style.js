@@ -19,11 +19,11 @@ export default create({
   },
   line100: {
     extend: 'animatedBG',
-    height: '1em', width: '100%'
+    height: '1rem', width: '100%'
   },
   line75: {
     extend: 'animatedBG',
-    height: '1em', width: '75%'
+    height: '1rem', width: '75%'
   },
   lineCol: {
     flex: '1 0 0',

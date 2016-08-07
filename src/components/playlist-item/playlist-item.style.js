@@ -10,13 +10,13 @@ import * as T from '../../lib/Themes'
 
 export default create({
   playlistItem: {
-    fontSize: '1em',
+    fontSize: '1rem',
     overflow: 'hidden'
   },
   trackInfo: {
     ...F.RowSpaceBetween,
     alignItems: 'center',
-    color: T.Pallete.baseColorPrimaryFont,
-    borderBottom: T.Pallete.divider
+    color: T.Palette.playlistItem_fg,
+    borderBottom: T.Palette.divider
   }
 })

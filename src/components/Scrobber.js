@@ -9,7 +9,7 @@ import {mux} from 'muxer'
 import R from 'ramda'
 import * as S from '../lib/StyleUtils'
 import * as F from '../lib/Flexbox'
-import {Pallete as Palette} from '../lib/Themes'
+import {Palette} from '../lib/Themes'
 import MinMaxValue from '../lib/MinMaxValue'
 import RAFThrottle from '../lib/RAFThrottle'
 import RootDimensions from '../lib/RootDimensions'
@@ -27,7 +27,7 @@ const view = ({completion$}) => {
         div('.scrobber-track', {
           style: {
             ...F.RowRight,
-            background: Palette.primaryDarkColor,
+            background: Palette.scrobberTrack_bg,
             height: '100%',
             willChange: 'transform',
             transform: `translateX(${100 * completion - 100}%)`,
@@ -39,9 +39,9 @@ const view = ({completion$}) => {
           div('.scrobber-icon', {
             style: {
               ...{...S.block(15), borderRadius: '20px'},
-              backgroundColor: Palette.primaryColor,
+              backgroundColor: Palette.scrobber_bg,
               transform: 'translateY(-50%) translateX(100%)',
-              boxShadow: Palette.shadow
+              boxShadow: Palette.darkShadow
             }
           })
         ])
