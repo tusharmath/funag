@@ -9,7 +9,7 @@ import {Observable} from 'rx'
 import {mux} from 'muxer'
 import PlayListItem from '../PlayListItem'
 import * as SC from '../../lib/SoundCloud'
-import * as P from '../../layouts/Placeholders'
+import * as P from '../placeholders/placeholders'
 import {getStatus$} from '../../lib/OverlayStatus'
 import css from './playlist.style'
 export const Audio = ({url$}) => url$.scan((last, src) => {
