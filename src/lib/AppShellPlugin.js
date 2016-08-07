@@ -15,15 +15,21 @@ import {eventSinkDriver} from '../drivers/eventSink'
 import noop from './Noop'
 import * as R from 'ramda'
 
-export const wrapHTML = R.curry((bundle, __html) => HTML({
-  __html, __title: name, bundle
-}))
-export const createWrappedMain = R.curry((Main, bundle, sources) => {
+export const getAssetKeys = R.compose(R.keys, R.prop('assets'))
+export const findAsset = R.uncurryN(2, type => R.compose(R.head, R.filter(R.contains(type)), getAssetKeys))
+export const findChunkFile = R.uncurryN(2, chunk => R.compose(R.head, R.path(['namedChunks', chunk, 'files'])))
+export const wrapHTML = R.curry((compilation, html) => {
+  const manifest = findAsset('manifest', compilation)
+  const bundle = findChunkFile('client', compilation)
+  const sw = findChunkFile('sw', compilation)
+  return HTML({html, title: name, bundle, manifest, sw})
+})
+export const createWrappedMain = R.curry((Main, compilation, sources) => {
   const main = Main(sources)
-  const DOM = main.DOM.first().map(wrapHTML(bundle))
+  const DOM = main.DOM.first().map(wrapHTML(compilation))
   return R.merge(main, {DOM})
 })
-export const getBundleName = ({outputOptions, hash}) => outputOptions.filename.replace('[hash]', hash)
+export const getBundleName = R.compose(R.head, R.path(['namedChunks', 'client', 'files']))
 export const createAsset = html => ({
   source: () => html,
   size: () => html.length
@@ -35,7 +41,6 @@ export const onHTML = R.curry((compilation, cb, html) => {
 export class ApplicationShell {
   apply (compiler) {
     const onEmit = (compilation, cb) => {
-      const bundle = getBundleName(compilation)
       const sources = {
         DOM: makeHTMLDriver(onHTML(compilation, cb)),
         AUDIO: mockAudioDriver,
@@ -43,7 +48,7 @@ export class ApplicationShell {
         title: noop,
         HTTP: () => Observable.never()
       }
-      Cycle.run(createWrappedMain(Main, bundle), sources)
+      Cycle.run(createWrappedMain(Main, compilation), sources)
     }
     compiler.plugin('emit', onEmit)
   }
