@@ -73,7 +73,8 @@
   },
   "ava": {
     "require": [
-      "babel-register"
+      "babel-register",
+      "./src/lib/ENV"
     ]
   },
   "babel": {

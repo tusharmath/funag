@@ -4,10 +4,8 @@
 
 'use strict'
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-global.snabbdom = require('snabbdom-jsx')
+require('./lib/env')
 const {forEach, map, curry, apply, values, compose, nthArg} = require('ramda')
-
 const httpProxy = require('http-proxy')
 const config = require('config')
 const path = require('path')

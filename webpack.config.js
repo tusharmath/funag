@@ -4,7 +4,6 @@
 
 'use strict'
 
-require('babel-register')()
 const config = global.APP_CONFIG = require('config')
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
 const CompressionPlugin = require('compression-webpack-plugin')
