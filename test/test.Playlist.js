@@ -6,7 +6,7 @@
 
 import {ReactiveTest, TestScheduler} from 'rx'
 import test from 'ava'
-import {Audio} from '../src/components/Playlist'
+import {Audio} from '../src/components/playlist/playlist'
 const {onNext} = ReactiveTest
 
 test('Audio()', t => {

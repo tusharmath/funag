@@ -7,11 +7,11 @@ import {div} from '@cycle/dom'
 import R from 'ramda'
 import {Observable} from 'rx'
 import {mux} from 'muxer'
-import PlayListItem from './PlayListItem'
-import * as SC from '../lib/SoundCloud'
-import * as P from '../layouts/Placeholders'
-import {getStatus$} from '../lib/OverlayStatus'
-
+import PlayListItem from '../PlayListItem'
+import * as SC from '../../lib/SoundCloud'
+import * as P from '../../layouts/Placeholders'
+import {getStatus$} from '../../lib/OverlayStatus'
+import css from './playlist.style'
 export const Audio = ({url$}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([
     ({last}) => !last,
@@ -33,7 +33,11 @@ const view = ({playlistItem$}) => {
         P.PlaylistItem
       ])
     ])
-    .map(view => div('.playlist', {style: {backgroundColor: '#fff', overflow: 'auto', height: '100%'}}, view))
+    .map(view =>
+      <div className={css.playlist}>
+        {view}
+      </div>
+    )
 }
 
 const model = ({tracks$, DOM, audio$, selectedTrack$}) => {
