@@ -10,7 +10,12 @@ import {demux} from 'muxer'
 
 export const audioDriver = instruction$ => {
   const audio = new Audio()
-  const [{play, pause}] = demux(instruction$, 'play', 'pause')
+  const [{play, pause, seek, load}] = demux(instruction$, 'play', 'pause', 'seek', 'load')
+
+  load.subscribe(({src}) => {
+    audio.src = src
+  })
+
   play.subscribe(({src}) => {
     if (audio.src !== src) {
       audio.src = src
@@ -21,9 +26,14 @@ export const audioDriver = instruction$ => {
 
   pause.subscribe(() => audio.pause())
 
+  seek.subscribe(x => {
+    audio.currentTime = audio.duration * x
+  })
+
   return {
     events (type) {
-      return Observable.fromEvent(audio, type).map(audio)
+      return Observable.fromEvent(audio, type)
+        .map(audio)
     }
   }
 }
