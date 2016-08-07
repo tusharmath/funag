@@ -1,11 +1,11 @@
-import {createGlobalStyle} from '../../lib/CreateStyle'
+import {createGlobal} from '../../lib/CreateStyle'
 /**
  * Created by tushar.mathur on 07/08/16.
  */
 
 'use strict'
 
-export default createGlobalStyle({
+export default createGlobal({
   'body, html': {
     height: '100%',
     width: '100%',
@@ -39,9 +39,13 @@ export default createGlobalStyle({
     height: '100%'
   },
 
-  '@keyframes horizontal-motion': {
-    '0%': {backgroundPosition: '0% 50%'},
-    '50%': {backgroundPosition: '100% 50%'},
-    '100%': {backgroundPosition: '0% 50%'}
+  '.fade-in': {
+    animation: 'fade-in 500ms 1 linear'
+  },
+
+  '@keyframes fade-in': {
+    from: {opacity: 0},
+    to: {opacity: 1}
   }
+
 })

@@ -3,10 +3,10 @@
  */
 
 'use strict'
-import {div, ul, li} from '@cycle/dom'
-import * as S from '../lib/StyleUtils'
-import * as T from '../lib/Themes'
-
+import {div} from '@cycle/dom'
+import * as S from '../../lib/StyleUtils'
+import * as T from '../../lib/Themes'
+import css from './artwork.style'
 export const Placeholder = div({
   style: {
     ...S.block(50),
@@ -15,21 +15,18 @@ export const Placeholder = div({
     backgroundColor: '#F6F6F6'
   }
 }, [div([S.fa('music')])])
-export const ArtworkOverlay = isAnimated => {
-  const style = {
-    ...S.block(T.BlockHeight - T.BlockSpace),
-    margin: T.BlockSpace,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)'
-  }
+export const ArtworkOverlay = isAnimated => (
+  <div className={S.css('fade-in', css.container)}>
+    <ul className={S.css(css.playingAnimation, isAnimated)}>
+      <li/>
+      <li/>
+      <li/>
+    </ul>
+  </div>
+)
 
-  return div('.fade-in', {style}, [
-    ul('.playing-animation' + isAnimated, {style: {...S.size(17)}}, [
-      li(), li(), li()
-    ])
-  ])
-}
 export const PlayingArtwork = ArtworkOverlay('')
-export const PausedArtwork = ArtworkOverlay('.pause-animation')
+export const PausedArtwork = ArtworkOverlay('pause-animation')
 export const DefaultArtwork = url =>
   url ? div({
     style: {

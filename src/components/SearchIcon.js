@@ -7,6 +7,7 @@
 import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import * as S from '../lib/StyleUtils'
+import Loader from './loader/loader'
 
 export default ({value$, tracks$, DOM}) => {
   const clear$ = DOM.select('.fa-times-circle').events('click').map('')
@@ -14,7 +15,7 @@ export default ({value$, tracks$, DOM}) => {
     .startWith(true)
     .distinctUntilChanged()
 
-  const loaderIconVTree$ = isLoading$.filter(x => x === true).map(div('.loader'))
+  const loaderIconVTree$ = isLoading$.filter(x => x === true).map(Loader)
   const hasValue$ = isLoading$.combineLatest(value$.startWith(''))
     .filter(([loading]) => loading === false)
     .map(([_, val]) => val.length === 0)

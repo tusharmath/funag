@@ -3,9 +3,9 @@
  */
 
 'use strict'
-import {createStyle} from '../../lib/CreateStyle'
+import {create} from '../../lib/CreateStyle'
 
-export default createStyle({
+export default create({
   playlist: {
     backgroundColor: '#fff',
     overflow: 'auto',
