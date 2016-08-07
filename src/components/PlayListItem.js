@@ -7,7 +7,7 @@
 import {div} from '@cycle/dom'
 import {Observable as O} from 'rx'
 import * as F from '../lib/Flexbox'
-import {DefaultArtwork, PausedArtwork, PlayingArtwork} from './Artwork'
+import {DefaultArtwork, PausedArtwork, PlayingArtwork} from './artwork/artwork'
 import TrackDetail from './TrackDetail'
 import * as T from '../lib/Themes'
 import isolate from '@cycle/isolate'

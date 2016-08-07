@@ -8,7 +8,10 @@ import {i} from '@cycle/dom'
 import * as F from './Flexbox'
 import {Pallete} from './Themes'
 
-export const size = (height, width = height) => ({height: `${height}px`, width: `${width}px`})
+export const size = (height, width = height) => ({
+  height: `${height}px`,
+  width: `${width}px`
+})
 export const position = coords => {
   const positions = {}
   Object.keys(coords)
@@ -45,3 +48,5 @@ export const block = (height, width = height) => ({
   ...size(height, width),
   ...F.ColMiddle
 })
+
+export const css = (...args) => args.join(' ')
