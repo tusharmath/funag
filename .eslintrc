@@ -10,5 +10,8 @@
 			2,
 			"as-needed"
 		]
+	},
+	"globals": {
+		"APP_CONFIG": true
 	}
 }

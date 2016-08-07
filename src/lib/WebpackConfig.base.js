@@ -4,13 +4,9 @@
 
 'use strict'
 
-import config from 'config'
 import path from 'path'
 import webpack from 'webpack'
-import snabbdom from 'snabbdom-jsx'
 import {ApplicationShell} from './AppShellPlugin'
-
-global.snabbdom = snabbdom
 
 /**
  * Loaders
@@ -43,7 +39,7 @@ export default {
   plugins: [
     new ApplicationShell(),
     new webpack.ProvidePlugin({snabbdom: 'snabbdom-jsx'}),
-    new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(config)})
+    new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(APP_CONFIG)})
   ],
   module: {
     loaders: [lessLoader, cssLoader, imgLoader, babelLoader]

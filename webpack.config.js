@@ -1,11 +1,8 @@
 /**
  * Created by tushar.mathur on 13/04/16.
  */
-
 'use strict'
 
-require('babel-register')()
-const config = global.APP_CONFIG = require('config')
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
 const CompressionPlugin = require('compression-webpack-plugin')
 const Configurator = require('./src/lib/Configurator').default
@@ -24,7 +21,7 @@ const compressionPlugin = new CompressionPlugin({
   algorithm: 'gzip', test: /\.js$|\.html$/
 })
 
-const w = Configurator(config.webpack)
+const w = Configurator(APP_CONFIG.webpack)
 const configFactory = R.compose(
   // Plugins
   w.ok(['optimizeJS'], w.plugin(closureCompilerPlugin)),

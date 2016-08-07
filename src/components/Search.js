@@ -12,6 +12,7 @@ import * as T from '../lib/Themes'
 import * as SC from '../lib/SoundCloud'
 import RxProxy from '../lib/RxProxy'
 import SearchIcon from './SearchIcon'
+import {PREVENT_DEFAULT, BLUR} from '../drivers/eventSink'
 
 const searchBoxSTY = {
   border: 'none',
@@ -66,9 +67,9 @@ const model = ({HTTP, DOM, clear$}) => {
   }))
   const events$ = O
     .merge(
-      searchEl.events('submit').map(U.action('preventDefault')),
+      searchEl.events('submit').map(PREVENT_DEFAULT),
       searchEl.events('submit').withLatestFrom(inputEl.elements(), (_, a) => a[0])
-        .map(U.action('blur'))
+        .map(BLUR)
     )
   return {request$, events$, tracks$, value$}
 }

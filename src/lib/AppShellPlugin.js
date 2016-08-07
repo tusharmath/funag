@@ -6,7 +6,7 @@
 
 import Cycle from '@cycle/rx-run'
 import {name} from '../../package.json'
-import HTML from './../layouts/HTML'
+import HTML from '../components/html/html'
 import Main from '../components/Main'
 import {Observable} from 'rx'
 import {makeHTMLDriver} from '@cycle/dom'
@@ -39,7 +39,7 @@ export class ApplicationShell {
       const sources = {
         DOM: makeHTMLDriver(onHTML(compilation, cb)),
         AUDIO: mockAudioDriver,
-        events: eventSinkDriver,
+        EVENTS: eventSinkDriver,
         title: noop,
         HTTP: () => Observable.never()
       }
