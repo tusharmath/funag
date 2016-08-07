@@ -7,10 +7,7 @@
 import config from 'config'
 import path from 'path'
 import webpack from 'webpack'
-import snabbdom from 'snabbdom-jsx'
 import {ApplicationShell} from './AppShellPlugin'
-
-global.snabbdom = snabbdom
 
 /**
  * Loaders
