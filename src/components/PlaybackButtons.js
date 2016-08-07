@@ -10,6 +10,7 @@ import {mux} from 'muxer'
 import * as S from '../lib/StyleUtils'
 import * as T from '../lib/Themes'
 import * as SC from '../lib/SoundCloud'
+import Loader from './loader/loader'
 
 const intent = ({DOM, url$}) => {
   const select = R.compose(R.objOf('src'), R.nthArg(1))
@@ -29,7 +30,7 @@ export default ({selectedTrack$, AUDIO, DOM}) => {
     .startWith('play')
     .map(button => div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)]))
 
-  const loadStart$ = AUDIO.events('loadStart').map(div({style: S.block(T.BlockHeight)}, [div('.loader')]))
+  const loadStart$ = AUDIO.events('loadStart').map(Loader)
   const loadError$ = AUDIO.events('error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
   const url$ = selectedTrack$.map(SC.trackStreamURL)
   const actions = intent({DOM, url$})
