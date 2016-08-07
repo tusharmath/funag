@@ -39,9 +39,13 @@ export default createGlobal({
     height: '100%'
   },
 
-  '@keyframes horizontal-motion': {
-    '0%': {backgroundPosition: '0% 50%'},
-    '50%': {backgroundPosition: '100% 50%'},
-    '100%': {backgroundPosition: '0% 50%'}
+  '.fade-in': {
+    animation: 'fade-in 500ms 1 linear'
+  },
+
+  '@keyframes fade-in': {
+    from: {opacity: 0},
+    to: {opacity: 1}
   }
+
 })

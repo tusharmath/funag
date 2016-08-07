@@ -11,8 +11,6 @@ import {ApplicationShell} from './AppShellPlugin'
 /**
  * Loaders
  */
-const lessLoader = {test: /\.less$/, loader: 'style!css!less'}
-const cssLoader = {test: /\.css$/, loader: 'style-loader!css-loader'}
 const imgLoader = {
   test: /\.(jpe?g|png|gif|svg)$/i,
   loaders: [
@@ -42,6 +40,6 @@ export default {
     new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(APP_CONFIG)})
   ],
   module: {
-    loaders: [lessLoader, cssLoader, imgLoader, babelLoader]
+    loaders: [imgLoader, babelLoader]
   }
 }
