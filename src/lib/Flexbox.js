@@ -4,6 +4,8 @@
 
 'use strict'
 
+// TODO: DEPRECATE
+
 export const FlexRow = {display: 'flex', flexDirection: 'row'}
 export const FlexCol = {display: 'flex', flexDirection: 'column'}
 export const RowSpaceBetween = {...FlexRow, justifyContent: 'space-between'}
