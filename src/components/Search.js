@@ -5,41 +5,20 @@
 'use strict'
 
 import {Observable as O} from 'rx'
-import * as F from '../lib/Flexbox'
-import * as S from '../lib/StyleUtils'
-import * as U from '../lib/DOMUtils'
-import * as T from '../lib/Themes'
-import * as SC from '../lib/SoundCloud'
-import RxProxy from '../lib/RxProxy'
-import SearchIcon from './SearchIcon'
-import {PREVENT_DEFAULT, BLUR} from '../drivers/eventSink'
-
-const searchBoxSTY = {
-  border: 'none',
-  flex: '1 0 0',
-  fontSize: '1rem',
-  color: T.Palette.fg__search,
-  fontWeight: '600',
-  outline: 'none',
-  backgroundColor: 'transparent',
-  paddingLeft: `${T.BlockSpace}px`
-}
-const searchBoxContainerSTY = {
-  ...F.RowSpaceAround,
-  alignItems: 'center',
-  minHeight: `${T.BlockHeight}px`,
-  boxShadow: T.Palette.sd__intense,
-  transform: 'translateZ(0)',
-  backgroundColor: T.Palette.bg__search,
-  color: T.Palette.fg__search,
-  ...S.position({top: '0', left: '0', right: '0'}),
-  margin: '0'
-}
+import * as U from '../../lib/DOMUtils'
+import * as SC from '../../lib/SoundCloud'
+import RxProxy from '../../lib/RxProxy'
+import SearchIcon from '../SearchIcon'
+import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventDriver'
+import css from './search.style'
 
 const Form = ({icon, value = ''}) =>
-  <form className='search' style={searchBoxContainerSTY}>
-    <input type='text' style={searchBoxSTY} placeholder='Search' value={value}/>
-    {icon}
+  <form className={css('search', css.container)}>
+    <div className={css(css.inputContainer, 'rowSpaceAround', 'alignCenter')}>
+      <input type='text' className={css.input} placeholder='Search'
+             value={value}/>
+      {icon}
+    </div>
   </form>
 
 const view = ({clear$, icon$}) => {
