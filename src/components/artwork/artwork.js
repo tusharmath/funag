@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {div} from '@cycle/dom'
+
 import * as S from '../../lib/StyleUtils'
 import css from './artwork.style'
 export const Placeholder = (
