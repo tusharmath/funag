@@ -21,5 +21,6 @@ export default createGlobal({
   '.rowRight': {extend: '.flexRow', justifyContent: 'flex-end'},
   '.rowWrap': {extend: '.flexRow', flexWrap: 'wrap'},
   '.colWrap': {extend: '.flexCol', flexWrap: 'wrap'},
-  '.flexSpread': {flex: '1 0 0'}
+  '.flexSpread': {flex: '1 0 0'},
+  '.alignCenter': {alignItems: 'center'}
 })

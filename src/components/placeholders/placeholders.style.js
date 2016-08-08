@@ -5,7 +5,6 @@
 'use strict'
 
 import {create} from '../../lib/CreateStyle'
-import * as F from '../../lib/Flexbox'
 
 export default create({
   animatedBG: {
@@ -34,7 +33,6 @@ export default create({
     justifyContent: 'space-around'
   },
   placeholder: {
-    ...F.RowLeft,
     padding: '10px',
     alignItems: 'center',
     borderBottom: '1px solid rgb(249, 246, 246)',

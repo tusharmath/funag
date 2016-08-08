@@ -5,7 +5,6 @@
 'use strict'
 
 import {create} from '../../lib/CreateStyle'
-import * as F from '../../lib/Flexbox'
 import {Palette} from '../../lib/Themes'
 import * as S from '../../lib/StyleUtils'
 
@@ -15,7 +14,6 @@ export default create({
     width: '100%'
   },
   scrobberTrack: {
-    ...F.RowRight,
     background: Palette.bg__scrobberTrack,
     height: '100%',
     willChange: 'transform',

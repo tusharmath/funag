@@ -6,7 +6,6 @@
 
 import {create} from '../../lib/CreateStyle'
 import * as T from '../../lib/Themes'
-import * as F from '../../lib/Flexbox'
 
 export default create({
   input: {
@@ -27,8 +26,6 @@ export default create({
     margin: '0'
   },
   inputContainer: {
-    ...F.RowSpaceAround,
-    alignItems: 'center',
     minHeight: `${T.BlockHeight}px`
   }
 })
