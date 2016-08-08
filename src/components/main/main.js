@@ -9,14 +9,14 @@ import R from 'ramda'
 import {mux} from 'muxer'
 import Controls from '../Controls'
 import Playlist from '../playlist/playlist'
-import SearchBox from '../Search'
+import SearchBox from '../search/search'
 import Empty from '../../lib/RxProxy'
 import * as SC from '../../lib/SoundCloud'
 import css from './main.style'
 
 const view = ({playlist, searchBox, controls}) => O
   .combineLatest(searchBox.DOM, playlist.DOM, controls.DOM)
-  .map(views => <div className={css.main}>{views}</div>)
+  .map(views => <div className={css(css.main, 'flexCol')}>{views}</div>)
 
 const getSelectedTrack = (defaultTrack$, playlist, tracks$) => {
   return defaultTrack$

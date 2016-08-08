@@ -4,11 +4,9 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
 import {Observable} from 'rx'
-import PlaybackInfo from './PlaybackInfo'
-import PlaybackButtons from './PlaybackButtons'
-import * as F from '../lib/Flexbox'
+import PlaybackInfo from '../PlaybackInfo'
+import PlaybackButtons from '../PlaybackButtons'
 
 export default ({selectedTrack$, AUDIO, DOM}) => {
   const playbackButtons = PlaybackButtons({AUDIO, selectedTrack$, DOM})
@@ -19,8 +17,8 @@ export default ({selectedTrack$, AUDIO, DOM}) => {
         playbackButtons.DOM,
         PlaybackInfo({selectedTrack$}).DOM
       )
-      .map(views => div({
-        style: {...F.RowLeft, alignItems: 'center'}
-      }, views))
+      .map(views =>
+        <div className='rowLeft alignCenter'>{views}</div>
+      )
   }
 }

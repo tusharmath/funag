@@ -6,7 +6,7 @@
 import {Observable as O} from 'rx'
 import {div} from '@cycle/dom'
 import Scrobber from './scrobber/scrobber'
-import Playback from './Playback'
+import Playback from './playback/playback'
 import {Palette} from '../lib/Themes'
 
 const ControlSTY = {
