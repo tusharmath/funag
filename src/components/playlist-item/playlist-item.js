@@ -10,6 +10,7 @@ import TrackDetail from '../track-details/track-details'
 import isolate from '@cycle/isolate'
 import {DEFAULT, PLAYING, PAUSED} from '../../lib/OverlayStatus'
 import css from './playlist-item.style'
+import DoubleClick from '../../lib/DoubleClick'
 const view = ({icon$, trackDetail}) => {
   return icon$.map(icon =>
     <div className={css(css.playlistItem, 'playlist-item')}>
@@ -33,7 +34,7 @@ const model = ({track: {artwork_url}, status}) => {
 }
 
 const intent = ({DOM, track}) => {
-  const click$ = DOM.select('.playlist-item').events('click').map(track)
+  const click$ = DoubleClick(DOM.select('.playlist-item')).map(track)
   return {click$}
 }
 
