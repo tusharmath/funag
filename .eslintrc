@@ -1,17 +1,26 @@
 {
-	"extends": [
-		"standard"
-	],
-	"env": {
-		"node": true
-	},
-	"rules": {
-		"arrow-parens": [
-			2,
-			"as-needed"
-		]
-	},
-	"globals": {
-		"APP_CONFIG": true
-	}
+  "extends": [
+    "standard"
+  ],
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "arrow-parens": [
+      2,
+      "as-needed"
+    ],
+    "react/jsx-uses-vars": "error"
+  },
+  "globals": {
+    "APP_CONFIG": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  }
 }

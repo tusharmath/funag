@@ -4,19 +4,8 @@
 
 'use strict'
 
-import Cycle from '@cycle/rx-run'
-import {makeDOMDriver} from '@cycle/dom'
-import {makeHTTPDriver} from '@cycle/http'
+import ReactDOM from 'react-dom'
 import 'file?name=[hash].manifest.[ext]!./manifest.json'
 import Main from './components/main/main'
-import {audioDriver} from './drivers/audio'
-import {eventSinkDriver} from './drivers/eventSink'
-import {documentTitleDriver} from './drivers/documentTitle'
 
-Cycle.run(Main, {
-  DOM: makeDOMDriver('#container'),
-  AUDIO: audioDriver,
-  EVENTS: eventSinkDriver,
-  title: documentTitleDriver,
-  HTTP: makeHTTPDriver()
-})
+ReactDOM.render(<Main/>, document.getElementById('container'))
