@@ -11,7 +11,7 @@ import * as S from '../../lib/StyleUtils'
 
 export default create({
   scrobber: {
-    height: '2px',
+    height: '4px',
     width: '100%'
   },
   scrobberTrack: {

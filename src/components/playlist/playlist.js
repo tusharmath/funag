@@ -3,7 +3,7 @@
  */
 // TODO: Rename to TrackList
 'use strict'
-import {div} from '@cycle/dom'
+
 import R from 'ramda'
 import {Observable as O} from 'rx'
 import {mux} from 'muxer'
