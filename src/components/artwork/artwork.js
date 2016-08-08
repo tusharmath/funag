@@ -5,7 +5,6 @@
 'use strict'
 import {div} from '@cycle/dom'
 import * as S from '../../lib/StyleUtils'
-import * as T from '../../lib/Themes'
 import css from './artwork.style'
 export const Placeholder = (
   <div className={css.placeholder}>
@@ -24,13 +23,5 @@ export const ArtworkOverlay = isAnimated => (
 export const PlayingArtwork = ArtworkOverlay('')
 export const PausedArtwork = ArtworkOverlay('pause-animation')
 export const DefaultArtwork = url =>
-  url ? div({
-    style: {
-      backgroundImage: `url(${url})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: '50%',
-      backgroundSize: '100%',
-      margin: `${T.BlockSpace}px`,
-      ...S.size(50)
-    }
-  }) : Placeholder
+  url ? <div className={css.artwork}
+             style={{backgroundImage: `url(${url})`}}></div> : Placeholder
