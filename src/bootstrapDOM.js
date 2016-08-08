@@ -10,13 +10,13 @@ import {makeHTTPDriver} from '@cycle/http'
 import 'file?name=[hash].manifest.[ext]!./manifest.json'
 import Main from './components/main/main'
 import {audioDriver} from './drivers/audio'
-import {eventSinkDriver} from './drivers/eventSink'
+import {eventDriver} from './drivers/eventSink'
 import {documentTitleDriver} from './drivers/documentTitle'
 
 Cycle.run(Main, {
   DOM: makeDOMDriver('#container'),
   AUDIO: audioDriver,
-  EVENTS: eventSinkDriver,
+  EVENTS: eventDriver,
   title: documentTitleDriver,
   HTTP: makeHTTPDriver()
 })
