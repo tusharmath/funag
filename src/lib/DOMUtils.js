@@ -28,3 +28,4 @@ export const raf$ = () => {
     }
   )
 }
+export const FindDOMElement = (DOM, selector) => DOM.select(selector).elements().map(_.prop(0))
