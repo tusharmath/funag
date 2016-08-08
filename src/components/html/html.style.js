@@ -1,9 +1,11 @@
-import {createGlobal} from '../../lib/CreateStyle'
 /**
  * Created by tushar.mathur on 07/08/16.
  */
 
 'use strict'
+
+import {createGlobal} from '../../lib/CreateStyle'
+import './flex-box'
 
 export default createGlobal({
   'body, html': {
@@ -47,5 +49,4 @@ export default createGlobal({
     from: {opacity: 0},
     to: {opacity: 1}
   }
-
 })
