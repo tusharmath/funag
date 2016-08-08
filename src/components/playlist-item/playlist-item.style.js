@@ -5,7 +5,6 @@
 'use strict'
 
 import {create} from '../../lib/CreateStyle'
-import * as F from '../../lib/Flexbox'
 import * as T from '../../lib/Themes'
 
 export default create({
@@ -14,8 +13,6 @@ export default create({
     overflow: 'hidden'
   },
   trackInfo: {
-    ...F.RowSpaceBetween,
-    alignItems: 'center',
     color: T.Palette.fg__playlistItem,
     borderBottom: T.Palette.br__playlistItem
   }
