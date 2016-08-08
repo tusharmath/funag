@@ -3,47 +3,29 @@
  */
 
 'use strict'
-import {div} from '@cycle/dom'
 import {Observable as O} from 'rx'
 import {mux} from 'muxer'
 import R from 'ramda'
-import * as S from '../lib/StyleUtils'
-import * as F from '../lib/Flexbox'
-import {Pallete} from '../lib/Themes'
-import MinMaxValue from '../lib/MinMaxValue'
-import RAFThrottle from '../lib/RAFThrottle'
-import RootDimensions from '../lib/RootDimensions'
+import MinMaxValue from '../../lib/MinMaxValue'
+import RAFThrottle from '../../lib/RAFThrottle'
+import RootDimensions from '../../lib/RootDimensions'
+import css from './scrobber.style'
+import * as S from '../../lib/StyleUtils'
 
 const getClientX = R.compose(R.prop('clientX'), R.nth(0), R.prop('changedTouches'))
-const view = ({completion$}) => {
-  return completion$.map(({completion, transition}) =>
-    div('.scrobber', [
-      div({style: {height: '4px', width: '100%'}}, [
-        div('.scrobber-track', {
-          style: {
-            ...F.RowRight,
-            background: Pallete.primaryDarkColor,
-            height: '100%',
-            willChange: 'transform',
-            transform: `translateX(${100 * completion - 100}%)`,
-            transformOrigin: 'left',
-            transition: transition ? 'transform 100ms linear' : null,
-            marginRight: '15px'
-          }
-        }, [
-          div('.scrobber-icon', {
-            style: {
-              ...{...S.block(15), borderRadius: '20px'},
-              backgroundColor: Pallete.accentColor,
-              transform: 'translateY(-50%) translateX(100%)',
-              boxShadow: Pallete.shadow
-            }
-          })
-        ])
-      ])
-    ])
+const style = ({completion, transition}) => ({
+  transform: `translateX(${100 * completion - 100}%)`,
+  transition: transition ? 'transform 100ms linear' : null
+})
+const view = ({completion$}) => completion$
+  .map(({completion, transition}) =>
+    <div className={S.css(css.scrobber, 'scrobber')}>
+      <div className={css.scrobberTrack}
+           style={style({completion, transition})}>
+        <div className={css.scrobberIcon}></div>
+      </div>
+    </div>
   )
-}
 const controlledSeek = ({touchMove$, touchEnd$, touchStart$, maxWidth$, minWidth$}) => {
   const clientX$ = touchMove$.map(getClientX)
   const seek$ = MinMaxValue(minWidth$, maxWidth$, clientX$).withLatestFrom(maxWidth$, R.divide)

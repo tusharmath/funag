@@ -6,7 +6,6 @@
 
 import {i} from '@cycle/dom'
 import * as F from './Flexbox'
-import {Pallete} from './Themes'
 
 export const size = (height, width = height) => ({
   height: `${height}px`,
@@ -38,10 +37,6 @@ export const overflowEllipsisSTY = {
   overflow: 'hidden',
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis'
-}
-
-export const subtitleSTY = {
-  color: Pallete.baseColorSecondaryFont, fontSize: '0.8em'
 }
 
 export const block = (height, width = height) => ({

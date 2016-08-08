@@ -9,7 +9,7 @@ import * as T from '../lib/Themes'
 
 const playbackInfoSTY = {
   textTransform: 'capitalize',
-  fontSize: '1em',
+  fontSize: '1rem',
   fontWeight: '600',
   overflow: 'hidden',
   paddingRight: `${T.BlockSpace}px`
@@ -19,7 +19,13 @@ export default ({selectedTrack$}) => {
     DOM: selectedTrack$.map(track =>
       div({style: playbackInfoSTY}, [
         div({style: S.overflowEllipsisSTY}, [track.title]),
-        div({style: {...S.overflowEllipsisSTY, fontSize: '0.8em', color: T.Pallete.primaryColorSecondaryFont}}, track.user.username)
+        div({
+          style: {
+            ...S.overflowEllipsisSTY,
+            fontSize: '0.8rem',
+            color: T.Palette.fg__playbackInfo
+          }
+        }, track.user.username)
       ])
     ).startWith(null)
   }

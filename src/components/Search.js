@@ -17,8 +17,8 @@ import {PREVENT_DEFAULT, BLUR} from '../drivers/eventSink'
 const searchBoxSTY = {
   border: 'none',
   flex: '1 0 0',
-  fontSize: '1em',
-  color: T.Pallete.primaryColorPrimaryFont,
+  fontSize: '1rem',
+  color: T.Palette.fg__search,
   fontWeight: '600',
   outline: 'none',
   backgroundColor: 'transparent',
@@ -28,10 +28,10 @@ const searchBoxContainerSTY = {
   ...F.RowSpaceAround,
   alignItems: 'center',
   minHeight: `${T.BlockHeight}px`,
-  boxShadow: T.Pallete.shadow,
+  boxShadow: T.Palette.sd__intense,
   transform: 'translateZ(0)',
-  backgroundColor: T.Pallete.primaryColor,
-  color: T.Pallete.primaryColorPrimaryFont,
+  backgroundColor: T.Palette.bg__search,
+  color: T.Palette.fg__search,
   ...S.position({top: '0', left: '0', right: '0'}),
   margin: '0'
 }

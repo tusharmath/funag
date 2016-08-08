@@ -5,14 +5,14 @@
 'use strict'
 import {Observable as O} from 'rx'
 import {div} from '@cycle/dom'
-import Scrobber from './Scrobber'
+import Scrobber from './scrobber/scrobber'
 import Playback from './Playback'
-import {Pallete} from '../lib/Themes'
+import {Palette} from '../lib/Themes'
 
 const ControlSTY = {
   transform: 'translateZ(0)',
-  boxShadow: Pallete.shadow,
-  backgroundColor: Pallete.primaryColor,
+  boxShadow: Palette.sd__intense,
+  backgroundColor: Palette.bg__control,
   color: '#FFF'
 }
 

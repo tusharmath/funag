@@ -3,11 +3,13 @@
  */
 
 'use strict'
+
+import {Palette} from '../../lib/Themes'
 import {create} from '../../lib/CreateStyle'
 
 export default create({
-  playlist: {
-    height: '100%',
-    overflow: 'auto'
+  trackDuration: {
+    fontSize: '0.8rem',
+    color: Palette.fg__trackDetail__light
   }
 })

@@ -3,11 +3,13 @@
  */
 
 'use strict'
+
 import {create} from '../../lib/CreateStyle'
+import * as F from '../../lib/Flexbox'
 
 export default create({
-  playlist: {
-    height: '100%',
-    overflow: 'auto'
+  main: {
+    ...F.FlexCol,
+    height: '100%'
   }
 })

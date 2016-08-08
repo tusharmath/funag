@@ -6,9 +6,14 @@
 
 import jss from 'jss'
 import preset from 'jss-preset-default'
+import * as R from 'ramda'
 
 jss.setup(preset())
 
-export const create = styles => jss.createStyleSheet(styles).classes
-export const createGlobal = styles => jss.createStyleSheet(styles, {named: false}).attach().classes
+export const create = (styles, options) => {
+  const css = R.unapply(R.join(' '))
+  Object.assign(css, jss.createStyleSheet(styles, options).classes)
+  return css
+}
+export const createGlobal = styles => create(styles, {named: false})
 export const sheets = jss.sheets

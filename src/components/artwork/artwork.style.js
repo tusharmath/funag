@@ -6,13 +6,13 @@
 
 import {create} from '../../lib/CreateStyle'
 import * as S from '../../lib/StyleUtils'
-import {BlockHeight, BlockSpace} from '../../lib/Themes'
+import {BlockHeight, BlockSpace, Palette} from '../../lib/Themes'
 
 export default create({
   container: {
     ...S.block(BlockHeight - BlockSpace),
     margin: BlockSpace,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)'
+    backgroundColor: Palette.bg__artwork
   },
   playingAnimation: {
     ...S.size(17),
@@ -23,7 +23,7 @@ export default create({
     padding: 0,
     '& li': {
       display: 'block',
-      backgroundColor: 'rgb(51, 51, 51)',
+      backgroundColor: Palette.bg__artworkPlayingIcon,
       flexGrow: '1',
       transformOrigin: '0 100%',
       marginRight: '1px',
@@ -48,5 +48,11 @@ export default create({
     '0%': {transform: 'scaleY(0.1)'},
     '50%': {transform: 'scaleY(1)'},
     '100%': {transform: 'scaleY(0.1)'}
+  },
+  placeholder: {
+    ...S.block(50),
+    margin: BlockSpace,
+    color: Palette.fg__artwork,
+    backgroundColor: Palette.bg__artwork
   }
 })

@@ -4,35 +4,20 @@
 
 'use strict'
 
-import {div} from '@cycle/dom'
 import {Observable as O} from 'rx'
-import * as F from '../lib/Flexbox'
-import {DefaultArtwork, PausedArtwork, PlayingArtwork} from './artwork/artwork'
-import TrackDetail from './TrackDetail'
-import * as T from '../lib/Themes'
+import {DefaultArtwork, PausedArtwork, PlayingArtwork} from '../artwork/artwork'
+import TrackDetail from '../track-details/track-details'
 import isolate from '@cycle/isolate'
-import {DEFAULT, PLAYING, PAUSED} from '../lib/OverlayStatus'
-
-const playListItemSTY = {
-  fontSize: '1em',
-  overflow: 'hidden'
-}
-
-const trackInfoSTY = {
-  ...F.RowSpaceBetween,
-  alignItems: 'center',
-  color: T.Pallete.baseColorPrimaryFont,
-  borderBottom: T.Pallete.divider
-}
-
+import {DEFAULT, PLAYING, PAUSED} from '../../lib/OverlayStatus'
+import css from './playlist-item.style'
 const view = ({icon$, trackDetail}) => {
   return icon$.map(icon =>
-    div('.playlist-item', {style: {...playListItemSTY}}, [
-      div({style: trackInfoSTY}, [
-        icon,
-        trackDetail
-      ])
-    ])
+    <div className={css(css.playlistItem, 'playlist-item')}>
+      <div className={css.trackInfo}>
+        {icon}
+        {trackDetail}
+      </div>
+    </div>
   )
 }
 
@@ -61,4 +46,4 @@ const PlayListItem = ({DOM, track, status}) => {
 }
 
 // TODO: Rename file PlayListItem => Track
-export default sources => isolate(PlayListItem, sources.track.id.toString())(sources)
+export default sources => isolate(PlayListItem)(sources)
