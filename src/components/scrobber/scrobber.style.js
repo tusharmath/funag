@@ -16,7 +16,7 @@ export default create({
   },
   scrobberTrack: {
     ...F.RowRight,
-    background: Palette.scrobberTrack_bg,
+    background: Palette.bg__scrobberTrack,
     height: '100%',
     willChange: 'transform',
     transformOrigin: 'left',
@@ -24,8 +24,8 @@ export default create({
   },
   scrobberIcon: {
     ...{...S.block(15), borderRadius: '20px'},
-    backgroundColor: Palette.scrobber_bg,
+    backgroundColor: Palette.bg__scrobberIcon,
     transform: 'translateY(-50%) translateX(100%)',
-    boxShadow: Palette.darkShadow
+    boxShadow: Palette.sd__intense
   }
 })

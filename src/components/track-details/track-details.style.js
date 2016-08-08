@@ -23,7 +23,7 @@ export default create({
     ...S.overflowEllipsisSTY
   },
   artist: {
-    color: Palette.trackDetailSecondary_fg,
+    color: Palette.fg__trackDetail__light,
     fontSize: '0.8rem',
     ...S.overflowEllipsisSTY
   }

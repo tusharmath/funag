@@ -16,7 +16,7 @@ export default create({
   trackInfo: {
     ...F.RowSpaceBetween,
     alignItems: 'center',
-    color: T.Palette.playlistItem_fg,
-    borderBottom: T.Palette.divider
+    color: T.Palette.fg__playlistItem,
+    borderBottom: T.Palette.br__playlistItem
   }
 })

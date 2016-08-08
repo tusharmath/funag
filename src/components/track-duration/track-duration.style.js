@@ -10,6 +10,6 @@ import {create} from '../../lib/CreateStyle'
 export default create({
   trackDuration: {
     fontSize: '0.8rem',
-    color: Palette.trackDetailSecondary_fg
+    color: Palette.fg__trackDetail__light
   }
 })

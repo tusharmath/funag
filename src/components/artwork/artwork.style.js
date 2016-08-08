@@ -12,7 +12,7 @@ export default create({
   container: {
     ...S.block(BlockHeight - BlockSpace),
     margin: BlockSpace,
-    backgroundColor: Palette.artworkPlaceholder_bg
+    backgroundColor: Palette.bg__artwork
   },
   playingAnimation: {
     ...S.size(17),
@@ -23,7 +23,7 @@ export default create({
     padding: 0,
     '& li': {
       display: 'block',
-      backgroundColor: Palette.artwork_fg,
+      backgroundColor: Palette.bg__artworkPlayingIcon,
       flexGrow: '1',
       transformOrigin: '0 100%',
       marginRight: '1px',
@@ -52,7 +52,7 @@ export default create({
   placeholder: {
     ...S.block(50),
     margin: BlockSpace,
-    color: 'rgba(0, 0, 0, 0.2)',
-    backgroundColor: Palette.artworkPlaceholder_bg
+    color: Palette.fg__artwork,
+    backgroundColor: Palette.bg__artwork
   }
 })

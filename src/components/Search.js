@@ -18,7 +18,7 @@ const searchBoxSTY = {
   border: 'none',
   flex: '1 0 0',
   fontSize: '1rem',
-  color: T.Palette.search_fg,
+  color: T.Palette.fg__search,
   fontWeight: '600',
   outline: 'none',
   backgroundColor: 'transparent',
@@ -28,10 +28,10 @@ const searchBoxContainerSTY = {
   ...F.RowSpaceAround,
   alignItems: 'center',
   minHeight: `${T.BlockHeight}px`,
-  boxShadow: T.Palette.darkShadow,
+  boxShadow: T.Palette.sd__intense,
   transform: 'translateZ(0)',
-  backgroundColor: T.Palette.search_bg,
-  color: T.Palette.search_fg,
+  backgroundColor: T.Palette.bg__search,
+  color: T.Palette.fg__search,
   ...S.position({top: '0', left: '0', right: '0'}),
   margin: '0'
 }
