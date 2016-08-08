@@ -11,7 +11,7 @@ import {Palette} from '../lib/Themes'
 
 const ControlSTY = {
   transform: 'translateZ(0)',
-  boxShadow: Palette.sd__intense,
+  boxShadow: Palette.zDepth__1,
   backgroundColor: Palette.bg__control,
   color: '#FFF'
 }

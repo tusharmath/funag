@@ -19,7 +19,7 @@ export default create({
   },
   container: {
     paddingLeft: `${T.BlockSpace}px`,
-    boxShadow: T.Palette.sd__intense,
+    boxShadow: T.Palette.zDepth__1,
     transform: 'translateZ(0)',
     backgroundColor: T.Palette.bg__search,
     color: T.Palette.fg__search,

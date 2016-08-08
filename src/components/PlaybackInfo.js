@@ -23,7 +23,7 @@ export default ({selectedTrack$}) => {
           style: {
             ...S.overflowEllipsisSTY,
             fontSize: '0.8rem',
-            color: T.Palette.fg__playbackInfo
+            color: T.Palette.fg__playbackInfo__light
           }
         }, track.user.username)
       ])
