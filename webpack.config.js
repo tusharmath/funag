@@ -3,6 +3,8 @@
  */
 'use strict'
 
+// NOTE: deployment fails if env is not setup — https://travis-ci.org/funag/ui-core#L393
+require('./src/lib/env')
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
 const CompressionPlugin = require('compression-webpack-plugin')
 const Configurator = require('./src/lib/Configurator').default
