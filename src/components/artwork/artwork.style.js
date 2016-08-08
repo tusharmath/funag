@@ -54,5 +54,12 @@ export default create({
     margin: BlockSpace,
     color: Palette.fg__artwork,
     backgroundColor: Palette.bg__artwork
+  },
+  artwork: {
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: '50%',
+    backgroundSize: '100%',
+    margin: `${BlockSpace}px`,
+    ...S.size(50)
   }
 })
