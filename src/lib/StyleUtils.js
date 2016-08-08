@@ -5,7 +5,6 @@
 'use strict'
 
 import {i} from '@cycle/dom'
-import * as F from './Flexbox'
 
 export const size = (height, width = height) => ({
   height: `${height}px`,
@@ -27,12 +26,7 @@ export const fixed = x => {
   return {...position(x), position: 'fixed'}
 }
 
-export const fa = (name, dim = 1) => i(`.fa.fa-${name}`, {
-  style: {
-    fontSize: `${dim}em`,
-    ...F.ColMiddle
-  }
-})
+export const fa = (name, dim = 1) => i(`.fa.fa-${name} colMiddle`, {style: {fontSize: `${dim}em`}})
 export const overflowEllipsisSTY = {
   overflow: 'hidden',
   whiteSpace: 'nowrap',
@@ -41,7 +35,10 @@ export const overflowEllipsisSTY = {
 
 export const block = (height, width = height) => ({
   ...size(height, width),
-  ...F.ColMiddle
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center'
 })
 
 export const css = (...args) => args.join(' ')

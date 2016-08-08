@@ -14,7 +14,7 @@ import DoubleClick from '../../lib/DoubleClick'
 const view = ({icon$, trackDetail}) => {
   return icon$.map(icon =>
     <div className={css(css.playlistItem, 'playlist-item')}>
-      <div className={css.trackInfo}>
+      <div className={css(css.trackInfo, 'rowSpaceBetween', 'alignCenter')}>
         {icon}
         {trackDetail}
       </div>

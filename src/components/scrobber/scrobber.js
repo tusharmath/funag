@@ -10,7 +10,6 @@ import MinMaxValue from '../../lib/MinMaxValue'
 import RAFThrottle from '../../lib/RAFThrottle'
 import RootDimensions from '../../lib/RootDimensions'
 import css from './scrobber.style'
-import * as S from '../../lib/StyleUtils'
 
 const getClientX = R.compose(R.prop('clientX'), R.nth(0), R.prop('changedTouches'))
 const style = ({completion, transition}) => ({
@@ -19,8 +18,8 @@ const style = ({completion, transition}) => ({
 })
 const view = ({completion$}) => completion$
   .map(({completion, transition}) =>
-    <div className={S.css(css.scrobber, 'scrobber')}>
-      <div className={css.scrobberTrack}
+    <div className={css(css.scrobber, 'scrobber')}>
+      <div className={css(css.scrobberTrack, 'rowRight')}
            style={style({completion, transition})}>
         <div className={css.scrobberIcon}></div>
       </div>
