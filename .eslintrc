@@ -10,6 +10,13 @@
       2,
       "as-needed"
     ],
+    "max-lines": [
+      "warn",
+      {
+        "max": 50,
+        "skipComments": true
+      }
+    ],
     "react/jsx-uses-vars": "error"
   },
   "globals": {
