@@ -6,7 +6,7 @@
 import {Observable as O} from 'rx'
 import R from 'ramda'
 import Scrobber from '../scrobber/scrobber'
-import Playback from '../Playback'
+import Playback from '../playback/playback'
 import css from './controls.style'
 
 const view = ({playback, scrobber, show$}) => {
