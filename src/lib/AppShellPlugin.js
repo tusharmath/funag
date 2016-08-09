@@ -10,6 +10,8 @@ import HTML from '../components/html/html'
 import Main from '../components/main/main'
 import {Observable} from 'rx'
 import {makeHTMLDriver} from '@cycle/dom'
+import {makeRouterDriver} from 'cyclic-router'
+import {createMemoryHistory} from 'history'
 import {mockAudioDriver} from '../drivers/audio'
 import {eventSinkDriver} from '../drivers/eventSink'
 import noop from './Noop'
@@ -45,6 +47,7 @@ export class ApplicationShell {
         DOM: makeHTMLDriver(onHTML(compilation, cb)),
         AUDIO: mockAudioDriver,
         EVENTS: eventSinkDriver,
+        ROUTER: makeRouterDriver(createMemoryHistory()),
         title: noop,
         HTTP: () => Observable.never()
       }

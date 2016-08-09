@@ -6,7 +6,9 @@
 
 import Cycle from '@cycle/rx-run'
 import {makeDOMDriver} from '@cycle/dom'
+import {makeRouterDriver} from 'cyclic-router'
 import {makeHTTPDriver} from '@cycle/http'
+import {createHashHistory} from 'history'
 import 'file?name=[hash].manifest.[ext]!./manifest.json'
 import Main from './components/main/main'
 import {audioDriver} from './drivers/audio'
@@ -18,5 +20,6 @@ Cycle.run(Main, {
   AUDIO: audioDriver,
   EVENTS: eventSinkDriver,
   title: documentTitleDriver,
-  HTTP: makeHTTPDriver()
+  HTTP: makeHTTPDriver(),
+  ROUTER: makeRouterDriver(createHashHistory())
 })
