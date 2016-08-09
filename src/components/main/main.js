@@ -30,7 +30,6 @@ const getAudioSink = selectedTrack$ => mux({
 })
 
 export default function ({DOM, route, AUDIO, HTTP, EVENTS}) {
-  console.log(EVENTS)
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const defaultTrack$ = Empty()
