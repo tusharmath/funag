@@ -11,6 +11,7 @@ import * as SC from '../../lib/SoundCloud'
 import css from './home.style'
 import Header from '../header/header'
 import Playlist from '../playlist/playlist'
+import HttpSelectBody from '../../lib/HttpSelectBody';
 
 const view = ({playlist, header}) => O
   .combineLatest(header.DOM, playlist.DOM)
@@ -23,12 +24,12 @@ const getAudioSink = selectedTrack$ => mux({
 })
 
 const createTrendingTracksRequest = () => O.just({
-  url: SC.toURI('/tracks'),
+  url: SC.toURI('/tracks', {}),
   category: 'trending-tracks'
 })
 
 export default ({HTTP, AUDIO, DOM, ROUTER}) => {
-  const tracks$ = HTTP.select('trending-tracks').switch().pluck('body').share()
+  const tracks$ = HttpSelectBody(HTTP, 'trending-tracks')
   const header = Header({DOM, ROUTER})
   const defaultTrack$ = tracks$.map(R.head)
   const playlist = Playlist({tracks$, defaultTrack$, AUDIO, DOM})
