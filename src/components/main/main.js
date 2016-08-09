@@ -30,6 +30,7 @@ const getAudioSink = selectedTrack$ => mux({
 })
 
 export default function ({DOM, route, AUDIO, HTTP, EVENTS}) {
+  console.log(EVENTS)
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const defaultTrack$ = Empty()
@@ -37,7 +38,7 @@ export default function ({DOM, route, AUDIO, HTTP, EVENTS}) {
     tracks$, DOM, AUDIO, selectedTrack$: defaultTrack$
   })
   const selectedTrack$ = getSelectedTrack(defaultTrack$, playlist, tracks$)
-  const controls = Controls({AUDIO, selectedTrack$, DOM, resize: EVENTS})
+  const controls = Controls({AUDIO, selectedTrack$, DOM, resize: EVENTS.resize})
   const audioSink$ = getAudioSink(selectedTrack$)
   return {
     HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),

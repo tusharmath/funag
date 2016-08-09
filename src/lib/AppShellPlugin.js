@@ -43,7 +43,7 @@ export class ApplicationShell {
       const sources = {
         DOM: makeHTMLDriver(onHTML(compilation, cb)),
         AUDIO: mockAudioDriver,
-        EVENTS: () => Observable.never(),
+        EVENTS: () => ({resize: Observable.never()}),
         title: noop,
         HTTP: () => Observable.never()
       }

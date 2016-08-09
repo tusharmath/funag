@@ -8,7 +8,6 @@ import R from 'ramda'
 import Scrobber from '../scrobber/scrobber'
 import Playback from '../Playback'
 import css from './controls.style'
-import RootDimension from '../../lib/RootDimensions'
 
 const view = ({playback, scrobber, show$}) => {
   const translate = R.ifElse(R.identity, R.always(css.translateUp), R.always(css.translateDown))
@@ -19,29 +18,29 @@ const view = ({playback, scrobber, show$}) => {
       show$
     )
     .map(([scrobber, playback, show]) =>
-      <div className={`${css.container} ${translate(show)}`}>
+      <div className={css(css.container, translate(show))}>
         {scrobber}
         {playback}
       </div>
     )
 }
 
-const model = ({AUDIO, selectedTrack$, resize, DOM}) => {
-  const dimension$ = RootDimension(DOM)
+const model = ({AUDIO, selectedTrack$, resize}) => {
   const completion$ = O.merge(
     AUDIO.events('timeUpdate').map(x => x.currentTime / x.duration),
     AUDIO.events('ended').map(1),
     selectedTrack$.map(0)
   )
-  const show$ = resize
-    .withLatestFrom(dimension$)
-    .map(([window, container]) => window.innerHeight > 0.9 * container.height)
+  const height$ = resize.pluck('innerHeight')
+  const show$ = height$
+    .withLatestFrom(height$.first())
+    .map(([final, initial]) => final > 0.9 * initial)
     .startWith(true)
   return {completion$, show$}
 }
 
 export default ({selectedTrack$, DOM, AUDIO, resize}) => {
-  const {completion$, show$} = model({AUDIO, selectedTrack$, resize, DOM})
+  const {completion$, show$} = model({AUDIO, selectedTrack$, resize})
   const playback = Playback({selectedTrack$, DOM, AUDIO})
   const scrobber = Scrobber({completion$, DOM})
   return {

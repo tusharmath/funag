@@ -16,10 +16,15 @@ export const Effects = [
 export const PREVENT_DEFAULT = EventType(0)
 export const STOP_PROPAGATION = EventType(1)
 export const BLUR = EventType(2)
-export const eventDriver = source$ => {
+export const EventStream = event => O.fromEvent(window, event)
+  .map(window)
+  .startWith(window)
+export const ZipEventStreams = R.useWith(R.call, [R.zipObj, R.map(EventStream)])
+
+export const EventDriver = R.curry((events, source$) => {
   source$.subscribe(([effect, event]) => {
     Effects[effect](event)
   })
-  return O.fromEvent(window, 'resize')
-    .map(R.compose(R.pickAll(['innerHeight', 'innerWidth']), R.prop('target')))
+  return ZipEventStreams(events, events)
 }
+)
