@@ -5,9 +5,7 @@
 'use strict'
 
 import * as R from 'ramda'
+import * as Rx from './RxFP'
 
-export default R.curry((HTTP, category) => HTTP
-  .select(category)
-  .pluck('body')
-  .share()
-)
+const getResponse = R.compose(Rx.share, Rx.pluck('body'), Rx.switchIt)
+export default R.curry((HTTP, category) => getResponse(HTTP.select(category)))
