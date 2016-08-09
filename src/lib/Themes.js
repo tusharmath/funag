@@ -30,5 +30,5 @@ export const Palette = {
   zDepth__5: '0 27px 24px 0 rgba(0,0,0,0.2),0 40px 77px 0 rgba(0,0,0,0.22)'
 }
 
-export const BlockHeight = 60
-export const BlockSpace = 10
+export const BlockHeight = 50
+export const BlockSpace = 8
