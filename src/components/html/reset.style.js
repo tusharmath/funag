@@ -25,7 +25,8 @@ export default createGlobal({
   },
 
   input: {
-    fontFamily: 'Open Sans, sans-serif'
+    fontFamily: 'Open Sans, sans-serif',
+    fontSize: '1rem'
   },
 
   'input::-webkit-input-placeholder': {
