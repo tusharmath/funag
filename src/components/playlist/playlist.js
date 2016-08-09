@@ -12,7 +12,8 @@ import * as SC from '../../lib/SoundCloud'
 import * as P from '../placeholders/placeholders'
 import {getStatus$} from '../../lib/OverlayStatus'
 import css from './playlist.style'
-export const Audio = ({url$}) => url$.scan((last, src) => {
+
+export const getAudioIntent = ({url$}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([
     ({last}) => !last,
     ({last}) => last.type === 'PAUSE',
@@ -57,13 +58,10 @@ const model = ({tracks$, DOM, selectedTrack$, AUDIO}) => {
   const playlistItem$ = getStatus$({selectedTrackId$, audio$, tracks$})
     .map(R.map(PlaylistItemCtor))
     .share()
-
   const playlistClick$ = playlistItem$.map(R.pluck('click$')).flatMap(i => O.merge(i))
   const playlistDOM$ = playlistItem$.map(R.pluck('DOM')).flatMap(i => O.combineLatest(i))
-
   const url$ = playlistClick$.map(SC.trackStreamURL)
-
-  const audioAction$ = Audio({url$})
+  const audioAction$ = getAudioIntent({url$})
   const ofType = R.compose(R.whereEq, R.objOf('type'))
   const play = audioAction$.filter(ofType('PLAY'))
   const pause = audioAction$.filter(ofType('PAUSE'))
