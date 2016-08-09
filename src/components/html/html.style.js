@@ -48,5 +48,9 @@ export default createGlobal({
   '@keyframes fade-in': {
     from: {opacity: 0},
     to: {opacity: 1}
+  },
+
+  small: {
+    fontSize: '0.8rem'
   }
 })
