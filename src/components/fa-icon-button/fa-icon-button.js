@@ -4,10 +4,11 @@
 
 'use strict'
 
-import * as S from '../../lib/StyleUtils'
-import {BlockHeight} from '../../lib/Themes'
-export default (icon, dim) => (
-  <div style={S.block(BlockHeight)}>
-    {S.fa(icon, dim)}
-  </div>
+import css from './fa-icon-button.style'
+export default (icon, href = '/#/', dim) => (
+  <a href={href} className={css.faLink}>
+    <div className='colMiddle'>
+      <i className={css('fa', `fa-${icon}`)}/>
+    </div>
+  </a>
 )
