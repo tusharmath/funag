@@ -4,38 +4,32 @@
 
 'use strict'
 
-import {Observable as O} from 'rx'
 import R from 'ramda'
-import {mux} from 'muxer'
-import Controls from '../Controls'
-import Playlist from '../playlist/playlist'
-import SearchBox from '../search/search'
-import * as SC from '../../lib/SoundCloud'
-import css from './main.style'
+import Home from '../home/home'
+import Discover from '../discover/discover'
 
-const view = ({playlist, searchBox, controls}) => O
-  .combineLatest(searchBox.DOM, playlist.DOM, controls.DOM)
-  .map(views => <div className={css(css.main, 'flexCol')}>{views}</div>)
+const ROUTES = {
+  '/': Home,
+  '/search': Discover
+}
+export const createIntent = R.curry((page$, type) => page$
+  .filter(R.has(type))
+  .flatMapLatest(R.prop(type)))
 
-const getAudioSink = selectedTrack$ => mux({
-  load: selectedTrack$
-    .map(SC.trackStreamURL)
-    .map(R.objOf('src'))
-})
+export default function ({DOM, AUDIO, HTTP, ROUTER}) {
+  const createSources = R.compose(
+    R.merge({DOM, AUDIO, HTTP}),
+    R.objOf('ROUTER'),
+    ROUTER.path.bind(ROUTER)
+  )
+  const createPage = ({path, value}) => value(createSources(path))
+  const page$ = ROUTER.define(ROUTES).map(createPage).shareReplay(1)
+  const getIntent = createIntent(page$)
 
-export default function ({DOM, route, AUDIO, HTTP}) {
-  const searchBox = SearchBox({DOM, route, HTTP})
-  const tracks$ = searchBox.tracks$
-  const defaultTrack$ = searchBox.tracks$.map(R.head)
-  const playlist = Playlist({tracks$, DOM, AUDIO, defaultTrack$})
-  const selectedTrack$ = O.merge(defaultTrack$, playlist.selectedTrack$).distinctUntilChanged()
-  const controls = Controls({AUDIO, selectedTrack$, DOM})
-  const audioSink$ = getAudioSink(selectedTrack$)
   return {
-    HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),
-    title: selectedTrack$.pluck('title'),
-    EVENTS: searchBox.events$,
-    AUDIO: O.merge(playlist.audio$, controls.audio$, audioSink$),
-    DOM: view({playlist, searchBox, controls})
+    DOM: getIntent('DOM').shareReplay(1),
+    HTTP: getIntent('HTTP').map(R.merge({accept: 'application/json'})),
+    AUDIO: getIntent('AUDIO'),
+    EVENTS: getIntent('EVENTS')
   }
 }
