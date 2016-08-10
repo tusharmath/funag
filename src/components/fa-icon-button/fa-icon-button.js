@@ -8,7 +8,7 @@ import css from './fa-icon-button.style'
 export default (icon, href = '/#/', dim) => (
   <a href={href} className={css.faLink}>
     <div className='colMiddle'>
-      <i className={css('fa', `fa-${icon}`)}/>
+      <i className={css('fa', `fa-${icon}`)} style={{fontSize: `${dim}rem`}}/>
     </div>
   </a>
 )
