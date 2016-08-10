@@ -3,10 +3,10 @@
  */
 
 'use strict'
-import BoundingClientRect from './BoundingClientRect'
+import {getBCR} from './BoundingClientRect'
 
 export default DOM => DOM
   .select(':root')
   .elements()
   .take(1)
-  .map(BoundingClientRect)
+  .map(getBCR)

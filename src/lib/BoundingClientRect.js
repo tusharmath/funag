@@ -4,4 +4,10 @@
 
 'use strict'
 
-export default el => el.getBoundingClientRect()
+import * as R from 'ramda'
+
+export const getBCR = el => el.getBoundingClientRect()
+export const getElementBCR = elements => elements
+  .map(R.head)
+  .filter(Boolean)
+  .map(getBCR)
