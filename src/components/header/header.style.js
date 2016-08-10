@@ -8,7 +8,6 @@ import {BlockSpace, Palette} from '../../lib/Themes'
 
 export default create({
   headerContainer: {
-    paddingLeft: BlockSpace,
     backgroundColor: Palette.bg__header,
     boxShadow: Palette.zDepth__1,
     color: Palette.fg__header,
@@ -18,5 +17,8 @@ export default create({
       fontSize: '0.6rem',
       lineHeight: '1rem'
     }
+  },
+  headerText: {
+    paddingLeft: BlockSpace
   }
 })
