@@ -39,7 +39,7 @@ export default create({
     '100%': {transform: 'scaleY(0.1)'}
   },
   placeholder: {
-    ...S.block(50),
+    ...S.block(BlockHeight),
     margin: BlockSpace,
     color: Palette.fg__artwork,
     backgroundColor: Palette.bg__artwork
