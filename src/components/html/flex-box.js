@@ -6,21 +6,38 @@
 
 import {createGlobal} from '../../lib/CreateStyle'
 
-export default createGlobal({
-  '.flexRow': {display: 'flex', flexDirection: 'row'},
-  '.flexCol': {display: 'flex', flexDirection: 'column'},
-  '.rowSpaceBetween': {extend: '.flexRow', justifyContent: 'space-between'},
-  '.rowSpaceAround': {extend: '.flexRow', justifyContent: 'space-around'},
-  '.colSpaceAround': {extend: '.flexCol', justifyContent: 'space-around'},
-  '.colSpaceBetween': {extend: '.flexCol', justifyContent: 'space-between'},
-  '.colCenter': {extend: '.flexCol', justifyContent: 'center'},
-  '.rowCenter': {extend: '.flexRow', justifyContent: 'center'},
-  '.colMiddle': {extend: '.colCenter', alignItems: 'center'},
-  '.rowMiddle': {extend: '.rowCenter', alignItems: 'center'},
-  '.rowLeft': {extend: '.flexRow', justifyContent: 'flex-start'},
-  '.rowRight': {extend: '.flexRow', justifyContent: 'flex-end'},
-  '.rowWrap': {extend: '.flexRow', flexWrap: 'wrap'},
-  '.colWrap': {extend: '.flexCol', flexWrap: 'wrap'},
-  '.flexSpread': {flex: '1 0 0'},
-  '.alignCenter': {alignItems: 'center'}
+export const flexRow = {display: 'flex', flexDirection: 'row'}
+export const flexCol = {display: 'flex', flexDirection: 'column'}
+export const rowSpaceBetween = {...flexRow, justifyContent: 'space-between'}
+export const rowSpaceAround = {...flexRow, justifyContent: 'space-around'}
+export const colSpaceAround = {...flexCol, justifyContent: 'space-around'}
+export const colSpaceBetween = {...flexCol, justifyContent: 'space-between'}
+export const colCenter = {...flexCol, justifyContent: 'center'}
+export const rowCenter = {...flexRow, justifyContent: 'center'}
+export const colMiddle = {...colCenter, alignItems: 'center'}
+export const rowMiddle = {...rowCenter, alignItems: 'center'}
+export const rowLeft = {...flexRow, justifyContent: 'flex-start'}
+export const rowRight = {...flexRow, justifyContent: 'flex-end'}
+export const rowWrap = {...flexRow, flexWrap: 'wrap'}
+export const colWrap = {...flexCol, flexWrap: 'wrap'}
+export const flexSpread = {flex: '1 0 0'}
+export const alignCenter = {alignItems: 'center'}
+
+createGlobal({
+  '.flexRow': flexRow,
+  '.flexCol': flexCol,
+  '.rowSpaceBetween': rowSpaceBetween,
+  '.rowSpaceAround': rowSpaceAround,
+  '.colSpaceAround': colSpaceAround,
+  '.colSpaceBetween': colSpaceBetween,
+  '.colCenter': colCenter,
+  '.rowCenter': rowCenter,
+  '.colMiddle': colMiddle,
+  '.rowMiddle': rowMiddle,
+  '.rowLeft': rowLeft,
+  '.rowRight': rowRight,
+  '.rowWrap': rowWrap,
+  '.colWrap': colWrap,
+  '.flexSpread': flexSpread,
+  '.alignCenter': alignCenter
 })
