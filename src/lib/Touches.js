@@ -6,13 +6,10 @@ import * as R from 'ramda'
 'use strict'
 
 export default root => {
-  const clientX = R.compose(R.prop('clientX'), R.head, R.prop('changedTouches'))
-  return {
-    startX () {
-      return root.events('touchstart').map(clientX)
-    },
-    moveX () {
-      return root.events('touchmove').map(clientX)
-    }
-  }
+  const changedTouches = R.compose(R.head, R.prop('changedTouches'))
+  const clientX = R.compose(R.prop('clientX'), changedTouches)
+  const startX = root.events('touchstart').map(clientX)
+  const endX = root.events('touchend').map(clientX)
+  const moveX = root.events('touchmove').map(clientX)
+  return {startX, moveX, endX}
 }
