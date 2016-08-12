@@ -25,14 +25,10 @@ const view = ({completion$}) => completion$
       </div>
     </div>
   )
-const controlledSeek = ({touchMove$, touchEnd$, touchStart$, maxWidth$, minWidth$}) => {
+const controlledSeek = ({touchMove$, maxWidth$, minWidth$}) => {
   const clientX$ = touchMove$.map(getClientX)
   const seek$ = MinMaxValue(minWidth$, maxWidth$, clientX$).withLatestFrom(maxWidth$, R.divide)
-  return RAFThrottle({
-    start: touchStart$,
-    end: touchEnd$,
-    move: seek$
-  })
+  return RAFThrottle(seek$)
 }
 const setTransition = transition => R.compose(R.merge({transition}), R.objOf('completion'))
 export default ({completion$, DOM}) => {
@@ -45,9 +41,7 @@ export default ({completion$, DOM}) => {
   const touchStart$ = scrobberEL.events('touchstart')
 
   const seek$ = controlledSeek({
-    touchStart$,
     touchMove$,
-    touchEnd$,
     maxWidth$,
     minWidth$
   })
