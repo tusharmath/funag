@@ -5,6 +5,7 @@
 'use strict'
 
 import qs from 'qs'
+import * as R from 'ramda'
 
 const CLIENT_ID = APP_CONFIG.soundCloud.clientID
 
@@ -14,10 +15,10 @@ export const clientIDParams = params => {
 
 export const trackStreamURL = track => track.stream_url + clientIDParams({})
 
-export const toURI = (path, params) => {
+export const toURI = R.curry((path, params) => {
   const baseURL = APP_CONFIG.baseURI
   return `${baseURL}${path}${clientIDParams(params)}`
-}
+})
 
 export const durationFormat = time => {
   const mins = Math.floor(time / 60000)

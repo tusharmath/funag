@@ -6,11 +6,11 @@
 
 import {ReactiveTest, TestScheduler} from 'rx'
 import test from 'ava'
-import {Audio} from '../src/components/playlist/playlist'
+import {getAudioIntent} from '../src/components/playlist/playlist'
 const {onNext} = ReactiveTest
 
 test('Audio()', t => {
-  const audio = Audio
+  const audio = getAudioIntent
   const sh = new TestScheduler()
   const url$ = sh.createHotObservable(
     onNext(210, '/*')
@@ -22,7 +22,7 @@ test('Audio()', t => {
 })
 
 test('Audio():pause/play', t => {
-  const audio = Audio
+  const audio = getAudioIntent
   const sh = new TestScheduler()
   const url$ = sh.createHotObservable(
     onNext(210, '/*'),
@@ -40,7 +40,7 @@ test('Audio():pause/play', t => {
 })
 
 test('Audio():reset', t => {
-  const audio = Audio
+  const audio = getAudioIntent
   const sh = new TestScheduler()
   const url$ = sh.createHotObservable(
     onNext(210, '/*'),

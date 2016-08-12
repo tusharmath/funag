@@ -7,18 +7,17 @@
 import {create} from '../../lib/CreateStyle'
 import * as S from '../../lib/StyleUtils'
 import {BlockHeight, BlockSpace, Palette} from '../../lib/Themes'
+import {rowSpaceBetween} from '../html/flex-box'
 
 export default create({
   container: {
-    ...S.block(BlockHeight - BlockSpace),
+    ...S.block(BlockHeight),
     margin: BlockSpace,
     backgroundColor: Palette.bg__artwork
   },
   playingAnimation: {
     ...S.size(17),
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    extend: rowSpaceBetween,
     margin: 0,
     padding: 0,
     '& li': {
@@ -27,22 +26,12 @@ export default create({
       flexGrow: '1',
       transformOrigin: '0 100%',
       marginRight: '1px',
-      '&:last-child': {
-        marginRight: 0
-      },
-      '&:nth-child(1)': {
-        animation: 'playing-animation 1250ms infinite'
-      },
-      '&:nth-child(2)': {
-        animation: 'playing-animation 1000ms infinite'
-      },
-      '&:nth-child(3)': {
-        animation: 'playing-animation 750ms infinite'
-      }
+      '&:last-child': {marginRight: 0},
+      '&:nth-child(1)': {animation: 'playing-animation 1250ms infinite'},
+      '&:nth-child(2)': {animation: 'playing-animation 1000ms infinite'},
+      '&:nth-child(3)': {animation: 'playing-animation 750ms infinite'}
     },
-    '&.pause-animation li': {
-      animationPlayState: 'paused'
-    }
+    '&.pause-animation li': {animationPlayState: 'paused'}
   },
   '@keyframes playing-animation': {
     '0%': {transform: 'scaleY(0.1)'},
@@ -50,7 +39,7 @@ export default create({
     '100%': {transform: 'scaleY(0.1)'}
   },
   placeholder: {
-    ...S.block(50),
+    ...S.block(BlockHeight),
     margin: BlockSpace,
     color: Palette.fg__artwork,
     backgroundColor: Palette.bg__artwork
@@ -60,6 +49,6 @@ export default create({
     backgroundPosition: '50%',
     backgroundSize: '100%',
     margin: `${BlockSpace}px`,
-    ...S.size(50)
+    ...S.size(BlockHeight)
   }
 })

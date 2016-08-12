@@ -3,14 +3,34 @@
  */
 
 'use strict'
-import R from 'ramda'
-import {raf$} from './DOMUtils'
+import raf from 'raf'
+import {Observable as O} from 'rx'
 
-export default ({start, end, move}) => {
-  return start
-    .flatMap(
-      () => raf$()
-        .withLatestFrom(move, R.nthArg(1))
-        .takeUntil(end)
+export default function RAFThrottle (source) {
+  return O.create(observer => {
+    let value
+    let canUpdate = false
+
+    function enableUpdating () { raf(() => (canUpdate = true)) }
+
+    function update () {
+      if (canUpdate) {
+        observer.onNext(value)
+        canUpdate = false
+        enableUpdating()
+      }
+    }
+
+    function setValue (_value) {
+      value = _value
+      update()
+    }
+
+    enableUpdating()
+    return source.subscribe(
+      setValue,
+      err => observer.onError(err),
+      () => observer.onCompleted()
     )
+  })
 }

@@ -5,64 +5,38 @@
 'use strict'
 
 import {Observable as O} from 'rx'
-import * as U from '../../lib/DOMUtils'
-import * as SC from '../../lib/SoundCloud'
-import RxProxy from '../../lib/RxProxy'
-import SearchIcon from '../SearchIcon'
-import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventSink'
 import css from './search.style'
+import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventSink'
+import InputValue from '../../lib/InputValue'
+import Button from '../fa-icon-button/fa-icon-button'
 
-const Form = ({icon, value = ''}) =>
-  <form className={css('search', css.container)}>
+const view = () => O.just(
+  <form className={css('search', css.searchContainer, 'fade-in')}>
     <div className={css(css.inputContainer, 'rowSpaceAround', 'alignCenter')}>
-      <input type='text' className={css.input} placeholder='Search'
-             value={value}/>
-      {icon}
+      {Button('arrow-left')}
+      <input type='text' className={css.input} placeholder='Search...'
+             autofocus/>
     </div>
   </form>
-
-const view = ({clear$, icon$}) => {
-  return O.merge(
-    icon$.map(icon => Form({icon})),
-    clear$.withLatestFrom(icon$)
-      .map(([_, icon]) => Form({icon, value: null}))
-  )
+)
+const pickEl = (_, a) => a[0]
+const model = ({searchEl}) => {
+  const value$ = O.merge(InputValue(searchEl).debounce(300))
+  return {value$}
 }
-
-const model = ({HTTP, DOM, clear$}) => {
-  // TODO: Add unit tests
-  const tracks$ = HTTP
-    .select('tracks')
-    .switch()
-    .pluck('body')
-    .share()
-
+const intent = ({searchEl, inputEl}) => {
+  const events$ = O.merge(
+    PREVENT_DEFAULT(searchEl.events('submit')),
+    BLUR(searchEl.events('submit').withLatestFrom(inputEl.elements(), pickEl))
+  )
+  return {events$}
+}
+export default ({DOM}) => {
   const searchEl = DOM.select('.search')
   const inputEl = DOM.select('.search input')
-  const value$ = O.merge(U.inputVal(searchEl).debounce(300), clear$)
-  const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({
-    url,
-    category: 'tracks'
-  }))
-  const events$ = O
-    .merge(
-      searchEl.events('submit').map(PREVENT_DEFAULT),
-      searchEl.events('submit').withLatestFrom(inputEl.elements(), (_, a) => a[0])
-        .map(BLUR)
-    )
-  return {request$, events$, tracks$, value$}
-}
+  const {events$} = intent({searchEl, inputEl})
+  const {value$} = model({searchEl})
+  const vTree$ = view()
 
-export default ({DOM, HTTP}) => {
-  const s0 = RxProxy()
-  const {request$, events$, tracks$, value$} = model({HTTP, DOM, clear$: s0})
-  const searchIcon = SearchIcon({value$, tracks$, DOM})
-  const clear$ = s0.merge(searchIcon.clear$)
-  const icon$ = searchIcon.DOM
-  const vTree$ = view({clear$, icon$})
-
-  return {
-    HTTP: request$,
-    DOM: vTree$, events$, tracks$
-  }
+  return {value$, DOM: vTree$, events$}
 }

@@ -9,6 +9,13 @@
 		"arrow-parens": [
 			2,
 			"as-needed"
+		],
+		"max-lines": [
+			"warn",
+			{
+				"max": 50,
+				"skipComments": true
+			}
 		]
 	},
 	"globals": {

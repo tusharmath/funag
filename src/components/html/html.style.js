@@ -25,7 +25,8 @@ export default createGlobal({
   },
 
   input: {
-    fontFamily: 'Open Sans, sans-serif'
+    fontFamily: 'Open Sans, sans-serif',
+    fontSize: '1rem'
   },
 
   'input::-webkit-input-placeholder': {
@@ -48,5 +49,9 @@ export default createGlobal({
   '@keyframes fade-in': {
     from: {opacity: 0},
     to: {opacity: 1}
+  },
+
+  small: {
+    fontSize: '0.8rem'
   }
 })
