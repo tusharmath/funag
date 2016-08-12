@@ -37,7 +37,6 @@ export default ({completion$, DOM}) => {
   const scrobberEL = DOM.select('.scrobber')
 
   const touchMove$ = scrobberEL.events('touchmove')
-  const touchEnd$ = scrobberEL.events('touchend')
   const touchStart$ = scrobberEL.events('touchstart')
 
   const seek$ = controlledSeek({
