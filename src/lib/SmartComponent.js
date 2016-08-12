@@ -20,7 +20,7 @@ export class SmartComponent extends Component {
     if (this.init) {
       const EVENTS = R.pickAll(['select'], this)
       const {state$, intent$} = this.init.call(null, {EVENTS})
-      this.__disposable = state$.subscribe((state) => this.setState(state))
+      this.__disposable = state$.subscribe(state => this.setState(state))
       if (this.props.onIntent && intent$) {
         this.props.onIntent(intent$)
       }
