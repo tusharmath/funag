@@ -19,5 +19,4 @@ export default (el, maxWidth$, threshold = 0.5) => {
     .withLatestFrom(maxWidth$)
     .map(R.apply(R.divide))
     .map(direction(threshold))
-    .filter(x => x !== 0)
 }
