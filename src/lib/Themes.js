@@ -15,7 +15,7 @@ export const Palette = {
   bg__control: '#EEE',
   bg__header: '#EEE',
   bg__scrobberIcon: '#2196F3',
-  bg__scrobberTrack: LightTextColor,
+  bg__scrobberTrack: 'rgb(255, 0, 0)',
   bg__search: '#EEE',
   bg__tabsNavBarSlider: 'rgb(134, 134, 134)',
   br__playlistItem: '1px solid rgb(249, 246, 246)',
