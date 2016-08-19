@@ -16,7 +16,6 @@ export default create({
   scrobberTrack: {
     background: Palette.bg__scrobberTrack,
     height: '100%',
-    willChange: 'transform',
     transformOrigin: 'left',
     marginRight: '15px'
   },

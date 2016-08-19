@@ -14,7 +14,8 @@ import css from './scrobber.style'
 const getClientX = R.compose(R.prop('clientX'), R.nth(0), R.prop('changedTouches'))
 const style = ({completion, transition}) => ({
   transform: `translateX(${100 * completion - 100}%)`,
-  transition: transition ? 'transform 100ms linear' : null
+  transition: transition ? 'transform 100ms linear' : null,
+  willChange: transition ? null : 'transform'
 })
 const view = ({completion$}) => completion$
   .map(({completion, transition}) =>
@@ -25,30 +26,26 @@ const view = ({completion$}) => completion$
       </div>
     </div>
   )
-const controlledSeek = ({touchMove$, maxWidth$, minWidth$}) => {
-  const clientX$ = touchMove$.map(getClientX)
-  const seek$ = MinMaxValue(minWidth$, maxWidth$, clientX$).withLatestFrom(maxWidth$, R.divide)
-  return rxRAFThrottle(seek$)
-}
+const getSeek = R.curry(({maxWidth$, minWidth$}, target$) => {
+  const clientX$ = target$.map(getClientX)
+  return MinMaxValue(minWidth$, maxWidth$, clientX$).withLatestFrom(maxWidth$, R.divide)
+})
 const setTransition = transition => R.compose(R.merge({transition}), R.objOf('completion'))
 export default ({completion$, DOM, QUICK}) => {
-  const maxWidth$ = RootDimensions(DOM).pluck('width')
+  const maxWidth$ = RootDimensions(DOM).pluck('width').shareReplay(1)
   const minWidth$ = O.just(0)
   const scrobberEL = DOM.select('.scrobber')
 
   const touchMove$ = scrobberEL.events('touchmove')
   const touchStart$ = scrobberEL.events('touchstart')
+  const touchEnd$ = scrobberEL.events('touchend')
+  const __getSeek = getSeek({minWidth$, maxWidth$})
 
-  const seek$ = controlledSeek({
-    touchMove$,
-    maxWidth$,
-    minWidth$
-  })
-
-  const seekD$ = seek$.debounce(300)
+  const seekMove$ = __getSeek(touchMove$)
+  const seekEnd$ = __getSeek(touchEnd$)
 
   const vTree$ = view({
-    completion$: seekD$.startWith(null).flatMapLatest(() =>
+    completion$: seekEnd$.startWith(0).flatMapLatest(() =>
       completion$
         .map(setTransition(true))
         .throttle(1000)
@@ -58,10 +55,13 @@ export default ({completion$, DOM, QUICK}) => {
 
   const quick$ = QUICK.UpdateStyle.of(
     DOM.select('.draggable-marker').elements().map(R.head),
-    seek$.map(R.compose(style, setTransition(false)))
+    O.merge(
+      seekEnd$.map(setTransition(true)),
+      rxRAFThrottle(seekMove$.map(setTransition(false)))
+    ).map(style)
   )
 
-  const audio$ = mux({seek: seekD$})
+  const audio$ = mux({seek: seekEnd$})
 
   return {
     DOM: vTree$, audio$, QUICK: quick$
