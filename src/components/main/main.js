@@ -7,7 +7,7 @@
 import {Observable as O} from 'rx'
 import R from 'ramda'
 import {mux} from 'muxer'
-import Controls from '../Controls'
+import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
 import SearchBox from '../search/search'
 import Empty from '../../lib/RxProxy'
@@ -29,7 +29,7 @@ const getAudioSink = selectedTrack$ => mux({
     .map(R.objOf('src'))
 })
 
-export default function ({DOM, route, AUDIO, HTTP, QUICK}) {
+export default function ({DOM, route, AUDIO, HTTP, EVENTS, QUICK}) {
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const defaultTrack$ = Empty()
@@ -37,7 +37,7 @@ export default function ({DOM, route, AUDIO, HTTP, QUICK}) {
     tracks$, DOM, AUDIO, selectedTrack$: defaultTrack$
   })
   const selectedTrack$ = getSelectedTrack(defaultTrack$, playlist, tracks$)
-  const controls = Controls({AUDIO, selectedTrack$, DOM, QUICK})
+  const controls = Controls({AUDIO, selectedTrack$, DOM, EVENTS, QUICK})
   const audioSink$ = getAudioSink(selectedTrack$)
   return {
     HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),

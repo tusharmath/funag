@@ -11,7 +11,6 @@ import Main from '../components/main/main'
 import {Observable} from 'rx'
 import {makeHTMLDriver} from '@cycle/dom'
 import {mockAudioDriver} from '../drivers/audio'
-import {eventSinkDriver} from '../drivers/eventSink'
 import noop from './Noop'
 import * as R from 'ramda'
 import {quickUpdateDOMDriver} from '../drivers/quickUpdateDOM'
@@ -45,7 +44,7 @@ export class ApplicationShell {
       const sources = {
         DOM: makeHTMLDriver(onHTML(compilation, cb)),
         AUDIO: mockAudioDriver,
-        EVENTS: eventSinkDriver,
+        EVENTS: () => ({select: () => Observable.never()}),
         QUICK: quickUpdateDOMDriver,
         title: noop,
         HTTP: () => Observable.never()

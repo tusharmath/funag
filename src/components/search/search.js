@@ -9,7 +9,7 @@ import * as U from '../../lib/DOMUtils'
 import * as SC from '../../lib/SoundCloud'
 import RxProxy from '../../lib/RxProxy'
 import SearchIcon from '../SearchIcon'
-import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventSink'
+import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventDriver'
 import css from './search.style'
 
 const Form = ({icon, value = ''}) =>
