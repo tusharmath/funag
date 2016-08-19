@@ -13,7 +13,7 @@ export default create({
     overflow: 'hidden'
   },
   trackInfo: {
-    color: T.Palette.fg__playlistItem,
+    color: T.Palette.fg__trackDetail,
     borderBottom: T.Palette.br__playlistItem
   }
 })

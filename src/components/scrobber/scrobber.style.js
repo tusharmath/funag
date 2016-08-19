@@ -24,6 +24,6 @@ export default create({
     ...{...S.block(15), borderRadius: '20px'},
     backgroundColor: Palette.bg__scrobberIcon,
     transform: 'translateY(-50%) translateX(100%)',
-    boxShadow: Palette.sd__intense
+    boxShadow: Palette.zDepth__1
   }
 })

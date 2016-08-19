@@ -10,9 +10,9 @@ import {Palette} from '../../lib/Themes'
 export default create({
   container: {
     transform: 'translateZ(0)',
-    boxShadow: Palette.sd__intense,
+    boxShadow: Palette.zDepth__1,
     backgroundColor: Palette.bg__control,
-    color: '#FFF'
+    color: Palette.fg__control
   },
   translateDown: {
     transform: 'translateY(20px)',
