@@ -14,6 +14,7 @@ import {mockAudioDriver} from '../drivers/audio'
 import {eventSinkDriver} from '../drivers/eventSink'
 import noop from './Noop'
 import * as R from 'ramda'
+import {quickUpdateDOMDriver} from '../drivers/quickUpdateDOM'
 
 export const getAssetKeys = R.compose(R.keys, R.prop('assets'))
 export const findAsset = R.uncurryN(2, type => R.compose(R.head, R.filter(R.contains(type)), getAssetKeys))
@@ -45,6 +46,7 @@ export class ApplicationShell {
         DOM: makeHTMLDriver(onHTML(compilation, cb)),
         AUDIO: mockAudioDriver,
         EVENTS: eventSinkDriver,
+        QUICK: quickUpdateDOMDriver,
         title: noop,
         HTTP: () => Observable.never()
       }

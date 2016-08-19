@@ -12,11 +12,13 @@ import Main from './components/main/main'
 import {audioDriver} from './drivers/audio'
 import {eventSinkDriver} from './drivers/eventSink'
 import {documentTitleDriver} from './drivers/documentTitle'
+import {quickUpdateDOMDriver} from './drivers/quickUpdateDOM'
 
 Cycle.run(Main, {
   DOM: makeDOMDriver('#container'),
   AUDIO: audioDriver,
   EVENTS: eventSinkDriver,
   title: documentTitleDriver,
-  HTTP: makeHTTPDriver()
+  HTTP: makeHTTPDriver(),
+  QUICK: quickUpdateDOMDriver
 })
