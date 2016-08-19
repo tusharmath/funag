@@ -12,7 +12,7 @@ export default create({
     transform: 'translateZ(0)',
     boxShadow: Palette.zDepth__1,
     backgroundColor: Palette.bg__control,
-    color: '#FFF'
+    color: Palette.fg__control
   },
   translateDown: {
     transform: 'translateY(20px)',
