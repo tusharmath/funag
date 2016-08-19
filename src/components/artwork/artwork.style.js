@@ -10,7 +10,7 @@ import {BlockHeight, BlockSpace, Palette} from '../../lib/Themes'
 
 export default create({
   container: {
-    ...S.block(BlockHeight - BlockSpace),
+    ...S.block(BlockHeight),
     margin: BlockSpace,
     backgroundColor: Palette.bg__artwork
   },
