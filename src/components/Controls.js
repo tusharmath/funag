@@ -38,12 +38,12 @@ const model = ({AUDIO, selectedTrack$}) => {
   return {completion$}
 }
 
-export default ({selectedTrack$, DOM, AUDIO}) => {
+export default ({selectedTrack$, DOM, AUDIO, QUICK}) => {
   const {completion$} = model({AUDIO, selectedTrack$})
   const playback = Playback({selectedTrack$, DOM, AUDIO})
-  const scrobber = Scrobber({completion$, DOM})
+  const scrobber = Scrobber({completion$, DOM, QUICK})
   return {
     audio$: O.merge(playback.audio$, scrobber.audio$),
-    DOM: view({playback, scrobber})
+    DOM: view({playback, scrobber}), QUICK: scrobber.QUICK
   }
 }

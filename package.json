@@ -30,6 +30,7 @@
     "rimraf": "^2.5.2",
     "route-parser": "0.0.5",
     "rx": "^4.1.0",
+    "rx-raf-throttle": "^1.0.0",
     "sw-toolbox": "^3.1.1",
     "xstream": "^5.3.2"
   },
