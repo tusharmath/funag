@@ -7,6 +7,7 @@
 import {create} from '../../lib/CreateStyle'
 import {Palette, BlockSpace} from '../../lib/Themes'
 import * as S from '../../lib/StyleUtils'
+import {spread} from 'flex-jss'
 
 export default create({
   trackDetailContainer: {
@@ -15,7 +16,8 @@ export default create({
     marginRight: `${BlockSpace}px`
   },
   trackDetail: {
-    overflow: 'hidden', marginRight: `${BlockSpace}px`
+    overflow: 'hidden', marginRight: `${BlockSpace}px`,
+    extend: spread
   },
   title: {
     ...S.overflowEllipsisSTY
