@@ -14,8 +14,7 @@ import css from './scrobber.style'
 const getClientX = R.compose(R.prop('clientX'), R.nth(0), R.prop('changedTouches'))
 const style = ({completion, transition}) => ({
   transform: `translateX(${100 * completion - 100}%)`,
-  transition: transition ? 'transform 100ms linear' : null,
-  willChange: transition ? null : 'transform'
+  transition: transition ? 'transform 100ms linear' : null
 })
 const view = ({completion$}) => completion$
   .map(({completion, transition}) =>
