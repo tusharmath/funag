@@ -10,7 +10,7 @@ import css from './fa-icon-button.style'
 export default {
   render (icon) {
     return h('button.' + css.iconButton, [
-      h(`.fa.fa-${icon} flb col jc_c ai_c`)
+      h('i.material-icons', [icon])
     ])
   }
 }

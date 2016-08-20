@@ -30,7 +30,7 @@ export default ({main, title, bundle, manifest, sw}) => h('html', [
     h('style', flex.asHtmlStyleString()),
     h('script', {attrs: {src: sw}}),
     hLinkCSS('//fonts.googleapis.com/css?family=Open+Sans:300,400,600'),
-    hLinkCSS('//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'),
+    hLinkCSS('https://fonts.googleapis.com/icon?family=Material+Icons'),
     hLink({rel: 'manifest', href: manifest})
   ]),
   h('body', [
