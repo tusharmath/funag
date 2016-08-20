@@ -10,8 +10,8 @@ export default ({html, title, bundle, manifest, sw}) =>
   <html>
   <head>
     <title>{title}</title>
-    <script src={sw}></script>
     <style id='server-side-css'>{sheets.toString()}</style>
+    <script src={sw}></script>
     <meta name='viewport'
           content='width=device-width, initial-scale=1, user-scalable=no'/>
     <link rel='manifest' href={manifest}/>
