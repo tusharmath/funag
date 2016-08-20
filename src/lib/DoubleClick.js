@@ -9,4 +9,4 @@ export default (element, timeout = 600, sh) => element
   .timeInterval(sh)
   .bufferWithCount(2)
   .filter(([a, b]) => b.interval < timeout)
-  .map(([a, b]) => [a.value, b.value])
+  .map(([a, b]) => [a.value.preventDefault(), b.value.preventDefault()])
