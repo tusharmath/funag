@@ -20,7 +20,7 @@ const style = ({completion, transition}) => ({
 const view = ({completion$}) => completion$
   .map(({completion, transition}) =>
     <div className={css(css.scrobber, 'scrobber')}>
-      <div className={css(css.scrobberTrack, 'rowRight', 'draggable-marker')}
+      <div className={css(css.scrobberTrack, 'flb row jc_fe', 'draggable-marker')}
            style={style({completion, transition})}>
         <div className={css.scrobberIcon}/>
       </div>

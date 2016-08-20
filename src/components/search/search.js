@@ -14,7 +14,7 @@ import css from './search.style'
 
 const Form = ({icon, value = ''}) =>
   <form className={css('search', css.container)}>
-    <div className={css(css.inputContainer, 'rowSpaceAround', 'alignCenter')}>
+    <div className={css(css.inputContainer, 'flb row jc_sa ai_c')}>
       <input type='text' className={css.input} placeholder='Search'
              value={value}/>
       {icon}

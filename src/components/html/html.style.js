@@ -5,7 +5,6 @@
 'use strict'
 
 import {createGlobal} from '../../lib/CreateStyle'
-import './flex-box'
 
 export default createGlobal({
   'body, html': {

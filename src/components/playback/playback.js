@@ -18,7 +18,7 @@ export default ({selectedTrack$, AUDIO, DOM}) => {
         PlaybackInfo({selectedTrack$}).DOM
       )
       .map(views =>
-        <div className='rowLeft alignCenter'>{views}</div>
+        <div className='flb row jc_s ai_c'>{views}</div>
       )
   }
 }
