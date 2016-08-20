@@ -7,9 +7,8 @@
 require('./src/lib/env')
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
 const CompressionPlugin = require('compression-webpack-plugin')
-const Configurator = require('./src/lib/Configurator').default
+const C = require('webpack-super').default
 const BaseConfig = require('./src/lib/WebpackConfig.base').default
-const R = require('ramda')
 
 const closureCompilerPlugin = new ClosureCompilerPlugin({
   compiler: {
@@ -22,14 +21,12 @@ const closureCompilerPlugin = new ClosureCompilerPlugin({
 const compressionPlugin = new CompressionPlugin({
   algorithm: 'gzip', test: /\.js$|\.html$/
 })
-
-const w = Configurator(APP_CONFIG.webpack)
-const configFactory = R.compose(
+const plugin = C.appendAt('plugin')
+const configFactory = C.compose(
   // Plugins
-  w.ok(['optimizeJS'], w.plugin(closureCompilerPlugin)),
-  w.ok(['compression'], w.plugin(compressionPlugin)),
-
-  w.copy(['devtool'])
+  C.when(APP_CONFIG.webpack.optimizeJS, plugin(closureCompilerPlugin)),
+  C.when(APP_CONFIG.webpack.compression, plugin(compressionPlugin)),
+  C.setAt('devtool', APP_CONFIG.webpack.devtool)
 )
 
 module.exports = configFactory(BaseConfig)
