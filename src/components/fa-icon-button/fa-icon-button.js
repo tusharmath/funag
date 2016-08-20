@@ -4,10 +4,13 @@
 
 'use strict'
 
-import * as S from '../../lib/StyleUtils'
-import {BlockHeight} from '../../lib/Themes'
-export default (icon, dim) => (
-  <div style={S.block(BlockHeight)}>
-    {S.fa(icon, dim)}
-  </div>
-)
+import h from 'snabbdom/h'
+import css from './fa-icon-button.style'
+
+export default {
+  render (icon) {
+    return h('button.' + css.iconButton, [
+      h(`.fa.fa-${icon} flb col jc_c ai_c`)
+    ])
+  }
+}

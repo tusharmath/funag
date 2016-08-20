@@ -5,15 +5,12 @@
 'use strict'
 
 import h from 'snabbdom/h'
+import Header from '../header/header'
 
-export const render = () => h('#container.two.classes', [
-  h('span', {
-    style: {
-      fontWeight: 'normal',
-      fontStyle: 'italic'
-    }
-  }, 'This is now italic type'),
-  ' and this is still just normal text',
-  h('a', {props: {href: '/bar'}}, 'I\'ll take you places!')
-])
-
+export default {
+  render  () {
+    return h('div', [
+      Header.render()
+    ])
+  }
+}

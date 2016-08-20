@@ -8,7 +8,7 @@ import * as R from 'ramda'
 import toHTML from 'snabbdom-to-html'
 import {name} from '../../package.json'
 import HTML from '../components/html/html'
-import * as Main from '../components/main/main'
+import Main from '../components/main/main'
 
 export const getAssetKeys = R.compose(R.keys, R.prop('assets'))
 export const findAsset = R.uncurryN(2, type => R.compose(R.head, R.filter(R.contains(type)), getAssetKeys))
