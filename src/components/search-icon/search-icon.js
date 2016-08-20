@@ -6,8 +6,9 @@
 
 import {div} from '@cycle/dom'
 import {Observable} from 'rx'
-import * as S from '../lib/StyleUtils'
-import Loader from './loader/loader'
+import * as S from '../../lib/StyleUtils'
+import Loader from '../loader/loader'
+import {BlockHeight} from '../../lib/Themes'
 
 export default ({value$, tracks$, DOM}) => {
   const clear$ = DOM.select('.fa-times-circle').events('click').map('')
@@ -28,7 +29,7 @@ export default ({value$, tracks$, DOM}) => {
 
   const vTree$ = Observable
     .merge(searchIconVTree$, closeIconVTree$, loaderIconVTree$)
-    .map(icon => div({style: S.block(60)}, [icon]))
+    .map(icon => div({style: S.block(BlockHeight)}, [icon]))
 
   return {DOM: vTree$, clear$}
 }
