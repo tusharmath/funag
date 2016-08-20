@@ -8,7 +8,7 @@ import {Observable as O} from 'rx'
 import * as U from '../../lib/DOMUtils'
 import * as SC from '../../lib/SoundCloud'
 import RxProxy from '../../lib/RxProxy'
-import SearchIcon from '../SearchIcon'
+import SearchIcon from '../search-icon/search-icon'
 import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventDriver'
 import css from './search.style'
 
