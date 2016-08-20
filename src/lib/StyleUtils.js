@@ -26,7 +26,7 @@ export const fixed = x => {
   return {...position(x), position: 'fixed'}
 }
 
-export const fa = (name, dim = 1) => i(`.fa.fa-${name} colMiddle`, {style: {fontSize: `${dim}em`}})
+export const fa = (name, dim = 1) => i(`.fa.fa-${name} flb col jc_c ai_c`, {style: {fontSize: `${dim}em`}})
 export const overflowEllipsisSTY = {
   overflow: 'hidden',
   whiteSpace: 'nowrap',

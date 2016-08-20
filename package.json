@@ -21,6 +21,7 @@
     "config": "^1.20.1",
     "cycle": "^1.0.3",
     "express": "^4.13.4",
+    "flex-jss": "^1.0.1",
     "jss": "^5.3.0",
     "jss-preset-default": "^0.2.0",
     "muxer": "^1.0.1",

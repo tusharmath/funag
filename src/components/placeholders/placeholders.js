@@ -6,7 +6,7 @@
 import css from './placeholders.style'
 
 export const PlaylistItem = (
-  <div className={css(css.placeholder, 'rowLeft')}>
+  <div className={css(css.placeholder, 'flb row jc_s')}>
     <div className={css.square50}></div>
     <div className={css.lineCol}>
       <div className={css.line100}></div>

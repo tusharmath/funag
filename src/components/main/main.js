@@ -16,7 +16,7 @@ import css from './main.style'
 
 const view = ({playlist, searchBox, controls}) => O
   .combineLatest(searchBox.DOM, playlist.DOM, controls.DOM)
-  .map(views => <div className={css(css.main, 'flexCol')}>{views}</div>)
+  .map(views => <div className={css(css.main, 'flb col')}>{views}</div>)
 
 const getSelectedTrack = (defaultTrack$, playlist, tracks$) => {
   return defaultTrack$

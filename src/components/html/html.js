@@ -5,12 +5,14 @@
 'use strict'
 import './html.style'
 import {sheets} from '../../lib/CreateStyle'
+import * as flex from 'flex-jss'
 
 export default ({html, title, bundle, manifest, sw}) =>
   <html>
   <head>
     <title>{title}</title>
     <style id='server-side-css'>{sheets.toString()}</style>
+    <style>{flex.asHtmlStyleString()}</style>
     <script src={sw}></script>
     <meta name='viewport'
           content='width=device-width, initial-scale=1, user-scalable=no'/>

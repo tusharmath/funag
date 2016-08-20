@@ -8,7 +8,7 @@ import css from './track-details.style'
 
 export default ({title, user, duration}) =>
   <div
-    className={css(css.trackDetailContainer, 'rowSpaceBetween', 'alignCenter')}>
+    className={css(css.trackDetailContainer, 'flb row js_sb ai_c')}>
     <div className={css.trackDetail}>
       <div className={css.title}>{title}</div>
       <div className={css.artist}>{user.username}</div>
