@@ -27,6 +27,6 @@ export default ({selectedTrack$}) => {
           }
         }, track.user.username)
       ])
-    ).startWith(null)
+    ).startWith('')
   }
 }

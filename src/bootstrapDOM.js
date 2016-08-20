@@ -12,14 +12,16 @@ import {createHashHistory} from 'history'
 import 'file?name=[hash].manifest.[ext]!./manifest.json'
 import Main from './components/main/main'
 import {audioDriver} from './drivers/audio'
-import {eventSinkDriver} from './drivers/eventSink'
+import {EventDriver} from './drivers/eventDriver'
 import {documentTitleDriver} from './drivers/documentTitle'
+import {quickUpdateDOMDriver} from './drivers/quickUpdateDOM'
 
 Cycle.run(Main, {
   DOM: makeDOMDriver('#container'),
   AUDIO: audioDriver,
-  EVENTS: eventSinkDriver,
+  EVENTS: EventDriver,
   title: documentTitleDriver,
   HTTP: makeHTTPDriver(),
-  ROUTER: makeRouterDriver(createHashHistory())
+  ROUTER: makeRouterDriver(createHashHistory()),
+  QUICK: quickUpdateDOMDriver
 })

@@ -1,24 +1,24 @@
 {
-	"extends": [
-		"standard"
-	],
-	"env": {
-		"node": true
-	},
-	"rules": {
-		"arrow-parens": [
-			2,
-			"as-needed"
-		],
-		"max-lines": [
-			"warn",
-			{
-				"max": 50,
-				"skipComments": true
-			}
-		]
-	},
-	"globals": {
-		"APP_CONFIG": true
-	}
+  "extends": [
+    "standard"
+  ],
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "arrow-parens": [
+      2,
+      "as-needed"
+    ],
+    "max-lines": [
+      "warn",
+      {
+        "max": 50,
+        "skipComments": true
+      }
+    ]
+  },
+  "globals": {
+    "APP_CONFIG": true
+  }
 }

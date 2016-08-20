@@ -23,8 +23,9 @@
     "cyclic-router": "^2.1.2",
     "express": "^4.13.4",
     "history": "^3.0.0",
+    "flex-jss": "^1.0.1",
     "jss": "^5.3.0",
-    "jss-preset-default": "^0.1.1",
+    "jss-preset-default": "^0.2.0",
     "muxer": "^1.0.1",
     "qs": "^6.1.0",
     "raf": "^3.2.0",
@@ -32,7 +33,9 @@
     "rimraf": "^2.5.2",
     "route-parser": "0.0.5",
     "rx": "^4.1.0",
+    "rx-raf-throttle": "^1.0.0",
     "sw-toolbox": "^3.1.1",
+    "webpack-super": "^2.0.0",
     "xstream": "^5.3.2"
   },
   "devDependencies": {

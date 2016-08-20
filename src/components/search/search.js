@@ -5,6 +5,8 @@
 'use strict'
 
 import {Observable as O} from 'rx'
+import SearchIcon from '../search-icon/search-icon'
+import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventDriver'
 import css from './search.style'
 import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventSink'
 import InputValue from '../../lib/InputValue'
@@ -12,7 +14,7 @@ import Button from '../fa-icon-button/fa-icon-button'
 
 const view = () => O.just(
   <form className={css('search', css.searchContainer, 'fade-in')}>
-    <div className={css(css.inputContainer, 'rowSpaceAround', 'alignCenter')}>
+    <div className={css(css.inputContainer, 'flb row jc_sa ai_c')}>
       {Button('arrow-left')}
       <input type='text' className={css.input} placeholder='Search...'
              autofocus/>
