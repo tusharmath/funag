@@ -9,7 +9,6 @@ import Scrobber from '../scrobber/scrobber'
 import Playback from '../playback/playback'
 import css from './controls.style'
 import BoundingClientRect from '../../lib/BoundingClientRect'
-import * as D from '../../lib/DOMUtils'
 
 const view = ({playback, scrobber, show$, height$}) => {
   const translate = R.ifElse(R.identity, R.always(css.translateUp), R.always(css.translateDown))
@@ -21,7 +20,8 @@ const view = ({playback, scrobber, show$, height$}) => {
       height$
     )
     .map(([scrobber, playback, show, height]) =>
-      <div className={css(css.container, translate(show), 'controls')} style={{height: show ? `${height}px` : null}}>
+      <div className={css(css.container, translate(show), 'controls')}
+           style={{height: show ? `${height}px` : null}}>
         {scrobber}
         {playback}
       </div>
@@ -29,8 +29,9 @@ const view = ({playback, scrobber, show$, height$}) => {
 }
 
 const model = ({AUDIO, selectedTrack$, EVENTS, DOM}) => {
-  const height$ = D.FindDOMElement(DOM, '.controls')
-    .map(BoundingClientRect)
+  const height$ = DOM.select('.controls')
+    .elements()
+    .map(R.compose(BoundingClientRect, R.head))
     .pluck('height')
     .take(2)
     .startWith(null)
@@ -48,7 +49,12 @@ const model = ({AUDIO, selectedTrack$, EVENTS, DOM}) => {
 }
 
 export default ({selectedTrack$, DOM, AUDIO, EVENTS, QUICK}) => {
-  const {completion$, show$, height$} = model({AUDIO, selectedTrack$, EVENTS, DOM})
+  const {completion$, show$, height$} = model({
+    AUDIO,
+    selectedTrack$,
+    EVENTS,
+    DOM
+  })
   const playback = Playback({selectedTrack$, DOM, AUDIO})
   const scrobber = Scrobber({completion$, DOM, QUICK})
   return {
