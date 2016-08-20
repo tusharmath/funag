@@ -6,24 +6,28 @@
 import './html.style'
 import {sheets} from '../../lib/CreateStyle'
 import * as flex from 'flex-jss'
+import h from 'snabbdom/h'
 
-export default ({html, title, bundle, manifest, sw}) =>
-  <html>
-  <head>
-    <title>{title}</title>
-    <style id='server-side-css'>{sheets.toString()}</style>
-    <style>{flex.asHtmlStyleString()}</style>
-    <script src={sw}></script>
-    <meta name='viewport'
-          content='width=device-width, initial-scale=1, user-scalable=no'/>
-    <link rel='manifest' href={manifest}/>
-    <link rel='stylesheet' type='text/css'
-          href='//fonts.googleapis.com/css?family=Open+Sans:300,400,600'/>
-    <link rel='stylesheet' type='text/css'
-          href='//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'/>
-  </head>
-  <body>
-  <div id='container'>{html}</div>
-  <script src={bundle}></script>
-  </body>
-  </html>
+const linkCSS = href => h('link', {
+  attrs: {
+    rel: 'stylesheet',
+    type: 'text/css',
+    href
+  }
+})
+
+export default ({main, title, bundle, manifest, sw}) => h('html', [
+  h('head', [
+    h('title', title),
+    h('style', sheets.toString()),
+    h('style', flex.asHtmlStyleString()),
+    h('script', {attrs: {src: sw}}),
+    linkCSS('//fonts.googleapis.com/css?family=Open+Sans:300,400,600'),
+    linkCSS('//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'),
+    h('link', {attrs: {rel: 'manifest', href: manifest}})
+  ]),
+  h('body', [
+    h('#container', [main]),
+    h('script', {attrs: {src: sw}})
+  ])
+])
