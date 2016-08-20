@@ -38,4 +38,4 @@ export const Palette = {
 }
 
 export const BlockHeight = 50
-export const BlockSpace = 8
+export const BlockSpace = 6
