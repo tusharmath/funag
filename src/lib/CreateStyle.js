@@ -4,7 +4,7 @@
 
 'use strict'
 
-import jss from 'jss'
+import jss, {Jss} from 'jss'
 import preset from 'jss-preset-default'
 import * as R from 'ramda'
 
@@ -17,3 +17,7 @@ export const create = (styles, options) => {
 }
 export const createGlobal = styles => create(styles, {named: false})
 export const sheets = jss.sheets
+export const createShadowStyle = (style) => {
+  const jss = new Jss(preset())
+  return jss.createStyleSheet(style, {named: false})
+}
