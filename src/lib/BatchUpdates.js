@@ -11,8 +11,11 @@ let isScheduled = false
 let frame
 
 export const executeTasks = () => {
-  let task
-  while (task = tasks.shift()) task()
+  let task = tasks.shift()
+  while (task) {
+    task()
+    task = tasks.shift()
+  }
   isScheduled = false
 }
 
