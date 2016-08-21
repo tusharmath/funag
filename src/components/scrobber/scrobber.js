@@ -3,27 +3,25 @@
  */
 
 'use strict'
-import {Observable as O} from 'rx'
 import {mux} from 'muxer'
 import './scrobber.wc'
 
-const style = ({completion, transition}) => ({
-  transform: `translateX(${100 * completion - 100}%)`,
-  transition: transition ? 'transform 100ms linear' : null
-})
 const view = ({completion$}) => completion$
+  .throttle(1000)
   .startWith(0)
   .map(completion =>
-    <wc-scrobber key='scrobber' className='.scrobber' attrs-completion={completion}/>
+    <wc-scrobber key='scrobber'
+                 className='scrobber'
+                 attrs-completion={completion}/>
   )
 
 export default ({completion$, DOM}) => {
-  const scrobberEL = DOM.select('.scrobber')
-
+  const seek$ = DOM
+    .select('.scrobber')
+    .events('changeEnd')
+    .pluck('detail', 'completion')
   const vTree$ = view({completion$})
-
-  const audio$ = mux({seek: O.never()})
-
+  const audio$ = mux({seek: seek$})
   return {
     DOM: vTree$, audio$
   }
