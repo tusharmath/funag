@@ -8,4 +8,5 @@ export const documentTitleDriver = title$ => {
   title$.subscribe(title => {
     document.title = title
   })
+  return {}
 }
