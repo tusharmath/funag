@@ -20,10 +20,8 @@
     "@cycle/rx-run": "^7.0.1",
     "config": "^1.20.1",
     "cycle": "^1.0.3",
-    "detect-node": "^2.0.3",
     "express": "^4.13.4",
     "flex-jss": "^1.0.1",
-    "hyperscript": "^1.4.7",
     "jss": "^5.3.0",
     "jss-preset-default": "^0.2.0",
     "muxer": "^1.0.1",
@@ -36,7 +34,6 @@
     "rx-raf-throttle": "^1.0.0",
     "sw-toolbox": "^3.1.1",
     "webpack-super": "^2.0.0",
-    "window-or-global": "^1.0.1",
     "xstream": "^5.3.2"
   },
   "devDependencies": {
