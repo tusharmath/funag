@@ -25,7 +25,6 @@ export default createShadowStyle({
   '.scrobberIcon': {
     height: BlockHeight,
     width: BlockHeight,
-    background: 'rgba(0,0,0, 0.2)',
     transform: 'translateY(-50%) translateX(50%)'
   }
 })
