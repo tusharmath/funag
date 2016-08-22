@@ -6,6 +6,7 @@
     "node": true
   },
   "rules": {
+    "max-len":1,
     "max-lines": [
       "warn",
       {
