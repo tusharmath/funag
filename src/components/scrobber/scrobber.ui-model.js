@@ -7,13 +7,10 @@
 import R from 'ramda'
 import BoundingClientRect from '../../lib/BoundingClientRect'
 import {mutate, mutateLatest} from '../../lib/BatchUpdates'
+import css from './scrobber.style'
 
+/* global CustomEvent */
 const getClientX = R.compose(R.prop('clientX'), R.nth(0), R.prop('changedTouches'))
-const createEventListeners = c => ({
-  ontouchstart: c.onTouchStart.bind(c),
-  ontouchmove: c.onTouchMove.bind(c),
-  ontouchend: c.onTouchEnd.bind(c)
-})
 const clearTransition = el => (el.style.transition = null)
 const disableTransition = el => (el.style.transition = 'none')
 const translateX = R.curry((el, completion) => (el.style.transform = `translateX(${100 * (completion - 1)}%)`))
@@ -30,9 +27,8 @@ export class ScrobberUIModel {
     this.mutate = mutateLatest()
   }
 
-  onUpdate (oldV, newV) {
+  onUpdate (completion) {
     if (this.isMoving) return
-    const completion = Number(newV.data.attrs.completion)
     this.updatePosition(completion)
   }
 
@@ -42,7 +38,7 @@ export class ScrobberUIModel {
   }
 
   updatePosition (completion) {
-    if (completion >= 0 && completion <= 1) {
+    if (completion >= 0 && completion <= 1 && this.scrobberTrackEL) {
       this.mutate(() => translateX(this.scrobberTrackEL, completion))
     }
   }
@@ -70,5 +66,26 @@ export class ScrobberUIModel {
 
   onTrackInsert (e) {
     this.scrobberTrackEL = e.elm
+  }
+
+  render ({completion}) {
+    const ui = this
+    this.onUpdate(completion)
+    return (
+      <div classNames={[css.scrobber, 'scrobber']} key='scrobber'
+           hook-insert={ui.onInsert.bind(ui)}
+           hook-update={ui.onUpdate.bind(ui)}
+      >
+        <div hook-insert={ui.onTrackInsert.bind(ui)}
+             className={css(css.scrobberTrack, 'flb row jc_fe draggable-marker')}>
+          <div className={css.scrobberIcon}
+               on-touchStart={ui.onTouchStart.bind(ui)}
+               on-touchstart={ui.onTouchStart.bind(ui)}
+               on-touchmove={ui.onTouchMove.bind(ui)}
+               on-touchend={ui.onTouchEnd.bind(ui)}
+          />
+        </div>
+      </div>
+    )
   }
 }
