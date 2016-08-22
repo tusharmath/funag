@@ -26,11 +26,11 @@ export default ({selectedTrack$, AUDIO, DOM}) => {
     AUDIO.events('pause').map('play_arrow'),
     AUDIO.events('loadedData').map('play_arrow'),
     AUDIO.events('seeked').map('play_arrow')
+  ).map(button =>
+    div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)])
   )
-    .startWith('play_arrow')
-    .map(button => div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)]))
 
-  const loadStart$ = AUDIO.events('loadStart').map(Loader)
+  const loadStart$ = AUDIO.events('loadStart').startWith(null).map(Loader)
   const loadError$ = AUDIO.events('error').map(div({style: S.block(T.BlockHeight)}, [S.fa('error_outline')]))
   const url$ = selectedTrack$.map(SC.trackStreamURL)
   const actions = intent({DOM, url$})
