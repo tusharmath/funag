@@ -25,7 +25,7 @@ export default ({value$, tracks$, DOM}) => {
     hasValue$.filter(x => x === true),
     clear$
   ).map(S.fa('search'))
-  const closeIconVTree$ = hasValue$.filter(x => x === false).map(S.fa('times-circle'))
+  const closeIconVTree$ = hasValue$.filter(x => x === false).map(S.fa('close'))
 
   const vTree$ = Observable
     .merge(searchIconVTree$, closeIconVTree$, loaderIconVTree$)

@@ -19,8 +19,8 @@ export default ({html, title, bundle, manifest, sw}) =>
     <link rel='manifest' href={manifest}/>
     <link rel='stylesheet' type='text/css'
           href='//fonts.googleapis.com/css?family=Open+Sans:300,400,600'/>
-    <link rel='stylesheet' type='text/css'
-          href='//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"/>
   </head>
   <body>
   <div id='container'>{html}</div>
