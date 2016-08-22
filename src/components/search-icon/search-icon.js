@@ -11,7 +11,7 @@ import Loader from '../loader/loader'
 import {BlockHeight} from '../../lib/Themes'
 
 export default ({value$, tracks$, DOM}) => {
-  const clear$ = DOM.select('.fa-times-circle').events('click').map('')
+  const clear$ = DOM.select('.material-icons').events('click').map('')
   const isLoading$ = Observable.merge(value$.map(true), tracks$.map(false))
     .startWith(true)
     .distinctUntilChanged()
