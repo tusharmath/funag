@@ -6,7 +6,7 @@
 import './html.style'
 import {sheets} from '../../lib/CreateStyle'
 import * as flex from 'flex-jss'
-import loadSW from '../../lib/loadSW';
+import loadSW from '../../lib/loadSW'
 
 export default ({html, title, bundle, manifest, sw}) =>
   <html>
