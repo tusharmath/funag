@@ -31,7 +31,7 @@ export default ({selectedTrack$, AUDIO, DOM}) => {
     .map(button => div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)]))
 
   const loadStart$ = AUDIO.events('loadStart').map(Loader)
-  const loadError$ = AUDIO.events('error').map(div({style: S.block(T.BlockHeight)}, [S.fa('error')]))
+  const loadError$ = AUDIO.events('error').map(div({style: S.block(T.BlockHeight)}, [S.fa('error_outline')]))
   const url$ = selectedTrack$.map(SC.trackStreamURL)
   const actions = intent({DOM, url$})
   return {
