@@ -8,7 +8,7 @@ import * as S from '../../lib/StyleUtils'
 import css from './artwork.style'
 export const Placeholder = (
   <div className={css.placeholder}>
-    <div>{S.fa('music')}</div>
+    <div>{S.fa('music_note')}</div>
   </div>
 )
 export const ArtworkOverlay = isAnimated => (
