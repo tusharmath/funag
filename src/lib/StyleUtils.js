@@ -4,8 +4,6 @@
 
 'use strict'
 
-import {i} from '@cycle/dom'
-
 export const size = (height, width = height) => ({
   height: `${height}px`,
   width: `${width}px`
