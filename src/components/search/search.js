@@ -12,7 +12,7 @@ import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventDriver'
 import css from './search.style'
 import {APPLY_FILTER, CLEAR_FILTER} from '../../redux-lib/app-actions'
 
-const Form = ({value = '', icon}) =>
+const Form = ({value, icon}) =>
   <form className={css('search', css.container)}>
     <div className={css(css.inputContainer, 'flb row jc_sa ai_c')}>
       <input type='text' className={css.input} placeholder='Search'
@@ -23,19 +23,19 @@ const Form = ({value = '', icon}) =>
 
 const view = ({clear$, icon$}) => {
   return O.merge(
-    icon$.map(icon => Form({icon})),
+    icon$.map(icon => Form({icon, value: ''})),
     clear$.withLatestFrom(icon$)
-      .map(([_, icon]) => Form({icon, value: null}))
+      .map(([_, icon]) => Form({icon}))
   )
 }
 
-const response = (HTTP) => HTTP
+const response = HTTP => HTTP
   .select('tracks')
   .switch()
   .pluck('body')
   .share()
 
-const request = (value$) => {
+const request = value$ => {
   return value$.map(q => SC.toURI('/tracks', {q})).map(url => ({
     url,
     category: 'tracks'
