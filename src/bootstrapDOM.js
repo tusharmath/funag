@@ -13,7 +13,7 @@ import {audioDriver} from './drivers/audio'
 import {EventDriver} from './drivers/eventDriver'
 import {createReduxDriver} from './drivers/reduxDriver'
 import {documentTitleDriver} from './drivers/documentTitle'
-import reducers from './redux-lib/app-reducers'
+import reducers from './redux-lib/reducers'
 import {
   ClassModule,
   PropsModule,
