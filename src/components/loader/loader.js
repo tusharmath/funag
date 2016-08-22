@@ -4,7 +4,7 @@
 
 'use strict'
 import css from './loader.style'
-export default (
+export default () => (
   <div className={css.loaderContainer}>
     <div className={css.loader}></div>
   </div>
