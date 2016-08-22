@@ -5,13 +5,14 @@
 'use strict'
 
 import R from 'ramda'
-import {Observable as O} from 'rx'
+import {Observable as O, Subject} from 'rx'
 import {mux} from 'muxer'
 import PlayListItem from '../playlist-item/playlist-item'
 import * as SC from '../../lib/SoundCloud'
 import * as P from '../placeholders/placeholders'
 import {getStatus$} from '../../lib/OverlayStatus'
 import css from './playlist.style'
+import {collectionFrom} from '../../lib/CycleCollection'
 export const Audio = ({url$}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([
     ({last}) => !last,
@@ -21,7 +22,6 @@ export const Audio = ({url$}) => url$.scan((last, src) => {
   if (canPlay({last, src})) return {src, type: 'PLAY'}
   return {src, type: 'PAUSE'}
 }, null)
-
 const view = ({playlistDOM$}) => {
   return playlistDOM$.startWith(
     <div>{P.PlaylistItem}{P.PlaylistItem}{P.PlaylistItem}</div>
@@ -31,12 +31,10 @@ const view = ({playlistDOM$}) => {
     </div>
   )
 }
-
 const reallyPlaying = AUDIO => AUDIO
   .events('playing').flatMapLatest(
     () => AUDIO.events('timeUpdate').first()
   )
-
 const getAudioEvents = AUDIO => {
   const _ = event => audio => ({event, audio})
   return O.merge(
@@ -49,20 +47,14 @@ const getAudioEvents = AUDIO => {
     ).map(_('loadStart'))
   )
 }
-
 const model = ({tracks$, DOM, selectedTrack$, AUDIO}) => {
-  const PlaylistItemCtor = R.compose(PlayListItem, R.merge({DOM}))
   const audio$ = getAudioEvents(AUDIO)
   const selectedTrackId$ = selectedTrack$.pluck('id')
-  const playlistItem$ = getStatus$({selectedTrackId$, audio$, tracks$})
-    .map(R.map(PlaylistItemCtor))
-    .share()
-
-  const playlistClick$ = playlistItem$.map(R.pluck('click$')).flatMap(i => O.merge(i))
-  const playlistDOM$ = playlistItem$.map(R.pluck('DOM')).flatMap(i => O.combineLatest(i))
-
+  const data$ = getStatus$({selectedTrackId$, audio$, tracks$})
+  const rows = collectionFrom(PlayListItem, {DOM}, data$)
+  const playlistClick$ = rows.merged('click$')
+  const playlistDOM$ = rows.combined('DOM')
   const url$ = playlistClick$.map(SC.trackStreamURL)
-
   const audioAction$ = Audio({url$})
   const ofType = R.compose(R.whereEq, R.objOf('type'))
   const play = audioAction$.filter(ofType('PLAY'))
@@ -70,15 +62,19 @@ const model = ({tracks$, DOM, selectedTrack$, AUDIO}) => {
   return {
     playlistDOM$,
     selectedTrack$: playlistClick$,
-    audio$: mux({play, pause}),
-    playlistItem$
+    audio$: mux({play, pause})
   }
 }
-
-export default sources => {
+export default ({tracks$, DOM, defaultTrack$, AUDIO}) => {
+  const futureSelectedTrack$ = new Subject()
+  const sources = {
+    AUDIO, tracks$, DOM,
+    selectedTrack$: O.merge(futureSelectedTrack$, defaultTrack$)
+  }
   const {audio$, selectedTrack$, playlistDOM$} = model(sources)
   const vTree$ = view({playlistDOM$})
   return {
-    DOM: vTree$, audio$, selectedTrack$
+    DOM: vTree$, audio$,
+    selectedTrack$: selectedTrack$.multicast(futureSelectedTrack$).refCount()
   }
 }

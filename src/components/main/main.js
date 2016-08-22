@@ -10,7 +10,6 @@ import {mux} from 'muxer'
 import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
 import SearchBox from '../search/search'
-import Empty from '../../lib/RxProxy'
 import * as SC from '../../lib/SoundCloud'
 import css from './main.style'
 
@@ -18,11 +17,6 @@ const view = ({playlist, searchBox, controls}) => O
   .combineLatest(searchBox.DOM, playlist.DOM, controls.DOM)
   .map(views => <div className={css(css.main, 'flb col')}>{views}</div>)
 
-const getSelectedTrack = (defaultTrack$, playlist, tracks$) => {
-  return defaultTrack$
-    .merge(playlist.selectedTrack$, tracks$.first().map(R.head))
-    .distinctUntilChanged()
-}
 const getAudioSink = selectedTrack$ => mux({
   load: selectedTrack$
     .map(SC.trackStreamURL)
@@ -32,11 +26,9 @@ const getAudioSink = selectedTrack$ => mux({
 export default function ({DOM, route, AUDIO, HTTP, EVENTS}) {
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
-  const defaultTrack$ = Empty()
-  const playlist = Playlist({
-    tracks$, DOM, AUDIO, selectedTrack$: defaultTrack$
-  })
-  const selectedTrack$ = getSelectedTrack(defaultTrack$, playlist, tracks$)
+  const defaultTrack$ = searchBox.tracks$.map(R.head)
+  const playlist = Playlist({tracks$, DOM, AUDIO, defaultTrack$})
+  const selectedTrack$ = O.merge(defaultTrack$, playlist.selectedTrack$).distinctUntilChanged()
   const controls = Controls({AUDIO, selectedTrack$, DOM, EVENTS})
   const audioSink$ = getAudioSink(selectedTrack$)
   return {
