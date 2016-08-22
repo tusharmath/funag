@@ -22,14 +22,16 @@ export const Audio = ({url$}) => url$.scan((last, src) => {
   return {src, type: 'PAUSE'}
 }, null)
 
-const view = ({playlistDOM$}) => {
-  return playlistDOM$.startWith(
-    <div>{P.PlaylistItem}{P.PlaylistItem}{P.PlaylistItem}</div>
-  ).map(view =>
-    <div className={css.playlist}>
-      {view}
-    </div>
+const view = ({playlistDOM$, seeking$}) => {
+  return O.combineLatest(
+    playlistDOM$.startWith(<div>{P.PlaylistItem}{P.PlaylistItem}{P.PlaylistItem}</div>),
+    seeking$.startWith(false)
   )
+    .map(([view, disableScroll]) =>
+      <div classNames={[css.playlist, disableScroll ? css.disableScroll : '']}>
+        {view}
+      </div>
+    )
 }
 
 const reallyPlaying = AUDIO => AUDIO
@@ -77,7 +79,7 @@ const model = ({tracks$, DOM, selectedTrack$, AUDIO}) => {
 
 export default sources => {
   const {audio$, selectedTrack$, playlistDOM$} = model(sources)
-  const vTree$ = view({playlistDOM$})
+  const vTree$ = view({playlistDOM$, ...sources})
   return {
     DOM: vTree$, audio$, selectedTrack$
   }

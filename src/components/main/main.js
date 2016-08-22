@@ -33,11 +33,11 @@ export default function ({DOM, route, AUDIO, HTTP, EVENTS}) {
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const defaultTrack$ = Empty()
+  const controls = Controls({AUDIO, selectedTrack$: defaultTrack$, DOM, EVENTS})
   const playlist = Playlist({
-    tracks$, DOM, AUDIO, selectedTrack$: defaultTrack$
+    tracks$, DOM, AUDIO, selectedTrack$: defaultTrack$, seeking$: controls.seeking$
   })
   const selectedTrack$ = getSelectedTrack(defaultTrack$, playlist, tracks$)
-  const controls = Controls({AUDIO, selectedTrack$, DOM, EVENTS})
   const audioSink$ = getAudioSink(selectedTrack$)
   return {
     HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),

@@ -9,5 +9,8 @@ export default create({
   playlist: {
     height: '100%',
     overflow: 'auto'
+  },
+  'disableScroll': {
+    overflow: 'hidden'
   }
 })
