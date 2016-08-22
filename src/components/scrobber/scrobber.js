@@ -4,17 +4,17 @@
 
 'use strict'
 import {mux} from 'muxer'
-import {ScrobberUIModel} from './scrobber.ui-model'
+import {ScrobberUIModel} from './scrobber.native'
 
 const view = ({completion$, ui}) => completion$
   .throttle(1000)
   .startWith(0)
-  .map(completion => ui.render({completion}))
+  .map(completion => ui.update({completion}))
 
 export default ({completion$, DOM}) => {
-  const ui = new ScrobberUIModel()
+  const ui = new ScrobberUIModel('x-scrobber')
   const seek$ = DOM
-    .select('.scrobber')
+    .select(ScrobberUIModel.tagName)
     .events('changeEnd')
     .pluck('detail', 'completion')
   const vTree$ = view({completion$, ui})
