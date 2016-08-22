@@ -10,7 +10,7 @@ import {Observable as O} from 'rx'
 import R from 'ramda'
 
 export const createReduxDriver = (initialState, reducer = x => x) => {
-  const store = createStore(reducer, applyMiddleware(createLogger()))
+  const store = createStore(reducer, initialState, applyMiddleware(createLogger()))
   const store$ = O.fromEventPattern(
     cb => store.subscribe(() => cb(store.getState())),
     dispose => dispose()
