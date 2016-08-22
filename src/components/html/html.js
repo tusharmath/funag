@@ -6,6 +6,7 @@
 import './html.style'
 import {sheets} from '../../lib/CreateStyle'
 import * as flex from 'flex-jss'
+import loadSW from '../../lib/loadSW';
 
 export default ({html, title, bundle, manifest, sw}) =>
   <html>
@@ -13,7 +14,7 @@ export default ({html, title, bundle, manifest, sw}) =>
     <title>{title}</title>
     <style id='server-side-css'>{sheets.toString()}</style>
     <style>{flex.asHtmlStyleString()}</style>
-    <script src={sw}></script>
+    <script>{loadSW(sw)}</script>
     <meta name='viewport'
           content='width=device-width, initial-scale=1, user-scalable=no'/>
     <link rel='manifest' href={manifest}/>
