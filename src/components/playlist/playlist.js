@@ -12,6 +12,7 @@ import * as SC from '../../lib/SoundCloud'
 import * as P from '../placeholders/placeholders'
 import {getStatus$} from '../../lib/OverlayStatus'
 import css from './playlist.style'
+import {collectionFrom} from '../../lib/CycleCollection'
 export const Audio = ({url$}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([
     ({last}) => !last,
@@ -47,18 +48,13 @@ const getAudioEvents = AUDIO => {
   )
 }
 const model = ({tracks$, DOM, selectedTrack$, AUDIO}) => {
-  const PlaylistItemCtor = R.compose(PlayListItem, R.merge({DOM}))
   const audio$ = getAudioEvents(AUDIO)
   const selectedTrackId$ = selectedTrack$.pluck('id')
-  const playlistItem$ = getStatus$({selectedTrackId$, audio$, tracks$})
-    .map(R.map(PlaylistItemCtor))
-    .share()
-
-  const playlistClick$ = playlistItem$.map(R.pluck('click$')).flatMap(i => O.merge(i))
-  const playlistDOM$ = playlistItem$.map(R.pluck('DOM')).flatMap(i => O.combineLatest(i))
-
+  const data$ = getStatus$({selectedTrackId$, audio$, tracks$})
+  const rows = collectionFrom(PlayListItem, {DOM}, data$)
+  const playlistClick$ = rows.merged('click$')
+  const playlistDOM$ = rows.combined('DOM')
   const url$ = playlistClick$.map(SC.trackStreamURL)
-
   const audioAction$ = Audio({url$})
   const ofType = R.compose(R.whereEq, R.objOf('type'))
   const play = audioAction$.filter(ofType('PLAY'))
