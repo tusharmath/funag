@@ -12,13 +12,18 @@ import Main from './components/main/main'
 import {audioDriver} from './drivers/audio'
 import {EventDriver} from './drivers/eventDriver'
 import {documentTitleDriver} from './drivers/documentTitle'
-import {quickUpdateDOMDriver} from './drivers/quickUpdateDOM'
+import {
+  ClassModule,
+  PropsModule,
+  AttrsModule,
+  EventsModule,
+  StyleModule
+} from '@cycle/dom/lib/modules'
 
 Cycle.run(Main, {
-  DOM: makeDOMDriver('#container'),
+  DOM: makeDOMDriver('#container', {modules: [ClassModule, PropsModule, AttrsModule, EventsModule, StyleModule]}),
   AUDIO: audioDriver,
   EVENTS: EventDriver,
   title: documentTitleDriver,
-  HTTP: makeHTTPDriver(),
-  QUICK: quickUpdateDOMDriver
+  HTTP: makeHTTPDriver()
 })

@@ -6,21 +6,25 @@
 
 import {create} from '../../lib/CreateStyle'
 import {Palette, BlockHeight} from '../../lib/Themes'
-import * as S from '../../lib/StyleUtils'
 
 export default create({
-  scrobber: {
-    height: '2px',
+  'scrobber': {
     width: '100%'
   },
-  scrobberTrack: {
+  'wrapper': {},
+  'scrobberTrack': {
     background: Palette.bg__scrobberTrack,
-    height: '100%',
+    height: '2px',
     transformOrigin: 'left',
-    willChange: 'transform'
+    transition: 'transform 100ms ease-in',
+    willChange: 'transform',
+    transform: 'translateX(-100%)',
+    display: 'flex',
+    justifyContent: 'flex-end'
   },
-  scrobberIcon: {
-    transform: 'translateY(-50%) translateX(50%)',
-    ...S.block(BlockHeight)
+  'scrobberIcon': {
+    height: BlockHeight,
+    width: BlockHeight,
+    transform: 'translateY(-50%) translateX(50%)'
   }
 })
