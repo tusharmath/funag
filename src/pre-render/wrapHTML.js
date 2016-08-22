@@ -5,6 +5,10 @@
 'use strict'
 
 import R from 'ramda'
+import findChunkFile from './findChunkFile'
+import findAsset from './findAsset'
+import HTML from '../components/html/html'
+import {name} from '../../package.json'
 
 export default R.curry((compilation, html) => {
   const manifest = findAsset('manifest', compilation)
