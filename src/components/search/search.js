@@ -53,7 +53,7 @@ const model = ({HTTP, DOM, clear$}) => {
   return {request$, events$, tracks$, value$}
 }
 
-export default ({DOM, HTTP}) => {
+export default ({DOM, HTTP, STORE}) => {
   const s0 = RxProxy()
   const {request$, events$, tracks$, value$} = model({HTTP, DOM, clear$: s0})
   const searchIcon = SearchIcon({value$, tracks$, DOM})

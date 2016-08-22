@@ -20,9 +20,9 @@ const actions = ({tracks$, selectTrack$}) => {
   return O.merge(tracks$.map(R.head).take(1), selectTrack$).map(SELECT_TRACK)
 }
 
-export default function ({DOM, route, AUDIO, HTTP, EVENTS, STORE}) {
+export default function ({DOM, AUDIO, HTTP, EVENTS, STORE}) {
   const selectedTrack$ = STORE.select('track.selected')
-  const searchBox = SearchBox({DOM, route, HTTP})
+  const searchBox = SearchBox({DOM, HTTP, STORE})
   const tracks$ = searchBox.tracks$
   const playlist = Playlist({tracks$, DOM, AUDIO, STORE})
   const controls = Controls({AUDIO, selectedTrack$, DOM, EVENTS})
