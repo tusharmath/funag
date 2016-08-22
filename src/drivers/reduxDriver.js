@@ -9,9 +9,9 @@ import createLogger from 'redux-logger'
 import {Observable as O} from 'rx'
 import R from 'ramda'
 
-export const createReduxDriver = (initialState, reducer = x => x) => {
-  const store = createStore(reducer, initialState, applyMiddleware(createLogger()))
-  const store$ = O.fromEventPattern(
+export const createReduxDriver = (reducer = x => x) => {
+  const store = createStore(reducer, applyMiddleware(createLogger()))
+  const value$ = O.fromEventPattern(
     cb => store.subscribe(() => cb(store.getState())),
     dispose => dispose()
   )
@@ -19,8 +19,8 @@ export const createReduxDriver = (initialState, reducer = x => x) => {
     actions.subscribe(action => store.dispatch(action))
     const select = path => {
       const _path = R.is(String, path) ? path.split('.') : path
-      return store$.map(R.path(_path)).distinctUntilChanged()
+      return value$.map(R.path(_path)).distinctUntilChanged()
     }
-    return {select}
+    return {select, value$}
   }
 }

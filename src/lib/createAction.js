@@ -6,4 +6,4 @@
 
 import R from 'ramda'
 
-export default R.curry((type, params) => R.merge({type}, params))
+export default R.curry((type, params) => R.merge({type}, {params}))

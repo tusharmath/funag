@@ -10,15 +10,14 @@ import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
 import SearchBox from '../search/search'
 import css from './main.style'
-import {SELECT_TRACK} from '../../actions/track-actions'
+import {SELECT_TRACK} from '../../redux-lib/app-actions'
 
 const view = ({playlist, searchBox, controls}) => O
   .combineLatest(searchBox.DOM, playlist.DOM, controls.DOM)
   .map(views => <div className={css(css.main, 'flb col')}>{views}</div>)
 
 const actions = ({tracks$, selectTrack$}) => {
-  return O.merge(tracks$.map(R.head).take(1), selectTrack$)
-    .map(R.compose(SELECT_TRACK, R.objOf('track')))
+  return O.merge(tracks$.map(R.head).take(1), selectTrack$).map(SELECT_TRACK)
 }
 
 export default function ({DOM, route, AUDIO, HTTP, EVENTS, STORE}) {

@@ -41,9 +41,7 @@ export class ApplicationShell {
   apply (compiler) {
     const onEmit = (compilation, cb) => {
       const sources = {
-        STORE: createReduxDriver({
-          selectedTrack: null
-        }),
+        STORE: createReduxDriver(),
         DOM: makeHTMLDriver(onHTML(compilation, cb)),
         AUDIO: mockAudioDriver,
         EVENTS: () => ({select: () => Observable.never()}),

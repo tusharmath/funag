@@ -7,3 +7,4 @@
 import createAction from '../lib/createAction'
 
 export const SELECT_TRACK = createAction('SELECT_TRACK')
+export const APPLY_FILTERS = createAction('APPLY_FILTERS')

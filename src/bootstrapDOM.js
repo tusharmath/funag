@@ -13,7 +13,7 @@ import {audioDriver} from './drivers/audio'
 import {EventDriver} from './drivers/eventDriver'
 import {createReduxDriver} from './drivers/reduxDriver'
 import {documentTitleDriver} from './drivers/documentTitle'
-import reducers from './reducers'
+import reducers from './redux-lib/app-reducers'
 import {
   ClassModule,
   PropsModule,
@@ -28,7 +28,5 @@ Cycle.run(Main, {
   EVENTS: EventDriver,
   title: documentTitleDriver,
   HTTP: makeHTTPDriver(),
-  STORE: createReduxDriver({
-    track: {selected: null}
-  }, reducers)
+  STORE: createReduxDriver(reducers)
 })
