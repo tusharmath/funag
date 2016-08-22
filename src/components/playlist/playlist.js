@@ -5,7 +5,7 @@
 'use strict'
 
 import R from 'ramda'
-import {Observable as O, Subject} from 'rx'
+import {Observable as O} from 'rx'
 import {mux} from 'muxer'
 import PlayListItem from '../playlist-item/playlist-item'
 import * as SC from '../../lib/SoundCloud'
@@ -47,9 +47,9 @@ const getAudioEvents = AUDIO => {
     ).map(_('loadStart'))
   )
 }
-const model = ({tracks$, DOM, selectedTrack$, AUDIO}) => {
+const model = ({tracks$, DOM, STORE, AUDIO}) => {
   const audio$ = getAudioEvents(AUDIO)
-  const selectedTrackId$ = selectedTrack$.pluck('id')
+  const selectedTrackId$ = STORE.select('track.selected').pluck('id')
   const data$ = getStatus$({selectedTrackId$, audio$, tracks$})
   const rows = collectionFrom(PlayListItem, {DOM}, data$)
   const playlistClick$ = rows.merged('click$')
@@ -61,20 +61,15 @@ const model = ({tracks$, DOM, selectedTrack$, AUDIO}) => {
   const pause = audioAction$.filter(ofType('PAUSE'))
   return {
     playlistDOM$,
-    selectedTrack$: playlistClick$,
+    selectTrack$: playlistClick$,
     audio$: mux({play, pause})
   }
 }
-export default ({tracks$, DOM, defaultTrack$, AUDIO}) => {
-  const futureSelectedTrack$ = new Subject()
-  const sources = {
-    AUDIO, tracks$, DOM,
-    selectedTrack$: O.merge(futureSelectedTrack$, defaultTrack$)
-  }
-  const {audio$, selectedTrack$, playlistDOM$} = model(sources)
+export default ({tracks$, DOM, STORE, AUDIO}) => {
+  const sources = {AUDIO, tracks$, DOM, STORE}
+  const {audio$, selectTrack$, playlistDOM$} = model(sources)
   const vTree$ = view({playlistDOM$})
   return {
-    DOM: vTree$, audio$,
-    selectedTrack$: selectedTrack$.multicast(futureSelectedTrack$).refCount()
+    DOM: vTree$, audio$, selectTrack$
   }
 }

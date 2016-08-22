@@ -21,5 +21,6 @@ module.exports = {
     compression: true
   },
   baseURI: 'https://api.soundcloud.com',
-  proxy: false
+  proxy: false,
+  reduxLogger: false
 }

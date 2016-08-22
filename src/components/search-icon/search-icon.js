@@ -10,14 +10,14 @@ import * as S from '../../lib/StyleUtils'
 import Loader from '../loader/loader'
 import {BlockHeight} from '../../lib/Themes'
 
-export default ({value$, tracks$, DOM}) => {
+export default ({filter$, tracks$, DOM}) => {
   const clear$ = DOM.select('.material-icons').events('click').map('')
-  const isLoading$ = Observable.merge(value$.map(true), tracks$.map(false))
+  const isLoading$ = Observable.merge(filter$.map(true), tracks$.map(false))
     .startWith(true)
     .distinctUntilChanged()
 
   const loaderIconVTree$ = isLoading$.filter(x => x === true).map(Loader)
-  const hasValue$ = isLoading$.combineLatest(value$.startWith(''))
+  const hasValue$ = isLoading$.combineLatest(filter$.startWith(''))
     .filter(([loading]) => loading === false)
     .map(([_, val]) => val.length === 0)
 
