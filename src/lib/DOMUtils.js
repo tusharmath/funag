@@ -4,5 +4,6 @@
 
 'use strict'
 
-export const inputVal = $el => $el.events('keyup').map(x => x.target.value).distinctUntilChanged()
+export const inputVal = $el =>
+  $el.events('keyup').map(x => x.target.value).distinctUntilChanged()
 

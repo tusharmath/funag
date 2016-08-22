@@ -42,7 +42,11 @@ if (config.proxy) {
   proxy.on('proxyReq', setHeaders(config.proxy.headers))
   // proxy.on('error', err => console.error.bind(console, 'PROXY:')(err))
   proxy.on('error', compose(consoleError, nthArg(0)))
-  app.use('/api', (req, res) => proxy.web(req, res, {target: config.proxy.target}))
+  app.use('/api', (req, res) =>
+    proxy.web(req, res, {target: config.proxy.target})
+  )
 }
 
-app.listen(config.port, () => console.log('STARTED:', config.port, process.env.NODE_ENV))
+app.listen(config.port, () =>
+  console.log('STARTED:', config.port, process.env.NODE_ENV)
+)
