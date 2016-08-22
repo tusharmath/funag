@@ -23,7 +23,7 @@ const getAudioSink = selectedTrack$ => mux({
     .map(R.objOf('src'))
 })
 
-export default function ({DOM, route, AUDIO, HTTP, EVENTS}) {
+export default function ({DOM, route, AUDIO, HTTP, EVENTS, STORE}) {
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
   const defaultTrack$ = searchBox.tracks$.map(R.head)

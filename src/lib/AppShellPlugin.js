@@ -12,6 +12,7 @@ import {Observable} from 'rx'
 import {makeHTMLDriver} from '@cycle/dom'
 import {mockAudioDriver} from '../drivers/audio'
 import * as R from 'ramda'
+import {createReduxDriver} from '../drivers/reduxDriver'
 
 export const getAssetKeys = R.compose(R.keys, R.prop('assets'))
 export const findAsset = R.uncurryN(2, type => R.compose(R.head, R.filter(R.contains(type)), getAssetKeys))
@@ -40,6 +41,9 @@ export class ApplicationShell {
   apply (compiler) {
     const onEmit = (compilation, cb) => {
       const sources = {
+        STORE: createReduxDriver({
+          selectedTrack: null
+        }),
         DOM: makeHTMLDriver(onHTML(compilation, cb)),
         AUDIO: mockAudioDriver,
         EVENTS: () => ({select: () => Observable.never()}),
