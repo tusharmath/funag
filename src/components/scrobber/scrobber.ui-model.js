@@ -58,7 +58,6 @@ export class ScrobberUIModel {
   }
 
   onTouchMove (e) {
-    e.preventDefault()
     const completion = getClientX(e) / this.dimensions.width
     this.updatePosition(completion)
   }
@@ -71,9 +70,5 @@ export class ScrobberUIModel {
 
   onTrackInsert (e) {
     this.scrobberTrackEL = e.elm
-  }
-
-  onHandleInsert (e) {
-    this.handleEL = e.elm
   }
 }
