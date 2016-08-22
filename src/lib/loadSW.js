@@ -6,6 +6,6 @@
 
 export default path => `
    if ('navigator' in window) {
-      navigator.serviceWorker.register('${path}')
+      navigator.serviceWorker.register('${path}', {scope: '/'})
       .catch(err => console.error(err))
    }`
