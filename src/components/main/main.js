@@ -16,8 +16,14 @@ const view = ({playlist, searchBox, controls}) => O
   .combineLatest(searchBox.DOM, playlist.DOM, controls.DOM)
   .map(views => <div className={css(css.main, 'flb col')}>{views}</div>)
 
-const actions = ({tracks$, selectTrack$}) => {
-  return O.merge(tracks$.map(R.head).take(1), selectTrack$).map(SELECT_TRACK)
+const actions = ({tracks$, selectTrack$, searchBox}) => {
+  return O.merge(
+    searchBox.STORE,
+    O.merge(
+      tracks$.map(R.head).take(1),
+      selectTrack$
+    ).map(SELECT_TRACK)
+  )
 }
 
 export default function ({DOM, AUDIO, HTTP, EVENTS, STORE}) {
@@ -26,7 +32,11 @@ export default function ({DOM, AUDIO, HTTP, EVENTS, STORE}) {
   const tracks$ = searchBox.tracks$
   const playlist = Playlist({tracks$, DOM, AUDIO, STORE})
   const controls = Controls({AUDIO, selectedTrack$, DOM, EVENTS})
-  const action$ = actions({tracks$, selectTrack$: playlist.selectTrack$})
+  const action$ = actions({
+    tracks$,
+    selectTrack$: playlist.selectTrack$,
+    searchBox
+  })
   return {
     HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
