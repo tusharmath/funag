@@ -4,6 +4,8 @@
 
 'use strict'
 
-import R from 'ramda'
-
-export default R.curry((type, params) => R.merge({type}, {params}))
+export default name => {
+  const action = params => ({type: action, params})
+  action.toString = () => name
+  return action
+}
