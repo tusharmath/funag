@@ -10,7 +10,7 @@ import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
 import SearchBox from '../search/search'
 import css from './main.style'
-import {SELECT_TRACK} from '../../redux-lib/app-actions'
+import {SELECT_TRACK} from '../../redux-lib/actions'
 
 const view = ({playlist, searchBox, controls}) => O
   .combineLatest(searchBox.DOM, playlist.DOM, controls.DOM)

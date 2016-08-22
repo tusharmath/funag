@@ -10,7 +10,7 @@ import * as SC from '../../lib/SoundCloud'
 import SearchIcon from '../search-icon/search-icon'
 import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventDriver'
 import css from './search.style'
-import {APPLY_FILTER, CLEAR_FILTER} from '../../redux-lib/app-actions'
+import {APPLY_FILTER, CLEAR_FILTER} from '../../redux-lib/actions'
 
 const Form = ({value, icon}) =>
   <form className={css('search', css.container)}>
