@@ -6,10 +6,6 @@
     "node": true
   },
   "rules": {
-    "arrow-parens": [
-      2,
-      "as-needed"
-    ],
     "max-lines": [
       "warn",
       {
