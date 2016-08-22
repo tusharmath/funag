@@ -24,7 +24,7 @@ export default function ({DOM, route, AUDIO, HTTP, EVENTS, STORE}) {
   const selectedTrack$ = STORE.select('track.selected')
   const searchBox = SearchBox({DOM, route, HTTP})
   const tracks$ = searchBox.tracks$
-  const playlist = Playlist({tracks$, DOM, AUDIO, selectedTrack$})
+  const playlist = Playlist({tracks$, DOM, AUDIO, STORE})
   const controls = Controls({AUDIO, selectedTrack$, DOM, EVENTS})
   const action$ = actions({tracks$, selectTrack$: playlist.selectTrack$})
   return {

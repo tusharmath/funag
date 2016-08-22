@@ -47,9 +47,9 @@ const getAudioEvents = AUDIO => {
     ).map(_('loadStart'))
   )
 }
-const model = ({tracks$, DOM, selectedTrack$, AUDIO}) => {
+const model = ({tracks$, DOM, STORE, AUDIO}) => {
   const audio$ = getAudioEvents(AUDIO)
-  const selectedTrackId$ = selectedTrack$.pluck('id')
+  const selectedTrackId$ = STORE.select('track.selected').pluck('id')
   const data$ = getStatus$({selectedTrackId$, audio$, tracks$})
   const rows = collectionFrom(PlayListItem, {DOM}, data$)
   const playlistClick$ = rows.merged('click$')
@@ -65,8 +65,8 @@ const model = ({tracks$, DOM, selectedTrack$, AUDIO}) => {
     audio$: mux({play, pause})
   }
 }
-export default ({tracks$, DOM, selectedTrack$, AUDIO}) => {
-  const sources = {AUDIO, tracks$, DOM, selectedTrack$}
+export default ({tracks$, DOM, STORE, AUDIO}) => {
+  const sources = {AUDIO, tracks$, DOM, STORE}
   const {audio$, selectTrack$, playlistDOM$} = model(sources)
   const vTree$ = view({playlistDOM$})
   return {
