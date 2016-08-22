@@ -28,7 +28,7 @@ export class ScrobberUIModel extends NativeComponent {
     this.attachView(ScrobberUIModel.tagName,
       <div classNames={[css.scrobber, 'scrobber']}
            key='scrobber'>
-        <div className={css(css.scrobberTrack, 'flb row jc_fe scrobberTrack')}>
+        <div className={css(css.scrobberTrack, 'scrobberTrack')}>
           <div className={css.scrobberIcon}
                on-touchStart={this.__onTouchStart.bind(this)}
                on-touchstart={this.__onTouchStart.bind(this)}

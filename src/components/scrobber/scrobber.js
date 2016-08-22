@@ -9,7 +9,7 @@ import {ScrobberUIModel} from './scrobber.native'
 const view = ({completion$, ui}) => completion$
   .throttle(1000)
   .startWith(0)
-  .map(completion => ui.update({completion}))
+  .map(completion => ui.update(completion))
 
 export default ({completion$, DOM}) => {
   const ui = new ScrobberUIModel('x-scrobber')
