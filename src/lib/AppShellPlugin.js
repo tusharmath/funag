@@ -11,7 +11,6 @@ import Main from '../components/main/main'
 import {Observable} from 'rx'
 import {makeHTMLDriver} from '@cycle/dom'
 import {mockAudioDriver} from '../drivers/audio'
-import noop from './Noop'
 import * as R from 'ramda'
 import {quickUpdateDOMDriver} from '../drivers/quickUpdateDOM'
 
@@ -46,7 +45,7 @@ export class ApplicationShell {
         AUDIO: mockAudioDriver,
         EVENTS: () => ({select: () => Observable.never()}),
         QUICK: quickUpdateDOMDriver,
-        title: noop,
+        title: () => ({}),
         HTTP: () => Observable.never()
       }
       Cycle.run(createWrappedMain(Main, compilation), sources)
