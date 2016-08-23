@@ -31,7 +31,7 @@ export default function ({DOM, AUDIO, HTTP, EVENTS, STORE}) {
   const searchBox = SearchBox({DOM, HTTP, STORE})
   const tracks$ = searchBox.tracks$
   const controls = Controls({AUDIO, selectedTrack$, DOM, EVENTS})
-  const playlist = Playlist({tracks$, DOM, AUDIO, STORE, seeking$: controls.seeking$})
+  const playlist = Playlist({tracks$, DOM, AUDIO, STORE, isSeeking$: controls.isSeeking$})
   const action$ = actions({
     tracks$,
     selectTrack$: playlist.selectTrack$,

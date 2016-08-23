@@ -60,6 +60,6 @@ export default ({selectedTrack$, DOM, AUDIO, EVENTS}) => {
   return {
     audio$: O.merge(playback.audio$, scrobber.audio$),
     DOM: view({playback, scrobber, show$, height$}),
-    seeking$: scrobber.seeking$
+    isSeeking$: scrobber.isSeeking$
   }
 }

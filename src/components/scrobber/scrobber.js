@@ -19,18 +19,18 @@ const model = ({DOM}) => {
     .events('changeEnd')
   const dragStart$ = scrobber
     .events('changeStart')
-  const seekTo$ = dragEnd$
+  const seek$ = dragEnd$
     .pluck('detail', 'completion')
-  const seeking$ = O.merge(dragStart$.map(true), dragEnd$.map(false))
-  return {seekTo$, seeking$}
+  const isSeeking$ = O.merge(dragStart$.map(true), dragEnd$.map(false))
+  return {seek$, isSeeking$}
 }
 
 export default ({completion$, DOM}) => {
   const ui = new ScrobberUIModel('x-scrobber')
-  const {seekTo$, seeking$} = model({DOM})
+  const {seek$, isSeeking$} = model({DOM})
   const vTree$ = view({completion$, ui})
-  const audio$ = mux({seek: seekTo$})
+  const audio$ = mux({seek: seek$})
   return {
-    DOM: vTree$, audio$, seeking$
+    DOM: vTree$, audio$, isSeeking$
   }
 }
