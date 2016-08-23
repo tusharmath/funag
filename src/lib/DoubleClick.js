@@ -7,6 +7,6 @@
 export default (element, timeout = 600, sh) => element
   .events('click')
   .timeInterval(sh)
-  .bufferWithCount(2)
+  .bufferWithCount(2, 1)
   .filter(([a, b]) => b.interval < timeout)
   .map(([a, b]) => [a.value.preventDefault(), b.value.preventDefault()])
