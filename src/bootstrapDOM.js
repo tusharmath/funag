@@ -31,8 +31,6 @@ const modules = [
 ]
 Cycle.run(Main, {
   DOM: makeDOMDriver('#container', {modules}),
-    modules: [ClassModule, PropsModule, AttrsModule, EventsModule, StyleModule]
-  }),
   AUDIO: audioDriver,
   EVENTS: EventDriver,
   title: documentTitleDriver,
