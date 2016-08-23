@@ -8,7 +8,7 @@
   "rules": {
     "max-len":1,
     "max-lines": [
-      "warn",
+      "error",
       {
         "max": 100,
         "skipComments": true
