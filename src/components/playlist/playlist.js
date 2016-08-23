@@ -25,7 +25,9 @@ export const Audio = ({url$}) => url$.scan((last, src) => {
 
 const view = ({playlistDOM$, isSeeking$}) => {
   return O.combineLatest(
-    playlistDOM$.startWith(<div>{P.PlaylistItem}{P.PlaylistItem}{P.PlaylistItem}</div>),
+    playlistDOM$.startWith(
+      <div>{P.PlaylistItem}{P.PlaylistItem}{P.PlaylistItem}</div>
+    ),
     isSeeking$.map(x => x ? css.disableScroll : '').startWith('')
   )
     .map(([view, disableScroll]) =>
