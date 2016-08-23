@@ -10,11 +10,15 @@ import NativeComponent from '../../lib/NativeComponent'
 import getClientX from '../../lib/getClientX'
 import customEvent from '../../lib/customEvent'
 import view from './scrobber.native-view'
+import R from 'ramda'
 
 const clearTransition = el => (el.style.transition = null)
 const disableTransition = el => (el.style.transition = 'none')
 const translateX = (el, completion) => (
   el.style.transform = `translateX(${100 * (completion - 1)}%)`
+)
+const completionEvent = R.useWith(
+  customEvent, [R.identity, R.objOf('completion')]
 )
 
 export class ScrobberUIModel extends NativeComponent {
@@ -42,13 +46,13 @@ export class ScrobberUIModel extends NativeComponent {
   }
 
   __getCompletion (e) {
-    return {completion: getClientX(e) / this.dimensions.width}
+    return getClientX(e) / this.dimensions.width
   }
 
   __onTouchStart (e) {
     this.isMoving = true
     mutate(() => disableTransition(this.scrobberTrackEL))
-    this.dispatchEvent(customEvent('changeStart', this.__getCompletion(e)))
+    this.dispatchEvent(completionEvent('changeStart', this.__getCompletion(e)))
   }
 
   __onTouchMove (e) {
@@ -58,7 +62,7 @@ export class ScrobberUIModel extends NativeComponent {
   __onTouchEnd (e) {
     this.isMoving = false
     mutate(() => clearTransition(this.scrobberTrackEL))
-    this.dispatchEvent(customEvent('changeEnd', this.__getCompletion(e)))
+    this.dispatchEvent(completionEvent('changeEnd', this.__getCompletion(e)))
   }
 }
 
