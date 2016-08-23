@@ -11,6 +11,7 @@ import isolate from '@cycle/isolate'
 import {DEFAULT, PLAYING, PAUSED} from '../../lib/OverlayStatus'
 import css from './playlist-item.style'
 import DoubleClick from '../../lib/DoubleClick'
+import uuid from '../../lib/uuid'
 const view = ({icon$, trackDetail, track}) => {
   return icon$.map(icon =>
     <div key={track.id} className={css(css.playlistItem, 'playlist-item')}>
@@ -29,7 +30,7 @@ const model = ({track: {artwork_url}, status}) => {
     [PLAYING]: PlayingArtwork
   }
 
-  const icon$ = O.just(OverlayMap[status])
+  const icon$ = O.just(<div key={uuid()}>{OverlayMap[status]}</div>)
   return {icon$}
 }
 
