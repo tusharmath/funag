@@ -1,9 +1,11 @@
 /**
  * @NOTE Place to define all the colors
- * Colors should should only be described at one place, this makes it easier to change later.
+ * Colors should should only be described at one place,
+ * this makes it easier to change later.
  * Naming should follow BEM style (http://getbem.com/naming)
  * SAMPLE NAME : {BLOCK__ELEMENT__MODIFIER}
- * BLOCKS — fg: foreground color, bg: background color, br: border color, zDepth: shadow
+ * BLOCKS — fg: foreground color, bg: background color,
+ * br: border color, zDepth: shadow
  */
 
 const PrimaryDarkTextColor = 'rgb(34, 34, 34)'

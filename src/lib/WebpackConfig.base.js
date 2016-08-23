@@ -6,7 +6,7 @@
 
 import path from 'path'
 import webpack from 'webpack'
-import {ApplicationShell} from './AppShellPlugin'
+import {ApplicationShell} from '../pre-render/AppShellPlugin'
 
 /**
  * Loaders
