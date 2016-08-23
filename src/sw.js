@@ -11,7 +11,7 @@ const swConfig = APP_CONFIG.sw
 if (swConfig.appCache) {
   const {policy} = swConfig.appCache
   toolbox.router.get('/', toolbox[policy])
-  toolbox.router.get(/.*bundle.*/, toolbox[policy])
+  toolbox.router.get(/.*client.*/, toolbox[policy])
 }
 
 if (swConfig.externalCache) {

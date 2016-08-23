@@ -11,7 +11,9 @@ import 'file?name=[hash].manifest.[ext]!./manifest.json'
 import Main from './components/main/main'
 import {audioDriver} from './drivers/audio'
 import {EventDriver} from './drivers/eventDriver'
+import {createReduxDriver} from './drivers/reduxDriver'
 import {documentTitleDriver} from './drivers/documentTitle'
+import reducers from './redux-lib/reducers'
 import {
   ClassModule,
   PropsModule,
@@ -25,5 +27,6 @@ Cycle.run(Main, {
   AUDIO: audioDriver,
   EVENTS: EventDriver,
   title: documentTitleDriver,
-  HTTP: makeHTTPDriver()
+  HTTP: makeHTTPDriver(),
+  STORE: createReduxDriver(reducers)
 })

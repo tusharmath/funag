@@ -23,19 +23,20 @@ const intent = ({DOM, url$}) => {
 export default ({selectedTrack$, AUDIO, DOM}) => {
   const playPause$ = Observable.merge(
     AUDIO.events('playing').map('pause'),
-    AUDIO.events('pause').map('play'),
-    AUDIO.events('loadedData').map('play'),
-    AUDIO.events('seeked').map('play')
+    AUDIO.events('pause').map('play_arrow'),
+    AUDIO.events('loadedData').map('play_arrow'),
+    AUDIO.events('seeked').map('play_arrow'),
+    selectedTrack$.map('play_arrow')
+  ).map(button =>
+    div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)])
   )
-    .startWith('play')
-    .map(button => div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)]))
-
-  const loadStart$ = AUDIO.events('loadStart').map(Loader)
-  const loadError$ = AUDIO.events('error').map(div({style: S.block(T.BlockHeight)}, [S.fa('exclamation-triangle')]))
+  const loadStart$ = AUDIO.events('loadStart').startWith(null).map(Loader)
+  const loadError$ = AUDIO.events('error').map(div({style: S.block(T.BlockHeight)}, [S.fa('error_outline')]))
   const url$ = selectedTrack$.map(SC.trackStreamURL)
   const actions = intent({DOM, url$})
   return {
     ...actions,
-    DOM: Observable.merge(playPause$, loadStart$, loadError$).map(x => div([x]))
+    DOM: Observable.merge(playPause$, loadStart$, loadError$)
+      .map(x => div([x]))
   }
 }

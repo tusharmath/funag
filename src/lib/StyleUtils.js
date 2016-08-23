@@ -4,8 +4,6 @@
 
 'use strict'
 
-import {i} from '@cycle/dom'
-
 export const size = (height, width = height) => ({
   height: `${height}px`,
   width: `${width}px`
@@ -26,7 +24,9 @@ export const fixed = x => {
   return {...position(x), position: 'fixed'}
 }
 
-export const fa = (name, dim = 1) => i(`.fa.fa-${name} flb col jc_c ai_c`, {style: {fontSize: `${dim}em`}})
+export const fa = (name, dim = 1.5) =>
+  <i className='material-icons' style={{fontSize: `${dim}rem`}}>{name}</i>
+
 export const overflowEllipsisSTY = {
   overflow: 'hidden',
   whiteSpace: 'nowrap',

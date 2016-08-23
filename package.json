@@ -28,10 +28,13 @@
     "qs": "^6.1.0",
     "raf": "^3.2.0",
     "ramda": "^0.22.0",
+    "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
     "rimraf": "^2.5.2",
     "route-parser": "0.0.5",
     "rx": "^4.1.0",
     "rx-raf-throttle": "^1.0.0",
+    "snabbdom": "^0.5.1",
     "sw-toolbox": "^3.1.1",
     "webpack-super": "^2.0.0",
     "xstream": "^6.0.0"

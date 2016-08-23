@@ -12,6 +12,7 @@ import * as SC from '../../lib/SoundCloud'
 import * as P from '../placeholders/placeholders'
 import {getStatus$} from '../../lib/OverlayStatus'
 import css from './playlist.style'
+import {collectionFrom} from '../../lib/CycleCollection'
 export const Audio = ({url$}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([
     ({last}) => !last,
@@ -33,12 +34,10 @@ const view = ({playlistDOM$, seeking$}) => {
       </div>
     )
 }
-
 const reallyPlaying = AUDIO => AUDIO
   .events('playing').flatMapLatest(
     () => AUDIO.events('timeUpdate').first()
   )
-
 const getAudioEvents = AUDIO => {
   const _ = event => audio => ({event, audio})
   return O.merge(
@@ -51,36 +50,29 @@ const getAudioEvents = AUDIO => {
     ).map(_('loadStart'))
   )
 }
-
-const model = ({tracks$, DOM, selectedTrack$, AUDIO}) => {
-  const PlaylistItemCtor = R.compose(PlayListItem, R.merge({DOM}))
+const model = ({tracks$, DOM, STORE, AUDIO}) => {
   const audio$ = getAudioEvents(AUDIO)
-  const selectedTrackId$ = selectedTrack$.pluck('id')
-  const playlistItem$ = getStatus$({selectedTrackId$, audio$, tracks$})
-    .map(R.map(PlaylistItemCtor))
-    .share()
-
-  const playlistClick$ = playlistItem$.map(R.pluck('click$')).flatMap(i => O.merge(i))
-  const playlistDOM$ = playlistItem$.map(R.pluck('DOM')).flatMap(i => O.combineLatest(i))
-
+  const selectedTrackId$ = STORE.select('track.selected').pluck('id')
+  const data$ = getStatus$({selectedTrackId$, audio$, tracks$})
+  const rows = collectionFrom(PlayListItem, {DOM}, data$)
+  const playlistClick$ = rows.merged('click$')
+  const playlistDOM$ = rows.combined('DOM')
   const url$ = playlistClick$.map(SC.trackStreamURL)
-
   const audioAction$ = Audio({url$})
   const ofType = R.compose(R.whereEq, R.objOf('type'))
   const play = audioAction$.filter(ofType('PLAY'))
   const pause = audioAction$.filter(ofType('PAUSE'))
   return {
     playlistDOM$,
-    selectedTrack$: playlistClick$,
-    audio$: mux({play, pause}),
-    playlistItem$
+    selectTrack$: playlistClick$,
+    audio$: mux({play, pause})
   }
 }
-
-export default sources => {
-  const {audio$, selectedTrack$, playlistDOM$} = model(sources)
-  const vTree$ = view({playlistDOM$, ...sources})
+export default ({tracks$, DOM, STORE, AUDIO, seeking$}) => {
+  const sources = {AUDIO, tracks$, DOM, STORE}
+  const {audio$, selectTrack$, playlistDOM$} = model(sources)
+  const vTree$ = view({playlistDOM$, seeking$})
   return {
-    DOM: vTree$, audio$, selectedTrack$
+    DOM: vTree$, audio$, selectTrack$
   }
 }

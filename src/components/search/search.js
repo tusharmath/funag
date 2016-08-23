@@ -7,12 +7,12 @@
 import {Observable as O} from 'rx'
 import * as U from '../../lib/DOMUtils'
 import * as SC from '../../lib/SoundCloud'
-import RxProxy from '../../lib/RxProxy'
 import SearchIcon from '../search-icon/search-icon'
 import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventDriver'
 import css from './search.style'
+import {APPLY_FILTER, CLEAR_FILTER} from '../../redux-lib/actions'
 
-const Form = ({icon, value = ''}) =>
+const Form = ({value, icon}) =>
   <form className={css('search', css.container)}>
     <div className={css(css.inputContainer, 'flb row jc_sa ai_c')}>
       <input type='text' className={css.input} placeholder='Search'
@@ -23,46 +23,54 @@ const Form = ({icon, value = ''}) =>
 
 const view = ({clear$, icon$}) => {
   return O.merge(
-    icon$.map(icon => Form({icon})),
+    icon$.map(icon => Form({icon, value: ''})),
     clear$.withLatestFrom(icon$)
-      .map(([_, icon]) => Form({icon, value: null}))
+      .map(([_, icon]) => Form({icon}))
   )
 }
 
-const model = ({HTTP, DOM, clear$}) => {
-  // TODO: Add unit tests
-  const tracks$ = HTTP
-    .select('tracks')
-    .switch()
-    .pluck('body')
-    .share()
+const response = HTTP => HTTP
+  .select('tracks')
+  .switch()
+  .pluck('body')
+  .share()
 
-  const searchEl = DOM.select('.search')
-  const inputEl = DOM.select('.search input')
-  const value$ = O.merge(U.inputVal(searchEl).debounce(300), clear$)
-  const request$ = value$.startWith('').map(q => SC.toURI('/tracks', {q})).map(url => ({
+const request = value$ => {
+  return value$.map(q => SC.toURI('/tracks', {q})).map(url => ({
     url,
     category: 'tracks'
   }))
-  const events$ = O
-    .merge(
-      searchEl.events('submit').map(PREVENT_DEFAULT),
-      searchEl.events('submit').withLatestFrom(inputEl.elements(), (_, a) => a[0])
-        .map(BLUR)
-    )
+}
+
+const event = (searchEl, inputEl) => O
+  .merge(
+    searchEl.events('submit').map(PREVENT_DEFAULT),
+    searchEl.events('submit').withLatestFrom(inputEl.elements(), (_, a) => a[0]).map(BLUR)
+  )
+
+const intent = ({HTTP, DOM, filter$}) => {
+  // TODO: Add unit tests
+  const tracks$ = response(HTTP)
+  const searchEl = DOM.select('.search')
+  const inputEl = DOM.select('.search input')
+  const value$ = U.inputVal(searchEl).debounce(300)
+  const request$ = request(filter$)
+  const events$ = event(searchEl, inputEl)
   return {request$, events$, tracks$, value$}
 }
 
-export default ({DOM, HTTP}) => {
-  const s0 = RxProxy()
-  const {request$, events$, tracks$, value$} = model({HTTP, DOM, clear$: s0})
-  const searchIcon = SearchIcon({value$, tracks$, DOM})
-  const clear$ = s0.merge(searchIcon.clear$)
+export default ({DOM, HTTP, STORE}) => {
+  const filter$ = STORE.select('track.filter').startWith('')
+  const {request$, events$, tracks$, value$} = intent({HTTP, DOM, filter$})
+  const searchIcon = SearchIcon({filter$, tracks$, DOM})
   const icon$ = searchIcon.DOM
-  const vTree$ = view({clear$, icon$})
-
+  const vTree$ = view({clear$: searchIcon.clear$, icon$})
   return {
     HTTP: request$,
-    DOM: vTree$, events$, tracks$
+    DOM: vTree$, events$, tracks$,
+    STORE: O.merge(
+      value$.map(APPLY_FILTER),
+      searchIcon.clear$.map(CLEAR_FILTER)
+    )
   }
 }

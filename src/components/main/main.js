@@ -6,44 +6,43 @@
 
 import {Observable as O} from 'rx'
 import R from 'ramda'
-import {mux} from 'muxer'
 import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
 import SearchBox from '../search/search'
-import Empty from '../../lib/RxProxy'
-import * as SC from '../../lib/SoundCloud'
 import css from './main.style'
+import {SELECT_TRACK} from '../../redux-lib/actions'
 
 const view = ({playlist, searchBox, controls}) => O
   .combineLatest(searchBox.DOM, playlist.DOM, controls.DOM)
   .map(views => <div className={css(css.main, 'flb col')}>{views}</div>)
 
-const getSelectedTrack = (defaultTrack$, playlist, tracks$) => {
-  return defaultTrack$
-    .merge(playlist.selectedTrack$, tracks$.first().map(R.head))
-    .distinctUntilChanged()
+const actions = ({tracks$, selectTrack$, searchBox}) => {
+  return O.merge(
+    searchBox.STORE,
+    O.merge(
+      tracks$.map(R.head).take(1),
+      selectTrack$
+    ).map(SELECT_TRACK)
+  )
 }
-const getAudioSink = selectedTrack$ => mux({
-  load: selectedTrack$
-    .map(SC.trackStreamURL)
-    .map(R.objOf('src'))
-})
 
-export default function ({DOM, route, AUDIO, HTTP, EVENTS}) {
-  const searchBox = SearchBox({DOM, route, HTTP})
+export default function ({DOM, AUDIO, HTTP, EVENTS, STORE}) {
+  const selectedTrack$ = STORE.select('track.selected')
+  const searchBox = SearchBox({DOM, HTTP, STORE})
   const tracks$ = searchBox.tracks$
-  const defaultTrack$ = Empty()
-  const controls = Controls({AUDIO, selectedTrack$: defaultTrack$, DOM, EVENTS})
-  const playlist = Playlist({
-    tracks$, DOM, AUDIO, selectedTrack$: defaultTrack$, seeking$: controls.seeking$
+  const controls = Controls({AUDIO, selectedTrack$, DOM, EVENTS})
+  const playlist = Playlist({tracks$, DOM, AUDIO, STORE, seeking$: controls.seeking$})
+  const action$ = actions({
+    tracks$,
+    selectTrack$: playlist.selectTrack$,
+    searchBox
   })
-  const selectedTrack$ = getSelectedTrack(defaultTrack$, playlist, tracks$)
-  const audioSink$ = getAudioSink(selectedTrack$)
   return {
     HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
     EVENTS: searchBox.events$,
-    AUDIO: O.merge(playlist.audio$, controls.audio$, audioSink$),
-    DOM: view({playlist, searchBox, controls})
+    AUDIO: O.merge(playlist.audio$, controls.audio$),
+    DOM: view({playlist, searchBox, controls}),
+    STORE: action$
   }
 }

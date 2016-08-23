@@ -38,7 +38,7 @@ const intent = ({DOM, track}) => {
   return {click$}
 }
 
-const PlayListItem = ({DOM, track, status}) => {
+const PlayListItem = ({DOM, ROW: {track, status}}) => {
   const {icon$} = model({track, status})
   const trackDetail = TrackDetail(track)
   const vTree$ = view({icon$, trackDetail})
