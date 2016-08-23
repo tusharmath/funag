@@ -22,8 +22,15 @@ import {
   StyleModule
 } from '@cycle/dom/lib/modules'
 
+const modules = [
+  ClassModule,
+  PropsModule,
+  AttrsModule,
+  EventsModule,
+  StyleModule
+]
 Cycle.run(Main, {
-  DOM: makeDOMDriver('#container', {
+  DOM: makeDOMDriver('#container', {modules}),
     modules: [ClassModule, PropsModule, AttrsModule, EventsModule, StyleModule]
   }),
   AUDIO: audioDriver,

@@ -12,15 +12,12 @@ import BoundingClientRect from '../../lib/BoundingClientRect'
 
 const view = ({playback, scrobber, show$, height$}) => {
   const translate = R.ifElse(
-    R.identity, R.always(css.translateUp), R.always(css.translateDown)
+    R.identity,
+    R.always(css.translateUp),
+    R.always(css.translateDown)
   )
   return O
-    .combineLatest(
-      scrobber.DOM,
-      playback.DOM,
-      show$,
-      height$
-    )
+    .combineLatest(scrobber.DOM, playback.DOM, show$, height$)
     .map(([scrobber, playback, show, height]) =>
       <div className={css(css.container, translate(show), 'controls')}
            style={{height: show ? `${height}px` : null}}>

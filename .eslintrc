@@ -10,7 +10,7 @@
     "max-lines": [
       "warn",
       {
-        "max": 50,
+        "max": 100,
         "skipComments": true
       }
     ]
