@@ -12,11 +12,15 @@ import * as T from '../lib/Themes'
 import * as SC from '../lib/SoundCloud'
 import Loader from './loader/loader'
 
-const intent = ({DOM, url$}) => {
+const pickClicks = ({DOM, url$}, name) => {
   const select = R.compose(R.objOf('src'), R.nthArg(1))
+  return DOM.select(name)
+    .events('click').withLatestFrom(url$, select)
+}
+const intent = ({DOM, url$}) => {
   const audio$ = mux({
-    play: DOM.select('.ctrl-play_arrow').events('click').withLatestFrom(url$, select),
-    pause: DOM.select('.ctrl-pause').events('click').withLatestFrom(url$, select)
+    play: pickClicks({DOM, url$}, '.ctrl-play_arrow'),
+    pause: pickClicks({DOM, url$}, '.ctrl-pause')
   })
   return {audio$}
 }
@@ -31,7 +35,9 @@ export default ({selectedTrack$, AUDIO, DOM}) => {
     div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)])
   )
   const loadStart$ = AUDIO.events('loadStart').startWith(null).map(Loader)
-  const loadError$ = AUDIO.events('error').map(div({style: S.block(T.BlockHeight)}, [S.fa('error_outline')]))
+  const loadError$ = AUDIO.events('error').map(
+    div({style: S.block(T.BlockHeight)}, [S.fa('error_outline')])
+  )
   const url$ = selectedTrack$.map(SC.trackStreamURL)
   const actions = intent({DOM, url$})
   return {

@@ -9,9 +9,12 @@ import createLogger from 'redux-logger'
 import {Observable as O} from 'rx'
 import R from 'ramda'
 
-const middleware = APP_CONFIG.reduxLogger ? applyMiddleware(createLogger()) : x => x
+const middlewares = applyMiddleware(createLogger())
 export const createReduxDriver = (reducer = x => x) => {
-  const store = createStore(reducer, middleware)
+  const store = createStore(
+    reducer,
+    APP_CONFIG.reduxLogger ? middlewares : R.identity
+  )
   const value$ = O.fromEventPattern(
     cb => store.subscribe(() => cb(store.getState())),
     dispose => dispose()

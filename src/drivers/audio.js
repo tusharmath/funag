@@ -10,7 +10,9 @@ import {demux} from 'muxer'
 
 export const audioDriver = instruction$ => {
   const audio = new Audio()
-  const [{play, pause, seek, load}] = demux(instruction$, 'play', 'pause', 'seek', 'load')
+  const [{play, pause, seek, load}] = demux(
+    instruction$, 'play', 'pause', 'seek', 'load'
+  )
 
   load.subscribe(({src}) => {
     audio.src = src
