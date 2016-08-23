@@ -11,7 +11,9 @@ import css from './controls.style'
 import BoundingClientRect from '../../lib/BoundingClientRect'
 
 const view = ({playback, scrobber, show$, height$}) => {
-  const translate = R.ifElse(R.identity, R.always(css.translateUp), R.always(css.translateDown))
+  const translate = R.ifElse(
+    R.identity, R.always(css.translateUp), R.always(css.translateDown)
+  )
   return O
     .combineLatest(
       scrobber.DOM,

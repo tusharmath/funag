@@ -23,7 +23,9 @@ import {
 } from '@cycle/dom/lib/modules'
 
 Cycle.run(Main, {
-  DOM: makeDOMDriver('#container', {modules: [ClassModule, PropsModule, AttrsModule, EventsModule, StyleModule]}),
+  DOM: makeDOMDriver('#container', {
+    modules: [ClassModule, PropsModule, AttrsModule, EventsModule, StyleModule]
+  }),
   AUDIO: audioDriver,
   EVENTS: EventDriver,
   title: documentTitleDriver,
