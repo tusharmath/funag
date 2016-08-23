@@ -15,7 +15,7 @@ import Loader from './loader/loader'
 const intent = ({DOM, url$}) => {
   const select = R.compose(R.objOf('src'), R.nthArg(1))
   const audio$ = mux({
-    play: DOM.select('.ctrl-play').events('click').withLatestFrom(url$, select),
+    play: DOM.select('.ctrl-play_arrow').events('click').withLatestFrom(url$, select),
     pause: DOM.select('.ctrl-pause').events('click').withLatestFrom(url$, select)
   })
   return {audio$}

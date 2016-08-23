@@ -4,13 +4,14 @@
 
 'use strict'
 
+import isolate from '@cycle/isolate'
 import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import * as S from '../../lib/StyleUtils'
 import Loader from '../loader/loader'
 import {BlockHeight} from '../../lib/Themes'
 
-export default ({filter$, tracks$, DOM}) => {
+export const SearchIcon = ({filter$, tracks$, DOM}) => {
   const clear$ = DOM.select('.material-icons').events('click').map('')
   const isLoading$ = Observable.merge(filter$.map(true), tracks$.map(false))
     .startWith(true)
@@ -33,3 +34,5 @@ export default ({filter$, tracks$, DOM}) => {
 
   return {DOM: vTree$, clear$}
 }
+
+export default sources => isolate(SearchIcon)(sources)
