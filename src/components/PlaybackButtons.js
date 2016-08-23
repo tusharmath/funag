@@ -19,7 +19,7 @@ const pickClicks = ({DOM, url$}, name) => {
 }
 const intent = ({DOM, url$}) => {
   const audio$ = mux({
-    play: pickClicks({DOM, url$}, '.ctrl-play'),
+    play: pickClicks({DOM, url$}, '.ctrl-play_arrow'),
     pause: pickClicks({DOM, url$}, '.ctrl-pause')
   })
   return {audio$}

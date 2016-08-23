@@ -6,7 +6,7 @@
     "node": true
   },
   "rules": {
-    "max-len":1,
+    "max-len":2,
     "max-lines": [
       "error",
       {
