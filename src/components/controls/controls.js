@@ -58,6 +58,7 @@ export default ({selectedTrack$, DOM, AUDIO, EVENTS}) => {
   const scrobber = Scrobber({completion$, DOM})
   return {
     audio$: O.merge(playback.audio$, scrobber.audio$),
-    DOM: view({playback, scrobber, show$, height$})
+    DOM: view({playback, scrobber, show$, height$}),
+    isSeeking$: scrobber.isSeeking$
   }
 }
