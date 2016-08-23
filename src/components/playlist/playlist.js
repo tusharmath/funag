@@ -22,14 +22,17 @@ export const Audio = ({url$}) => url$.scan((last, src) => {
   if (canPlay({last, src})) return {src, type: 'PLAY'}
   return {src, type: 'PAUSE'}
 }, null)
-const view = ({playlistDOM$}) => {
-  return playlistDOM$.startWith(
-    <div>{P.PlaylistItem}{P.PlaylistItem}{P.PlaylistItem}</div>
-  ).map(view =>
-    <div className={css.playlist}>
-      {view}
-    </div>
+
+const view = ({playlistDOM$, isSeeking$}) => {
+  return O.combineLatest(
+    playlistDOM$.startWith(<div>{P.PlaylistItem}{P.PlaylistItem}{P.PlaylistItem}</div>),
+    isSeeking$.map(x => x ? css.disableScroll : '').startWith('')
   )
+    .map(([view, disableScroll]) =>
+      <div classNames={[css.playlist, disableScroll]}>
+        {view}
+      </div>
+    )
 }
 const reallyPlaying = AUDIO => AUDIO
   .events('playing').flatMapLatest(
@@ -65,10 +68,10 @@ const model = ({tracks$, DOM, STORE, AUDIO}) => {
     audio$: mux({play, pause})
   }
 }
-export default ({tracks$, DOM, STORE, AUDIO}) => {
+export default ({tracks$, DOM, STORE, AUDIO, isSeeking$}) => {
   const sources = {AUDIO, tracks$, DOM, STORE}
   const {audio$, selectTrack$, playlistDOM$} = model(sources)
-  const vTree$ = view({playlistDOM$})
+  const vTree$ = view({playlistDOM$, isSeeking$})
   return {
     DOM: vTree$, audio$, selectTrack$
   }
