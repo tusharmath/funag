@@ -20,6 +20,7 @@ export const audioDriver = instruction$ => {
 
   play.subscribe(({src}) => {
     if (audio.src !== src) {
+      audio.pause()
       audio.src = src
       audio.load()
     }
