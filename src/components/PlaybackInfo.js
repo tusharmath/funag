@@ -14,7 +14,8 @@ const playbackInfoSTY = {
   overflow: 'hidden',
   paddingRight: `${T.BlockSpace}px`
 }
-export default ({selectedTrack$}) => {
+export default ({STORE}) => {
+  const selectedTrack$ = STORE.select('track.selected').filter(Boolean)
   return {
     DOM: selectedTrack$.map(track =>
       div({style: playbackInfoSTY}, [

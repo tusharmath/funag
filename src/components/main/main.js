@@ -16,33 +16,26 @@ const view = ({playlist, searchBox, controls}) => O
   .combineLatest(searchBox.DOM, playlist.DOM, controls.DOM)
   .map(views => <div className={css(css.main, 'flb col')}>{views}</div>)
 
-const actions = ({tracks$, selectTrack$, searchBox}) => {
+const store = ({STORE, playlist, searchBox}) => {
   return O.merge(
     searchBox.STORE,
-    O.merge(
-      tracks$.map(R.head).take(1),
-      selectTrack$
-    ).map(SELECT_TRACK)
+    playlist.STORE,
+    STORE.select('track.data').map(R.head).take(1).map(SELECT_TRACK)
   )
 }
 
 export default function ({DOM, AUDIO, HTTP, EVENTS, STORE}) {
-  const selectedTrack$ = STORE.select('track.selected')
+  const selectedTrack$ = STORE.select('track.selected').filter(Boolean)
   const searchBox = SearchBox({DOM, HTTP, STORE})
-  const tracks$ = searchBox.tracks$
-  const controls = Controls({AUDIO, selectedTrack$, DOM, EVENTS})
+  const controls = Controls({AUDIO, STORE, selectedTrack$, DOM, EVENTS})
   const playlist = Playlist(
-    {tracks$, DOM, AUDIO, STORE, isSeeking$: controls.isSeeking$}
+    {DOM, AUDIO, STORE, isSeeking$: controls.isSeeking$}
   )
-  const action$ = actions({
-    tracks$,
-    selectTrack$: playlist.selectTrack$,
-    searchBox
-  })
+  const action$ = store({STORE, playlist, searchBox})
   return {
     HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),
     title: selectedTrack$.pluck('title'),
-    EVENTS: searchBox.events$,
+    EVENTS: searchBox.EVENTS,
     AUDIO: O.merge(playlist.audio$, controls.audio$),
     DOM: view({playlist, searchBox, controls}),
     STORE: action$

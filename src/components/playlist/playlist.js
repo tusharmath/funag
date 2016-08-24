@@ -13,6 +13,7 @@ import * as P from '../placeholders/placeholders'
 import {getStatus$} from '../../lib/OverlayStatus'
 import css from './playlist.style'
 import {collectionFrom} from '../../lib/CycleCollection'
+import {SELECT_TRACK} from '../../redux-lib/actions'
 
 export const Audio = ({url$}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([
@@ -58,9 +59,10 @@ const getAudioEvents = AUDIO => {
     ).map(_('loadStart'))
   )
 }
-const model = ({tracks$, DOM, STORE, AUDIO}) => {
+const model = ({DOM, STORE, AUDIO}) => {
+  const tracks$ = STORE.select('track.data')
   const audio$ = getAudioEvents(AUDIO)
-  const selectedTrackId$ = STORE.select('track.selected').pluck('id')
+  const selectedTrackId$ = STORE.select('track.selected').filter(Boolean).pluck('id')
   const data$ = getStatus$({selectedTrackId$, audio$, tracks$})
   const rows = collectionFrom(PlayListItem, {DOM}, data$)
   const playlistClick$ = rows.merged('click$')
@@ -76,11 +78,13 @@ const model = ({tracks$, DOM, STORE, AUDIO}) => {
     audio$: mux({play, pause})
   }
 }
-export default ({tracks$, DOM, STORE, AUDIO, isSeeking$}) => {
-  const sources = {AUDIO, tracks$, DOM, STORE}
+export default ({DOM, STORE, AUDIO, isSeeking$}) => {
+  const sources = {AUDIO, DOM, STORE}
   const {audio$, selectTrack$, playlistDOM$} = model(sources)
   const vTree$ = view({playlistDOM$, isSeeking$})
   return {
-    DOM: vTree$, audio$, selectTrack$
+    DOM: vTree$,
+    audio$,
+    STORE: selectTrack$.map(SELECT_TRACK)
   }
 }

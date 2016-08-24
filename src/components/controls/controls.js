@@ -27,7 +27,7 @@ const view = ({playback, scrobber, show$, height$}) => {
     )
 }
 
-const model = ({AUDIO, selectedTrack$, EVENTS, DOM}) => {
+const model = ({AUDIO, STORE, EVENTS, DOM}) => {
   const height$ = DOM.select('.controls')
     .elements()
     .map(R.compose(BoundingClientRect, R.head))
@@ -37,7 +37,7 @@ const model = ({AUDIO, selectedTrack$, EVENTS, DOM}) => {
   const completion$ = O.merge(
     AUDIO.events('timeUpdate').map(x => x.currentTime / x.duration),
     AUDIO.events('ended').map(1),
-    selectedTrack$.map(0)
+    STORE.select('track.selected').filter(Boolean).map(0)
   )
   const windowHeight$ = EVENTS.select('resize').pluck('innerHeight')
   const show$ = windowHeight$
@@ -47,14 +47,14 @@ const model = ({AUDIO, selectedTrack$, EVENTS, DOM}) => {
   return {completion$, show$, height$}
 }
 
-export default ({selectedTrack$, DOM, AUDIO, EVENTS}) => {
+export default ({STORE, DOM, AUDIO, EVENTS}) => {
   const {completion$, show$, height$} = model({
     AUDIO,
-    selectedTrack$,
+    STORE,
     EVENTS,
     DOM
   })
-  const playback = Playback({selectedTrack$, DOM, AUDIO})
+  const playback = Playback({STORE, DOM, AUDIO})
   const scrobber = Scrobber({completion$, DOM})
   return {
     audio$: O.merge(playback.audio$, scrobber.audio$),
