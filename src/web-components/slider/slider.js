@@ -41,7 +41,6 @@ registerWC('x-slider', {
   attachedCallback () {
     this.scrobberTrackEL = this.__shadowRoot.querySelector('.scrobberTrack')
     this.dimensions = BoundingClientRect(this.__shadowRoot.querySelector('div'))
-    console.log(this.dimensions)
   },
 
   __updatePosition (completion) {
