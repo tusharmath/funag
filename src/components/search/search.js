@@ -38,7 +38,7 @@ const intent = ({HTTP, DOM, filter$}) => {
   const request$ = requestTracks(filter$)
   const events$ = event(searchEl, inputEl)
   const isLoading$ = isLoading(request$, tracks$)
-  const hasValue$ = hasValue(value$)
+  const hasValue$ = hasValue(filter$)
   return {request$, events$, tracks$, value$, isLoading$, hasValue$}
 }
 
