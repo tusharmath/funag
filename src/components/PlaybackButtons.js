@@ -9,7 +9,6 @@ import R from 'ramda'
 import {mux} from 'muxer'
 import * as SC from '../lib/SoundCloud'
 import Loader from './loader/loader'
-import uuid from '../lib/uuid'
 
 const pickClicks = ({DOM, url$}, name) => {
   const select = R.compose(R.objOf('src'), R.nthArg(1))
@@ -27,19 +26,19 @@ export default ({STORE, AUDIO, DOM}) => {
   const selectedTrack$ = STORE.select('track.selected').filter(Boolean)
   const playPause$ = Observable.merge(
     AUDIO.events('playing').map(
-      <x-square-icon key={uuid()} attrs-icon='pause'/>
+      <x-square-icon attrs-icon='pause'/>
     ),
     AUDIO.events('pause').map(
-      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
+      <x-square-icon attrs-icon='play_arrow'/>
     ),
     AUDIO.events('loadedData').map(
-      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
+      <x-square-icon attrs-icon='play_arrow'/>
     ),
     AUDIO.events('seeked').map(
-      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
+      <x-square-icon attrs-icon='play_arrow'/>
     ),
     selectedTrack$.map(
-      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
+      <x-square-icon attrs-icon='play_arrow'/>
     )
   )
   const loadStart$ = AUDIO.events('loadStart').startWith(null).map(Loader)
