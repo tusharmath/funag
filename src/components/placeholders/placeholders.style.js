@@ -14,15 +14,18 @@ export default attachStyleSheet({
   },
   square50: {
     extend: 'animatedBG',
-    height: '50px', width: '50px'
+    height: '50px',
+    width: '50px'
   },
   line100: {
     extend: 'animatedBG',
-    height: '1rem', width: '100%'
+    height: '1rem',
+    width: '100%'
   },
   line75: {
     extend: 'animatedBG',
-    height: '1rem', width: '75%'
+    height: '1rem',
+    width: '75%'
   },
   lineCol: {
     flex: '1 0 0',
