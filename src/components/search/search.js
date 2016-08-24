@@ -53,7 +53,9 @@ export default ({DOM, HTTP, STORE}) => {
   const vTree$ = view({clear$: searchIcon.clear$, icon$})
   return {
     HTTP: request$,
-    DOM: vTree$, events$, tracks$,
+    DOM: vTree$,
+    events$,
+    tracks$,
     STORE: O.merge(
       value$.map(APPLY_FILTER),
       searchIcon.clear$.map(CLEAR_FILTER)
