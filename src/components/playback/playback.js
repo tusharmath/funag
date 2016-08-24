@@ -11,7 +11,7 @@ import PlaybackButtons from '../PlaybackButtons'
 export default ({STORE, AUDIO, DOM}) => {
   const playbackButtons = PlaybackButtons({AUDIO, STORE, DOM})
   return {
-    audio$: playbackButtons.audio$,
+    AUDIO: playbackButtons.audio$,
     DOM: Observable
       .combineLatest(
         playbackButtons.DOM,
