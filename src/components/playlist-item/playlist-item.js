@@ -22,14 +22,14 @@ const view = ({icon$, trackDetail, track}) => {
   )
 }
 
-const model = ({track: {artwork_url, id}, status}) => {
+const model = ({track: {artwork_url}, status}) => {
   const OverlayMap = {
     [DEFAULT]: DefaultArtwork(artwork_url),
     [PAUSED]: PausedArtwork(),
     [PLAYING]: PlayingArtwork()
   }
 
-  const icon$ = O.just(<div key={id}>{OverlayMap[status]}</div>)
+  const icon$ = O.just(OverlayMap[status])
   return {icon$}
 }
 
