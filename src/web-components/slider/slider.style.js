@@ -23,7 +23,7 @@ export default createStyleSheet({
     justifyContent: 'flex-end'
   },
   '.scrobberIcon': {
-    height: BlockHeight,
+    height: BlockHeight / 2,
     width: BlockHeight,
     transform: 'translateY(-50%) translateX(50%)'
   }
