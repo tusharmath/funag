@@ -4,12 +4,12 @@
 
 'use strict'
 
-import {create} from '../../lib/CreateStyle'
+import {attachStyleSheet} from '../../lib/JSSHelpers'
 import {Palette, BlockSpace} from '../../lib/Themes'
 import * as S from '../../lib/StyleUtils'
 import {spread} from 'flex-jss'
 
-export default create({
+export default attachStyleSheet({
   trackDetailContainer: {
     flex: '1 0 0',
     overflow: 'hidden',

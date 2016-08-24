@@ -4,10 +4,10 @@
 
 'use strict'
 
-import {create} from '../../lib/CreateStyle'
+import {attachStyleSheet} from '../../lib/JSSHelpers'
 import * as T from '../../lib/Themes'
 
-export default create({
+export default attachStyleSheet({
   input: {
     border: 'none',
     flex: '1 0 0',
