@@ -4,10 +4,10 @@
 
 'use strict'
 
-import {create} from '../../lib/CreateStyle'
+import {attachStyleSheet} from '../../lib/JSSHelpers'
 import {Palette} from '../../lib/Themes'
 
-export default create({
+export default attachStyleSheet({
   container: {
     transform: 'translateZ(0)',
     boxShadow: Palette.zDepth__1,

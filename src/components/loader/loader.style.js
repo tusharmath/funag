@@ -3,10 +3,10 @@
  */
 
 'use strict'
-import {create} from '../../lib/CreateStyle'
+import {attachStyleSheet} from '../../lib/JSSHelpers'
 import {BlockHeight} from '../../lib/Themes'
 
-export default create({
+export default attachStyleSheet({
   loaderContainer: {
     display: 'flex',
     alignItems: 'center',

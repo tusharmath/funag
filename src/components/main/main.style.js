@@ -4,9 +4,9 @@
 
 'use strict'
 
-import {create} from '../../lib/CreateStyle'
+import {attachStyleSheet} from '../../lib/JSSHelpers'
 
-export default create({
+export default attachStyleSheet({
   main: {
     height: '100%'
   }

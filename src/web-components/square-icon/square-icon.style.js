@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {createStyleSheet} from '../../lib/CreateStyle'
+import {createStyleSheet} from '../../lib/JSSHelpers'
 
 export default createStyleSheet({
   ':host': {

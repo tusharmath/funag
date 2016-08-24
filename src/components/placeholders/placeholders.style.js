@@ -4,9 +4,9 @@
 
 'use strict'
 
-import {create} from '../../lib/CreateStyle'
+import {attachStyleSheet} from '../../lib/JSSHelpers'
 
-export default create({
+export default attachStyleSheet({
   animatedBG: {
     background: 'linear-gradient(to right , rgb(245, 245, 245), #fff)',
     animation: 'horizontal-motion 1000ms linear infinite',

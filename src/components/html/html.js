@@ -4,7 +4,7 @@
 
 'use strict'
 import './html.style'
-import {sheets} from '../../lib/CreateStyle'
+import {globalSheet} from '../../lib/JSSHelpers'
 import * as flex from 'flex-jss'
 import loadSW from '../../lib/loadSW'
 
@@ -12,7 +12,7 @@ export default ({html, title, bundle, manifest, sw}) =>
   <html>
   <head>
     <title>{title}</title>
-    <style id='server-side-css'>{sheets.toString()}</style>
+    <style id='server-side-css'>{globalSheet.toString()}</style>
     <style>{flex.asHtmlStyleString()}</style>
     <script>{loadSW(sw)}</script>
     <meta name='viewport'
