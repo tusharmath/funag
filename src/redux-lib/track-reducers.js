@@ -5,9 +5,9 @@
 'use strict'
 
 import R from 'ramda'
-import {SELECT_TRACK, CLEAR_FILTER, APPLY_FILTER} from './actions'
+import {SELECT_TRACK, CLEAR_FILTER, APPLY_FILTER, SET_TRACKS} from './actions'
 
-const initialState = {selected: null, filter: ''}
+const initialState = {selected: null, filter: '', data: []}
 export default (state = initialState, {type, params}) => {
   switch (type) {
     case SELECT_TRACK:
@@ -16,6 +16,8 @@ export default (state = initialState, {type, params}) => {
       return R.assoc('filter', params, state)
     case CLEAR_FILTER:
       return R.assoc('filter', '', state)
+    case SET_TRACKS:
+      return R.assoc('data', params, state)
     default :
       return state
   }
