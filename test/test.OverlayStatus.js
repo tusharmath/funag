@@ -5,7 +5,7 @@
 'use strict'
 import {ReactiveTest, TestScheduler} from 'rx'
 import test from 'ava'
-import {getStatus$, DEFAULT, PLAYING, PAUSED} from '../src/lib/OverlayStatus'
+import {getStatus$, DEFAULT, PLAYING, PAUSED, SEEKING} from '../src/lib/OverlayStatus'
 const {onNext} = ReactiveTest
 
 test('all statuses', t => {
@@ -23,10 +23,17 @@ test('all statuses', t => {
     onNext(230, {event: 'reallyPlaying'}),
     onNext(240, {event: 'ended'})
   )
-  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
+  const isSeeking$ = sh.createHotObservable(
+    onNext(0, false),
+    onNext(214, true),
+    onNext(218, false)
+  )
+  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$, isSeeking$}))
   t.deepEqual(messages, [
     onNext(201, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
     onNext(210, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(214, [{status: SEEKING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
+    onNext(218, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
     onNext(220, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
     onNext(230, [{status: PLAYING, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
     onNext(240, [{status: DEFAULT, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}])
@@ -38,7 +45,7 @@ test('dynamic tracks', t => {
   const selectedTrackId$ = sh.createColdObservable(
     onNext(0, 10)
   )
-
+  const isSeeking$ = sh.createHotObservable()
   const tracks$ = sh.createHotObservable(
     onNext(205, [{id: 10}, {id: 11}]),
     onNext(300, [{id: 11}, {id: 12}]),
@@ -47,7 +54,7 @@ test('dynamic tracks', t => {
   const audio$ = sh.createHotObservable(
     onNext(210, {event: 'reallyPlaying'})
   )
-  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
+  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$, isSeeking$}))
   t.deepEqual(messages, [
     // 10, 11
     onNext(205, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
@@ -66,7 +73,7 @@ test('ignore timeUpdate', t => {
   const selectedTrackId$ = sh.createColdObservable(
     onNext(0, 10)
   )
-
+  const isSeeking$ = sh.createHotObservable()
   const tracks$ = sh.createHotObservable(
     onNext(205, [{id: 10}, {id: 11}])
   )
@@ -75,7 +82,7 @@ test('ignore timeUpdate', t => {
     onNext(220, {event: 'timeUpdate'}),
     onNext(230, {event: 'timeUpdate'})
   )
-  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
+  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$, isSeeking$}))
   t.deepEqual(messages, [
     // 10, 11
     onNext(205, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
@@ -88,13 +95,13 @@ test('tracks changed', t => {
   const selectedTrackId$ = sh.createColdObservable(
     onNext(0, 10)
   )
-
+  const isSeeking$ = sh.createHotObservable()
   const tracks$ = sh.createHotObservable(
     onNext(205, [{id: 10}, {id: 11}]),
     onNext(300, [{id: 11}, {id: 12}])
   )
   const audio$ = sh.createHotObservable()
-  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$}))
+  const {messages} = sh.startScheduler(() => getStatus$({selectedTrackId$, audio$, tracks$, isSeeking$}))
   t.deepEqual(messages, [
     onNext(205, [{status: PAUSED, track: {id: 10}}, {status: DEFAULT, track: {id: 11}}]),
     onNext(300, [{status: DEFAULT, track: {id: 11}}, {status: DEFAULT, track: {id: 12}}])

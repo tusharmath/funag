@@ -32,6 +32,12 @@ export default create({
       '&:nth-child(2)': animation(1000),
       '&:nth-child(3)': animation(750)
     },
+    '&.no-animation': {
+      '& li': {
+        animation: 'none !important',
+        transform: 'scaleY(0.1)'
+      }
+    },
     '&.pause-animation li': {animationPlayState: 'paused'}
   },
   '@keyframes playing-animation': {

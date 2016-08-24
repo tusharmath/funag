@@ -23,6 +23,7 @@ export const ArtworkOverlay = isAnimated => (
 )
 export const PlayingArtwork = () => ArtworkOverlay('')
 export const PausedArtwork = () => ArtworkOverlay('pause-animation')
+export const SeekingArtWork = () => ArtworkOverlay('no-animation')
 export const DefaultArtwork = url =>
   url ? <div className={css.artwork}
              style={{backgroundImage: `url(${url})`}}></div> : Placeholder()

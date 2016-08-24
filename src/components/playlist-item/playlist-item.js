@@ -5,10 +5,10 @@
 'use strict'
 
 import {Observable as O} from 'rx'
-import {DefaultArtwork, PausedArtwork, PlayingArtwork} from '../artwork/artwork'
+import * as A from '../artwork/artwork'
 import TrackDetail from '../track-details/track-details'
 import isolate from '@cycle/isolate'
-import {DEFAULT, PLAYING, PAUSED} from '../../lib/OverlayStatus'
+import {DEFAULT, PLAYING, PAUSED, SEEKING} from '../../lib/OverlayStatus'
 import css from './playlist-item.style'
 import DoubleClick from '../../lib/DoubleClick'
 const view = ({icon$, trackDetail, track}) => {
@@ -24,9 +24,10 @@ const view = ({icon$, trackDetail, track}) => {
 
 const model = ({track: {artwork_url, id}, status}) => {
   const OverlayMap = {
-    [DEFAULT]: DefaultArtwork(artwork_url),
-    [PAUSED]: PausedArtwork(),
-    [PLAYING]: PlayingArtwork()
+    [DEFAULT]: A.DefaultArtwork(artwork_url),
+    [PAUSED]: A.PausedArtwork(),
+    [PLAYING]: A.PlayingArtwork(),
+    [SEEKING]: A.SeekingArtWork()
   }
 
   const icon$ = O.just(<div key={id}>{OverlayMap[status]}</div>)
