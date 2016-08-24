@@ -46,6 +46,8 @@ export const mockAudioDriver = () => {
   return {
     events () {
       return Observable.empty()
-    }, Play: noop, Pause: noop
+    },
+    Play: noop,
+    Pause: noop
   }
 }

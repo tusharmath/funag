@@ -16,7 +16,8 @@ export default attachStyleSheet({
     marginRight: `${BlockSpace}px`
   },
   trackDetail: {
-    overflow: 'hidden', marginRight: `${BlockSpace}px`,
+    overflow: 'hidden',
+    marginRight: `${BlockSpace}px`,
     extend: spread
   },
   title: {
