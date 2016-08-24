@@ -26,6 +26,6 @@ export default ({completion$, DOM}) => {
   const vTree$ = view({completion$})
   return {
     DOM: vTree$,
-    ... intent({DOM})
+    ...intent({DOM})
   }
 }
