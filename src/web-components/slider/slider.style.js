@@ -4,15 +4,15 @@
 
 'use strict'
 
-import {create} from '../../lib/CreateStyle'
+import {createStyleSheet} from '../../lib/CreateStyle'
 import {Palette, BlockHeight} from '../../lib/Themes'
 
-export default create({
-  'scrobber': {
+export default createStyleSheet({
+  '.scrobber': {
     width: '100%'
   },
-  'wrapper': {},
-  'scrobberTrack': {
+  '.wrapper': {},
+  '.scrobberTrack': {
     background: Palette.bg__scrobberTrack,
     height: '2px',
     transformOrigin: 'left',
@@ -22,7 +22,7 @@ export default create({
     display: 'flex',
     justifyContent: 'flex-end'
   },
-  'scrobberIcon': {
+  '.scrobberIcon': {
     height: BlockHeight,
     width: BlockHeight,
     transform: 'translateY(-50%) translateX(50%)'

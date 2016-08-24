@@ -20,7 +20,7 @@ export default class NativeComponent {
   __onInsert (e) {
     this.__mounted = true
     this.root = e.elm
-    if (this.onCreatedCallback) this.onCreatedCallback(this.root)
+    if (this.createdCallback) this.createdCallback(this.root)
   }
 
   dispatchEvent (event) {
