@@ -10,13 +10,12 @@ import * as R from 'ramda'
 
 jss.setup(preset())
 
-export const create = (styles, options) => {
+export const attachStyleSheet = (styles, options) => {
   const css = R.unapply(R.join(' '))
   Object.assign(css, jss.createStyleSheet(styles, options).classes)
   return css
 }
-export const createGlobal = styles => create(styles, {named: false})
-export const sheets = jss.sheets
+export const globalSheet = jss.sheets
 export const createStyleSheet = (styles) => {
   const jss = new Jss(preset())
   return jss.createStyleSheet(styles, {named: false})

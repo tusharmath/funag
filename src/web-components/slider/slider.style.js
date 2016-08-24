@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {createStyleSheet} from '../../lib/CreateStyle'
+import {createStyleSheet} from '../../lib/JSSHelpers'
 import {Palette, BlockHeight} from '../../lib/Themes'
 
 export default createStyleSheet({

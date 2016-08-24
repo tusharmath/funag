@@ -4,13 +4,13 @@
 
 'use strict'
 
-import {create} from '../../lib/CreateStyle'
+import {attachStyleSheet} from '../../lib/JSSHelpers'
 import * as S from '../../lib/StyleUtils'
 import {BlockHeight, BlockSpace, Palette} from '../../lib/Themes'
 import R from 'ramda'
 import {row, jc_sb as jcsb} from 'flex-jss'
 const animation = time => ({animation: `playing-animation ${time}ms infinite`})
-export default create({
+export default attachStyleSheet({
   container: {
     ...S.block(BlockHeight),
     margin: BlockSpace,
