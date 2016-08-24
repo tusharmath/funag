@@ -7,7 +7,7 @@
 import {getIcon, getIconDOM} from './search-icon.model'
 
 export default ({hasValue$, isLoading$, DOM}) => {
-  const clear$ = DOM.select('x-icon-button[icon="close"]').events('click')
+  const clear$ = DOM.select('x-square-icon[icon="close"]').events('click')
   const icon$ = getIcon(hasValue$, isLoading$)
     .map(getIconDOM)
 

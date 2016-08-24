@@ -29,6 +29,6 @@ export const getIcon = (hasValue$, isLoading$) => {
 
 export const getIconDOM = (icon) => ({
   [ICONS.LOADER]: Loader(),
-  [ICONS.CLEAR]: <x-icon-button key={uuid()} attrs-icon='close'/>,
-  [ICONS.SEARCH]: <x-icon-button key={uuid()} attrs-icon='search'/>
+  [ICONS.CLEAR]: <x-square-icon key={uuid()} attrs-icon='close'/>,
+  [ICONS.SEARCH]: <x-square-icon key={uuid()} attrs-icon='search'/>
 })[icon]

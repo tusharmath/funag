@@ -18,32 +18,32 @@ const pickClicks = ({DOM, url$}, name) => {
 }
 const intent = ({DOM, url$}) => {
   const audio$ = mux({
-    play: pickClicks({DOM, url$}, 'x-icon-button[icon="play_arrow"]'),
-    pause: pickClicks({DOM, url$}, 'x-icon-button[icon="pause"]')
+    play: pickClicks({DOM, url$}, 'x-square-icon[icon="play_arrow"]'),
+    pause: pickClicks({DOM, url$}, 'x-square-icon[icon="pause"]')
   })
   return {audio$}
 }
 export default ({selectedTrack$, AUDIO, DOM}) => {
   const playPause$ = Observable.merge(
     AUDIO.events('playing').map(
-      <x-icon-button key={uuid()} attrs-icon='pause'/>
+      <x-square-icon key={uuid()} attrs-icon='pause'/>
     ),
     AUDIO.events('pause').map(
-      <x-icon-button key={uuid()} attrs-icon='play_arrow'/>
+      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
     ),
     AUDIO.events('loadedData').map(
-      <x-icon-button key={uuid()} attrs-icon='play_arrow'/>
+      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
     ),
     AUDIO.events('seeked').map(
-      <x-icon-button key={uuid()} attrs-icon='play_arrow'/>
+      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
     ),
     selectedTrack$.map(
-      <x-icon-button key={uuid()} attrs-icon='play_arrow'/>
+      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
     )
   )
   const loadStart$ = AUDIO.events('loadStart').startWith(null).map(Loader)
   const loadError$ = AUDIO.events('error').map(
-    <x-icon-button attrs-icon='error_outline'/>
+    <x-square-icon attrs-icon='error_outline'/>
   )
   const url$ = selectedTrack$.map(SC.trackStreamURL)
   const actions = intent({DOM, url$})

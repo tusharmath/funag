@@ -5,7 +5,7 @@
 'use strict'
 
 import registerWC from '../../lib/registerWC'
-import style from './icon-button.style'
+import style from './square-icon.style'
 import h from 'hyperscript'
 
 const view = (icon) => h('i.material-icons', icon)
@@ -14,7 +14,7 @@ const materialDesign = () => h(
   '@import url(\'https://fonts.googleapis.com/icon?family=Material+Icons\')'
 )
 
-registerWC('x-icon-button', {
+registerWC('x-square-icon', {
   createdCallback () {
     this.__shadowRoot = this.createShadowRoot()
     this.__shadowRoot.appendChild(materialDesign())

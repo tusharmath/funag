@@ -4,4 +4,4 @@
 
 'use strict'
 
-import './icon-button/icon-button'
+import './square-icon/square-icon'
