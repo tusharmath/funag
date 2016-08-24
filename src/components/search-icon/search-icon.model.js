@@ -6,7 +6,6 @@
 
 import {Observable as O} from 'rx'
 import Loader from '../loader/loader'
-import uuid from '../../lib/uuid'
 
 export const ICONS = {
   LOADER: 'loader',
@@ -29,6 +28,6 @@ export const getIcon = (hasValue$, isLoading$) => {
 
 export const getIconDOM = (icon) => ({
   [ICONS.LOADER]: Loader(),
-  [ICONS.CLEAR]: <x-square-icon key={uuid()} attrs-icon='close'/>,
-  [ICONS.SEARCH]: <x-square-icon key={uuid()} attrs-icon='search'/>
+  [ICONS.CLEAR]: <x-square-icon attrs-icon='close'/>,
+  [ICONS.SEARCH]: <x-square-icon attrs-icon='search'/>
 })[icon]
