@@ -4,9 +4,9 @@
 
 'use strict'
 
-import {createGlobal} from '../../lib/CreateStyle'
+import {attachStyleSheet} from '../../lib/JSSHelpers'
 
-export default createGlobal({
+export default attachStyleSheet({
   'body, html': {
     height: '100%',
     width: '100%',
@@ -48,4 +48,4 @@ export default createGlobal({
     from: {opacity: 0},
     to: {opacity: 1}
   }
-})
+}, {named: false})

@@ -13,6 +13,7 @@ import * as P from '../placeholders/placeholders'
 import {getStatus$} from '../../lib/OverlayStatus'
 import css from './playlist.style'
 import {collectionFrom} from '../../lib/CycleCollection'
+
 export const Audio = ({url$}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([
     ({last}) => !last,
@@ -23,15 +24,20 @@ export const Audio = ({url$}) => url$.scan((last, src) => {
   return {src, type: 'PAUSE'}
 }, null)
 
+const PLACEHOLDER = (
+  <div>
+    {P.PlaylistItem}{P.PlaylistItem}{P.PlaylistItem}
+  </div>
+)
+
 const view = ({playlistDOM$, isSeeking$}) => {
   return O.combineLatest(
-    playlistDOM$.startWith(
-      <div>{P.PlaylistItem}{P.PlaylistItem}{P.PlaylistItem}</div>
-    ),
-    isSeeking$.map(x => x ? css.disableScroll : '').startWith('')
+    playlistDOM$.startWith(PLACEHOLDER),
+    isSeeking$.startWith(false)
   )
     .map(([view, disableScroll]) =>
-      <div classNames={[css.playlist, disableScroll]}>
+      <div class={{[css.disableScroll]: disableScroll}}
+           classNames={[css.playlist]}>
         {view}
       </div>
     )
