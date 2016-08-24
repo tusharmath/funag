@@ -24,9 +24,6 @@ export const fixed = x => {
   return {...position(x), position: 'fixed'}
 }
 
-export const fa = (name, dim = 1.5) =>
-  <i className='material-icons' style={{fontSize: `${dim}rem`}}>{name}</i>
-
 export const overflowEllipsisSTY = {
   overflow: 'hidden',
   whiteSpace: 'nowrap',

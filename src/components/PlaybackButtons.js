@@ -7,10 +7,9 @@ import {div} from '@cycle/dom'
 import {Observable} from 'rx'
 import R from 'ramda'
 import {mux} from 'muxer'
-import * as S from '../lib/StyleUtils'
-import * as T from '../lib/Themes'
 import * as SC from '../lib/SoundCloud'
 import Loader from './loader/loader'
+import uuid from '../lib/uuid'
 
 const pickClicks = ({DOM, url$}, name) => {
   const select = R.compose(R.objOf('src'), R.nthArg(1))
@@ -19,24 +18,32 @@ const pickClicks = ({DOM, url$}, name) => {
 }
 const intent = ({DOM, url$}) => {
   const audio$ = mux({
-    play: pickClicks({DOM, url$}, '.ctrl-play_arrow'),
-    pause: pickClicks({DOM, url$}, '.ctrl-pause')
+    play: pickClicks({DOM, url$}, 'x-square-icon[icon="play_arrow"]'),
+    pause: pickClicks({DOM, url$}, 'x-square-icon[icon="pause"]')
   })
   return {audio$}
 }
 export default ({selectedTrack$, AUDIO, DOM}) => {
   const playPause$ = Observable.merge(
-    AUDIO.events('playing').map('pause'),
-    AUDIO.events('pause').map('play_arrow'),
-    AUDIO.events('loadedData').map('play_arrow'),
-    AUDIO.events('seeked').map('play_arrow'),
-    selectedTrack$.map('play_arrow')
-  ).map(button =>
-    div(`.ctrl-${button}`, {style: S.block(T.BlockHeight)}, [S.fa(button)])
+    AUDIO.events('playing').map(
+      <x-square-icon key={uuid()} attrs-icon='pause'/>
+    ),
+    AUDIO.events('pause').map(
+      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
+    ),
+    AUDIO.events('loadedData').map(
+      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
+    ),
+    AUDIO.events('seeked').map(
+      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
+    ),
+    selectedTrack$.map(
+      <x-square-icon key={uuid()} attrs-icon='play_arrow'/>
+    )
   )
   const loadStart$ = AUDIO.events('loadStart').startWith(null).map(Loader)
   const loadError$ = AUDIO.events('error').map(
-    div({style: S.block(T.BlockHeight)}, [S.fa('error_outline')])
+    <x-square-icon attrs-icon='error_outline'/>
   )
   const url$ = selectedTrack$.map(SC.trackStreamURL)
   const actions = intent({DOM, url$})

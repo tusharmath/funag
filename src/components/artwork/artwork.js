@@ -9,7 +9,7 @@ import css from './artwork.style'
 
 export const Placeholder = () => (
   <div className={css.placeholder}>
-    <div>{S.fa('music_note')}</div>
+    <x-square-icon attrs-icon='music_note'/>
   </div>
 )
 export const ArtworkOverlay = isAnimated => (

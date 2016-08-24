@@ -21,6 +21,14 @@ const event = (searchEl, inputEl) => O
     ).map(BLUR)
   )
 
+const isLoading = (request$, response$) => {
+  return O.merge(request$.map(true), response$.map(false))
+}
+
+const hasValue = (filter$) => {
+  return filter$.map(f => f.length > 0)
+}
+
 const intent = ({HTTP, DOM, filter$}) => {
   // TODO: Add unit tests
   const tracks$ = httpSelectBody(HTTP, 'tracks')
@@ -29,13 +37,18 @@ const intent = ({HTTP, DOM, filter$}) => {
   const value$ = U.inputVal(searchEl).debounce(300)
   const request$ = requestTracks(filter$)
   const events$ = event(searchEl, inputEl)
-  return {request$, events$, tracks$, value$}
+  const isLoading$ = isLoading(request$, tracks$)
+  const hasValue$ = hasValue(filter$)
+  return {request$, events$, tracks$, value$, isLoading$, hasValue$}
 }
 
 export default ({DOM, HTTP, STORE}) => {
   const filter$ = STORE.select('track.filter').startWith('')
-  const {request$, events$, tracks$, value$} = intent({HTTP, DOM, filter$})
-  const searchIcon = SearchIcon({filter$, tracks$, DOM})
+  const {request$, events$, tracks$, value$, isLoading$, hasValue$} = intent(
+    {HTTP, DOM, filter$}
+  )
+
+  const searchIcon = SearchIcon({hasValue$, isLoading$, DOM})
   const icon$ = searchIcon.DOM
   const vTree$ = view({clear$: searchIcon.clear$, icon$})
   return {
