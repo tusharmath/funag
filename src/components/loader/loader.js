@@ -4,8 +4,9 @@
 
 'use strict'
 import css from './loader.style'
+import uuid from '../../lib/uuid'
 export default () => (
-  <div className={css.loaderContainer}>
+  <div key={uuid()} className={css.loaderContainer}>
     <div className={css.loader}></div>
   </div>
 )

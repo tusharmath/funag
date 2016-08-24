@@ -6,6 +6,7 @@
 
 import {Observable as O} from 'rx'
 import Loader from '../loader/loader'
+import uuid from '../../lib/uuid'
 
 export const ICONS = {
   LOADER: 'loader',
@@ -23,10 +24,11 @@ export const getIcon = (hasValue$, isLoading$) => {
       if (hasValue) return ICONS.CLEAR
       return ICONS.SEARCH
     })
+    .distinctUntilChanged()
 }
 
 export const getIconDOM = (icon) => ({
   [ICONS.LOADER]: Loader(),
-  [ICONS.CLEAR]: <x-icon-button key='close' attrs-icon='close'/>,
-  [ICONS.SEARCH]: <x-icon-button key='search' attrs-icon='search'/>
+  [ICONS.CLEAR]: <x-icon-button key={uuid()} attrs-icon='close'/>,
+  [ICONS.SEARCH]: <x-icon-button key={uuid()} attrs-icon='search'/>
 })[icon]

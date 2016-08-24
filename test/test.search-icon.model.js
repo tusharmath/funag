@@ -13,7 +13,8 @@ test(t => {
   const sh = new TestScheduler()
   const isLoading$ = sh.createHotObservable(
     onNext(215, true),
-    onNext(220, false)
+    onNext(220, false),
+    onNext(230, false)
   )
   const hasValue$ = sh.createHotObservable(
     onNext(210, true)
