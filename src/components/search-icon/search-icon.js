@@ -4,18 +4,12 @@
 
 'use strict'
 
-import isolate from '@cycle/isolate'
 import {getIcon, getIconDOM} from './search-icon.model'
 
-export const SearchIcon = ({hasValue$, isLoading$, DOM}) => {
-  const clear$ = DOM
-    .select('x-icon-button[icon="close"]')
-    .events('click')
-    .map('')
+export default ({hasValue$, isLoading$, DOM}) => {
+  const clear$ = DOM.select('x-icon-button[icon="close"]').events('click')
   const icon$ = getIcon(hasValue$, isLoading$)
     .map(getIconDOM)
 
   return {DOM: icon$, clear$}
 }
-
-export default sources => isolate(SearchIcon)(sources)
