@@ -4,15 +4,15 @@
 
 'use strict'
 
-import {attachStyleSheet} from '../../lib/JSSHelpers'
+import {createStyleSheet} from '../../lib/JSSHelpers'
 import {Palette, BlockHeight} from '../../lib/Themes'
 
-export default attachStyleSheet({
-  'scrobber': {
+export default createStyleSheet({
+  '.scrobber': {
     width: '100%'
   },
-  'wrapper': {},
-  'scrobberTrack': {
+  '.wrapper': {},
+  '.scrobberTrack': {
     background: Palette.bg__scrobberTrack,
     height: '2px',
     transformOrigin: 'left',
@@ -22,7 +22,7 @@ export default attachStyleSheet({
     display: 'flex',
     justifyContent: 'flex-end'
   },
-  'scrobberIcon': {
+  '.scrobberIcon': {
     height: BlockHeight,
     width: BlockHeight,
     transform: 'translateY(-50%) translateX(50%)'
