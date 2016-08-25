@@ -12,6 +12,7 @@ import {mockAudioDriver} from '../drivers/audio'
 import * as R from 'ramda'
 import {createReduxDriver} from '../drivers/reduxDriver'
 import wrapHTML from './wrapHTML'
+import reducers from '../redux-lib/reducers'
 
 export const createWrappedMain = R.curry((Main, compilation, sources) => {
   const main = Main(sources)
@@ -30,7 +31,7 @@ export class ApplicationShell {
   apply (compiler) {
     const onEmit = (compilation, cb) => {
       const sources = {
-        STORE: createReduxDriver(),
+        STORE: createReduxDriver(reducers),
         DOM: makeHTMLDriver(onHTML(compilation, cb)),
         AUDIO: mockAudioDriver,
         EVENTS: () => ({select: () => Observable.never()}),
