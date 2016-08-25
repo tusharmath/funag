@@ -21,7 +21,10 @@ export default addRules({
     paddingLeft: `${T.BlockSpace}px`,
     transform: 'translateZ(0)',
     color: T.Palette.fg__search,
-    margin: '0'
+    margin: '0',
+    position: 'absolute',
+    top: '0px',
+    width: '100%'
   },
   inputContainer: {
     minHeight: `${T.BlockHeight}px`
