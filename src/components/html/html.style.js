@@ -4,9 +4,9 @@
 
 'use strict'
 
-import {attachStyleSheet} from '../../lib/JSSHelpers'
+import {addUnnamedRules} from '../../lib/JSSHelpers'
 
-export default attachStyleSheet({
+addUnnamedRules({
   'body, html': {
     height: '100%',
     width: '100%',

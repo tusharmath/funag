@@ -3,10 +3,10 @@
  */
 
 'use strict'
-import {attachStyleSheet} from '../../lib/JSSHelpers'
+import {addRules} from '../../lib/JSSHelpers'
 import {BlockHeight} from '../../lib/Themes'
 
-export default attachStyleSheet({
+export default addRules({
   loaderContainer: {
     display: 'flex',
     alignItems: 'center',

@@ -4,14 +4,14 @@
 
 'use strict'
 
-import {attachStyleSheet} from '../../lib/JSSHelpers'
+import {addRules} from '../../lib/JSSHelpers'
 import * as S from '../../lib/StyleUtils'
 import {BlockHeight, BlockSpace, Palette} from '../../lib/Themes'
 import R from 'ramda'
 import {row, jc_sb as jcsb} from 'flex-jss'
 const animation = time => ({animation: `playing-animation ${time}ms infinite`})
-export default attachStyleSheet({
-  container: {
+export default addRules({
+  artworkContainer: {
     ...S.block(BlockHeight),
     margin: BlockSpace,
     backgroundColor: Palette.bg__artwork
@@ -39,7 +39,7 @@ export default attachStyleSheet({
     '50%': {transform: 'scaleY(1)'},
     '100%': {transform: 'scaleY(0.1)'}
   },
-  placeholder: {
+  artworkPlaceholder: {
     ...S.block(50),
     margin: BlockSpace,
     color: Palette.fg__artwork,

@@ -4,11 +4,11 @@
 
 'use strict'
 
-import {attachStyleSheet} from '../../lib/JSSHelpers'
+import {addRules} from '../../lib/JSSHelpers'
 import {Palette} from '../../lib/Themes'
 
-export default attachStyleSheet({
-  container: {
+export default addRules({
+  controlsContainer: {
     transform: 'translateZ(0)',
     boxShadow: Palette.zDepth__1,
     backgroundColor: Palette.bg__control,
