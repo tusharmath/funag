@@ -8,7 +8,7 @@ import {Observable as O} from 'rx'
 import * as U from '../../lib/DOMUtils'
 import SearchIcon from '../search-icon/search-icon'
 import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventDriver'
-import {APPLY_FILTER, CLEAR_FILTER} from '../../redux-lib/actions'
+import {APPLY_FILTER, CLEAR_FILTER, SET_TRACKS} from '../../redux-lib/actions'
 import view from './search.view'
 import httpSelectBody from '../../lib/httpSelectBody'
 import {requestTracks} from './search.request'
@@ -30,7 +30,6 @@ const hasValue = (filter$) => {
 }
 
 const intent = ({HTTP, DOM, filter$}) => {
-  // TODO: Add unit tests
   const tracks$ = httpSelectBody(HTTP, 'tracks')
   const searchEl = DOM.select('.search')
   const inputEl = DOM.select('.search input')
@@ -44,6 +43,7 @@ const intent = ({HTTP, DOM, filter$}) => {
 
 export default ({DOM, HTTP, STORE}) => {
   const filter$ = STORE.select('track.filter').startWith('')
+    .distinctUntilChanged()
   const {request$, events$, tracks$, value$, isLoading$, hasValue$} = intent(
     {HTTP, DOM, filter$}
   )
@@ -54,11 +54,11 @@ export default ({DOM, HTTP, STORE}) => {
   return {
     HTTP: request$,
     DOM: vTree$,
-    events$,
-    tracks$,
+    EVENTS: events$,
     STORE: O.merge(
       value$.map(APPLY_FILTER),
-      searchIcon.clear$.map(CLEAR_FILTER)
+      searchIcon.clear$.map(CLEAR_FILTER),
+      tracks$.map(SET_TRACKS)
     )
   }
 }

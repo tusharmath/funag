@@ -9,10 +9,10 @@ import {Observable as O} from 'rx'
 import {mux} from 'muxer'
 import PlayListItem from '../playlist-item/playlist-item'
 import * as SC from '../../lib/SoundCloud'
-import * as P from '../placeholders/placeholders'
 import {getStatus$} from '../../lib/OverlayStatus'
-import css from './playlist.style'
 import {collectionFrom} from '../../lib/CycleCollection'
+import {SELECT_TRACK} from '../../redux-lib/actions'
+import view from './playlist.view'
 
 export const Audio = ({url$}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([
@@ -24,24 +24,6 @@ export const Audio = ({url$}) => url$.scan((last, src) => {
   return {src, type: 'PAUSE'}
 }, null)
 
-const PLACEHOLDER = (
-  <div>
-    {P.PlaylistItem}{P.PlaylistItem}{P.PlaylistItem}
-  </div>
-)
-
-const view = ({playlistDOM$, isSeeking$}) => {
-  return O.combineLatest(
-    playlistDOM$.startWith(PLACEHOLDER),
-    isSeeking$.startWith(false)
-  )
-    .map(([view, disableScroll]) =>
-      <div class={{[css.disableScroll]: disableScroll}}
-           classNames={[css.playlist]}>
-        {view}
-      </div>
-    )
-}
 const reallyPlaying = AUDIO => AUDIO
   .events('playing').flatMapLatest(
     () => AUDIO.events('timeUpdate').first()
@@ -58,29 +40,31 @@ const getAudioEvents = AUDIO => {
     ).map(_('loadStart'))
   )
 }
-const model = ({tracks$, DOM, STORE, AUDIO}) => {
+const ofType = R.compose(R.whereEq, R.objOf('type'))
+const model = ({DOM, STORE, AUDIO}) => {
+  const tracks$ = STORE.select('track.data')
   const audio$ = getAudioEvents(AUDIO)
-  const selectedTrackId$ = STORE.select('track.selected').pluck('id')
+  const selectedTrackId$ = STORE.select('track.selected').filter(Boolean)
+    .pluck('id')
   const data$ = getStatus$({selectedTrackId$, audio$, tracks$})
   const rows = collectionFrom(PlayListItem, {DOM}, data$)
   const playlistClick$ = rows.merged('click$')
   const playlistDOM$ = rows.combined('DOM')
   const url$ = playlistClick$.map(SC.trackStreamURL)
   const audioAction$ = Audio({url$})
-  const ofType = R.compose(R.whereEq, R.objOf('type'))
   const play = audioAction$.filter(ofType('PLAY'))
   const pause = audioAction$.filter(ofType('PAUSE'))
   return {
     playlistDOM$,
-    selectTrack$: playlistClick$,
-    audio$: mux({play, pause})
+    STORE: playlistClick$.map(SELECT_TRACK),
+    AUDIO: mux({play, pause})
   }
 }
-export default ({tracks$, DOM, STORE, AUDIO, isSeeking$}) => {
-  const sources = {AUDIO, tracks$, DOM, STORE}
-  const {audio$, selectTrack$, playlistDOM$} = model(sources)
-  const vTree$ = view({playlistDOM$, isSeeking$})
+
+export default (sources) => {
+  const {AUDIO, STORE, playlistDOM$} = model(sources)
+  const vTree$ = view({playlistDOM$})
   return {
-    DOM: vTree$, audio$, selectTrack$
+    DOM: vTree$, AUDIO, STORE
   }
 }
