@@ -11,7 +11,6 @@ import {Observable as O} from 'rx'
 
 const view = () => O.just(
   <div className={css(css.headerContainer)}>
-
     <div className={css('flb col jc_c spread', css.headerText)}>
       <div>
         <strong>Funag</strong>
