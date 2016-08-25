@@ -8,6 +8,7 @@ import {createStyleSheet} from '../../lib/JSSHelpers'
 
 export default createStyleSheet({
   ':host': {
+    contain: 'strict',
     height: '50px',
     width: '50px',
     display: 'flex',

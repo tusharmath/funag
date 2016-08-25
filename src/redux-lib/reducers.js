@@ -6,7 +6,8 @@
 
 import {combineReducers} from 'redux'
 import track from './track-reducers'
+import animationState from './animation-state-reducers'
 
 export default combineReducers({
-  track
+  track, animationState
 })
