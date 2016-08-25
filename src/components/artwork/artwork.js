@@ -8,12 +8,12 @@ import * as S from '../../lib/StyleUtils'
 import css from './artwork.style'
 
 export const Placeholder = () => (
-  <div className={css.placeholder}>
+  <div className={css.artworkPlaceholder}>
     <x-square-icon attrs-icon='music_note'/>
   </div>
 )
 export const ArtworkOverlay = isAnimated => (
-  <div className={S.css('fade-in', css.container)}>
+  <div className={S.css('fade-in', css.artworkContainer)}>
     <ul className={S.css(css.playingAnimation, isAnimated)}>
       <li/>
       <li/>

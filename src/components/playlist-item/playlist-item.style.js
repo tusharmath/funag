@@ -4,10 +4,10 @@
 
 'use strict'
 
-import {attachStyleSheet} from '../../lib/JSSHelpers'
+import {addRules} from '../../lib/JSSHelpers'
 import * as T from '../../lib/Themes'
 
-export default attachStyleSheet({
+export default addRules({
   playlistItem: {
     fontSize: '1rem',
     overflow: 'hidden'

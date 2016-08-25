@@ -3,9 +3,9 @@
  */
 
 'use strict'
-import {attachStyleSheet} from '../../lib/JSSHelpers'
+import {addRules} from '../../lib/JSSHelpers'
 
-export default attachStyleSheet({
+export default addRules({
   playlist: {
     height: '100%',
     overflow: 'auto'
