@@ -15,3 +15,7 @@ export const SET_TRACKS = createAction('SET_TRACKS')
 // ANIMATIONS
 export const TOUCH_START = createAction('TOUCH_START')
 export const TOUCH_END = createAction('TOUCH_END')
+
+// VIEW
+export const SHOW_SEARCH = createAction('SHOW_SEARCH_BOX')
+export const HIDE_SEARCH = createAction('HIDE_SEARCH_BOX')

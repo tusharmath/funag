@@ -12,11 +12,15 @@ const isMoving = STORE => {
     .select('animationState.touchStarted')
     .startWith(false)
 }
-export default ({playlist, searchBox, controls, STORE}) => {
+export default ({playlist, controls, header, STORE}) => {
   const touchStarted$ = isMoving(STORE)
   return O
-    .combineLatest(touchStarted$, searchBox.DOM, playlist.DOM, controls.DOM)
-    .map(([touchStarted, ...views]) =>
+    .combineLatest(
+      touchStarted$,
+      header.DOM,
+      playlist.DOM,
+      controls.DOM
+    ).map(([touchStarted, ...views]) =>
       <div class={{[css.touchStarted]: touchStarted}}
            className={css(css.main, 'flb col')}>
         {views}
