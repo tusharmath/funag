@@ -7,13 +7,13 @@
 import R from 'ramda'
 import {TOUCH_END, TOUCH_START} from './actions'
 
-const initialState = {selected: null, filter: '', data: []}
+const initialState = {touchStarted: false}
 export default (state = initialState, {type}) => {
   switch (type) {
     case TOUCH_START:
       return R.assoc('touchStarted', true, state)
     case TOUCH_END:
-      return R.assoc('touchEnd', true, state)
+      return R.assoc('touchStarted', false, state)
     default :
       return state
   }

@@ -54,9 +54,7 @@ const model = ({DOM, STORE, AUDIO}) => {
   const audioAction$ = Audio({url$})
   const play = audioAction$.filter(ofType('PLAY'))
   const pause = audioAction$.filter(ofType('PAUSE'))
-  const isSeeking$ = STORE.select('animationState.touchStarted')
   return {
-    isSeeking$,
     playlistDOM$,
     STORE: playlistClick$.map(SELECT_TRACK),
     AUDIO: mux({play, pause})
@@ -64,8 +62,8 @@ const model = ({DOM, STORE, AUDIO}) => {
 }
 
 export default (sources) => {
-  const {AUDIO, STORE, playlistDOM$, isSeeking$} = model(sources)
-  const vTree$ = view({playlistDOM$, isSeeking$})
+  const {AUDIO, STORE, playlistDOM$} = model(sources)
+  const vTree$ = view({playlistDOM$})
   return {
     DOM: vTree$, AUDIO, STORE
   }

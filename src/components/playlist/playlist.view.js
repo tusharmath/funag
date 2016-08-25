@@ -4,26 +4,17 @@
 
 'use strict'
 
-import {Observable as O} from 'rx'
+import R from 'ramda'
 import css from './playlist.style'
 import {PlaylistItem} from '../placeholders/placeholders'
 
-const PLACEHOLDER = (
-  <div>
-    {PlaylistItem}
-    {PlaylistItem}
-    {PlaylistItem}
-  </div>
-)
+const PLACEHOLDER = (<div>{R.repeat(PlaylistItem, 3)}</div>)
 
-export default ({playlistDOM$, isSeeking$}) => {
-  return O.combineLatest(
-    playlistDOM$.startWith(PLACEHOLDER),
-    isSeeking$.startWith(false)
-  ).map(([view, disableScroll]) =>
-    <div class={{[css.disableScroll]: disableScroll}}
-         classNames={[css.playlist]}>
-      {view}
-    </div>
-  )
+export default ({playlistDOM$}) => {
+  return playlistDOM$
+    .startWith(PLACEHOLDER)
+    .map(view => <div classNames={[css.playlist]}>
+        {view}
+      </div>
+    )
 }

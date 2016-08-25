@@ -9,5 +9,10 @@ import {addRules} from '../../lib/JSSHelpers'
 export default addRules({
   main: {
     height: '100%'
+  },
+  touchStarted: {
+    '& $playlist': {
+      overflow: 'hidden'
+    }
   }
 })

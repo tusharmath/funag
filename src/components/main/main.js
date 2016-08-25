@@ -9,12 +9,8 @@ import R from 'ramda'
 import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
 import SearchBox from '../search/search'
-import css from './main.style'
 import {SELECT_TRACK} from '../../redux-lib/actions'
-
-const view = ({playlist, searchBox, controls}) => O
-  .combineLatest(searchBox.DOM, playlist.DOM, controls.DOM)
-  .map(views => <div className={css(css.main, 'flb col')}>{views}</div>)
+import view from './main.view'
 
 const store = ({STORE, playlist, searchBox, controls}) => {
   return O.merge(
@@ -42,7 +38,7 @@ export default function (sources) {
     title: title(sources.STORE),
     EVENTS: searchBox.EVENTS,
     AUDIO: audio({playlist, controls}),
-    DOM: view({playlist, searchBox, controls}),
+    DOM: view({playlist, searchBox, controls, ...sources}),
     STORE: store({STORE: sources.STORE, playlist, searchBox, controls})
   }
 }
