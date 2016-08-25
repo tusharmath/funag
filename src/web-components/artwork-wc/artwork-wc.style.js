@@ -1,22 +1,23 @@
 /**
- * Created by tushar.mathur on 07/08/16.
+ * Created by imamudin.naseem on 24/08/16.
  */
 
 'use strict'
 
-import {addRules} from '../../lib/JSSHelpers'
+import R from 'ramda'
+import {createStyleSheet} from '../../lib/JSSHelpers'
 import * as S from '../../lib/StyleUtils'
 import {BlockHeight, BlockSpace, Palette} from '../../lib/Themes'
-import R from 'ramda'
 import {row, jc_sb as jcsb} from 'flex-jss'
+
 const animation = time => ({animation: `playing-animation ${time}ms infinite`})
-export default addRules({
-  artworkContainer: {
+export default createStyleSheet({
+  '.container': {
     ...S.block(BlockHeight),
     margin: BlockSpace,
     backgroundColor: Palette.bg__artwork
   },
-  playingAnimation: {
+  '.playingAnimation': {
     ...S.size(17),
     extend: R.merge(row, jcsb),
     margin: 0,
@@ -39,13 +40,13 @@ export default addRules({
     '50%': {transform: 'scaleY(1)'},
     '100%': {transform: 'scaleY(0.1)'}
   },
-  artworkPlaceholder: {
+  '.placeholder': {
     ...S.block(50),
     margin: BlockSpace,
     color: Palette.fg__artwork,
     backgroundColor: Palette.bg__artwork
   },
-  artwork: {
+  '.artwork': {
     backgroundRepeat: 'no-repeat',
     backgroundPosition: '50%',
     backgroundSize: '100%',

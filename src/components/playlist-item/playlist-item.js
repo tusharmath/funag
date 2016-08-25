@@ -5,10 +5,9 @@
 'use strict'
 
 import {Observable as O} from 'rx'
-import {DefaultArtwork, PausedArtwork, PlayingArtwork} from '../artwork/artwork'
+import R from 'ramda'
 import TrackDetail from '../track-details/track-details'
 import isolate from '@cycle/isolate'
-import {DEFAULT, PLAYING, PAUSED} from '../../lib/OverlayStatus'
 import css from './playlist-item.style'
 import DoubleClick from '../../lib/DoubleClick'
 const view = ({icon$, trackDetail, track}) => {
@@ -22,17 +21,12 @@ const view = ({icon$, trackDetail, track}) => {
   )
 }
 
+const EmptyIfNull = R.when(R.not, R.always(''))
 const model = ({track: {artwork_url}, status}) => {
-  const OverlayMap = {
-    [DEFAULT]: DefaultArtwork(artwork_url),
-    [PAUSED]: PausedArtwork(),
-    [PLAYING]: PlayingArtwork()
-  }
-
-  const icon$ = O.just(OverlayMap[status])
+  const icon$ = O.just(<x-artwork attrs-status={status}
+                                  attrs-url={EmptyIfNull(artwork_url)}/>)
   return {icon$}
 }
-
 const intent = ({DOM, track}) => {
   const click$ = DoubleClick(DOM.select('.playlist-item')).map(track)
   return {click$}
