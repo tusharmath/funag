@@ -12,13 +12,12 @@ const isMoving = STORE => {
     .select('animationState.touchStarted')
     .startWith(false)
 }
-export default ({playlist, searchBox, controls, header, STORE}) => {
+export default ({playlist, controls, header, STORE}) => {
   const touchStarted$ = isMoving(STORE)
   return O
     .combineLatest(
       touchStarted$,
       header.DOM,
-      searchBox.DOM,
       playlist.DOM,
       controls.DOM
     ).map(([touchStarted, ...views]) =>

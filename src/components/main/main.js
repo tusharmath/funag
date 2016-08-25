@@ -8,14 +8,13 @@ import {Observable as O} from 'rx'
 import R from 'ramda'
 import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
-import SearchBox from '../search/search'
 import {SELECT_TRACK} from '../../redux-lib/actions'
 import Header from '../header/header'
 import view from './main.view'
 
-const store = ({STORE, playlist, searchBox, controls}) => {
+const store = ({STORE, playlist, header, controls}) => {
   return O.merge(
-    searchBox.STORE,
+    header.STORE,
     playlist.STORE,
     controls.STORE,
     STORE.select('track.data').map(R.head).take(1).map(SELECT_TRACK)
@@ -31,16 +30,15 @@ const audio = ({playlist, controls}) => {
 }
 
 export default function (sources) {
-  const searchBox = SearchBox(sources)
   const controls = Controls(sources)
   const playlist = Playlist(sources)
   const header = Header(sources)
   return {
-    HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),
+    HTTP: header.HTTP.map(R.merge({accept: 'application/json'})),
     title: title(sources.STORE),
-    EVENTS: searchBox.EVENTS,
+    EVENTS: header.EVENTS,
     AUDIO: audio({playlist, controls}),
-    DOM: view({playlist, searchBox, controls, header, ...sources}),
-    STORE: store({STORE: sources.STORE, playlist, searchBox, controls})
+    DOM: view({playlist, controls, header, ...sources}),
+    STORE: store({STORE: sources.STORE, playlist, header, controls})
   }
 }
