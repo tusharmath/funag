@@ -11,10 +11,6 @@ import {PlaylistItem} from '../placeholders/placeholders'
 const PLACEHOLDER = (<div>{R.repeat(PlaylistItem, 3)}</div>)
 
 export default ({playlistDOM$}) => {
-  return playlistDOM$
-    .startWith(PLACEHOLDER)
-    .map(view => <div classNames={[css.playlist]}>
-        {view}
-      </div>
-    )
+  return playlistDOM$.startWith(PLACEHOLDER)
+    .map(view => <div classNames={[css.playlist]}>{view}</div>)
 }

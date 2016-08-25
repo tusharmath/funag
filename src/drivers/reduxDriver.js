@@ -18,7 +18,7 @@ export const createReduxDriver = (reducer = x => x) => {
   const value$ = O.fromEventPattern(
     cb => store.subscribe(() => cb(store.getState())),
     dispose => dispose()
-  )
+  ).startWith(store.getState()).shareReplay(1)
   return actions => {
     actions.subscribe(action => store.dispatch(action))
     const select = path => {

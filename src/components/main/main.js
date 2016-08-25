@@ -17,7 +17,10 @@ const store = ({STORE, playlist, header, controls}) => {
     header.STORE,
     playlist.STORE,
     controls.STORE,
-    STORE.select('track.data').map(R.head).take(1).map(SELECT_TRACK)
+    STORE.select('track.data')
+      .filter(x => x.length > 0)
+      .map(R.head).take(1)
+      .map(SELECT_TRACK)
   )
 }
 const title = (STORE) => {

@@ -42,8 +42,7 @@ const intent = ({HTTP, DOM, filter$}) => {
 }
 
 export default ({DOM, HTTP, STORE}) => {
-  const filter$ = STORE.select('track.filter').startWith('')
-    .distinctUntilChanged()
+  const filter$ = STORE.select('track.filter')
   const {request$, events$, tracks$, value$, isLoading$, hasValue$} = intent(
     {HTTP, DOM, filter$}
   )

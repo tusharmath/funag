@@ -8,9 +8,7 @@ import {Observable as O} from 'rx'
 import css from './main.style'
 
 const isMoving = STORE => {
-  return STORE
-    .select('animationState.touchStarted')
-    .startWith(false)
+  return STORE.select('animationState.touchStarted')
 }
 export default ({playlist, controls, header, STORE}) => {
   const touchStarted$ = isMoving(STORE)
