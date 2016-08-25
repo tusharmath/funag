@@ -16,7 +16,8 @@ import reducers from '../redux-lib/reducers'
 
 export const createWrappedMain = R.curry((Main, compilation, sources) => {
   const main = Main(sources)
-  const DOM = main.DOM.first().map(wrapHTML(compilation))
+  const DOM = main.DOM.first()
+    .map(wrapHTML(compilation))
   return R.merge(main, {DOM})
 })
 export const createAsset = html => ({

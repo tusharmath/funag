@@ -6,22 +6,23 @@
 
 import R from 'ramda'
 import {Observable as O} from 'rx'
+import {h} from '@cycle/dom'
 import css from './search.style'
 
 const resetValue = () =>
-  <input type='text' className={css.input} placeholder='Search' value=''/>
+  h(`input.${css.input}`, {type: 'text', placeholder: 'Search', value: ''})
 
 const ignoreValue = () =>
-  <input type='text' className={css.input} placeholder='Search'/>
+  h(`input.${css.input}`, {type: 'text', placeholder: 'Search'})
 
 const selectValue = R.ifElse(R.identity, resetValue, ignoreValue)
 const Form = R.curry((reset, icon) =>
-  <form className={css('search', css.searchContainer)}>
-    <div className={css(css.inputContainer, 'flb row jc_sa ai_c')}>
-      {selectValue(reset)}
-      {icon}
-    </div>
-  </form>
+  h(`form.${css.searchContainer}.search`, [
+    h(`div.${css.inputContainer}.flb.row.jc_sa.ai_c`, [
+      selectValue(reset),
+      icon
+    ])
+  ])
 )
 
 export default ({clear$, icon$}) => {

@@ -11,14 +11,16 @@ import isolate from '@cycle/isolate'
 import {DEFAULT, PLAYING, PAUSED} from '../../lib/OverlayStatus'
 import css from './playlist-item.style'
 import DoubleClick from '../../lib/DoubleClick'
-const view = ({icon$, trackDetail, track}) => {
+import {h} from '@cycle/dom'
+
+const view = ({icon$, trackDetail}) => {
   return icon$.map(icon =>
-    <div key={track.id} className={css(css.playlistItem, 'playlist-item')}>
-      <div className={css(css.trackInfo, 'flb row jc_sb ai_c')}>
-        {icon}
-        {trackDetail}
-      </div>
-    </div>
+    h(`div.${css.playlistItem}.playlist-item`, [
+      h(`div.${css.trackInfo}.flb.row.jc_sb.ai_c`, [
+        icon,
+        trackDetail
+      ])
+    ])
   )
 }
 
@@ -41,7 +43,7 @@ const intent = ({DOM, track}) => {
 const PlayListItem = ({DOM, ROW: {track, status}}) => {
   const {icon$} = model({track, status})
   const trackDetail = TrackDetail(track)
-  const vTree$ = view({icon$, trackDetail, track})
+  const vTree$ = view({icon$, trackDetail})
   const {click$} = intent({DOM, track})
   return {click$, DOM: vTree$}
 }

@@ -6,6 +6,7 @@
 
 import {addRules} from '../../lib/JSSHelpers'
 import {BlockSpace, Palette, BlockHeight} from '../../lib/Themes'
+import {jc_c as jcc, col} from 'flex-jss'
 
 export default addRules({
   headerContainer: {
@@ -20,6 +21,7 @@ export default addRules({
     }
   },
   headerText: {
+    extend: [col, jcc],
     paddingLeft: BlockSpace,
     height: BlockHeight
   }

@@ -5,13 +5,13 @@
 'use strict'
 import TrackDuration from '../track-duration/track-duration'
 import css from './track-details.style'
+import {h} from '@cycle/dom'
 
 export default ({title, user, duration}) =>
-  <div
-    className={css(css.trackDetailContainer, 'flb row js_sb ai_c')}>
-    <div className={css.trackDetail}>
-      <div className={css.title}>{title}</div>
-      <div className={css.artist}>{user.username}</div>
-    </div>
-    {TrackDuration(duration)}
-  </div>
+  h(`div.${css.trackDetailContainer}.flb.row.js_sb.ai_c`,
+    [h(`div.${css.trackDetail}`,
+      [h(`div.${css.title}`, [title]),
+        h(`div.${css.artist}`, [user.username]),
+        TrackDuration(duration)]
+    )]
+  )

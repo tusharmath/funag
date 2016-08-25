@@ -5,12 +5,13 @@
 'use strict'
 
 import R from 'ramda'
+import {h} from '@cycle/dom'
 import css from './playlist.style'
 import {PlaylistItem} from '../placeholders/placeholders'
 
-const PLACEHOLDER = (<div>{R.repeat(PlaylistItem, 3)}</div>)
+const PLACEHOLDER = h('div', R.repeat(PlaylistItem, 3))
 
 export default ({playlistDOM$}) => {
   return playlistDOM$.startWith(PLACEHOLDER)
-    .map(view => <div classNames={[css.playlist]}>{view}</div>)
+    .map(view => h(`div.${css.playlist}`, view))
 }
