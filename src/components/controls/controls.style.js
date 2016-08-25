@@ -14,11 +14,7 @@ export default addRules({
     backgroundColor: Palette.bg__control,
     color: Palette.fg__control
   },
-  translateDown: {
-    transform: 'translateY(20px)',
-    height: '0px'
-  },
-  translateUp: {
-    transition: 'height 200ms linear'
+  hide: {
+    display: 'none'
   }
 })
