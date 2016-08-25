@@ -5,13 +5,14 @@
 'use strict'
 
 import {addRules} from '../../lib/JSSHelpers'
+import css from '../playlist/playlist.style'
 
 export default addRules({
   main: {
     height: '100%'
   },
   touchStarted: {
-    '& $playlist': {
+    [`& .${css.playlist}`]: {
       overflow: 'hidden'
     }
   }
