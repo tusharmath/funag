@@ -19,7 +19,7 @@ const view = ({playback, scrobber, show$, height$}) => {
   return O
     .combineLatest(scrobber.DOM, playback.DOM, show$, height$)
     .map(([scrobber, playback, show, height]) =>
-      <div className={css(css.container, translate(show), 'controls')}
+      <div className={css(css.controlsContainer, translate(show), 'controls')}
            style={{height: show ? `${height}px` : null}}>
         {scrobber}
         {playback}

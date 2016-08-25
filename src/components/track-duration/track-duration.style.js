@@ -5,9 +5,9 @@
 'use strict'
 
 import {Palette} from '../../lib/Themes'
-import {attachStyleSheet} from '../../lib/JSSHelpers'
+import {addRules} from '../../lib/JSSHelpers'
 
-export default attachStyleSheet({
+export default addRules({
   trackDuration: {
     fontSize: '0.8rem',
     color: Palette.fg__trackDetail__light

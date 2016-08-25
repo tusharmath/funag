@@ -16,7 +16,7 @@ const ignoreValue = () =>
 
 const selectValue = R.ifElse(R.identity, resetValue, ignoreValue)
 const Form = R.curry((reset, icon) =>
-  <form className={css('search', css.container)}>
+  <form className={css('search', css.searchContainer)}>
     <div className={css(css.inputContainer, 'flb row jc_sa ai_c')}>
       {selectValue(reset)}
       {icon}

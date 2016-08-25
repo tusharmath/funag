@@ -4,10 +4,10 @@
 
 'use strict'
 
-import {attachStyleSheet} from '../../lib/JSSHelpers'
+import {addRules} from '../../lib/JSSHelpers'
 import * as T from '../../lib/Themes'
 
-export default attachStyleSheet({
+export default addRules({
   input: {
     border: 'none',
     flex: '1 0 0',
@@ -17,7 +17,7 @@ export default attachStyleSheet({
     outline: 'none',
     backgroundColor: 'transparent'
   },
-  container: {
+  searchContainer: {
     paddingLeft: `${T.BlockSpace}px`,
     boxShadow: T.Palette.zDepth__1,
     transform: 'translateZ(0)',

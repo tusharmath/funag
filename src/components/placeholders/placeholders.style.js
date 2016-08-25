@@ -4,9 +4,10 @@
 
 'use strict'
 
-import {attachStyleSheet} from '../../lib/JSSHelpers'
+import {addRules} from '../../lib/JSSHelpers'
+import {BlockHeight, BlockSpace} from '../../lib/Themes'
 
-export default attachStyleSheet({
+export default addRules({
   animatedBG: {
     background: 'linear-gradient(to right , rgb(245, 245, 245), #fff)',
     animation: 'horizontal-motion 1000ms linear infinite',
@@ -14,8 +15,8 @@ export default attachStyleSheet({
   },
   square50: {
     extend: 'animatedBG',
-    height: '50px',
-    width: '50px'
+    height: BlockHeight,
+    width: BlockHeight
   },
   line100: {
     extend: 'animatedBG',
@@ -36,7 +37,7 @@ export default attachStyleSheet({
     justifyContent: 'space-around'
   },
   placeholder: {
-    padding: '10px',
+    padding: BlockSpace,
     alignItems: 'center',
     borderBottom: '1px solid rgb(249, 246, 246)',
     borderRadius: '2px'

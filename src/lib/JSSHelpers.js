@@ -10,10 +10,17 @@ import * as R from 'ramda'
 
 jss.setup(preset())
 
-export const attachStyleSheet = (styles, options) => {
-  const css = R.unapply(R.join(' '))
-  Object.assign(css, jss.createStyleSheet(styles, options).classes)
-  return css
+const namedStyleSheet = jss.createStyleSheet({})
+const unnamedStyleSheet = jss.createStyleSheet({}, {named: false})
+
+export const addUnnamedRules = (rules) => {
+  unnamedStyleSheet.addRules(rules)
+}
+export const addRules = (rules) => {
+  const _css = R.unapply(R.join(' '))
+  namedStyleSheet.addRules(rules)
+  Object.assign(_css, namedStyleSheet.classes)
+  return _css
 }
 export const globalSheet = jss.sheets
 export const createStyleSheet = (styles) => {
