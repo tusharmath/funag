@@ -10,6 +10,7 @@ import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
 import SearchBox from '../search/search'
 import {SELECT_TRACK} from '../../redux-lib/actions'
+import Header from '../header/header'
 import view from './main.view'
 
 const store = ({STORE, playlist, searchBox, controls}) => {
@@ -33,12 +34,13 @@ export default function (sources) {
   const searchBox = SearchBox(sources)
   const controls = Controls(sources)
   const playlist = Playlist(sources)
+  const header = Header(sources)
   return {
     HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),
     title: title(sources.STORE),
     EVENTS: searchBox.EVENTS,
     AUDIO: audio({playlist, controls}),
-    DOM: view({playlist, searchBox, controls, ...sources}),
+    DOM: view({playlist, searchBox, controls, header, ...sources}),
     STORE: store({STORE: sources.STORE, playlist, searchBox, controls})
   }
 }
