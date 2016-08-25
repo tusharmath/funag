@@ -5,7 +5,7 @@
 'use strict'
 
 import {addRules} from '../../lib/JSSHelpers'
-import {BlockSpace, Palette} from '../../lib/Themes'
+import {BlockSpace, Palette, BlockHeight} from '../../lib/Themes'
 
 export default addRules({
   headerContainer: {
@@ -20,6 +20,7 @@ export default addRules({
     }
   },
   headerText: {
-    paddingLeft: BlockSpace
+    paddingLeft: BlockSpace,
+    height: BlockHeight
   }
 })
