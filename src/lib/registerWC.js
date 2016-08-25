@@ -3,8 +3,6 @@
  */
 
 'use strict'
-
-import {document} from 'window-or-global'
 /* global HTMLElement */
 
 export default (name, proto) => {
