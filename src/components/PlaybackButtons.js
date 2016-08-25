@@ -22,7 +22,8 @@ const intent = ({DOM, url$}) => {
   })
   return {audio$}
 }
-export default ({selectedTrack$, AUDIO, DOM}) => {
+export default ({STORE, AUDIO, DOM}) => {
+  const selectedTrack$ = STORE.select('track.selected').filter(Boolean)
   const playPause$ = Observable.merge(
     AUDIO.events('playing').map(
       <x-square-icon attrs-icon='pause'/>
