@@ -4,24 +4,19 @@
 
 'use strict'
 
-import {Observable as O} from 'rx'
 import R from 'ramda'
+import {Observable as O} from 'rx'
 import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
 import Header from '../header/header'
 import SlidingTabs from '../sliding-tab/sliding-tab'
 import view from './main.view'
-
-const pluckMerged = (prop, ...el) =>
-  O.merge(R.filter(Boolean, R.pluck(prop, el)))
+import mergePropStream from '../../lib/mergePropStream'
 
 const title = (STORE) => {
   return STORE.select('track.selected')
     .filter(Boolean)
     .pluck('title')
-}
-const audio = ({playlist, controls}) => {
-  return O.merge(playlist.AUDIO, controls.AUDIO)
 }
 
 const NAVIGATION_TABS = ['TRACKS', 'RECENT']
@@ -43,8 +38,8 @@ export default function (sources) {
     HTTP: header.HTTP.map(R.merge({accept: 'application/json'})),
     title: title(sources.STORE),
     EVENTS: header.EVENTS,
-    AUDIO: audio({playlist, controls}),
+    AUDIO: mergePropStream('AUDIO', playlist, controls),
     DOM: view(R.merge(sources, {playlist, controls, header, slidingTabs})),
-    STORE: pluckMerged('STORE', playlist, header, controls, slidingTabs)
+    STORE: mergePropStream('STORE', playlist, header, controls)
   }
 }

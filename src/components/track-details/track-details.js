@@ -8,10 +8,10 @@ import css from './track-details.style'
 import {h} from '@cycle/dom'
 
 export default ({title, user, duration}) =>
-  h(`div.${css.trackDetailContainer}.flb.row.js_sb.ai_c`,
-    [h(`div.${css.trackDetail}`,
-      [h(`div.${css.title}`, [title]),
-        h(`div.${css.artist}`, [user.username]),
-        TrackDuration(duration)]
-    )]
-  )
+  h(`div.${css.trackDetailContainer}.flb.row.js_sb.ai_c`, [
+    h(`div.${css.trackDetail}`, [
+      h(`div.${css.title}`, [title]),
+      h(`div.${css.artist}`, [user.username])
+    ]),
+    TrackDuration(duration)
+  ])
