@@ -5,6 +5,7 @@
 'use strict'
 
 import {Observable as O} from 'rx'
+import {h} from '@cycle/dom'
 import Loader from '../loader/loader'
 
 export const ICONS = {
@@ -28,6 +29,6 @@ export const getIcon = (hasValue$, isLoading$) => {
 
 export const getIconDOM = (icon) => ({
   [ICONS.LOADER]: Loader(),
-  [ICONS.CLEAR]: <x-square-icon attrs-icon='close'/>,
-  [ICONS.SEARCH]: <x-square-icon attrs-icon='search'/>
+  [ICONS.CLEAR]: h('x-square-icon', {attrs: {icon: 'close'}}),
+  [ICONS.SEARCH]: h('x-square-icon', {attrs: {icon: 'search'}})
 })[icon]

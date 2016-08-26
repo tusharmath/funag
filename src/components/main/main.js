@@ -41,7 +41,7 @@ export default function (sources) {
     title: title(sources.STORE),
     EVENTS: header.EVENTS,
     AUDIO: audio({playlist, controls}),
-    DOM: view({playlist, controls, header, ...sources}),
+    DOM: view(R.merge(sources, {playlist, controls, header})),
     STORE: store({STORE: sources.STORE, playlist, header, controls})
   }
 }

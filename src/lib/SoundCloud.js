@@ -5,11 +5,12 @@
 'use strict'
 
 import qs from 'qs'
+import R from 'ramda'
 
 const CLIENT_ID = APP_CONFIG.soundCloud.clientID
 
 export const clientIDParams = params => {
-  return '?' + qs.stringify({...params, client_id: CLIENT_ID})
+  return '?' + qs.stringify(R.merge(params, {client_id: CLIENT_ID}))
 }
 
 export const trackStreamURL = track => track.stream_url + clientIDParams({})

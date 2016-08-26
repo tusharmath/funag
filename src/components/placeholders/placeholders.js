@@ -4,13 +4,15 @@
 
 'use strict'
 import css from './placeholders.style'
+import {h} from '@cycle/dom'
 
 export const PlaylistItem = (
-  <div className={css(css.placeholder, 'flb row jc_s')}>
-    <div className={css.square50}></div>
-    <div className={css.lineCol}>
-      <div className={css.line100}></div>
-      <div className={css.line75}></div>
-    </div>
-  </div>
+  h(`div.${css.placeholder}.flb.row.js_s`, [
+    h(`div.${css.square50}`, [
+      h(`div.${css.lineCol}`, [
+        h(`div.${css.line100}`),
+        h(`div.${css.line75}`)
+      ])
+    ])
+  ])
 )

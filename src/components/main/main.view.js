@@ -5,6 +5,7 @@
 'use strict'
 
 import {Observable as O} from 'rx'
+import {h} from '@cycle/dom'
 import css from './main.style'
 
 const isMoving = STORE => {
@@ -19,9 +20,8 @@ export default ({playlist, controls, header, STORE}) => {
       playlist.DOM,
       controls.DOM
     ).map(([touchStarted, ...views]) =>
-      <div class={{[css.touchStarted]: touchStarted}}
-           className={css(css.main, 'flb col')}>
-        {views}
-      </div>
+      h(`div.${css.main}.flb.col`, {class: {[css.touchStarted]: touchStarted}},
+        views
+      )
     )
 }

@@ -5,6 +5,7 @@
 'use strict'
 
 import {Observable} from 'rx'
+import {h} from '@cycle/dom'
 import PlaybackInfo from '../PlaybackInfo'
 import PlaybackButtons from '../PlaybackButtons'
 
@@ -17,8 +18,6 @@ export default ({STORE, AUDIO, DOM}) => {
         playbackButtons.DOM,
         PlaybackInfo({STORE}).DOM
       )
-      .map(views =>
-        <div className='flb row jc_s ai_c'>{views}</div>
-      )
+      .map(views => h(`div.flb.row.jc_s.ai_c`, views))
   }
 }

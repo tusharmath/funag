@@ -3,16 +3,15 @@
  */
 
 import css from './header.style'
+import {h} from '@cycle/dom'
 
 export default ({searchBox}) =>
   searchBox.DOM.map(searchBox =>
-    <div className={css(css.headerContainer)}>
-      <div className={css('flb col jc_c spread', css.headerText)}>
-        <div>
-          <strong>Funag</strong>
-        </div>
-        <small>Unofficial soundcloud player</small>
-      </div>
-      {searchBox}
-    </div>
+    h(`div.${css.headerContainer}`, [
+      h(`div.${css.headerText}`, [
+        h(`div`, [h(`strong`, 'Funag')]),
+        h(`small`, ['Unofficial soundcloud player'])
+      ]),
+      searchBox
+    ])
   )

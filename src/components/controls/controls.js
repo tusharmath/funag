@@ -4,6 +4,7 @@
 
 'use strict'
 import {Observable as O} from 'rx'
+import R from 'ramda'
 import Scrobber from '../scrobber/scrobber'
 import Playback from '../playback/playback'
 import view from './controls.view'
@@ -18,7 +19,7 @@ const model = ({AUDIO, STORE, EVENTS}) => {
 export default (sources) => {
   const {completion$, show$} = model(sources)
   const playback = Playback(sources)
-  const scrobber = Scrobber({completion$, ...sources})
+  const scrobber = Scrobber(R.merge(sources, {completion$}))
   return {
     AUDIO: O.merge(playback.AUDIO, scrobber.AUDIO),
     DOM: view({playback, scrobber, show$}),

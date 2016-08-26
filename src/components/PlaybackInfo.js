@@ -4,6 +4,7 @@
 
 'use strict'
 import {div} from '@cycle/dom'
+import R from 'ramda'
 import * as S from '../lib/StyleUtils'
 import * as T from '../lib/Themes'
 
@@ -21,11 +22,10 @@ export default ({STORE}) => {
       div({style: playbackInfoSTY}, [
         div({style: S.overflowEllipsisSTY}, [track.title]),
         div({
-          style: {
-            ...S.overflowEllipsisSTY,
+          style: R.merge(S.overflowEllipsisSTY, {
             fontSize: '0.8rem',
             color: T.Palette.fg__playbackInfo__light
-          }
+          })
         }, track.user.username)
       ])
     ).startWith('')

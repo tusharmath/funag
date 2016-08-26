@@ -4,25 +4,24 @@
 
 'use strict'
 
-import * as S from '../../lib/StyleUtils'
 import css from './artwork.style'
+import {h} from '@cycle/dom'
+import R from 'ramda'
 
 export const Placeholder = () => (
-  <div className={css.artworkPlaceholder}>
-    <x-square-icon attrs-icon='music_note'/>
-  </div>
+  h(`div.${css.artworkPlaceholder}`, [
+    h(`x-square-icon`, {attrs: {icon: 'music_note'}})
+  ])
 )
 export const ArtworkOverlay = isAnimated => (
-  <div className={S.css('fade-in', css.artworkContainer)}>
-    <ul className={S.css(css.playingAnimation, isAnimated)}>
-      <li/>
-      <li/>
-      <li/>
-    </ul>
-  </div>
+  h(`div.${css.artworkContainer}.fade-in`, [
+    h(`div.${css.playingAnimation}.${isAnimated}`,
+      R.repeat(h(`li`), 3)
+    )
+  ])
 )
 export const PlayingArtwork = () => ArtworkOverlay('')
 export const PausedArtwork = () => ArtworkOverlay('pause-animation')
-export const DefaultArtwork = url =>
-  url ? <div className={css.artwork}
-             style={{backgroundImage: `url(${url})`}}></div> : Placeholder()
+export const ArtworkBG = url =>
+  h(`div.${css.artwork}`, {style: {backgroundImage: `url(${url})`}})
+export const DefaultArtwork = url => url ? ArtworkBG(url) : Placeholder()

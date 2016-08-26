@@ -21,11 +21,11 @@ export default addRules({
     extend: spread
   },
   title: {
-    ...S.overflowEllipsisSTY
+    extend: S.overflowEllipsisSTY
   },
   artist: {
     color: Palette.fg__trackDetail__light,
     fontSize: '0.8rem',
-    ...S.overflowEllipsisSTY
+    extend: S.overflowEllipsisSTY
   }
 })

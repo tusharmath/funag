@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import {div} from '@cycle/dom'
+import {h} from '@cycle/dom'
 import {Observable} from 'rx'
 import R from 'ramda'
 import {mux} from 'muxer'
@@ -26,30 +26,28 @@ export default ({STORE, AUDIO, DOM}) => {
   const selectedTrack$ = STORE.select('track.selected').filter(Boolean)
   const playPause$ = Observable.merge(
     AUDIO.events('playing').map(
-      <x-square-icon attrs-icon='pause'/>
+      h('x-square-icon', {attrs: {icon: 'pause'}})
     ),
     AUDIO.events('pause').map(
-      <x-square-icon attrs-icon='play_arrow'/>
+      h('x-square-icon', {attrs: {icon: 'play_arrow'}})
     ),
     AUDIO.events('loadedData').map(
-      <x-square-icon attrs-icon='play_arrow'/>
+      h('x-square-icon', {attrs: {icon: 'play_arrow'}})
     ),
     AUDIO.events('seeked').map(
-      <x-square-icon attrs-icon='play_arrow'/>
+      h('x-square-icon', {attrs: {icon: 'play_arrow'}})
     ),
     selectedTrack$.map(
-      <x-square-icon attrs-icon='play_arrow'/>
+      h('x-square-icon', {attrs: {icon: 'play_arrow'}})
     )
   )
   const loadStart$ = AUDIO.events('loadStart').startWith(null).map(Loader)
   const loadError$ = AUDIO.events('error').map(
-    <x-square-icon attrs-icon='error_outline'/>
+    h('x-square-icon', {attrs: {icon: 'error_outline'}})
   )
   const url$ = selectedTrack$.map(SC.trackStreamURL)
-  const actions = intent({DOM, url$})
-  return {
-    ...actions,
+  return R.merge(intent({DOM, url$}), {
     DOM: Observable.merge(playPause$, loadStart$, loadError$)
-      .map(x => div([x]))
-  }
+      .map(x => h('div', [x]))
+  })
 }

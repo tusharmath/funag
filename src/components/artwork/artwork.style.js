@@ -12,13 +12,12 @@ import {row, jc_sb as jcsb} from 'flex-jss'
 const animation = time => ({animation: `playing-animation ${time}ms infinite`})
 export default addRules({
   artworkContainer: {
-    ...S.block(BlockHeight),
+    extend: S.block(BlockHeight),
     margin: BlockSpace,
     backgroundColor: Palette.bg__artwork
   },
   playingAnimation: {
-    ...S.size(17),
-    extend: R.merge(row, jcsb),
+    extend: [R.merge(row, jcsb), S.size(17)],
     margin: 0,
     padding: 0,
     '& li': {
@@ -40,7 +39,7 @@ export default addRules({
     '100%': {transform: 'scaleY(0.1)'}
   },
   artworkPlaceholder: {
-    ...S.block(50),
+    extend: S.block(50),
     margin: BlockSpace,
     color: Palette.fg__artwork,
     backgroundColor: Palette.bg__artwork
@@ -50,6 +49,6 @@ export default addRules({
     backgroundPosition: '50%',
     backgroundSize: '100%',
     margin: `${BlockSpace}px`,
-    ...S.size(50)
+    extend: S.size(50)
   }
 })
