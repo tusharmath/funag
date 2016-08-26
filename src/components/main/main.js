@@ -8,21 +8,13 @@ import {Observable as O} from 'rx'
 import R from 'ramda'
 import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
-import {SELECT_TRACK} from '../../redux-lib/actions'
 import Header from '../header/header'
+import SlidingTabs from '../sliding-tab/sliding-tab'
 import view from './main.view'
 
-const store = ({STORE, playlist, header, controls}) => {
-  return O.merge(
-    header.STORE,
-    playlist.STORE,
-    controls.STORE,
-    STORE.select('track.data')
-      .filter(x => x.length > 0)
-      .map(R.head).take(1)
-      .map(SELECT_TRACK)
-  )
-}
+const pluckMerged = (prop, ...el) =>
+  O.merge(R.filter(Boolean, R.pluck(prop, el)))
+
 const title = (STORE) => {
   return STORE.select('track.selected')
     .filter(Boolean)
@@ -32,16 +24,27 @@ const audio = ({playlist, controls}) => {
   return O.merge(playlist.AUDIO, controls.AUDIO)
 }
 
+const NAVIGATION_TABS = ['TRACKS', 'RECENT']
+const NAVIGATION_CONTENT = [
+  'TRACKS-CONTENT',
+  'RECENT-CONTENT'
+]
+
 export default function (sources) {
   const controls = Controls(sources)
   const playlist = Playlist(sources)
   const header = Header(sources)
+  const slidingTabs = SlidingTabs(R.merge(sources, {
+    tabs: NAVIGATION_TABS,
+    content: NAVIGATION_CONTENT
+  }))
+
   return {
     HTTP: header.HTTP.map(R.merge({accept: 'application/json'})),
     title: title(sources.STORE),
     EVENTS: header.EVENTS,
     AUDIO: audio({playlist, controls}),
-    DOM: view(R.merge(sources, {playlist, controls, header})),
-    STORE: store({STORE: sources.STORE, playlist, header, controls})
+    DOM: view(R.merge(sources, {playlist, controls, header, slidingTabs})),
+    STORE: pluckMerged('STORE', playlist, header, controls, slidingTabs)
   }
 }
