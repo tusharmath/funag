@@ -39,7 +39,6 @@ export default {
   devServer: {contentBase: './public'},
   plugins: [
     new ApplicationShell(),
-    new webpack.ProvidePlugin({snabbdom: 'snabbdom-jsx'}),
     new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(APP_CONFIG)})
   ],
   module: {
