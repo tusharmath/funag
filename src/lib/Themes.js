@@ -16,7 +16,6 @@ export const Palette = {
   bg__artworkPlayingIcon: PrimaryDarkTextColor,
   bg__control: '#EEE',
   bg__header: '#EEE',
-  bg__movableTabsControl: 'rgb(204, 91, 91)',
   bg__scrobberIcon: '#2196F3',
   bg__scrobberTrack: 'rgb(255, 0, 0)',
   bg__search: '#EEE',
