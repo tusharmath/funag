@@ -10,3 +10,4 @@ export default DOM => DOM
   .elements()
   .take(1)
   .map(BoundingClientRect)
+  .shareReplay(1)
