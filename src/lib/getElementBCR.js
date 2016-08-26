@@ -8,7 +8,7 @@ import BoundingClientRect from './BoundingClientRect'
 import R from 'ramda'
 
 export default (DOM, name) => {
-  DOM.select(name).elements()
+  return DOM.select(name).elements()
     .filter(x => x.length > 0)
     .map(R.compose(BoundingClientRect, R.head))
     .take(1)

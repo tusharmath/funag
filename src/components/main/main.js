@@ -4,32 +4,17 @@
 
 'use strict'
 
-import {Observable as O} from 'rx'
 import R from 'ramda'
 import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
-import {SELECT_TRACK} from '../../redux-lib/actions'
 import Header from '../header/header'
 import view from './main.view'
+import mergePropStream from '../../lib/mergePropStream'
 
-const store = ({STORE, playlist, header, controls}) => {
-  return O.merge(
-    header.STORE,
-    playlist.STORE,
-    controls.STORE,
-    STORE.select('track.data')
-      .filter(x => x.length > 0)
-      .map(R.head).take(1)
-      .map(SELECT_TRACK)
-  )
-}
 const title = (STORE) => {
   return STORE.select('track.selected')
     .filter(Boolean)
     .pluck('title')
-}
-const audio = ({playlist, controls}) => {
-  return O.merge(playlist.AUDIO, controls.AUDIO)
 }
 
 export default function (sources) {
@@ -40,8 +25,8 @@ export default function (sources) {
     HTTP: header.HTTP.map(R.merge({accept: 'application/json'})),
     title: title(sources.STORE),
     EVENTS: header.EVENTS,
-    AUDIO: audio({playlist, controls}),
+    AUDIO: mergePropStream('AUDIO', playlist, controls),
     DOM: view(R.merge(sources, {playlist, controls, header})),
-    STORE: store({STORE: sources.STORE, playlist, header, controls})
+    STORE: mergePropStream('STORE', playlist, header, controls)
   }
 }

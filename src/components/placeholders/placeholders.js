@@ -8,11 +8,10 @@ import {h} from '@cycle/dom'
 
 export const PlaylistItem = (
   h(`div.${css.placeholder}.flb.row.js_s`, [
-    h(`div.${css.square50}`, [
-      h(`div.${css.lineCol}`, [
-        h(`div.${css.line100}`),
-        h(`div.${css.line75}`)
-      ])
+    h(`div.${css.square50}`),
+    h(`div.${css.lineCol}`, [
+      h(`div.${css.line100}`),
+      h(`div.${css.line75}`)
     ])
   ])
 )

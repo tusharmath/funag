@@ -8,6 +8,14 @@ import R from 'ramda'
 import {SELECT_TRACK, CLEAR_FILTER, APPLY_FILTER, SET_TRACKS} from './actions'
 
 const initialState = {selected: null, filter: '', data: []}
+const updateTrackData = (params, state) => {
+  const state0 = R.assoc('data', params, state)
+  if (state0.selected === null) {
+    return R.assoc('selected', state0.data[0], state0)
+  } else {
+    return state0
+  }
+}
 export default (state = initialState, {type, params}) => {
   switch (type) {
     case SELECT_TRACK:
@@ -17,7 +25,7 @@ export default (state = initialState, {type, params}) => {
     case CLEAR_FILTER:
       return R.assoc('filter', '', state)
     case SET_TRACKS:
-      return R.assoc('data', params, state)
+      return updateTrackData(params, state)
     default :
       return state
   }
