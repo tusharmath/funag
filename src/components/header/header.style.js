@@ -5,13 +5,12 @@
 'use strict'
 
 import {addRules} from '../../lib/JSSHelpers'
-import {BlockSpace, Palette, BlockHeight} from '../../lib/Themes'
+import {Palette, BlockSpace} from '../../lib/Themes'
 import {jc_c as jcc, col} from 'flex-jss'
 
 export default addRules({
   headerContainer: {
     backgroundColor: Palette.bg__header,
-    boxShadow: Palette.zDepth__1,
     color: Palette.fg__header,
     transform: 'translateZ(0)',
     '& small': {
@@ -22,7 +21,6 @@ export default addRules({
   },
   headerText: {
     extend: [col, jcc],
-    paddingLeft: BlockSpace,
-    height: BlockHeight
+    paddingLeft: BlockSpace
   }
 })

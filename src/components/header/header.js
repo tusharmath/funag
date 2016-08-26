@@ -10,7 +10,7 @@ import view from './header.view'
 export default (sources) => {
   const searchBox = SearchBox(sources)
   return {
-    DOM: view({searchBox}),
+    DOM: view(),
     HTTP: searchBox.HTTP,
     EVENTS: searchBox.EVENTS,
     STORE: searchBox.STORE
