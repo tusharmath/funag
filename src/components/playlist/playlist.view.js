@@ -9,7 +9,7 @@ import {h} from '@cycle/dom'
 import css from './playlist.style'
 import {PlaylistItem} from '../placeholders/placeholders'
 
-const PLACEHOLDER = h('div', R.repeat(PlaylistItem, 3))
+const PLACEHOLDER = [h('div', R.repeat(PlaylistItem, 3))]
 
 export default ({playlistDOM$}) => {
   return playlistDOM$.startWith(PLACEHOLDER)
