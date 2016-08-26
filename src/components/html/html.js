@@ -7,7 +7,6 @@ import './html.style'
 import {h} from '@cycle/dom'
 import {globalSheet} from '../../lib/JSSHelpers'
 import * as flex from 'flex-jss'
-import loadSW from '../../lib/loadSW'
 
 export default ({html, title, bundle, manifest, sw}) => {
   return h('html', [
@@ -15,7 +14,6 @@ export default ({html, title, bundle, manifest, sw}) => {
       h('title', [title]),
       h('style', [globalSheet.toString()]),
       h('style', [flex.asHtmlStyleString()]),
-      h('script', [loadSW(sw)]),
       h('meta', {
         attrs: {
           name: 'viewport',

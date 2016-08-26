@@ -23,10 +23,10 @@ const li = (name, i) => h(`li`, {attrs: {id: i}}, name)
 const rootWidth = DOM => getRootBCR(DOM).pluck('width')
 const contentSectionItem = (content) => h(`li`, content)
 
-export default ({STORE, DOM, tabs, content}) => {
+export default ({STORE, DOM, tabs$, content$}) => {
   const width$ = rootWidth(DOM).startWith(0)
   const selected$ = selectedTab(STORE)
-  return O.combineLatest(width$, selected$, (width, selected) =>
+  return O.combineLatest(width$, selected$, tabs$, content$, (width, selected, tabs, content) =>
     h(`div.sliding-tab`, [
       h(`div.${css.navContainer}`, [
         h(`ul.nav-items`, tabs.map(li)),

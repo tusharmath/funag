@@ -35,8 +35,8 @@ export default function (sources) {
   const playlist = Playlist(sources)
   const header = Header(sources)
   const slidingTabs = SlidingTabs(R.merge(sources, {
-    tabs: NAVIGATION_TABS,
-    content: NAVIGATION_CONTENT
+    tabs$: O.just(NAVIGATION_TABS),
+    content$: O.just(NAVIGATION_CONTENT)
   }))
 
   return {
