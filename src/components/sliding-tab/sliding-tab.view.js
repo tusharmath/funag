@@ -5,44 +5,44 @@
 'use strict'
 
 import {h} from '@cycle/dom'
+import R from 'ramda'
 import {Observable as O} from 'rx'
 import css from './sliding-tab.style'
-import getRootBCR from '../../dom-api/getRootBCR'
 
-const controlSTYLE = (tabs) => ({
-  width: `${100 / tabs.length}%`
-})
-const controlContainerSTYLE = (tabs, selected) => ({
+const controlSTYLE = (tabs) => ({width: `${100 / tabs.length}%`})
+const containerSTYLE = (tabs, selected) => ({
   transform: `translateX(${100 / tabs.length * selected}%)`
 })
 const sectionSTYLE = (tabs, width, selected) => ({
   width: `${tabs.length * 100}%`,
   transform: `translateX(-${width * selected}px)`
 })
-
-const selectedTab = STORE => STORE.select('view.selectedTab')
 const li = (name, i) => h(`li`, {attrs: {id: i}}, name)
-const rootWidth = DOM => getRootBCR(DOM).pluck('width')
 const contentSectionItem = (content) => h(`li`, [content])
 
-export default ({STORE, DOM, tabs$, content$}) => {
-  const width$ = rootWidth(DOM).startWith(0)
-  const selected$ = selectedTab(STORE)
-  return O.combineLatest(
-    width$, selected$, tabs$, content$,
-    (width, selected, tabs, content) =>
-      h(`div.sliding-tab`, [
-        h(`div.${css.navContainer}`, [
-          h(`ul.nav-items`, tabs.map(li)),
-          h(`div.control-container`, {style: controlContainerSTYLE(tabs, selected)}, [
-            h(`div.control`, {style: controlSTYLE(tabs)})
-          ])
-        ]),
-        h(`div.${css.contentSection}`, [
-          h(`ul`, {style: sectionSTYLE(tabs, width, selected)},
-            content.map(contentSectionItem)
-          )
-        ])
+export const view = R.curry((hooks, width, selected, tabs, content) => {
+  const contentParams = {
+    style: sectionSTYLE(tabs, width, selected),
+    hook: hooks.sectionHooks,
+    on: {touchmove: hooks.onTouchMove}
+  }
+  const containerParams = {
+    style: containerSTYLE(tabs, selected),
+    hook: hooks.containerHooks
+  }
+  return h(`div.sliding-tab`, [
+    h(`div.${css.navContainer}`, [
+      h(`ul.nav-items`, tabs.map(li)),
+      h(`div.control-container`, containerParams, [
+        h(`div.control`, {style: controlSTYLE(tabs)})
       ])
-  )
+    ]),
+    h(`div.${css.contentSection}`, [
+      h(`ul`, contentParams, content.map(contentSectionItem))
+    ])
+  ])
+})
+
+export default ({width$, selected$, tabs$, content$, hooks}) => {
+  return O.combineLatest(width$, selected$, tabs$, content$, view(hooks))
 }

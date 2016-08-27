@@ -7,6 +7,7 @@
 import R from 'ramda'
 import view from './sliding-tab.view'
 import {SET_TAB} from '../../redux-lib/actions'
+import model from './sliding-tab.model'
 
 const getNavClicks = DOM => {
   return DOM.select('.nav-items li').events('click')
@@ -19,5 +20,5 @@ const intent = ({DOM}) => {
 }
 
 export default (params) => {
-  return R.merge(intent(params), {DOM: view(params)})
+  return R.merge(intent(params), {DOM: view(model(params))})
 }
