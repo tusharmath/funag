@@ -13,7 +13,7 @@ const controlSTYLE = (tabs) => ({width: `${100 / tabs.length}%`})
 const containerSTYLE = (tabs, selected) => ({
   transform: `translateX(${100 / tabs.length * selected}%)`
 })
-const sectionSTYLE = (tabs, width, selected) => ({
+const contentSTYLE = (tabs, width, selected) => ({
   width: `${tabs.length * 100}%`,
   transform: `translateX(-${width * selected}px)`
 })
@@ -21,16 +21,19 @@ const li = (name, i) => h(`li`, {attrs: {id: i}}, name)
 const contentSectionItem = (content) => h(`li`, [content])
 
 export const view = R.curry((hooks, width, selected, tabs, content) => {
+  const rootParams = {
+    hook: hooks.rootHooks
+  }
   const contentParams = {
-    style: sectionSTYLE(tabs, width, selected),
-    hook: hooks.sectionHooks,
+    style: contentSTYLE(tabs, width, selected),
+    hook: hooks.contentHooks,
     on: {touchmove: hooks.onTouchMove}
   }
   const containerParams = {
     style: containerSTYLE(tabs, selected),
-    hook: hooks.containerHooks
+    hook: hooks.controlContainerHooks
   }
-  return h(`div.sliding-tab`, [
+  return h(`div.sliding-tab`, rootParams, [
     h(`div.${css.navContainer}`, [
       h(`ul.nav-items`, tabs.map(li)),
       h(`div.control-container`, containerParams, [

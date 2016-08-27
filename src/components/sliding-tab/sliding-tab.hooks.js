@@ -4,16 +4,36 @@
 
 'use strict'
 
+import R from 'ramda'
+
+const createInsertHook = R.curry((ctx, name, node) => {
+  ctx[name] = node.elm
+})
+
 export default class SlidingTabHooks {
   constructor () {
     this.onTouchMove = this.onTouchMove.bind(this)
   }
 
-  get sectionHooks () {}
+  get rootHooks () {
+    return {
+      insert: createInsertHook(this, '__rootEL')
+    }
+  }
 
-  get containerHooks () {}
+  get contentHooks () {
+    return {
+      insert: createInsertHook(this, '__contentEL')
+    }
+  }
 
-  onTouchMove (e) {
+  get controlContainerHooks () {
+    return {
+      insert: createInsertHook(this, '__controlContainerEL')
+    }
+  }
+
+  onTouchMove () {
     console.log(this)
   }
 }
