@@ -6,6 +6,7 @@
 
 import R from 'ramda'
 import {Observable as O} from 'rx'
+import {h} from '@cycle/dom'
 import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
 import Header from '../header/header'
@@ -19,10 +20,16 @@ const title = (STORE) => {
     .pluck('title')
 }
 
+const mockContent = (content, backgroundColor) => {
+  return h(`div`, {style: {padding: 10, width: '100%', backgroundColor}}, [
+    content
+  ])
+}
+
 const NAVIGATION_TABS = ['TRACKS', 'RECENT']
 const NAVIGATION_CONTENT = [
-  'TRACKS-CONTENT',
-  'RECENT-CONTENT'
+  mockContent('TRACKS-CONTENT', '#F00'),
+  mockContent('RECENT-CONTENT', '#0F0')
 ]
 
 export default function (sources) {

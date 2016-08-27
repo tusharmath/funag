@@ -23,7 +23,7 @@ const sectionSTYLE = (tabs, width, selected) => ({
 const selectedTab = STORE => STORE.select('view.selectedTab')
 const li = (name, i) => h(`li`, {attrs: {id: i}}, name)
 const rootWidth = DOM => getRootBCR(DOM).pluck('width')
-const contentSectionItem = (content) => h(`li`, content)
+const contentSectionItem = (content) => h(`li`, [content])
 
 export default ({STORE, DOM, tabs$, content$}) => {
   const width$ = rootWidth(DOM).startWith(0)
