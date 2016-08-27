@@ -5,13 +5,13 @@
 'use strict'
 
 import {Observable as O} from 'rx'
-import * as U from '../../lib/DOMUtils'
 import SearchIcon from '../search-icon/search-icon'
 import {PREVENT_DEFAULT, BLUR} from '../../drivers/eventDriver'
 import {APPLY_FILTER, CLEAR_FILTER, SET_TRACKS} from '../../redux-lib/actions'
 import view from './search.view'
 import httpSelectBody from '../../lib/httpSelectBody'
 import {requestTracks} from './search.request'
+import inputValue from '../../dom-api/inputValue'
 
 const event = (searchEl, inputEl) => O
   .merge(
@@ -33,7 +33,7 @@ const intent = ({HTTP, DOM, filter$}) => {
   const tracks$ = httpSelectBody(HTTP, 'tracks')
   const searchEl = DOM.select('.search')
   const inputEl = DOM.select('.search input')
-  const value$ = U.inputVal(searchEl).debounce(300)
+  const value$ = inputValue(searchEl).debounce(300)
   const request$ = requestTracks(filter$)
   const events$ = event(searchEl, inputEl)
   const isLoading$ = isLoading(request$, tracks$)

@@ -3,7 +3,7 @@
  */
 
 'use strict'
-import BoundingClientRect from './BoundingClientRect'
+import BoundingClientRect from './boundingClientRect'
 
 export default DOM => DOM
   .select(':root')
