@@ -5,9 +5,20 @@
 'use strict'
 
 import R from 'ramda'
-import {SHOW_SEARCH, HIDE_SEARCH, SET_TAB, SET_HEADER_HEIGHT} from './actions'
+import {
+  SHOW_SEARCH,
+  HIDE_SEARCH,
+  SET_TAB,
+  SET_HEADER_HEIGHT,
+  SET_CONTROL_HEIGHT
+} from './actions'
 
-const initialState = {showSearchBox: false, selectedTab: 0, navBarHeight: 0}
+const initialState = {
+  showSearchBox: false,
+  selectedTab: 0,
+  navBarHeight: 0,
+  controlHeight: 0
+}
 export default (state = initialState, {type, params}) => {
   switch (type) {
     case SHOW_SEARCH:
@@ -18,6 +29,8 @@ export default (state = initialState, {type, params}) => {
       return R.assoc('selectedTab', params, state)
     case SET_HEADER_HEIGHT:
       return R.assoc('navBarHeight', params, state)
+    case SET_CONTROL_HEIGHT:
+      return R.assoc('controlHeight', params, state)
     default :
       return state
   }
