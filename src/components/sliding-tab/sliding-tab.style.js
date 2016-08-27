@@ -38,12 +38,13 @@ export default addRules({
     overflow: 'hidden',
     '& ul': {
       transition: 'transform 200ms ease-in',
-      extend: [row],
+      display: 'table',
+      tableLayout: 'fixed',
       listStyle: 'none',
       padding: 0,
       margin: 0,
       '& li': {
-        extend: [col, jc_c, ai_c, spread]
+        display: 'table-cell'
       }
     }
   }

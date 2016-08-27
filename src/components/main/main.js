@@ -27,10 +27,6 @@ const mockContent = (content, backgroundColor) => {
 }
 
 const NAVIGATION_TABS = ['TRACKS', 'RECENT']
-const NAVIGATION_CONTENT = [
-  mockContent('TRACKS-CONTENT', '#F00'),
-  mockContent('RECENT-CONTENT', '#0F0')
-]
 
 export default function (sources) {
   const controls = Controls(sources)
@@ -38,7 +34,10 @@ export default function (sources) {
   const header = Header(sources)
   const slidingTabs = SlidingTabs(R.merge(sources, {
     tabs$: O.just(NAVIGATION_TABS),
-    content$: O.just(NAVIGATION_CONTENT)
+    content$: O.combineLatest(
+      playlist.DOM,
+      O.just(mockContent('RECENT-CONTENT', '#0F0'))
+    )
   }))
 
   return {
@@ -46,7 +45,7 @@ export default function (sources) {
     title: title(sources.STORE),
     EVENTS: header.EVENTS,
     AUDIO: mergePropStream('AUDIO', playlist, controls),
-    DOM: view(R.merge(sources, {playlist, controls, header, slidingTabs})),
+    DOM: view(R.merge(sources, {controls, header, slidingTabs})),
     STORE: mergePropStream('STORE', playlist, header, controls, slidingTabs)
   }
 }
