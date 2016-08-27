@@ -21,7 +21,7 @@ const title = (STORE) => {
 }
 
 const mockContent = (content, backgroundColor) => {
-  return h(`div`, {style: {padding: 10, width: '100%', backgroundColor}}, [
+  return h(`div`, {style: {padding: '10px', width: '100%', backgroundColor}}, [
     content
   ])
 }
