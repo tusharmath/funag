@@ -40,6 +40,6 @@ export default function (sources) {
     EVENTS: header.EVENTS,
     AUDIO: mergePropStream('AUDIO', playlist, controls),
     DOM: view(R.merge(sources, {playlist, controls, header, slidingTabs})),
-    STORE: mergePropStream('STORE', playlist, header, controls)
+    STORE: mergePropStream('STORE', playlist, header, controls, slidingTabs)
   }
 }
