@@ -25,17 +25,19 @@ export default addRules({
         boxSizing: 'border-box'
       }
     },
+    '& .control-container': {
+      transition: 'transform 200ms ease-in'
+    },
     '& .control': {
       backgroundColor: Palette.bg__tabsNavBarSlider,
-      height: 2,
-      transition: 'transform 100ms ease-in'
+      height: 2
     }
   },
   'contentSection': {
     width: '100%',
     overflow: 'hidden',
     '& ul': {
-      transition: 'transform 100ms ease-in',
+      transition: 'transform 200ms ease-in',
       extend: [row],
       listStyle: 'none',
       padding: 0,
