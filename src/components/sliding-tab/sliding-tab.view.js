@@ -7,7 +7,7 @@
 import {h} from '@cycle/dom'
 import {Observable as O} from 'rx'
 import css from './sliding-tab.style'
-import getRootBCR from '../../lib/getRootBCR'
+import getRootBCR from '../../dom-api/getRootBCR'
 
 const controlSTYLE = (tabs) => ({
   width: `${100 / tabs.length}%`
