@@ -8,7 +8,7 @@ import getRootBCR from '../../dom-api/getRootBCR'
 
 const selectedTab = STORE => STORE.select('view.selectedTab')
 const rootWidth = DOM => getRootBCR(DOM).pluck('width')
-const marginTop = STORE => STORE.select('animationState.navBarHeight')
+const marginTop = STORE => STORE.select('view.navBarHeight')
 
 export default ({STORE, DOM, tabs$, content$, header}) => {
   const width$ = rootWidth(DOM).startWith(0)
