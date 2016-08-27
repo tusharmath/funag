@@ -12,7 +12,10 @@ export default addRules({
     transform: 'translateZ(0)',
     boxShadow: Palette.zDepth__1,
     backgroundColor: Palette.bg__control,
-    color: Palette.fg__control
+    color: Palette.fg__control,
+    position: 'fixed',
+    width: '100%',
+    bottom: 0
   },
   hide: {
     display: 'none'

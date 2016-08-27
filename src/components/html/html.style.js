@@ -19,8 +19,7 @@ addUnnamedRules({
     fontWeight: 400,
     color: 'rgb(51, 51, 51)',
     WebkitFontSmoothing: 'antialiased',
-    WebkitUserSelect: 'none',
-    overflow: 'hidden'
+    WebkitUserSelect: 'none'
   },
 
   input: {

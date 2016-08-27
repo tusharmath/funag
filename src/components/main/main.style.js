@@ -6,10 +6,12 @@
 
 import {addRules} from '../../lib/JSSHelpers'
 import css from '../playlist/playlist.style'
+import {BlockHeight, ScrobberHeight} from '../../lib/Themes'
 
 export default addRules({
   main: {
-    height: '100%'
+    paddingBottom: BlockHeight + ScrobberHeight,
+    paddingTop: BlockHeight
   },
   touchStarted: {
     [`& .${css.playlist}`]: {

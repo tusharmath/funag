@@ -26,11 +26,17 @@ export const view = (width, selected, tabs, content) => {
   const containerParams = {
     style: containerSTYLE(tabs, selected)
   }
-  return h(`div.sliding-tab`, [
-    h(`div.${css.navContainer}`, [
-      h(`ul.nav-items`, tabs.map(li)),
-      h(`div.control-container`, containerParams, [
-        h(`div.control`, {style: controlSTYLE(tabs)})
+  return h(`div.${css.slidingTab}`, [
+    h(`div.${css.slidingTabHeader}`, [
+      h(`div.${css.headerText}`, [
+        h(`div`, [h(`strong`, 'Funag')]),
+        h(`small`, ['Unofficial soundcloud player'])
+      ]),
+      h(`div.${css.navContainer}`, [
+        h(`ul.nav-items`, tabs.map(li)),
+        h(`div.control-container`, containerParams, [
+          h(`div.control`, {style: controlSTYLE(tabs)})
+        ])
       ])
     ]),
     h(`div.${css.contentSection}`, [
