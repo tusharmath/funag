@@ -19,7 +19,7 @@ const contentSTYLE = (tabs, width, selected) => ({
 const li = (name, i) => h(`li`, {attrs: {id: i}}, name)
 const contentSectionItem = (content) => h(`li`, [content])
 
-export const view = (width, selected, tabs, content) => {
+export const view = (width, selected, tabs, content, marginTop) => {
   const contentParams = {
     style: contentSTYLE(tabs, width, selected)
   }
@@ -39,12 +39,12 @@ export const view = (width, selected, tabs, content) => {
         ])
       ])
     ]),
-    h(`div.${css.contentSection}`, [
+    h(`div.${css.contentSection}`, {style: {marginTop}}, [
       h(`ul`, contentParams, content.map(contentSectionItem))
     ])
   ])
 }
 
-export default ({width$, selected$, tabs$, content$}) => {
-  return O.combineLatest(width$, selected$, tabs$, content$, view)
+export default ({width$, selected$, tabs$, content$, marginTop$}) => {
+  return O.combineLatest(width$, selected$, tabs$, content$, marginTop$, view)
 }
