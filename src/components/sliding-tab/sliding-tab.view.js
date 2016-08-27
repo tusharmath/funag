@@ -19,14 +19,14 @@ const contentSTYLE = (tabs, width, selected) => ({
 const li = (name, i) => h(`li`, {attrs: {id: i}}, name)
 const contentSectionItem = (content) => h(`li`, [content])
 
-export const view = (width, selected, tabs, content, marginTop) => {
+export const view = (width, selected, tabs, content) => {
   const contentParams = {
     style: contentSTYLE(tabs, width, selected)
   }
   const containerParams = {
     style: containerSTYLE(tabs, selected)
   }
-  return h(`div.${css.slidingTab}`, [
+  return h(`div`, [
     h(`div.${css.slidingTabHeader}`, [
       h(`div.${css.headerText}`, [
         h(`div`, [h(`strong`, 'Funag')]),
@@ -39,12 +39,12 @@ export const view = (width, selected, tabs, content, marginTop) => {
         ])
       ])
     ]),
-    h(`div.${css.contentSection}`, {style: {marginTop}}, [
+    h(`div.${css.contentSection}`, [
       h(`ul`, contentParams, content.map(contentSectionItem))
     ])
   ])
 }
 
-export default ({width$, selected$, tabs$, content$, marginTop$}) => {
-  return O.combineLatest(width$, selected$, tabs$, content$, marginTop$, view)
+export default ({width$, selected$, tabs$, content$}) => {
+  return O.combineLatest(width$, selected$, tabs$, content$, view)
 }

@@ -19,3 +19,9 @@ export const completion = ({AUDIO, STORE}) => {
     STORE.select('track.selected').filter(Boolean).map(0)
   )
 }
+
+export default ({AUDIO, STORE, EVENTS}) => {
+  const completion$ = completion({AUDIO, STORE})
+  const show$ = screenReduced(EVENTS)
+  return {completion$, show$}
+}

@@ -20,6 +20,13 @@ const title = (STORE) => {
     .pluck('title')
 }
 
+const getPadding = ({STORE}) => {
+  const paddingTop$ = STORE.select('view.navBarHeight')
+  const paddingBottom$ = STORE.select('view.controlHeight')
+  return O.combineLatest(paddingTop$, paddingBottom$)
+    .map(R.zipObj(['paddingTop', 'paddingBottom']))
+}
+
 const mockContent = (content, backgroundColor) => {
   return h(`div`, {style: {padding: '10px', width: '100%', backgroundColor}}, [
     content
@@ -32,19 +39,21 @@ export default function (sources) {
   const controls = Controls(sources)
   const playlist = Playlist(sources)
   const searchBox = SearchBox(sources)
+  const padding$ = getPadding(sources)
+  const content$ = O.combineLatest(
+    playlist.DOM,
+    O.just(mockContent('RECENT-CONTENT', '#0F0'))
+  )
   const slidingTabs = SlidingTabs(R.merge(sources, {
     tabs$: O.just(NAVIGATION_TABS),
-    content$: O.combineLatest(
-      playlist.DOM,
-      O.just(mockContent('RECENT-CONTENT', '#0F0'))
-    )
+    content$: content$
   }))
 
   return {
     HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),
     title: title(sources.STORE),
     AUDIO: mergePropStream('AUDIO', playlist, controls),
-    DOM: view(R.merge(sources, {controls, slidingTabs})),
+    DOM: view(R.merge(sources, {controls, slidingTabs, padding$})),
     STORE: mergePropStream('STORE', playlist, controls, slidingTabs, searchBox),
     EVENTS: searchBox.EVENTS
   }
