@@ -5,7 +5,6 @@
 'use strict'
 
 import {h} from '@cycle/dom'
-import R from 'ramda'
 import {Observable as O} from 'rx'
 import css from './sliding-tab.style'
 
@@ -20,20 +19,14 @@ const contentSTYLE = (tabs, width, selected) => ({
 const li = (name, i) => h(`li`, {attrs: {id: i}}, name)
 const contentSectionItem = (content) => h(`li`, [content])
 
-export const view = R.curry((hooks, width, selected, tabs, content) => {
-  const rootParams = {
-    hook: hooks.rootHooks
-  }
+export const view = (width, selected, tabs, content) => {
   const contentParams = {
-    style: contentSTYLE(tabs, width, selected),
-    hook: hooks.contentHooks,
-    on: {touchmove: hooks.onTouchMove}
+    style: contentSTYLE(tabs, width, selected)
   }
   const containerParams = {
-    style: containerSTYLE(tabs, selected),
-    hook: hooks.controlContainerHooks
+    style: containerSTYLE(tabs, selected)
   }
-  return h(`div.sliding-tab`, rootParams, [
+  return h(`div.sliding-tab`, [
     h(`div.${css.navContainer}`, [
       h(`ul.nav-items`, tabs.map(li)),
       h(`div.control-container`, containerParams, [
@@ -44,8 +37,8 @@ export const view = R.curry((hooks, width, selected, tabs, content) => {
       h(`ul`, contentParams, content.map(contentSectionItem))
     ])
   ])
-})
+}
 
-export default ({width$, selected$, tabs$, content$, hooks}) => {
-  return O.combineLatest(width$, selected$, tabs$, content$, view(hooks))
+export default ({width$, selected$, tabs$, content$}) => {
+  return O.combineLatest(width$, selected$, tabs$, content$, view)
 }
