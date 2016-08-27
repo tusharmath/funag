@@ -4,7 +4,7 @@
 
 'use strict'
 
-import BoundingClientRect from './BoundingClientRect'
+import BoundingClientRect from './boundingClientRect'
 import R from 'ramda'
 
 export default (DOM, name) => {

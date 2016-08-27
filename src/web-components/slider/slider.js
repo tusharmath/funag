@@ -5,10 +5,10 @@
 'use strict'
 
 import h from 'hyperscript'
-import BoundingClientRect from '../../lib/BoundingClientRect'
+import BoundingClientRect from '../../dom-api/boundingClientRect'
 import {mutate, mutateLatest} from '../../lib/BatchUpdates'
 import getClientX from '../../lib/getClientX'
-import customEvent from '../../lib/customEvent'
+import customEvent from '../../dom-api/customEvent'
 import view from './slider.view'
 import registerWC from '../../lib/registerWC'
 import style from './slider.style'
