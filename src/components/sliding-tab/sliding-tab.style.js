@@ -10,7 +10,8 @@ import {BlockSpace, BlockHeight, Palette} from '../../lib/Themes'
 
 export default addRules({
   headerText: {
-    paddingLeft: BlockSpace
+    paddingLeft: BlockSpace,
+    minHeight: '38px'
   },
   'slidingTabHeader': {
     backgroundColor: Palette.bg__tabsNavBar,
