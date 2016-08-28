@@ -5,19 +5,27 @@
 'use strict'
 
 import {h} from '@cycle/dom'
+import {Observable as O} from 'rx'
 import css from './swipeable-card.style'
 
-export const style = (cards) => ({
+export const getWidth = (cards) => ({
   width: `${cards.length * 100}%`
 })
 
-export default ({cards$}) => cards$.map(cards =>
+export const getTranslateX = (tab, cards) => ({
+  transform: `translateX(-${tab / cards.length * 100}%)`
+})
+
+export default ({cards$, tab$}) => O.combineLatest(cards$, tab$, (cards, tab) =>
   h(`div`, [
     h(`div.${css.swipeableCardContainer}`, [
-      h(`div.${css.swipeableCard}`, {style: style(cards)}, [
-        h(`ul`, cards.map(i => h(`li`, [i])))
+      h(`div.${css.swipeableCard}`, {style: getWidth(cards)}, [
+        h(`ul`, {style: getTranslateX(tab, cards)},
+          cards.map(i => h(`li`, [i]))
+        )
       ])
     ])
   ])
 )
+
 

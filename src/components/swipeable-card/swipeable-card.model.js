@@ -4,6 +4,13 @@
 
 'use strict'
 
-export default ({cards$}) => {
-  return {cards$}
+import R from 'ramda'
+
+export const selectedTab = ({STORE}) => {
+  return STORE.select('view.selectedTab')
+}
+
+export default (sources) => {
+  const tab$ = selectedTab(sources)
+  return R.merge(sources, {tab$})
 }
