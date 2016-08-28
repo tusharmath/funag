@@ -10,8 +10,6 @@ import {BlockSpace, Palette} from '../../lib/Themes'
 export default addRules({
   'header': {
     backgroundColor: Palette.bg__tabsNavBar,
-    position: 'fixed',
-    top: 0,
     width: '100%',
     zIndex: 1,
     boxShadow: Palette.zDepth__1,

@@ -11,23 +11,21 @@ import css from './main.style'
 const isMoving = STORE => {
   return STORE.select('animationState.touchStarted')
 }
-const params = (padding, touchStarted) => {
+const params = (touchStarted) => {
   return {
-    class: {[css.touchStarted]: touchStarted},
-    style: padding
+    class: {[css.touchStarted]: touchStarted}
   }
 }
-export default ({controls, STORE, padding$, header, swipeableCard}) => {
+export default ({controls, STORE, header, swipeableCard}) => {
   const touchStarted$ = isMoving(STORE)
   return O
     .combineLatest(
-      padding$,
       header.DOM,
       touchStarted$,
       controls.DOM,
       swipeableCard.DOM
-    ).map(([padding, header, touchStarted, controls, swipeableCard]) =>
-      h(`div.flb.col`, params(padding, touchStarted), [
+    ).map(([header, touchStarted, controls, swipeableCard]) =>
+      h(`div.${css.main}`, params(touchStarted), [
         header,
         swipeableCard,
         controls

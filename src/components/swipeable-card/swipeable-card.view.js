@@ -12,9 +12,11 @@ export const style = (cards) => ({
 })
 
 export default ({cards$}) => cards$.map(cards =>
-  h(`div.${css.swipeableCardContainer}`, [
-    h(`div.${css.swipeableCard}`, {style: style(cards)}, [
-      h(`ul`, cards.map(i => h(`li`, [i])))
+  h(`div`, [
+    h(`div.${css.swipeableCardContainer}`, [
+      h(`div.${css.swipeableCard}`, {style: style(cards)}, [
+        h(`ul`, cards.map(i => h(`li`, [i])))
+      ])
     ])
   ])
 )
