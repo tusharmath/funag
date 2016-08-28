@@ -9,10 +9,6 @@ import {row, col, jc_c, ai_c, spread} from 'flex-jss'
 import {BlockSpace, BlockHeight, Palette} from '../../lib/Themes'
 
 export default addRules({
-  headerText: {
-    paddingLeft: BlockSpace,
-    minHeight: '38px'
-  },
   'slidingTabHeader': {
     backgroundColor: Palette.bg__tabsNavBar,
     position: 'fixed',
