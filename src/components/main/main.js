@@ -14,13 +14,17 @@ import view from './main.view'
 import mergePropStream from '../../lib/mergePropStream'
 import Header from '../header/header'
 import SwipeableCard from '../swipeable-card/swipeable-card'
+import getRootBCR from '../../dom-api/getRootBCR'
+import {SET_ROOT_DIMENSIONS} from '../../redux-lib/actions'
 
 const title = (STORE) => {
   return STORE.select('track.selected')
     .filter(Boolean)
     .pluck('title')
 }
-
+const Dimensions = ({DOM}) => {
+  return {STORE: getRootBCR(DOM).map(SET_ROOT_DIMENSIONS)}
+}
 const getPadding = ({STORE}) => {
   const paddingTop$ = STORE.select('view.navBarHeight')
   const paddingBottom$ = STORE.select('view.controlHeight')
@@ -36,6 +40,7 @@ export default function (sources) {
   }))
   const controls = Controls(sources)
   const playlist = Playlist(sources)
+  const dimensions = Dimensions(sources)
   const cards$ = O.combineLatest(
     playlist.DOM,
     O.just(h(`div`, R.times(i => h('div', 'BBB'), 5)))
@@ -48,7 +53,9 @@ export default function (sources) {
     title: title(sources.STORE),
     AUDIO: mergePropStream('AUDIO', playlist, controls),
     DOM: view(R.merge(sources, {controls, header, swipeableCard, padding$})),
-    STORE: mergePropStream('STORE', playlist, controls, searchBox, header),
+    STORE: mergePropStream(
+      'STORE', playlist, controls, searchBox, header, dimensions
+    ),
     EVENTS: searchBox.EVENTS
   }
 }

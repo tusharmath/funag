@@ -7,8 +7,8 @@ import {addRules} from '../../lib/JSSHelpers'
 
 export default addRules({
   playlist: {
-    height: '100%',
-    width: '100%'
+    width: '100%',
+    overflowY: 'auto'
   },
   'disableScroll': {
     overflow: 'hidden'
