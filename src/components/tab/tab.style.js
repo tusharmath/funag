@@ -43,20 +43,5 @@ export default addRules({
       backgroundColor: Palette.bg__tabsNavBarSlider,
       height: 2
     }
-  },
-  'contentSection': {
-    width: '100%',
-    overflow: 'hidden',
-    '& ul': {
-      transition: 'transform 200ms ease-in',
-      display: 'table',
-      tableLayout: 'fixed',
-      listStyle: 'none',
-      padding: 0,
-      margin: 0,
-      '& li': {
-        display: 'table-cell'
-      }
-    }
   }
 })

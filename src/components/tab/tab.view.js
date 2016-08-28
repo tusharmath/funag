@@ -29,6 +29,5 @@ export const view = (width, selected, tabs) => {
 }
 
 export default ({width$, selected$, tabs$}) => {
-  console.log(typeof tabs$)
   return O.combineLatest(width$, selected$, tabs$, view)
 }
