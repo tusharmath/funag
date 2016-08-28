@@ -4,10 +4,10 @@
 
 'use strict'
 
-import SlidingTabs from '../sliding-tab/sliding-tab'
+import Tab from '../tab/tab'
 import view from './header.view'
 
 export default (sources) => {
-  const tabs = SlidingTabs(sources)
+  const tabs = Tab(sources)
   return {DOM: view({tabs}), STORE: tabs.STORE}
 }

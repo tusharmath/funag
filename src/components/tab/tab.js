@@ -5,10 +5,10 @@
 'use strict'
 
 import R from 'ramda'
-import view from './sliding-tab.view'
+import view from './tab.view'
 import {SET_TAB, SET_HEADER_HEIGHT} from '../../redux-lib/actions'
-import model from './sliding-tab.model'
-import css from './sliding-tab.style'
+import model from './tab.model'
+import css from './tab.style'
 import getElementBCR from '../../dom-api/getElementBCR'
 import {Observable as O} from 'rx'
 
@@ -18,7 +18,7 @@ const getNavClicks = DOM => {
     .map(Number)
 }
 const getHeaderHeight = DOM => {
-  return getElementBCR(DOM, `.${css.slidingTabHeader}`).pluck('height')
+  return getElementBCR(DOM, `.${css.tabHeader}`).pluck('height')
 }
 const intent = ({DOM}) => {
   const STORE = O.merge(
