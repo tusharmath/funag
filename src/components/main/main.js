@@ -28,20 +28,19 @@ const getPadding = ({STORE}) => {
     .map(R.zipObj(['paddingTop', 'paddingBottom']))
 }
 
-const NAVIGATION_TABS = ['TRACKS', 'RECENT', 'BOOKMARKS']
-const CARDS = [
-  h(`div`, R.times(i => h('div', 'AAA'), 50)),
-  h(`div`, R.times(i => h('div', 'BBB'), 5)),
-  h(`div`, R.times(i => h('div', 'AAA'), 10))
-]
+const NAVIGATION_TABS = ['TRACKS', 'RECENT']
 
 export default function (sources) {
   const header = Header(R.merge(sources, {
     tabs$: O.just(NAVIGATION_TABS)
   }))
-  const swipeableCard = SwipeableCard(R.merge(sources, {cards$: O.just(CARDS)}))
   const controls = Controls(sources)
   const playlist = Playlist(sources)
+  const cards$ = O.combineLatest(
+    playlist.DOM,
+    O.just(h(`div`, R.times(i => h('div', 'BBB'), 5)))
+  )
+  const swipeableCard = SwipeableCard(R.merge(sources, {cards$}))
   const searchBox = SearchBox(sources)
   const padding$ = getPadding(sources)
   return {
