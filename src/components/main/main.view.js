@@ -17,17 +17,19 @@ const params = (padding, touchStarted) => {
     style: padding
   }
 }
-export default ({controls, STORE, padding$, header}) => {
+export default ({controls, STORE, padding$, header, swipeableCard}) => {
   const touchStarted$ = isMoving(STORE)
   return O
     .combineLatest(
       padding$,
       header.DOM,
       touchStarted$,
-      controls.DOM
-    ).map(([padding, header, touchStarted, controls]) =>
+      controls.DOM,
+      swipeableCard.DOM
+    ).map(([padding, header, touchStarted, controls, swipeableCard]) =>
       h(`div.flb.col`, params(padding, touchStarted), [
         header,
+        swipeableCard,
         controls
       ])
     )

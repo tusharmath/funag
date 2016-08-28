@@ -12,6 +12,7 @@ import SearchBox from '../search/search'
 import view from './main.view'
 import mergePropStream from '../../lib/mergePropStream'
 import Header from '../header/header'
+import SwipeableCard from '../swipeable-card/swipeable-card'
 
 const title = (STORE) => {
   return STORE.select('track.selected')
@@ -32,16 +33,16 @@ export default function (sources) {
   const header = Header(R.merge(sources, {
     tabs$: O.just(NAVIGATION_TABS)
   }))
+  const swipeableCard = SwipeableCard(sources)
   const controls = Controls(sources)
   const playlist = Playlist(sources)
   const searchBox = SearchBox(sources)
   const padding$ = getPadding(sources)
-
   return {
     HTTP: searchBox.HTTP.map(R.merge({accept: 'application/json'})),
     title: title(sources.STORE),
     AUDIO: mergePropStream('AUDIO', playlist, controls),
-    DOM: view(R.merge(sources, {controls, header, padding$})),
+    DOM: view(R.merge(sources, {controls, header, swipeableCard, padding$})),
     STORE: mergePropStream('STORE', playlist, controls, searchBox, header),
     EVENTS: searchBox.EVENTS
   }
