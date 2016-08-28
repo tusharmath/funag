@@ -6,6 +6,7 @@
 
 import R from 'ramda'
 import {Observable as O} from 'rx'
+import {h} from '@cycle/dom'
 import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
 import SearchBox from '../search/search'
@@ -27,13 +28,18 @@ const getPadding = ({STORE}) => {
     .map(R.zipObj(['paddingTop', 'paddingBottom']))
 }
 
-const NAVIGATION_TABS = ['TRACKS', 'RECENT']
+const NAVIGATION_TABS = ['TRACKS', 'RECENT', 'BOOKMARKS']
+const CARDS = [
+  h(`div`, R.times(i => h('div', 'AAA'), 50)),
+  h(`div`, R.times(i => h('div', 'BBB'), 5)),
+  h(`div`, R.times(i => h('div', 'AAA'), 10))
+]
 
 export default function (sources) {
   const header = Header(R.merge(sources, {
     tabs$: O.just(NAVIGATION_TABS)
   }))
-  const swipeableCard = SwipeableCard(sources)
+  const swipeableCard = SwipeableCard(R.merge(sources, {cards$: O.just(CARDS)}))
   const controls = Controls(sources)
   const playlist = Playlist(sources)
   const searchBox = SearchBox(sources)

@@ -5,16 +5,16 @@
 'use strict'
 
 import {h} from '@cycle/dom'
-import {Observable as O} from 'rx'
 import css from './swipeable-card.style'
 
-export default () => O.just(
-  h(`div.${css.swipeableCard}`, [
-    h(`ul`, [
-      h(`li`, 'CONTENT A'),
-      h(`li`, 'CONTENT B'),
-      h(`li`, 'CONTENT C'),
-      h(`li`, 'CONTENT D')
+export const style = (cards) => ({
+  width: `${cards.length * 100}%`
+})
+
+export default ({cards$}) => cards$.map(cards =>
+  h(`div.${css.swipeableCardContainer}`, [
+    h(`div.${css.swipeableCard}`, {style: style(cards)}, [
+      h(`ul`, cards.map(i => h(`li`, [i])))
     ])
   ])
 )

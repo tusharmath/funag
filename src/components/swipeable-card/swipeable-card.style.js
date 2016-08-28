@@ -7,10 +7,13 @@
 import {addRules} from '../../lib/JSSHelpers'
 
 export default addRules({
-  'swipeableCard': {
+  'swipeableCardContainer': {
     width: '100%',
-    overflow: 'hidden',
+    overflow: 'hidden'
+  },
+  'swipeableCard': {
     '& ul': {
+      width: '100%',
       transition: 'transform 200ms ease-in',
       display: 'table',
       tableLayout: 'fixed',
