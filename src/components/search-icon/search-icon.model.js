@@ -5,7 +5,6 @@
 'use strict'
 
 import {Observable as O} from 'rx'
-import {h} from '@cycle/dom'
 import Loader from '../loader/loader'
 import SquareIcon from '../square-icon/square-icon'
 
