@@ -54,8 +54,8 @@ export default function (sources) {
     AUDIO: mergePropStream('AUDIO', playlist, controls),
     DOM: view(R.merge(sources, {controls, header, swipeableCard, padding$})),
     STORE: mergePropStream(
-      'STORE', playlist, controls, searchBox, header, dimensions
+      'STORE', playlist, controls, searchBox, header, dimensions, swipeableCard
     ),
-    EVENTS: searchBox.EVENTS
+    EVENTS: mergePropStream('EVENTS', searchBox)
   }
 }

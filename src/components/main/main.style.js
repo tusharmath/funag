@@ -5,7 +5,8 @@
 'use strict'
 
 import {addRules} from '../../lib/JSSHelpers'
-import css from '../playlist/playlist.style'
+import playlistCSS from '../playlist/playlist.style'
+import swCardCSS from '../swipeable-card/swipeable-card.style'
 
 export default addRules({
   main: {
@@ -18,8 +19,12 @@ export default addRules({
     }
   },
   touchStarted: {
-    [`& .${css.playlist}`]: {
+    [`& .${playlistCSS.playlist}`]: {
       overflow: 'hidden'
+    },
+    [`& .${swCardCSS.swipeableCard} ul`]: {
+      transition: 'none !important',
+      willChange: 'transform'
     }
   }
 })

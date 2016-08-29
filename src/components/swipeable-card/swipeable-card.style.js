@@ -24,9 +24,5 @@ export default addRules({
         display: 'table-cell'
       }
     }
-  },
-  'noTransition': {
-    transition: 'none !important',
-    willChange: 'transform'
   }
 })
