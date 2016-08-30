@@ -11,6 +11,7 @@ import view from './swipeable-card.view'
 import model from './swipeable-card.model'
 import {TOUCH_START, TOUCH_END} from '../../redux-lib/actions'
 import {PREVENT_DEFAULT} from '../../drivers/eventDriver'
+import {changeTab} from './swipeable-card.lib'
 
 export const preventDefault = ({start$, end$, move$}) => {
   return O.merge(start$, end$, move$).map(PREVENT_DEFAULT)
@@ -24,19 +25,21 @@ export const getTouches = ({DOM}) => {
   return {start$, end$, move$}
 }
 
-export const getStore = (touches) => {
+export const getStore = ({touches, STORE}) => {
   const {start$, end$} = touches
   return O.merge(
     start$.map(TOUCH_START),
-    end$.map(TOUCH_END)
+    end$.map(TOUCH_END),
+    changeTab({touches, STORE})
   )
 }
 
 export default (sources) => {
   const touches = getTouches(sources)
+  const _sources = R.merge(sources, {touches})
   return {
-    DOM: view(model(R.merge(sources, {touches}))),
-    STORE: getStore(touches),
+    DOM: view(model(_sources)),
+    STORE: getStore(_sources),
     EVENT: preventDefault(touches)
   }
 }
