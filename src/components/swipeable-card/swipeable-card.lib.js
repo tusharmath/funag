@@ -21,7 +21,7 @@ export const getDirection = (delta, threshold = SWIPE_THRESHOLD) =>
 export const changeTab = ({touches, STORE}) => {
   const {start$, end$} = touches
   return O.zip(start$.map(getClientX), end$.map(getClientX),
-    R.compose(getDirection, R.subtract)
+    R.compose(R.negate, getDirection, R.subtract)
   ).withLatestFrom(selectedTab({STORE}), R.add).map(SET_TAB)
 }
 
