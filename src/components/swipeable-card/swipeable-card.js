@@ -25,12 +25,12 @@ export const getTouches = ({DOM}) => {
   return {start$, end$, move$}
 }
 
-export const getStore = ({touches, STORE}) => {
-  const {start$, end$} = touches
+export const getStore = (sources) => {
+  const {start$, end$} = sources.touches
   return O.merge(
     start$.map(TOUCH_START),
     end$.map(TOUCH_END),
-    changeTab({touches, STORE})
+    changeTab(sources)
   )
 }
 

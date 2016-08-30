@@ -19,11 +19,16 @@ export const getDirection = R.curry((threshold, delta) =>
   Math.abs(delta) > threshold ? -Math.sign(delta) : 0
 )
 
-export const changeTab = ({touches, STORE}) => {
+export const changeTab = ({touches, STORE, cards$}) => {
+  const count$ = cards$.map(R.length)
   const {start$, end$} = touches
   return O.zip(start$.map(getClientX), end$.map(getClientX),
     R.compose(R.negate, getDirection(SWIPE_THRESHOLD), R.subtract)
-  ).withLatestFrom(selectedTab({STORE}), R.add).map(SET_TAB)
+  ).withLatestFrom(selectedTab({STORE}), R.add)
+    .withLatestFrom(count$)
+    .filter(([x, count]) => x >= 0 && x < count)
+    .map(R.head)
+    .map(SET_TAB)
 }
 
 export const addPx = x => x + 'px'
@@ -54,6 +59,9 @@ export function getTranslateX ({
       getDirection(threshold, delta) * width
     )
     .withLatestFrom(currentX$, R.subtract)
+    .withLatestFrom(minX$)
+    .filter(([x, min]) => x <= 0 && x >= min)
+    .map(R.head)
 
   const swipeHappening$ = getDeltaX(startX$, moveX$)
     .withLatestFrom(currentX$, R.subtract)
@@ -61,5 +69,7 @@ export function getTranslateX ({
     .filter(([x, min]) => x <= 0 && x >= min)
     .map(R.head)
 
-  return O.merge(swipeHappening$, swipeEnded$)
+  const tabChanged$ = tab$.withLatestFrom(width$, R.multiply).map(R.negate)
+
+  return O.merge(swipeHappening$, swipeEnded$, tabChanged$)
 }

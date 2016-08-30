@@ -24,6 +24,7 @@ test('simple-move', t => {
     () => getTranslateX({startX$, moveX$, endX$, width$, tab$, cardCount$})
   )
   t.deepEqual(messages, [
+    onNext(210, 0),
     onNext(220, -5),
     onNext(225, -10)
   ])
@@ -55,6 +56,7 @@ test('inside-threshold', t => {
     })
   )
   t.deepEqual(messages, [
+    onNext(201, 0),
     onNext(211, -1),
     onNext(212, -2),
     onNext(213, -3),
@@ -89,6 +91,7 @@ test('beyond-threshold', t => {
     })
   )
   t.deepEqual(messages, [
+    onNext(201, 0),
     onNext(210, 0),
     onNext(220, -10),
     onNext(230, -20),
@@ -124,6 +127,7 @@ test('beyond-threshold:on-tab(1)', t => {
     })
   )
   t.deepEqual(messages, [
+    onNext(201, -400),
     onNext(210, -400),
     onNext(220, -410),
     onNext(230, -420),
@@ -160,6 +164,7 @@ test('beyond-threshold:on-tab(1):right', t => {
   )
 
   t.deepEqual(messages, [
+    onNext(201, -400),
     onNext(210, -400),
     onNext(220, -390),
     onNext(230, -380),
@@ -197,6 +202,7 @@ test('left-edge', t => {
     })
   )
   t.deepEqual(messages, [
+    onNext(201, 0),
     onNext(250, 0),
     onNext(260, -10),
     onNext(270, -20),
@@ -205,7 +211,6 @@ test('left-edge', t => {
 })
 
 test('right-edge', t => {
-  console.log('===')
   const sh = new TestScheduler()
   const threshold = 50
   const cardCount$ = sh.createColdObservable(onNext(0, 3))
@@ -228,9 +233,54 @@ test('right-edge', t => {
     )
   )
   t.deepEqual(messages, [
+    onNext(201, -200),
     onNext(240, -200),
     onNext(250, -190),
     onNext(260, -180),
     onNext(270, -200)
   ])
+})
+
+test('tab-changed', t => {
+  const sh = new TestScheduler()
+  const threshold = 50
+  const cardCount$ = sh.createColdObservable()
+  const tab$ = sh.createHotObservable(
+    onNext(210, 0),
+    onNext(220, 1),
+    onNext(230, 2)
+  )
+  const width$ = sh.createHotObservable(onNext(205, 100))
+  const startX$ = sh.createHotObservable()
+  const endX$ = sh.createHotObservable()
+  const moveX$ = sh.createHotObservable()
+
+  const {messages} = sh.startScheduler(
+    () => getTranslateX(
+      {startX$, moveX$, endX$, threshold, width$, tab$, cardCount$}
+    )
+  )
+  t.deepEqual(messages, [
+    onNext(210, 0),
+    onNext(220, -100),
+    onNext(230, -200)
+  ])
+})
+
+test(t => {
+  const sh = new TestScheduler()
+  const threshold = 5
+  const cardCount$ = sh.createColdObservable()
+  const tab$ = sh.createHotObservable(onNext(210, 0))
+  const width$ = sh.createHotObservable(onNext(210, 100))
+  const startX$ = sh.createHotObservable(onNext(220, 50))
+  const endX$ = sh.createHotObservable(onNext(230, 60))
+  const moveX$ = sh.createHotObservable()
+
+  const {messages} = sh.startScheduler(
+    () => getTranslateX(
+      {startX$, moveX$, endX$, threshold, width$, tab$, cardCount$}
+    )
+  )
+  t.deepEqual(messages, [])
 })
