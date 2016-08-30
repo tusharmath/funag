@@ -1,13 +1,12 @@
 /**
- * Created by tushar.mathur on 24/08/16.
+ * Created by imamudin.naseem on 29/08/16.
  */
 
 'use strict'
+import {addRules} from '../../lib/JSSHelpers'
 
-import {createStyleSheet} from '../../lib/JSSHelpers'
-
-export default createStyleSheet({
-  ':host': {
+export default addRules({
+  'squareIcon': {
     height: '50px',
     width: '50px',
     display: 'flex',

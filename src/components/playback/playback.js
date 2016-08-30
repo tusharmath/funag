@@ -18,6 +18,6 @@ export default ({STORE, AUDIO, DOM}) => {
         playbackButtons.DOM,
         PlaybackInfo({STORE}).DOM
       )
-      .map(views => h(`div.flb.row.jc_s.ai_c`, views))
+      .map(views => h('div.flb.row.jc_s.ai_c', views))
   }
 }

@@ -7,16 +7,17 @@
 import css from './artwork.style'
 import {h} from '@cycle/dom'
 import R from 'ramda'
+import SquareIcon from '../square-icon/square-icon'
 
 export const Placeholder = () => (
   h(`div.${css.artworkPlaceholder}`, [
-    h(`x-square-icon`, {attrs: {icon: 'music_note'}})
+    SquareIcon('music_note')
   ])
 )
 export const ArtworkOverlay = isAnimated => (
   h(`div.${css.artworkContainer}.fade-in`, [
     h(`div.${css.playingAnimation}.${isAnimated}`,
-      R.repeat(h(`li`), 3)
+      R.repeat(h('li'), 3)
     )
   ])
 )
