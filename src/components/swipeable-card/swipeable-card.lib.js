@@ -34,8 +34,8 @@ export function getDeltaX (startX$, moveX$) {
   )
 }
 
-export function getCurrentX (tab$, width$) {
-  return tab$.combineLatest(width$, R.multiply)
+export function multiply$ (a$, b$) {
+  return a$.combineLatest(b$, R.multiply)
 }
 
 export function getTranslateX ({
@@ -44,15 +44,22 @@ export function getTranslateX ({
   endX$,
   threshold = SWIPE_THRESHOLD,
   width$,
-  tab$
+  tab$,
+  cardCount$
 }) {
-  const currentX$ = getCurrentX(tab$, width$)
+  const currentX$ = multiply$(tab$, width$)
+  const minX$ = multiply$(cardCount$.map(R.dec), width$).map(R.negate)
   const swipeEnded$ = O.zip(startX$, endX$, R.subtract)
     .withLatestFrom(width$, (delta, width) =>
       getDirection(threshold, delta) * width
     )
-  const swipeHappening$ = getDeltaX(startX$, moveX$)
-  return O.merge(swipeHappening$, swipeEnded$)
     .withLatestFrom(currentX$, R.subtract)
-    .filter(x => x <= 0)
+
+  const swipeHappening$ = getDeltaX(startX$, moveX$)
+    .withLatestFrom(currentX$, R.subtract)
+    .withLatestFrom(minX$)
+    .filter(([x, min]) => x <= 0 && x >= min)
+    .map(R.head)
+
+  return O.merge(swipeHappening$, swipeEnded$)
 }

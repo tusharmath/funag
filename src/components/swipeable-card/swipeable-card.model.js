@@ -14,11 +14,19 @@ export const SELECTOR = `.${css.swipeableCardContainer}`
 
 export const getCardPosition = (sources) => {
   const tab$ = selectedTab(sources)
+  const cardCount$ = sources.cards$.map(R.length)
   const startX$ = sources.touches.start$.map(getClientX)
   const moveX$ = sources.touches.move$.map(getClientX)
   const endX$ = sources.touches.end$.map(getClientX)
   const width$ = getElementBCR(sources.DOM, SELECTOR).pluck('width')
-  return getTranslateX({startX$, moveX$, endX$, width$, tab$}).map(addPx)
+  return getTranslateX({
+    startX$,
+    moveX$,
+    endX$,
+    width$,
+    tab$,
+    cardCount$
+  }).map(addPx)
 }
 
 export default (sources) => {
