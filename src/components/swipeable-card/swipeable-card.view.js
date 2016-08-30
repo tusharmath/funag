@@ -31,5 +31,3 @@ export default ({cards$, tab$, translateX$}) => {
       ])
   )
 }
-
-

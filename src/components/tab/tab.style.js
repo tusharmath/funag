@@ -5,7 +5,7 @@
 'use strict'
 
 import {addRules} from '../../lib/JSSHelpers'
-import {row, col, jc_c, ai_c, spread} from 'flex-jss'
+import {row, col, jc_c as jcc, ai_c as aic, spread} from 'flex-jss'
 import {BlockSpace, BlockHeight, Palette} from '../../lib/Themes'
 
 export default addRules({
@@ -29,7 +29,7 @@ export default addRules({
       padding: 0,
       margin: 0,
       '& li': {
-        extend: [col, jc_c, ai_c, spread],
+        extend: [col, jcc, aic, spread],
         fontWeight: 'bold',
         padding: BlockSpace,
         height: BlockHeight,
