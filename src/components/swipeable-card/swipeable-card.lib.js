@@ -20,8 +20,7 @@ export const changeTab = ({touches, STORE}) => {
   const {start$, end$} = touches
   return O.zip(start$.map(getClientX), end$.map(getClientX),
     R.compose(getDirection, R.subtract)
-  ).withLatestFrom(selectedTab({STORE}), R.add)
-    .map(SET_TAB)
+  ).withLatestFrom(selectedTab({STORE}), R.add).map(SET_TAB)
 }
 
 export const getCurrentX = ({tab$, width$}) => {
@@ -36,4 +35,20 @@ export const getMovingX = ({start$, move$, currentX$}) => {
       .map(R.compose(R.subtract(R.__, start), getClientX))
       .withLatestFrom(currentX$, R.add)
   )
+}
+
+export const translateX = ({
+  startX$, moveX$, endX$, threshold = 25, width$, tab$
+}) => {
+  const currentX$ = tab$.withLatestFrom(width$, R.multiply)
+  const swipeEnded$ = O.zip(startX$, endX$, R.subtract)
+    .withLatestFrom(width$, (delta, width) =>
+      Math.abs(delta) > threshold ? -Math.sign(delta) * width : 0
+    )
+  const swipeHappening$ = startX$.flatMapLatest(start =>
+    moveX$.map(R.subtract(R.__, start))
+  )
+  return O.merge(swipeHappening$, swipeEnded$)
+    .withLatestFrom(currentX$, R.subtract)
+
 }
