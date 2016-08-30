@@ -79,7 +79,6 @@ test('beyond-threshold', t => {
 })
 
 test('beyond-threshold:on-tab(1)', t => {
-  console.log('-')
   const sh = new TestScheduler()
   const threshold = 10
   const tab$ = sh.createColdObservable(onNext(0, 4))
@@ -123,7 +122,7 @@ test('beyond-threshold:on-tab(1):right', t => {
   const {messages} = sh.startScheduler(
     () => translateX({startX$, moveX$, endX$, threshold, width$, tab$})
   )
-  
+
   t.deepEqual(messages, [
     onNext(210, -400),
     onNext(220, -390),
