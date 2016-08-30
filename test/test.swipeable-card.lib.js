@@ -130,3 +130,26 @@ test('beyond-threshold:on-tab(1):right', t => {
     onNext(250, -300)
   ])
 })
+
+test('left-edge', t => {
+  console.log('===')
+  const sh = new TestScheduler()
+  const threshold = 10
+  const tab$ = sh.createColdObservable(onNext(0, 0))
+  const width$ = sh.createColdObservable(onNext(0, 100))
+  const startX$ = sh.createHotObservable(onNext(210, 10))
+  const endX$ = sh.createHotObservable(onNext(250, 40))
+  const moveX$ = sh.createHotObservable(
+    onNext(210, 10),
+    onNext(220, 20),
+    onNext(230, 30),
+    onNext(240, 40)
+  )
+
+  const {messages} = sh.startScheduler(
+    () => getTranslateX({startX$, moveX$, endX$, threshold, width$, tab$})
+  )
+  t.deepEqual(messages, [
+    onNext(210, 0)
+  ])
+})

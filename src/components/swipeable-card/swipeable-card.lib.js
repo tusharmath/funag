@@ -54,4 +54,5 @@ export function getTranslateX ({
   const swipeHappening$ = getDeltaX(startX$, moveX$)
   return O.merge(swipeHappening$, swipeEnded$)
     .withLatestFrom(currentX$, R.subtract)
+    .filter(x => x <= 0)
 }
