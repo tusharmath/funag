@@ -6,7 +6,7 @@
 
 import R from 'ramda'
 import css from './swipeable-card.style'
-import {selectedTab, translateX, addPx} from './swipeable-card.lib'
+import {selectedTab, getTranslateX, addPx} from './swipeable-card.lib'
 import getClientX from '../../dom-api/getClientX'
 import getElementBCR from '../../dom-api/getElementBCR'
 
@@ -18,8 +18,7 @@ export const getCardPosition = (sources) => {
   const moveX$ = sources.touches.move$.map(getClientX)
   const endX$ = sources.touches.end$.map(getClientX)
   const width$ = getElementBCR(sources.DOM, SELECTOR).pluck('width')
-  return translateX({startX$, moveX$, endX$, width$, tab$})
-    .map(addPx)
+  return getTranslateX({startX$, moveX$, endX$, width$, tab$}).map(addPx)
 }
 
 export default (sources) => {

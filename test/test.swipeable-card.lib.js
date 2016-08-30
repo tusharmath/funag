@@ -6,7 +6,7 @@
 
 import {ReactiveTest, TestScheduler} from 'rx'
 import test from 'ava'
-import {translateX} from '../src/components/swipeable-card/swipeable-card.lib'
+import {getTranslateX} from '../src/components/swipeable-card/swipeable-card.lib'
 const {onNext} = ReactiveTest
 
 test('simple-move', t => {
@@ -20,7 +20,7 @@ test('simple-move', t => {
     onNext(225, 10)
   )
   const {messages} = sh.startScheduler(
-    () => translateX({startX$, moveX$, endX$, width$, tab$})
+    () => getTranslateX({startX$, moveX$, endX$, width$, tab$})
   )
   t.deepEqual(messages, [
     onNext(220, -5),
@@ -42,7 +42,7 @@ test('inside-threshold', t => {
   )
 
   const {messages} = sh.startScheduler(
-    () => translateX({startX$, moveX$, endX$, threshold, width$, tab$})
+    () => getTranslateX({startX$, moveX$, endX$, threshold, width$, tab$})
   )
   t.deepEqual(messages, [
     onNext(211, -1),
@@ -67,7 +67,7 @@ test('beyond-threshold', t => {
   )
 
   const {messages} = sh.startScheduler(
-    () => translateX({startX$, moveX$, endX$, threshold, width$, tab$})
+    () => getTranslateX({startX$, moveX$, endX$, threshold, width$, tab$})
   )
   t.deepEqual(messages, [
     onNext(210, 0),
@@ -93,7 +93,7 @@ test('beyond-threshold:on-tab(1)', t => {
   )
 
   const {messages} = sh.startScheduler(
-    () => translateX({startX$, moveX$, endX$, threshold, width$, tab$})
+    () => getTranslateX({startX$, moveX$, endX$, threshold, width$, tab$})
   )
   t.deepEqual(messages, [
     onNext(210, -400),
@@ -105,7 +105,6 @@ test('beyond-threshold:on-tab(1)', t => {
 })
 
 test('beyond-threshold:on-tab(1):right', t => {
-  console.log('-')
   const sh = new TestScheduler()
   const threshold = 10
   const tab$ = sh.createColdObservable(onNext(0, 4))
@@ -120,7 +119,7 @@ test('beyond-threshold:on-tab(1):right', t => {
   )
 
   const {messages} = sh.startScheduler(
-    () => translateX({startX$, moveX$, endX$, threshold, width$, tab$})
+    () => getTranslateX({startX$, moveX$, endX$, threshold, width$, tab$})
   )
 
   t.deepEqual(messages, [

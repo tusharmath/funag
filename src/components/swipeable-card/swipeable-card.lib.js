@@ -15,34 +15,43 @@ export const selectedTab = ({STORE}) => {
   return STORE.select('view.selectedTab')
 }
 
-export const getDirection = (delta, threshold = SWIPE_THRESHOLD) =>
+export const getDirection = R.curry((threshold, delta) =>
   Math.abs(delta) > threshold ? -Math.sign(delta) : 0
+)
 
 export const changeTab = ({touches, STORE}) => {
   const {start$, end$} = touches
   return O.zip(start$.map(getClientX), end$.map(getClientX),
-    R.compose(R.negate, getDirection, R.subtract)
+    R.compose(R.negate, getDirection(SWIPE_THRESHOLD), R.subtract)
   ).withLatestFrom(selectedTab({STORE}), R.add).map(SET_TAB)
 }
 
 export const addPx = x => x + 'px'
 
-export const translateX = ({
+export function getDeltaX (startX$, moveX$) {
+  return startX$.flatMapLatest(start =>
+    moveX$.map(R.subtract(R.__, start))
+  )
+}
+
+export function getCurrentX (tab$, width$) {
+  return tab$.combineLatest(width$, R.multiply)
+}
+
+export function getTranslateX ({
   startX$,
   moveX$,
   endX$,
-  threshold,
+  threshold = SWIPE_THRESHOLD,
   width$,
   tab$
-}) => {
-  const currentX$ = tab$.combineLatest(width$, R.multiply)
+}) {
+  const currentX$ = getCurrentX(tab$, width$)
   const swipeEnded$ = O.zip(startX$, endX$, R.subtract)
     .withLatestFrom(width$, (delta, width) =>
-      getDirection(delta, threshold) * width
+      getDirection(threshold, delta) * width
     )
-  const swipeHappening$ = startX$.flatMapLatest(start =>
-    moveX$.map(R.subtract(R.__, start))
-  )
+  const swipeHappening$ = getDeltaX(startX$, moveX$)
   return O.merge(swipeHappening$, swipeEnded$)
     .withLatestFrom(currentX$, R.subtract)
 }
