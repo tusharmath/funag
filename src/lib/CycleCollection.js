@@ -14,10 +14,10 @@ export const collectionFrom = R.curry((component, sources, data$) => {
   const items$$ = data$.map(mapI(componentCTOR)).shareReplay(1)
   return {
     combined (type) {
-      return items$$.map(R.pluck(type)).flatMap(i => O.combineLatest(i))
+      return items$$.map(R.pluck(type)).flatMapLatest(i => O.combineLatest(i))
     },
     merged (type) {
-      return items$$.map(R.pluck(type)).flatMap(i => O.merge(i))
+      return items$$.map(R.pluck(type)).flatMapLatest(i => O.merge(i))
     }
   }
 })

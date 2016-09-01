@@ -24,5 +24,5 @@ export const ArtworkOverlay = isAnimated => (
 export const PlayingArtwork = () => ArtworkOverlay('')
 export const PausedArtwork = () => ArtworkOverlay('pause-animation')
 export const ArtworkBG = url =>
-  h(`div.${css.artwork}`, {style: {backgroundImage: `url(${url})`}})
-export const DefaultArtwork = url => url ? ArtworkBG(url) : Placeholder()
+  h(`div.${css.artwork}.fade-in.artwork`,
+    {style: {backgroundImage: `url(${url})`}})

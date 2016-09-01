@@ -13,6 +13,8 @@ import {getStatus$} from '../../lib/OverlayStatus'
 import {collectionFrom} from '../../lib/CycleCollection'
 import {SELECT_TRACK} from '../../redux-lib/actions'
 import view from './playlist.view'
+import css from './playlist.style'
+import getRootBCR from '../../dom-api/getRootBCR'
 
 export const Audio = ({url$}) => url$.scan((last, src) => {
   const canPlay = R.anyPass([
@@ -41,13 +43,13 @@ const getAudioEvents = AUDIO => {
   )
 }
 const ofType = R.compose(R.whereEq, R.objOf('type'))
-const model = ({DOM, STORE, AUDIO}) => {
+const model = ({DOM, STORE, AUDIO, scroll$, rootRect$}) => {
   const tracks$ = STORE.select('track.data')
   const audio$ = getAudioEvents(AUDIO)
   const selectedTrackId$ = STORE.select('track.selected').filter(Boolean)
     .pluck('id')
   const data$ = getStatus$({selectedTrackId$, audio$, tracks$})
-  const rows = collectionFrom(PlayListItem, {DOM}, data$)
+  const rows = collectionFrom(PlayListItem, {DOM, scroll$, rootRect$}, data$)
   const playlistClick$ = rows.merged('click$')
   const playlistDOM$ = rows.combined('DOM')
   const url$ = playlistClick$.map(SC.trackStreamURL)
@@ -60,9 +62,14 @@ const model = ({DOM, STORE, AUDIO}) => {
     AUDIO: mux({play, pause})
   }
 }
-
+const intent = ({DOM}) => ({
+  scroll$: DOM.select(`.${css.playlist}`).events('scroll')
+})
 export default (sources) => {
-  const {AUDIO, STORE, playlistDOM$} = model(sources)
+  const {scroll$} = intent(sources)
+  const rootRect$ = getRootBCR(sources.DOM)
+  const {AUDIO, STORE, playlistDOM$} =
+    model(R.merge(sources, {scroll$, rootRect$}))
   const vTree$ = view({playlistDOM$})
   return {
     DOM: vTree$, AUDIO, STORE
