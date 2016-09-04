@@ -10,10 +10,15 @@ import {h} from '@cycle/dom'
 import css from './search.style'
 
 const resetValue = () =>
-  h(`input.${css.input}`, {type: 'text', placeholder: 'Search', value: ''})
+  h(`input.${css.input}`, {
+    attrs: {type: 'text', placeholder: 'Search'},
+    props: {value: ''}
+  })
 
 const ignoreValue = () =>
-  h(`input.${css.input}`, {type: 'text', placeholder: 'Search'})
+  h(`input.${css.input}`, {
+    attrs: {type: 'text', placeholder: 'Search'}
+  })
 
 const selectValue = R.ifElse(R.identity, resetValue, ignoreValue)
 const Form = R.curry((reset, icon) =>
