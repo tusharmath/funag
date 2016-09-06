@@ -5,8 +5,10 @@
 'use strict'
 
 import {addUnnamedRules} from '../../lib/JSSHelpers'
+import {CSSVariables} from '../../lib/Themes'
 
 addUnnamedRules({
+  'html': CSSVariables,
   'body, html': {
     height: '100%',
     width: '100%',
