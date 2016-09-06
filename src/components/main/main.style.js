@@ -10,10 +10,5 @@ import css from '../playlist/playlist.style'
 export default addRules({
   main: {
     height: '100%'
-  },
-  touchStarted: {
-    [`& .${css.playlist}`]: {
-      overflow: 'hidden'
-    }
   }
 })
