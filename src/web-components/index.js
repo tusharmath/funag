@@ -5,3 +5,4 @@
 'use strict'
 
 import './slider/slider'
+import './swipeable-pane/register'

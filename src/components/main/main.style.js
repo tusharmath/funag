@@ -6,7 +6,6 @@
 
 import {addRules} from '../../lib/JSSHelpers'
 import playlistCSS from '../playlist/playlist.style'
-import swCardCSS from '../swipeable-card/swipeable-card.style'
 
 export default addRules({
   main: {
@@ -18,13 +17,18 @@ export default addRules({
       flexGrow: 1
     }
   },
+  equalWidth: {
+    display: 'table',
+    tableLayout: 'fixed',
+    width: '100%',
+    '& > *': {
+      display: 'table-cell',
+      width: '100%'
+    }
+  },
   touchStarted: {
     [`& .${playlistCSS.playlist}`]: {
       overflow: 'hidden'
-    },
-    [`& .${swCardCSS.swipeableCard} ul`]: {
-      transition: 'none !important',
-      willChange: 'transform'
     }
   }
 })

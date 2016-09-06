@@ -16,18 +16,24 @@ const params = (touchStarted) => {
     class: {[css.touchStarted]: touchStarted}
   }
 }
-export default ({controls, STORE, header, swipeableCard}) => {
+export default ({controls, STORE, header, playlist}) => {
   const touchStarted$ = isMoving(STORE)
   return O
     .combineLatest(
       header.DOM,
       touchStarted$,
       controls.DOM,
-      swipeableCard.DOM
-    ).map(([header, touchStarted, controls, swipeableCard]) =>
+      playlist.DOM
+    ).map(([header, touchStarted, controls, playlist]) =>
       h(`div.${css.main}`, params(touchStarted), [
         header,
-        swipeableCard,
+        h(`x-swipeable-pane`, {attrs: {count: 3, selected: 0}}, [
+          h(`div.${css.equalWidth}`, [
+            playlist,
+            h(`div`, 'AAA'),
+            h(`div`, 'BBB')
+          ])
+        ]),
         controls
       ])
     )
