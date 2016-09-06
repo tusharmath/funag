@@ -66,9 +66,9 @@ export const update = (state, {type, params}) => {
       return R.assoc('isMoving', false, state)
     case 'MOVE':
       return setTouchMove(params, state)
-    case '@@attr/completion':
+    case '@@rwc/attr/completion':
       return setTranslateXOnAttrChange(params, state)
-    case '@@attached':
+    case '@@rwc/attached':
       return setComponentWidth(params, state)
     default:
       return state
@@ -83,7 +83,7 @@ export const view = ({translateX, isMoving}, dispatch) => {
     }, [
       h('div.scrobberIcon', {
         on: {
-          touchstart: dispatch('START'),
+          touchstart: dispatch('START', {preventDefault: true}),
           touchmove: dispatch('MOVE'),
           touchend: dispatch('END')
         }
