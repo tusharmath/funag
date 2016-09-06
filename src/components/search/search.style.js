@@ -19,7 +19,6 @@ export default addRules({
   },
   searchContainer: {
     paddingLeft: `${T.BlockSpace}px`,
-    transform: 'translateZ(0)',
     color: T.Palette.fg__search,
     margin: '0'
   },
