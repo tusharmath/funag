@@ -1,17 +1,22 @@
 /**
- * Created by imamudin.naseem on 25/08/16.
+ * Created by tushar.mathur on 28/08/16.
  */
 
-import css from './header.style'
-import {h} from '@cycle/dom'
+'use strict'
 
-export default ({searchBox}) =>
-  searchBox.DOM.map(searchBox =>
-    h(`div.${css.headerContainer}`, [
-      h(`div.${css.headerText}`, [
-        h('div', [h('strong', 'Funag')]),
-        h('small', ['Unofficial soundcloud player'])
-      ]),
-      searchBox
+import {h} from '@cycle/dom'
+import css from './header.style'
+
+export default ({tabs}) => {
+  return tabs.DOM.map(tabs =>
+    h(`div`, [
+      h(`div.${css.header}`, [
+        h(`div.${css.headerText}`, [
+          h(`div`, [h(`strong`, 'Funag')]),
+          h(`small`, ['Unofficial soundcloud player'])
+        ]),
+        tabs
+      ])
     ])
   )
+}

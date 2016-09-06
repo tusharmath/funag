@@ -5,7 +5,7 @@
 'use strict'
 
 import {createStyleSheet} from '../../lib/JSSHelpers'
-import {Palette, BlockHeight} from '../../lib/Themes'
+import {Palette, BlockHeight, ScrobberHeight} from '../../lib/Themes'
 
 export default createStyleSheet({
   '.scrobber': {
@@ -14,7 +14,7 @@ export default createStyleSheet({
   '.wrapper': {},
   '.scrobberTrack': {
     background: Palette.bg__scrobberTrack,
-    height: '2px',
+    height: ScrobberHeight,
     transformOrigin: 'left',
     transition: 'transform 100ms ease-in',
     willChange: 'transform',

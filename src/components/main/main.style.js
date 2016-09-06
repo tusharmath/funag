@@ -5,14 +5,29 @@
 'use strict'
 
 import {addRules} from '../../lib/JSSHelpers'
-import css from '../playlist/playlist.style'
+import playlistCSS from '../playlist/playlist.style'
 
 export default addRules({
   main: {
-    height: '100%'
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    '& > div:nth-child(2)': {
+      overflow: 'auto',
+      flexGrow: 1
+    }
+  },
+  equalWidth: {
+    display: 'table',
+    tableLayout: 'fixed',
+    width: '100%',
+    '& > *': {
+      display: 'table-cell',
+      width: '100%'
+    }
   },
   touchStarted: {
-    [`& .${css.playlist}`]: {
+    [`& .${playlistCSS.playlist}`]: {
       overflow: 'hidden'
     }
   }

@@ -11,9 +11,12 @@ import css from './controls.style'
 export default ({playback, scrobber, show$}) => {
   return O.combineLatest(scrobber.DOM, playback.DOM, show$)
     .map(([scrobber, playback, show, height]) =>
-      h(`div.${css.controlsContainer}.control`, {class: {[css.hide]: !show}}, [
-        scrobber,
-        playback
+      h(`div`, [
+        h(`div.${css.controlsContainer}.control`,
+          {class: {[css.hide]: !show}}, [
+            scrobber,
+            playback
+          ])
       ])
     )
 }

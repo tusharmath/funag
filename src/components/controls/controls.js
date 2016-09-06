@@ -3,26 +3,30 @@
  */
 
 'use strict'
-import {Observable as O} from 'rx'
+
 import R from 'ramda'
+import {Observable as O} from 'rx'
 import Scrobber from '../scrobber/scrobber'
 import Playback from '../playback/playback'
 import view from './controls.view'
-import {completion, screenReduced} from './controls.model'
+import model from './controls.model'
+import mergePropStream from '../../lib/mergePropStream'
+import css from './controls.style'
+import getElementBCR from '../../dom-api/getElementBCR'
+import {SET_CONTROL_HEIGHT} from '../../redux-lib/actions'
 
-const model = ({AUDIO, STORE, EVENTS}) => {
-  const completion$ = completion({AUDIO, STORE})
-  const show$ = screenReduced(EVENTS)
-  return {completion$, show$}
+export const getControlHeight = ({DOM}) => {
+  return getElementBCR(DOM, `.${css.controlsContainer}`).pluck('height')
 }
 
 export default (sources) => {
-  const {completion$, show$} = model(sources)
+  const _model = model(sources)
   const playback = Playback(sources)
-  const scrobber = Scrobber(R.merge(sources, {completion$}))
+  const scrobber = Scrobber(R.merge(sources, _model))
+  const height$ = getControlHeight(sources)
   return {
-    AUDIO: O.merge(playback.AUDIO, scrobber.AUDIO),
-    DOM: view({playback, scrobber, show$}),
-    STORE: scrobber.STORE
+    AUDIO: mergePropStream('AUDIO', playback, scrobber),
+    DOM: view(R.merge({playback, scrobber}, _model)),
+    STORE: O.merge(scrobber.STORE, height$.map(SET_CONTROL_HEIGHT))
   }
 }

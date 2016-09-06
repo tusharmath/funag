@@ -11,17 +11,30 @@ import css from './main.style'
 const isMoving = STORE => {
   return STORE.select('animationState.touchStarted')
 }
-export default ({playlist, controls, header, STORE}) => {
+const params = (touchStarted) => {
+  return {
+    class: {[css.touchStarted]: touchStarted}
+  }
+}
+export default ({controls, STORE, header, playlist}) => {
   const touchStarted$ = isMoving(STORE)
   return O
     .combineLatest(
-      touchStarted$,
       header.DOM,
-      playlist.DOM,
-      controls.DOM
-    ).map(([touchStarted, ...views]) =>
-      h(`div.${css.main}.flb.col`, {class: {[css.touchStarted]: touchStarted}},
-        views
-      )
+      touchStarted$,
+      controls.DOM,
+      playlist.DOM
+    ).map(([header, touchStarted, controls, playlist]) =>
+      h(`div.${css.main}`, params(touchStarted), [
+        header,
+        h(`x-swipeable-pane`, {attrs: {count: 3, selected: 0}}, [
+          h(`div.${css.equalWidth}`, [
+            playlist,
+            h(`div`, 'AAA'),
+            h(`div`, 'BBB')
+          ])
+        ]),
+        controls
+      ])
     )
 }

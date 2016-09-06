@@ -43,6 +43,13 @@ const getAudioEvents = AUDIO => {
 const ofType = R.compose(R.whereEq, R.objOf('type'))
 const model = ({DOM, STORE, AUDIO}) => {
   const tracks$ = STORE.select('track.data')
+  const height$ = O.zip(
+    STORE.select('view.navBarHeight'),
+    STORE.select('view.controlHeight'),
+    STORE.select('view.rootDimensions.height'),
+    (a, b, c) => c - a - b
+  )
+
   const audio$ = getAudioEvents(AUDIO)
   const selectedTrackId$ = STORE.select('track.selected').filter(Boolean)
     .pluck('id')
@@ -55,6 +62,7 @@ const model = ({DOM, STORE, AUDIO}) => {
   const play = audioAction$.filter(ofType('PLAY'))
   const pause = audioAction$.filter(ofType('PAUSE'))
   return {
+    height$,
     playlistDOM$,
     STORE: playlistClick$.map(SELECT_TRACK),
     AUDIO: mux({play, pause})
@@ -62,8 +70,8 @@ const model = ({DOM, STORE, AUDIO}) => {
 }
 
 export default (sources) => {
-  const {AUDIO, STORE, playlistDOM$} = model(sources)
-  const vTree$ = view({playlistDOM$})
+  const {AUDIO, STORE, playlistDOM$, height$} = model(sources)
+  const vTree$ = view({playlistDOM$, height$})
   return {
     DOM: vTree$, AUDIO, STORE
   }

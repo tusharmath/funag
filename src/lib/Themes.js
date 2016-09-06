@@ -19,9 +19,11 @@ export const Palette = {
   bg__scrobberIcon: '#2196F3',
   bg__scrobberTrack: 'rgb(255, 0, 0)',
   bg__search: '#EEE',
+  bg__tabsNavBar: '#EEE',
   bg__tabsNavBarSlider: 'rgb(134, 134, 134)',
   br__playlistItem: '1px solid rgb(249, 246, 246)',
   fg__artwork: LightTextColor,
+  fg__control: PrimaryDarkTextColor,
   fg__header: PrimaryDarkTextColor,
   fg__header__light: LightTextColor,
   fg__playbackInfo__light: LightTextColor,
@@ -30,7 +32,6 @@ export const Palette = {
   fg__tabsNavBar__active: PrimaryDarkTextColor,
   fg__trackDetail: PrimaryDarkTextColor,
   fg__trackDetail__light: LightTextColor,
-  fg__control: PrimaryDarkTextColor,
   zDepth__0: 'none !important',
   zDepth__1: '0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)',
   zDepth__2: '0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)',
@@ -41,3 +42,4 @@ export const Palette = {
 
 export const BlockHeight = 50
 export const BlockSpace = 6
+export const ScrobberHeight = 2

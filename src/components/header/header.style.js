@@ -1,19 +1,18 @@
 /**
- * Created by tushar.mathur on 25/08/16.
+ * Created by tushar.mathur on 28/08/16.
  */
 
 'use strict'
 
 import {addRules} from '../../lib/JSSHelpers'
-import {BlockSpace, Palette, BlockHeight} from '../../lib/Themes'
-import {jc_c as jcc, col} from 'flex-jss'
+import {BlockSpace, Palette} from '../../lib/Themes'
 
 export default addRules({
-  headerContainer: {
-    backgroundColor: Palette.bg__header,
+  'header': {
+    backgroundColor: Palette.bg__tabsNavBar,
+    width: '100%',
+    zIndex: 1,
     boxShadow: Palette.zDepth__1,
-    color: Palette.fg__header,
-    transform: 'translateZ(0)',
     '& small': {
       color: Palette.fg__trackDetail__light,
       fontSize: '0.6rem',
@@ -21,8 +20,7 @@ export default addRules({
     }
   },
   headerText: {
-    extend: [col, jcc],
     paddingLeft: BlockSpace,
-    height: BlockHeight
+    minHeight: '38px'
   }
 })
