@@ -7,5 +7,5 @@
 /* global CustomEvent */
 export default (name, detail) => new CustomEvent(name, {
   bubbles: true,
-  detail: detail
+  detail
 })
