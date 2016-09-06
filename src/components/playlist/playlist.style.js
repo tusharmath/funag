@@ -4,11 +4,12 @@
 
 'use strict'
 import {addRules} from '../../lib/JSSHelpers'
+import {BlockHeight} from '../../lib/Themes'
 
 export default addRules({
   playlist: {
-    marginTop: '100px',
-    marginBottom: '50px'
+    marginTop: `${BlockHeight * 2}px`,
+    marginBottom: `${BlockHeight}px`
   },
   'disableScroll': {
     overflow: 'hidden'
