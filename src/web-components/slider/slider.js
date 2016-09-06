@@ -4,68 +4,92 @@
 
 'use strict'
 
-import h from 'hyperscript'
-import BoundingClientRect from '../../dom-api/boundingClientRect'
-import {mutate, mutateLatest} from '../../lib/BatchUpdates'
-import getClientX from '../../lib/getClientX'
-import customEvent from '../../dom-api/customEvent'
-import view from './slider.view'
-import registerWC from '../../lib/registerWC'
-import style from './slider.style'
+import h from 'snabbdom/h'
 import R from 'ramda'
+import getClientX from '../../lib/getClientX'
 
-const clearTransition = el => (el.style.transition = null)
-const disableTransition = el => (el.style.transition = 'none')
-const translateX = (el, completion) => (
-  el.style.transform = `translateX(${100 * (completion - 1)}%)`
-)
-const completionEvent = R.useWith(
-  customEvent, [R.identity, R.objOf('completion')]
-)
+const getStyle = ({translateX}) => {
+  return {delayed: {transform: `translateX(${translateX}%)`}}
+}
 
-registerWC('x-slider', {
-  attributeChangedCallback (name, _, completion) {
-    if (name !== 'completion') return
-    if (this.isMoving) return
-    this.__updatePosition(Number(completion))
-  },
-
-  createdCallback () {
-    this.isMoving = false
-    this.mutatePosition = mutateLatest()
-    this.__shadowRoot = this.createShadowRoot()
-    this.__shadowRoot.appendChild(h('style', style.toString()))
-    this.__shadowRoot.appendChild(view(this))
-  },
-
-  attachedCallback () {
-    this.scrobberTrackEL = this.__shadowRoot.querySelector('.scrobberTrack')
-    this.dimensions = BoundingClientRect(this.__shadowRoot.querySelector('div'))
-  },
-
-  __updatePosition (completion) {
-    if (completion >= 0 && completion <= 1 && this.scrobberTrackEL) {
-      this.mutatePosition(() => translateX(this.scrobberTrackEL, completion))
-    }
-  },
-
-  __getCompletion (e) {
-    return getClientX(e) / this.dimensions.width
-  },
-
-  __onTouchStart (e) {
-    this.isMoving = true
-    mutate(() => disableTransition(this.scrobberTrackEL))
-    this.dispatchEvent(completionEvent('changeStart', this.__getCompletion(e)))
-  },
-
-  __onTouchMove (e) {
-    this.__updatePosition(this.__getCompletion(e))
-  },
-
-  __onTouchEnd (e) {
-    this.isMoving = false
-    mutate(() => clearTransition(this.scrobberTrackEL))
-    this.dispatchEvent(completionEvent('changeEnd', this.__getCompletion(e)))
+export const init = () => {
+  return {
+    isMoving: false,
+    translateX: 0
   }
-})
+}
+
+function getTranslateX (completion) {
+  return 100 * (completion - 1)
+}
+
+function completionIsValid (completion) {
+  return [
+    isNaN(completion) === false,
+    completion >= 0,
+    completion <= 1
+  ].every(Boolean)
+}
+
+function getValidCompletion (completion, state) {
+  const isValid = completionIsValid(completion, state)
+  const translateX = getTranslateX(completion)
+  return isValid ? translateX : state.translateX
+}
+
+function setTranslateX (completion, state) {
+  return R.assoc(
+    'translateX',
+    getValidCompletion(completion, state),
+    state
+  )
+}
+
+function setTouchMove (touch, state) {
+  return setTranslateX(getClientX(touch) / state.width, state)
+}
+
+function setTranslateXOnAttrChange (attr, state) {
+  return state.isMoving ? state : setTranslateX(Number(attr), state)
+}
+
+function setComponentWidth (component, state) {
+  const width = component.getBoundingClientRect().width
+  return R.assoc('width', width, state)
+}
+
+export const update = (state, {type, params}) => {
+  switch (type) {
+    case 'START':
+      return R.assoc('isMoving', true, state)
+    case 'END':
+      return R.assoc('isMoving', false, state)
+    case 'MOVE':
+      return setTouchMove(params, state)
+    case '@@attr/completion':
+      return setTranslateXOnAttrChange(params, state)
+    case '@@attached':
+      return setComponentWidth(params, state)
+    default:
+      return state
+  }
+}
+
+export const view = ({translateX, isMoving}, dispatch) => {
+  return h('div.scrobber', [
+    h('div.scrobberTrack', {
+      style: getStyle({translateX}),
+      class: {'disableAnime': isMoving}
+    }, [
+      h('div.scrobberIcon', {
+        on: {
+          touchstart: dispatch('START'),
+          touchmove: dispatch('MOVE'),
+          touchend: dispatch('END')
+        }
+      })
+    ])
+  ])
+}
+
+export default {init, update, view}
