@@ -5,7 +5,6 @@
 'use strict'
 
 import {addRules} from '../../lib/JSSHelpers'
-import css from '../playlist/playlist.style'
 
 export default addRules({
   main: {
