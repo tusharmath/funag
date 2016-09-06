@@ -22,7 +22,6 @@ export default (sources) => {
   const scrobber = Scrobber(R.merge(sources, {completion$}))
   return {
     AUDIO: O.merge(playback.AUDIO, scrobber.AUDIO),
-    DOM: view({playback, scrobber, show$}),
-    STORE: scrobber.STORE
+    DOM: view({playback, scrobber, show$})
   }
 }
