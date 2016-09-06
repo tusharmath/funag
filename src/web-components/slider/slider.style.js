@@ -16,7 +16,7 @@ export default createStyleSheet({
     background: Palette.bg__scrobberTrack,
     height: '2px',
     transformOrigin: 'left',
-    transition: 'transform 100ms ease-in',
+    transition: 'transform 1000ms cubic-bezier(0, 0, 0.2, 1)',
     willChange: 'transform',
     transform: 'translateX(-100%)',
     display: 'flex',
@@ -26,5 +26,8 @@ export default createStyleSheet({
     height: BlockHeight / 2,
     width: BlockHeight,
     transform: 'translateY(-50%) translateX(50%)'
+  },
+  '.disableAnime': {
+    transition: 'none !important'
   }
 })

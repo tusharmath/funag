@@ -4,4 +4,4 @@
 
 'use strict'
 
-import './slider/slider'
+import './slider/register'
