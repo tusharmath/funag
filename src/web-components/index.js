@@ -5,4 +5,5 @@
 'use strict'
 
 import './slider/register'
+import './input-box/register'
 import './stay-focussed-on/register'
