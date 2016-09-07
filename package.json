@@ -33,6 +33,7 @@
     "redux-logger": "^2.6.1",
     "rimraf": "^2.5.2",
     "route-parser": "0.0.5",
+    "rwc": "^2.0.0",
     "rx": "^4.1.0",
     "rx-raf-throttle": "^1.0.0",
     "snabbdom": "^0.5.1",
