@@ -9,5 +9,10 @@ import rwc from 'rwc'
 import style from './slider.style'
 import snabbdomPatcher from '../../lib/snabbdom-patcher'
 import Slider from './slider'
+import h from 'hyperscript'
 
-registerWC('x-slider', rwc.createWCProto(snabbdomPatcher(style), Slider))
+registerWC('x-slider', rwc.createWCProto(
+  snabbdomPatcher([
+    h('style', style.toString())
+  ]), Slider)
+)

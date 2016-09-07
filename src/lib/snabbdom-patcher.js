@@ -7,8 +7,7 @@
 import snabbdom from 'snabbdom'
 import h from 'snabbdom/h'
 import R from 'ramda'
-
-const dh = tag => document.createElement(tag)
+import dh from 'hyperscript'
 
 const patch = snabbdom.init([
   require('snabbdom/modules/class'),
@@ -16,10 +15,8 @@ const patch = snabbdom.init([
   require('snabbdom/modules/style'),
   require('snabbdom/modules/eventlisteners')
 ])
-export default R.curry(function patcher (css, shadowRoot) {
-  const style = dh('style')
-  style.innerHTML = css.toString()
-  shadowRoot.appendChild(style)
+export default R.curry(function patcher (children, shadowRoot) {
+  children.forEach(child => shadowRoot.appendChild(child))
   let __vNode = shadowRoot.appendChild(dh('div'))
   shadowRoot.appendChild(__vNode)
   return function (vNode) {
