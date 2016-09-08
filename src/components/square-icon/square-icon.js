@@ -8,5 +8,5 @@ import css from './square-icon.style'
 
 export default (icon) =>
   h(`div.${css.squareIcon}.${icon}`, [
-    h('i.material-icons', [icon])
+    h('funag-icon', {props: {icon}})
   ])
