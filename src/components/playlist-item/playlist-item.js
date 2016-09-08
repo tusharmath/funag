@@ -5,7 +5,7 @@
 'use strict'
 
 import {Observable as O} from 'rx'
-import {DefaultArtwork, PausedArtwork, PlayingArtwork} from '../artwork/artwork'
+import {DefaultArtwork, ArtworkOverlay} from '../artwork/artwork'
 import TrackDetail from '../track-details/track-details'
 import isolate from '@cycle/isolate'
 import {DEFAULT, PLAYING, PAUSED} from '../../lib/OverlayStatus'
@@ -27,8 +27,8 @@ const view = ({icon$, trackDetail}) => {
 const model = ({track: {artwork_url}, status}) => {
   const OverlayMap = {
     [DEFAULT]: DefaultArtwork(artwork_url),
-    [PAUSED]: PausedArtwork(),
-    [PLAYING]: PlayingArtwork()
+    [PAUSED]: ArtworkOverlay(true),
+    [PLAYING]: ArtworkOverlay(false)
   }
 
   const icon$ = O.just(OverlayMap[status])
