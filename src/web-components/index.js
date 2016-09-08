@@ -4,6 +4,7 @@
 
 'use strict'
 
-import 'vp-notifier'
 import './slider/register'
+import './funag-icon/register'
 import './img-adv/register'
+import 'vp-notifier'

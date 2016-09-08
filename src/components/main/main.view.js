@@ -8,20 +8,17 @@ import {Observable as O} from 'rx'
 import {h} from '@cycle/dom'
 import css from './main.style'
 
-const isMoving = STORE => {
-  return STORE.select('animationState.touchStarted')
-}
-export default ({playlist, controls, header, STORE}) => {
-  const touchStarted$ = isMoving(STORE)
+export default ({playlist, controls, header}) => {
   return O
     .combineLatest(
-      touchStarted$,
       header.DOM,
       playlist.DOM,
       controls.DOM
-    ).map(([touchStarted, ...views]) =>
-      h(`div.${css.main}.flb.col`, {class: {[css.touchStarted]: touchStarted}},
-        views
-      )
+    ).map(([header, playlist, controls]) =>
+      h(`div.${css.main}.flb.col`, [
+        header,
+        playlist,
+        controls
+      ])
     )
 }
