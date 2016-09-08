@@ -5,3 +5,4 @@
 'use strict'
 
 import './slider/register'
+import './funag-icon/register'
