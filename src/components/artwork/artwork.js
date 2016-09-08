@@ -25,11 +25,6 @@ export const PlayingArtwork = () => ArtworkOverlay('')
 export const PausedArtwork = () => ArtworkOverlay('pause-animation')
 export const DefaultArtwork = url => url ? ArtworkBG(url) : Placeholder()
 export const ArtworkBG = url =>
-  h('x-img-adv', {
-    attrs: {
-      src: url,
-      slot: 'placeholder'
-    }
-  }, [
-    h('div.fade-in', {attrs: {slot: 'placeholder'}}, [Placeholder()])
+  h('x-img-adv', {attrs: {src: url}}, [
+    h('div.fade-in', [Placeholder()])
   ])

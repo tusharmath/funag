@@ -4,14 +4,11 @@
 
 'use strict'
 import h from 'snabbdom/h'
-import patcher from '../../lib/snabbdom-patcher'
-import style from './img-adv.style'
-import update from './reducer'
-import rwc from 'rwc'
+import R from 'ramda'
 
 const init = () => ({})
 const view = (state, dispatch) => {
-  const slot = h('slot', {props: {name: state.slot}})
+  const slot = h('slot')
   const img =
     h('img.container',
       {
@@ -27,11 +24,18 @@ const view = (state, dispatch) => {
     )
   return h('div', [state.errored ? slot : img])
 }
-const proto = rwc.createWCProto(patcher(style), {init, view, update})
 
-/* global HTMLElement */
-const html = Object.create(HTMLElement.prototype)
-const CounterHTMLComponent = Object.assign(html, proto)
+const update = (state, {type, params}) => {
+  switch (type) {
+    case '@@rwc/attr/src':
+      return R.assoc('src', params, state)
+    case 'LOAD':
+      return R.assoc('loaded', true, state)
+    case 'ERROR':
+      return R.assoc('errored', true, state)
+    default:
+      return state
+  }
+}
 
-/* global document  */
-document.registerElement('x-img-adv', {prototype: CounterHTMLComponent})
+export default {init, update, view}

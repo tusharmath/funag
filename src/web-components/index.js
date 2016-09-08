@@ -4,5 +4,6 @@
 
 'use strict'
 
+import 'vp-notifier'
 import './slider/register'
-import './img-adv/img-adv'
+import './img-adv/register'

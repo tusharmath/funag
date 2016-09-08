@@ -15,7 +15,6 @@ import {createReduxDriver} from './drivers/reduxDriver'
 import {documentTitleDriver} from './drivers/documentTitle'
 import reducers from './redux-lib/reducers'
 import './web-components'
-import 'vp-notifier'
 import {
   ClassModule,
   PropsModule,
