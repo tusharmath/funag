@@ -49,4 +49,4 @@ const PlayListItem = ({DOM, ROW: {track, status}}) => {
 }
 
 // TODO: Rename file PlayListItem => Track
-export default sources => isolate(PlayListItem)(sources)
+export default sources => isolate(PlayListItem, sources.INDEX)(sources)
