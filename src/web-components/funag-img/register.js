@@ -4,13 +4,13 @@
 
 'use strict'
 import snabbdomPatcher from '../../lib/snabbdom-patcher'
-import style from './img-adv.style'
+import style from './funag-img.style'
 import rwc from 'rwc'
-import img from './img-adv'
+import img from './funag-img'
 import h from 'hyperscript'
 import registerWC from '../../lib/registerWC'
 
-registerWC('x-img-adv', rwc.createWCProto(root => {
+registerWC('funag-img', rwc.createWCProto(root => {
   root.appendChild(h('style', style.toString()))
   return snabbdomPatcher(root)
 }, img))

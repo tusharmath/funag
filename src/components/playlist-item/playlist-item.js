@@ -41,7 +41,10 @@ const isInsideVP =
 const intent = ({DOM, track}) => {
   const click$ = DoubleClick(DOM.select('.playlist-item')).map(track)
   const insideVP$ = DOM.select('x-vp-notifier').events('onChange')
-    .map(isInsideVP).startWith(false)
+    .map(isInsideVP)
+    .filter(Boolean)
+    .take(1)
+    .startWith(false)
   return {click$, insideVP$}
 }
 

@@ -6,7 +6,11 @@
 import h from 'snabbdom/h'
 import R from 'ramda'
 
-const init = () => ({})
+const init = () => ({
+  loaded: false,
+  errored: false,
+  src: null
+})
 const view = (state, dispatch) => {
   const slot = h('slot')
   const img =

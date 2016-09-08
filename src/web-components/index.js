@@ -6,5 +6,5 @@
 
 import './slider/register'
 import './funag-icon/register'
-import './img-adv/register'
+import './funag-img/register'
 import 'vp-notifier'
