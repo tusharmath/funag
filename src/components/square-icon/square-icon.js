@@ -7,6 +7,6 @@ import {h} from '@cycle/dom'
 import css from './square-icon.style'
 
 export default (icon) =>
-  h(`div.${css.squareIcon}.${icon}`, [
+  h(`div.${css.squareIcon}`, {class: {[icon]: true}}, [
     h('funag-icon', {props: {icon}})
   ])

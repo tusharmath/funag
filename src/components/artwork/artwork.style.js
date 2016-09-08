@@ -31,7 +31,7 @@ export default addRules({
       '&:nth-child(2)': animation(1000),
       '&:nth-child(3)': animation(750)
     },
-    '&.pause-animation li': {animationPlayState: 'paused'}
+    '&.pause-animation li': {animation: 'none', transform: 'scaleY(0.1)'}
   },
   '@keyframes playing-animation': {
     '0%': {transform: 'scaleY(0.1)'},
