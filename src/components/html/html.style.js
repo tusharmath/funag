@@ -38,7 +38,6 @@ addUnnamedRules({
   '#container': {
     height: '100%'
   },
-
   '.fade-in': {
     animation: 'fade-in 500ms 1 linear'
   },

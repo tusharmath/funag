@@ -4,8 +4,8 @@
 
 'use strict'
 
-import {Observable as O} from 'rx'
-import {DefaultArtwork, PausedArtwork, PlayingArtwork} from '../artwork/artwork'
+import * as A from '../artwork/artwork'
+import R from 'ramda'
 import TrackDetail from '../track-details/track-details'
 import isolate from '@cycle/isolate'
 import {DEFAULT, PLAYING, PAUSED} from '../../lib/OverlayStatus'
@@ -15,36 +15,44 @@ import {h} from '@cycle/dom'
 
 const view = ({icon$, trackDetail}) => {
   return icon$.map(icon =>
-    h(`div.${css.playlistItem}.playlist-item`, [
-      h(`div.${css.trackInfo}.flb.row.jc_sb.ai_c`, [
-        icon,
-        trackDetail
+    h('x-vp-notifier', [
+      h(`div.${css.playlistItem}.playlist-item`, [
+        h(`div.${css.trackInfo}.flb.row.jc_sb.ai_c`, [
+          icon,
+          trackDetail
+        ])
       ])
     ])
   )
 }
 
-const model = ({track: {artwork_url}, status}) => {
+const model = ({track: {artwork_url: url}, status, insideVP$}) => {
   const OverlayMap = {
-    [DEFAULT]: DefaultArtwork(artwork_url),
-    [PAUSED]: PausedArtwork(),
-    [PLAYING]: PlayingArtwork()
+    [DEFAULT]: show => show && url ? A.DefaultArtwork(url) : A.Placeholder(),
+    [PAUSED]: () => A.PausedArtwork(),
+    [PLAYING]: () => A.PlayingArtwork()
   }
 
-  const icon$ = O.just(OverlayMap[status])
+  const icon$ = insideVP$.map(OverlayMap[status])
   return {icon$}
 }
-
+const isInsideVP =
+  R.compose(R.lt(0), R.path(['detail', 'intersectionRect', 'height']))
 const intent = ({DOM, track}) => {
   const click$ = DoubleClick(DOM.select('.playlist-item')).map(track)
-  return {click$}
+  const insideVP$ = DOM.select('x-vp-notifier').events('onChange')
+    .map(isInsideVP)
+    .filter(Boolean)
+    .take(1)
+    .startWith(false)
+  return {click$, insideVP$}
 }
 
 const PlayListItem = ({DOM, ROW: {track, status}}) => {
-  const {icon$} = model({track, status})
+  const {click$, insideVP$} = intent({DOM, track})
+  const {icon$} = model({track, status, insideVP$})
   const trackDetail = TrackDetail(track)
   const vTree$ = view({icon$, trackDetail})
-  const {click$} = intent({DOM, track})
   return {click$, DOM: vTree$}
 }
 
