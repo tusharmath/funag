@@ -16,13 +16,11 @@ export const Placeholder = () => (
 )
 export const ArtworkOverlay = isAnimated => (
   h(`div.${css.artworkContainer}.fade-in`, [
-    h(`div.${css.playingAnimation}.${isAnimated}`,
+    h(`div.${css.playingAnimation}`, {class: {'pause-animation': isAnimated}},
       R.repeat(h('li'), 3)
     )
   ])
 )
-export const PlayingArtwork = () => ArtworkOverlay('')
-export const PausedArtwork = () => ArtworkOverlay('pause-animation')
 export const ArtworkBG = url =>
   h(`div.${css.artwork}`, {style: {backgroundImage: `url(${url})`}})
 export const DefaultArtwork = url => url ? ArtworkBG(url) : Placeholder()

@@ -6,5 +6,6 @@
 
 import './slider/register'
 import './input-box/register'
+import './funag-icon/register'
 import './stay-focussed-on/register'
 import './http/register'

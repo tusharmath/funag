@@ -6,7 +6,6 @@
 
 import snabbdom from 'snabbdom'
 import h from 'snabbdom/h'
-import R from 'ramda'
 import dh from 'hyperscript'
 
 const patch = snabbdom.init([
@@ -15,11 +14,10 @@ const patch = snabbdom.init([
   require('snabbdom/modules/style'),
   require('snabbdom/modules/eventlisteners')
 ])
-export default R.curry(function patcher (children, shadowRoot) {
-  children.forEach(child => shadowRoot.appendChild(child))
+export default function snabbdomPatcher (shadowRoot) {
   let __vNode = shadowRoot.appendChild(dh('div'))
-  shadowRoot.appendChild(__vNode)
   return function (vNode) {
     __vNode = patch(__vNode, h('div', [vNode]))
   }
-})
+}
+
