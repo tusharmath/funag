@@ -7,6 +7,7 @@ import './html.style'
 import h from 'hyperscript'
 import {globalSheet} from '../../lib/JSSHelpers'
 import * as flex from 'flex-jss'
+import Header from '../header/header'
 import loadSW from '../../lib/loadSW'
 
 export default ({title, bundle, manifest, sw}) => {
@@ -32,7 +33,7 @@ export default ({title, bundle, manifest, sw}) => {
       })
     ]),
     h('body', [
-      h('div#container'),
+      Header,
       h('script', {attrs: {src: bundle}})
     ])
   ])

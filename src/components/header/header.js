@@ -1,18 +1,14 @@
 /**
- * Created by tushar.mathur on 25/08/16.
+ * Created by imamudin.naseem on 25/08/16.
  */
 
-'use strict'
+import css from './header.style'
+import h from 'hyperscript'
 
-import SearchBox from '../search/search'
-import view from './header.view'
+export default h(`div.${css.headerContainer}`, [
+  h(`div.${css.headerText}`, [
+    h('div', [h('strong', 'Funag')]),
+    h('small', ['Unofficial SoundCloud player'])
+  ])
+])
 
-export default (sources) => {
-  const searchBox = SearchBox(sources)
-  return {
-    DOM: view({searchBox}),
-    HTTP: searchBox.HTTP,
-    EVENTS: searchBox.EVENTS,
-    STORE: searchBox.STORE
-  }
-}

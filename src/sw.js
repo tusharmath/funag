@@ -8,19 +8,13 @@ import toolbox from 'sw-toolbox'
 
 const swConfig = APP_CONFIG.sw
 
-if (swConfig.appCache) {
-  const {policy} = swConfig.appCache
-  toolbox.router.get('/', toolbox[policy])
-  toolbox.router.get(/.*client.*/, toolbox[policy])
-}
+toolbox.router.get('/', toolbox.fastest)
+toolbox.router.get(/.*client.*/, toolbox.fastest)
 
-if (swConfig.externalCache) {
-  const {policy} = swConfig.externalCache
-  toolbox.router.get(/^.*googleapis.*$/, toolbox[policy])
-  toolbox.router.get(/^.*gstatic.*$/, toolbox[policy])
-  toolbox.router.get(/^.*bootstrapcdn.*$/, toolbox[policy])
-  toolbox.router.get(/^.*snd\.cdn.*$/, toolbox[policy])
-}
+toolbox.router.get(/^.*googleapis.*$/, toolbox.fastest)
+toolbox.router.get(/^.*gstatic.*$/, toolbox.fastest)
+toolbox.router.get(/^.*bootstrapcdn.*$/, toolbox.fastest)
+toolbox.router.get(/^.*snd\.cdn.*$/, toolbox.fastest)
 
 if (swConfig.debug) {
   toolbox.options.debug = true
