@@ -14,10 +14,7 @@ function onTimeUpdated (params, state) {
 }
 
 function getEvent (state) {
-  if (state.icon === 'play_arrow') {
-    return {type: 'play'}
-  }
-  return {type: 'pause'}
+  return state.icon === 'play_arrow' ? {type: 'play'} : {type: 'pause'}
 }
 
 export default {

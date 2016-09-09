@@ -5,7 +5,6 @@
 'use strict'
 
 import R from 'ramda'
-import Controls from '../controls/controls'
 import Playlist from '../playlist/playlist'
 import Header from '../header/header'
 import view from './main.view'
@@ -18,15 +17,15 @@ const title = (STORE) => {
 }
 
 export default function (sources) {
-  const controls = Controls(sources)
   const playlist = Playlist(sources)
   const header = Header(sources)
+  const track$ = sources.STORE.select('track.selected')
   return {
     HTTP: header.HTTP.map(R.merge({accept: 'application/json'})),
     title: title(sources.STORE),
     EVENTS: header.EVENTS,
-    AUDIO: mergePropStream('AUDIO', playlist, controls),
-    DOM: view(R.merge(sources, {playlist, controls, header})),
-    STORE: mergePropStream('STORE', playlist, header, controls)
+    AUDIO: mergePropStream('AUDIO', playlist),
+    DOM: view(R.merge(sources, {playlist, header, track$})),
+    STORE: mergePropStream('STORE', playlist, header)
   }
 }
