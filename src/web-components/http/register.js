@@ -8,4 +8,4 @@
 
 import Http from './http'
 
-document.registerElement('x-http', Http)
+document.registerElement('funag-http', Http)

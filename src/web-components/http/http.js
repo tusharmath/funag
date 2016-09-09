@@ -4,40 +4,30 @@
 
 'use strict'
 
-/* global HTMLElement fetch CustomEvent */
+/* global HTMLElement fetch */
+
+import getRootNode from '../../dom-api/getRootNode'
+import {Request, Response} from './http.events'
 
 export default class Http extends HTMLElement {
-  set url (url) {
-    if (this.__url !== url) {
-      this.__url = url
-      this.__request()
+  createdCallback () {
+    this.onRequest = this.onRequest.bind(this)
+    this.__root = getRootNode(this)
+    document.addEventListener('http-request', this.onRequest)
+  }
+
+  __dispatch (response) {
+    this.dispatchEvent(Response.of(response))
+  }
+
+  onRequest (ev) {
+    if ((ev instanceof Request)) {
+      fetch(ev.url, ev.params)
+        .then(response => response.json())
+        .then(
+          json => this.__dispatch(json),
+          function (err) { throw err }
+        )
     }
-  }
-
-  get url () {
-    return this.__url
-  }
-
-  set params (params) {
-    if (this.__params !== params) {
-      this.__params = params
-      this.__request()
-    }
-  }
-
-  get params () {
-    return this.__params
-  }
-
-  __dispatch (name, response) {
-    this.dispatchEvent(new CustomEvent(name, {detail: response}))
-  }
-
-  __request () {
-    fetch(this.__url, this.__params)
-      .then(
-        response => this.__dispatch('response', response),
-        error => this.__dispatch('error', error)
-      )
   }
 }
