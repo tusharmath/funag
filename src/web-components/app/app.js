@@ -30,9 +30,7 @@ export default {
   view ({tracks}, dispatch) {
     return h(`div.container`, [
       h(`funag-http`, {on: {'http-response': dispatch('TRACKS')}}),
-      h('ul', tracks.map(track =>
-        h('li', [track.title])
-      )),
+      h('funag-track-list', {props: {tracks}}),
       h(`div.control-container`, [
         h(`funag-mini-audio-control`)
       ])
