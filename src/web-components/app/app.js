@@ -12,7 +12,8 @@ import {toURI} from '../../lib/SoundCloud'
 export default {
   init () {
     return {
-      tracks: []
+      tracks: [],
+      selected: 0
     }
   },
 
@@ -27,13 +28,18 @@ export default {
     }
   },
 
-  view ({tracks}, dispatch) {
+  view ({tracks, selected}, dispatch) {
     return h(`div.container`, [
       h(`funag-http`, {on: {'http-response': dispatch('TRACKS')}}),
       h('funag-track-list', {props: {tracks}}),
-      h(`div.control-container`, [
-        h(`funag-mini-audio-control`)
-      ])
+      tracks.length > 0 ? h(`div.control-container.fade-in`, [
+        h(`funag-mini-audio-control`, [
+          h(`div.control-track-detail`, [
+            h(`div.track-title`, [tracks[selected].title]),
+            h(`div.artist`, [tracks[selected].user.username])
+          ])
+        ])
+      ]) : ''
     ])
   }
 }

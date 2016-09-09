@@ -19,5 +19,16 @@ export default createStyleSheet({
     boxShadow: Palette.zDepth__1,
     backgroundColor: Palette.bg__control,
     color: Palette.fg__control
+  },
+  '.control-track-detail': {
+    color: Palette.fg__control,
+    '& .track-title': {
+      fontWeight: 600
+    },
+    '& .artist': {
+      fontWeight: 600,
+      fontSize: '0.8rem',
+      color: Palette.fg__playbackInfo__light
+    }
   }
 })
