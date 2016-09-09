@@ -6,8 +6,8 @@
 
 /* global HTMLAudioElement */
 
-import getRootNode from '../../dom-api/getRootNode'
 import PassiveAudioEvent from './passive-audio.event'
+import validURL from 'valid-url'
 
 export default class PassiveAudio extends HTMLAudioElement {
   static get observedAttributes () { return ['src'] }
@@ -19,7 +19,7 @@ export default class PassiveAudio extends HTMLAudioElement {
   }
 
   attachedCallback () {
-    this.__root = getRootNode(this).host
+    this.__root = document
     this.__root.addEventListener(PassiveAudioEvent.type, this.__onUpdate)
     this.src = this.getAttribute('src')
   }
@@ -29,6 +29,7 @@ export default class PassiveAudio extends HTMLAudioElement {
   }
 
   set src (value) {
+    if (!validURL.isUri(value)) return
     this.__audio.src = value
   }
 

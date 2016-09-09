@@ -38,6 +38,7 @@
     "rx-raf-throttle": "^1.0.0",
     "snabbdom": "^0.5.1",
     "sw-toolbox": "^3.1.1",
+    "valid-url": "^1.0.9",
     "webpack-super": "^2.0.0",
     "xstream": "^6.0.0"
   },
