@@ -29,8 +29,9 @@ const babelLoader = {
  */
 export default {
   entry: {
-    client: './src/bootstrapDOM.js',
-    sw: './src/sw.js'
+    client: './src/web-components/index.js',
+    sw: './src/sw.js',
+    manifest: 'file?name=manifest.json!./src/manifest.json'
   },
   output: {
     path: path.resolve(process.cwd(), 'public'),

@@ -4,42 +4,19 @@
 
 'use strict'
 
-import Cycle from '@cycle/rx-run'
-import Main from '../components/main/main'
-import {Observable} from 'rx'
-import {makeHTMLDriver} from '@cycle/dom'
-import {mockAudioDriver} from '../drivers/audio'
-import * as R from 'ramda'
-import {createReduxDriver} from '../drivers/reduxDriver'
 import wrapHTML from './wrapHTML'
-import reducers from '../redux-lib/reducers'
 
-export const createWrappedMain = R.curry((Main, compilation, sources) => {
-  const main = Main(sources)
-  const DOM = main.DOM.first()
-    .map(wrapHTML(compilation))
-  return R.merge(main, {DOM})
-})
 export const createAsset = html => ({
   source: () => html,
   size: () => html.length
 })
-export const onHTML = R.curry((compilation, cb, html) => {
-  compilation.assets['index.html'] = createAsset(html)
-  cb()
-})
 export class ApplicationShell {
   apply (compiler) {
     const onEmit = (compilation, cb) => {
-      const sources = {
-        STORE: createReduxDriver(reducers),
-        DOM: makeHTMLDriver(onHTML(compilation, cb)),
-        AUDIO: mockAudioDriver,
-        EVENTS: () => ({select: () => Observable.never()}),
-        title: () => ({}),
-        HTTP: () => Observable.never()
-      }
-      Cycle.run(createWrappedMain(Main, compilation), sources)
+      compilation.assets['index.html'] = createAsset(
+        wrapHTML(compilation).outerHTML
+      )
+      cb()
     }
     compiler.plugin('emit', onEmit)
   }
