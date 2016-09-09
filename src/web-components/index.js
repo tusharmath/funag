@@ -6,3 +6,5 @@
 
 import './slider/register'
 import './funag-icon/register'
+import './passive-audio/register'
+import './mini-audio-control/register'
