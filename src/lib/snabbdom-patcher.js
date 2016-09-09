@@ -12,7 +12,8 @@ const patch = snabbdom.init([
   require('snabbdom/modules/class'),
   require('snabbdom/modules/props'),
   require('snabbdom/modules/style'),
-  require('snabbdom/modules/eventlisteners')
+  require('snabbdom/modules/eventlisteners'),
+  require('snabbdom/modules/attributes')
 ])
 export default function snabbdomPatcher (shadowRoot) {
   let __vNode = shadowRoot.appendChild(dh('div'))
@@ -20,4 +21,3 @@ export default function snabbdomPatcher (shadowRoot) {
     __vNode = patch(__vNode, h('div', [vNode]))
   }
 }
-
