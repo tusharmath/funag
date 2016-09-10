@@ -13,7 +13,7 @@ export default {
   init () {
     return {
       tracks: [],
-      selected: 0,
+      selected: null,
       search: ''
     }
   },
@@ -28,7 +28,10 @@ export default {
           Request.of(toURI('/tracks', {q: params.funagEventParams}))
         ]
       case 'TRACKS':
-        return R.assoc('tracks', params.response, state)
+        return R.merge(state, {
+          tracks: params.response,
+          selected: state.selected ? state.selected : params.response[0]
+        })
       default:
         return state
     }
@@ -43,15 +46,15 @@ export default {
       h(`div.search-box-container`, [
         h('funag-input', {
           on: {funaginputvalue: dispatch('SEARCH')},
-          attrs: {placeholder: 'Search'}
+          attrs: {placeholder: 'Search', icon: 'search'}
         })
       ]),
       h('funag-track-list', {props: {tracks}}),
-      tracks.length > 0 ? h(`div.control-container.fade-in`, [
+      selected ? h(`div.control-container`, [
         h(`funag-mini-audio-control`, [
           h(`div.control-track-detail`, [
-            h(`div.track-title.text-overflow`, [tracks[selected].title]),
-            h(`div.artist.text-overflow`, [tracks[selected].user.username])
+            h(`div.track-title.text-overflow`, [selected.title]),
+            h(`div.artist.text-overflow`, [selected.user.username])
           ])
         ])
       ]) : ''

@@ -11,13 +11,13 @@ import {FunagInputValue} from './input.event'
 
 function onValue (params, state) {
   const value = targetValue(params)
-  const icon = value.length > 0 ? 'close' : 'search'
+  const icon = value.length > 0 ? 'close' : state.defaultIcon
   const event = state.value === value ? null : FunagInputValue.of(value)
   return [R.merge(state, {value, icon}), event]
 }
 function onClick (state) {
   return [
-    R.merge(state, {value: '', icon: 'search'}),
+    R.merge(state, {value: '', icon: state.defaultIcon}),
     FunagInputValue.of('')
   ]
 }
@@ -26,7 +26,8 @@ export default {
     return {
       active: false,
       value: '',
-      icon: 'search',
+      icon: e.getAttribute('icon'),
+      defaultIcon: e.getAttribute('icon'),
       placeholder: e.getAttribute('placeholder') || ''
     }
   },
@@ -35,6 +36,8 @@ export default {
     switch (type) {
       case '@@rwc/attr/placeholder':
         return R.assoc('placeholder', params, state)
+      case '@@rwc/attr/icon':
+        return R.assoc('icon', params, state)
       case 'VALUE':
         return onValue(params, state)
       case 'CLICK':
@@ -51,9 +54,9 @@ export default {
           on: {keyup: dispatch('VALUE')},
           props: {type: 'text', placeholder, value}
         }),
-        h('button.icon-button', {on: {click: dispatch('CLICK')}}, [
+        icon ? h('button.icon-button', {on: {click: dispatch('CLICK')}}, [
           h('i.material-icons', [icon])
-        ])
+        ]) : ''
       ])
     ])
   }
