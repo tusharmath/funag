@@ -11,10 +11,11 @@ import findParent from '../../dom-api/findParent'
 import {TrackChanged} from './track-list.events'
 
 function artworkBG (track) {
-  return {style: {backgroundImage: `url(${track.artwork_url })`}}
+  return {style: {backgroundImage: `url(${track.artwork_url})`}}
 }
 function artwork ({track, playing, selected}) {
-  if (track === selected) return h('funag-music-icon', {props: {paused: !playing}})
+  const paused = !playing
+  if (track === selected) h('funag-music-icon', {props: {paused}})
   if (track.artwork_url) return h('div.artwork-bg-image', artworkBG(track))
   return h(`funag-icon`, {props: {icon: 'music_note'}})
 }

@@ -13,31 +13,20 @@ import {
 } from '../passive-audio/passive-audio.event'
 import {MediaPlaying, MediaStopped} from './mini-audio-control.events'
 
-function onTimeUpdated (params, state) {
-  const completion = params.currentTime / params.duration
-  return R.merge(state, {completion})
+const onTimeUpdated = (params, state) => R.merge(
+  state, {completion: params.currentTime / params.duration}
+)
+const getEvent = (state) => {
+  if (state.mediaStatus === MediaStatus.PAUSED) return PlayEvent.of()
+  return PauseEvent.of()
 }
-
-function getEvent (state) {
-  return state.mediaStatus === MediaStatus.PAUSED ? PlayEvent.of() : PauseEvent.of()
-}
-
-function getIcon (status) {
-  return {
-    [MediaStatus.LOADING]: h(`funag-loader`),
-    [MediaStatus.PLAYING]: h('funag-icon', {props: {icon: 'pause'}}),
-    [MediaStatus.ERRED]: h('funag-icon', {props: {icon: 'error_outline'}}),
-    [MediaStatus.PAUSED]: h('funag-icon', {props: {icon: 'play_arrow'}})
-  }[status]
-}
-
-export const MediaStatus = {
-  LOADING: 'LOADING',
-  PLAYING: 'PLAYING',
-  ERRED: 'ERRED',
-  PAUSED: 'PAUSED'
-}
-
+const getIcon = (status) => ({
+  [MediaStatus.LOADING]: h(`funag-loader`),
+  [MediaStatus.PLAYING]: h('funag-icon', {props: {icon: 'pause'}}),
+  [MediaStatus.ERRED]: h('funag-icon', {props: {icon: 'error_outline'}}),
+  [MediaStatus.PAUSED]: h('funag-icon', {props: {icon: 'play_arrow'}})
+})[status]
+export const MediaStatus = {LOADING: 0, PLAYING: 1, ERRED: 2, PAUSED: 3}
 export default {
   init () {
     return {
@@ -48,6 +37,7 @@ export default {
   },
 
   update (state, {type, params}) {
+    const updateMediaState = R.assoc('mediaStatus', R.__, state)
     switch (type) {
       case '@@rwc/attr/src':
         return R.merge(state, {
@@ -60,37 +50,19 @@ export default {
       case 'TIME_UPDATED':
         return onTimeUpdated(params, state)
       case 'PLAYING':
-        return [
-          R.assoc('mediaStatus', MediaStatus.PLAYING, state),
-          MediaPlaying.of()
-        ]
+        return [updateMediaState(MediaStatus.PLAYING), MediaPlaying.of()]
       case 'PAUSED':
-        return [
-          R.assoc('mediaStatus', MediaStatus.PAUSED, state),
-          MediaStopped.of()
-        ]
+        return [updateMediaState(MediaStatus.PAUSED), MediaStopped.of()]
       case 'ERROR':
-        return [
-          R.assoc('mediaStatus', MediaStatus.ERRED, state),
-          MediaStopped.of()
-        ]
+        return [updateMediaState(MediaStatus.ERRED), MediaStopped.of()]
       case 'SEEKING':
-        return [
-          R.assoc('mediaStatus', MediaStatus.LOADING, state),
-          MediaStopped.of()
-        ]
+        return [updateMediaState(MediaStatus.LOADING), MediaStopped.of()]
       case 'SEEK':
         return [state, SeekEvent.of(params.detail)]
       case 'SUSPEND':
-        return [
-          R.assoc('mediaStatus', MediaStatus.LOADING, state),
-          MediaStopped.of()
-        ]
+        return [updateMediaState(MediaStatus.LOADING), MediaStopped.of()]
       case 'CAN_PLAY':
-        return [
-          R.assoc('mediaStatus', MediaStatus.PAUSED, state),
-          MediaStopped.of()
-        ]
+        return [updateMediaState(MediaStatus.PAUSED), MediaStopped.of()]
       default:
         return state
     }
@@ -114,9 +86,7 @@ export default {
         h('div.control-button', {on: {click: dispatch('CLICK')}}, [
           getIcon(mediaStatus)
         ]),
-        h(`div.slot-content`, [
-          h('slot')
-        ])
+        h(`div.slot-content`, [h('slot')])
       ])
     ])
   }

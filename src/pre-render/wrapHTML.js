@@ -5,7 +5,6 @@
 'use strict'
 
 import findChunkFile from './findChunkFile'
-import findAsset from './findAsset'
 import HTML from '../components/html/html'
 import {name} from '../../package.json'
 
