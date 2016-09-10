@@ -35,6 +35,7 @@ export default {
       case '@@rwc/attr/src':
         return R.merge(state, {
           src: params,
+          icon: 'loader',
           completion: 0
         })
       case 'CLICK':
@@ -47,6 +48,8 @@ export default {
         return R.assoc('icon', 'play_arrow', state)
       case 'ERROR':
         return R.assoc('icon', 'error_outline', state)
+      case 'SEEKING':
+        return R.assoc('icon', 'loader', state)
       case 'SEEK':
         return [state, SeekEvent.of(params.detail)]
       case 'SUSPEND':
@@ -65,13 +68,14 @@ export default {
           playing: dispatch('PLAYING'),
           pause: dispatch('PAUSE'),
           error: dispatch('ERROR'),
-          suspend: dispatch('SUSPEND')
+          suspend: dispatch('SUSPEND'),
+          seeking: dispatch('SEEKING')
         }
       }),
       h('x-slider', {attrs: {completion}, on: {change: dispatch('SEEK')}}),
       h('div.control-row', [
         h('div.control-button', [
-          h('funag-icon', {
+          icon === 'loader' ? h(`funag-loader`) : h('funag-icon', {
             props: {icon},
             on: {click: dispatch('CLICK')}
           })
