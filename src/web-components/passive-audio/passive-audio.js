@@ -11,8 +11,8 @@ import validURL from 'valid-url'
 import getHostNode from '../../dom-api/getHostNode'
 import compositeListener from '../../dom-api/compositeListener'
 
-function updateCurrentTime (audio, {funagEventParams}) {
-  audio.currentTime = funagEventParams.completion * audio.duration
+function updateCurrentTime (audio, {detail}) {
+  audio.currentTime = detail.completion * audio.duration
 }
 export default class PassiveAudio extends HTMLElement {
   static get observedAttributes () { return ['src'] }

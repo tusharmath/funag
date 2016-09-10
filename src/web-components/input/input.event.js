@@ -4,19 +4,6 @@
 
 'use strict'
 
-/* global Event */
+import {BubblingEventType} from '../../lib/CustomEventType'
 
-export class FunagInputValue extends Event {
-  constructor (funagEventParams) {
-    super('FunagInputValue'.toLowerCase(), {bubbles: true})
-    this.funagEventParams = funagEventParams
-  }
-
-  static of (...t) {
-    return new FunagInputValue(...t)
-  }
-
-  static is (ev) {
-    return ev instanceof FunagInputValue
-  }
-}
+export const FunagInputValue = BubblingEventType('FunagInputValue')

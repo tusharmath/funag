@@ -8,6 +8,7 @@ import h from 'snabbdom/h'
 import R from 'ramda'
 import {Request} from '../http/http.events'
 import {toURI, trackStreamURL} from '../../lib/SoundCloud'
+import {FunagInputValue} from '../input/input.event'
 
 export default {
   init () {
@@ -24,8 +25,8 @@ export default {
         return [state, Request.of(toURI('/tracks', {q: state.search}))]
       case `SEARCH`:
         return [
-          R.merge(state, {search: params.funagEventParams, tracks: []}),
-          Request.of(toURI('/tracks', {q: params.funagEventParams}))
+          R.merge(state, {search: params.detail, tracks: []}),
+          Request.of(toURI('/tracks', {q: params.detail}))
         ]
       case 'TRACKS':
         return R.merge(state, {
@@ -45,7 +46,7 @@ export default {
       }),
       h(`div.search-box-container`, [
         h('funag-input', {
-          on: {funaginputvalue: dispatch('SEARCH')},
+          on: {[FunagInputValue.type]: dispatch('SEARCH')},
           attrs: {placeholder: 'Search', icon: 'search'}
         })
       ]),
