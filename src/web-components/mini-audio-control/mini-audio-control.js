@@ -6,7 +6,11 @@
 
 import h from 'snabbdom/h'
 import R from 'ramda'
-import PassiveAudioEvent from '../passive-audio/passive-audio.event'
+import {
+  PlayEvent,
+  PauseEvent,
+  SeekEvent
+} from '../passive-audio/passive-audio.event'
 
 function onTimeUpdated (params, state) {
   const completion = params.currentTime / params.duration
@@ -14,7 +18,7 @@ function onTimeUpdated (params, state) {
 }
 
 function getEvent (state) {
-  return state.icon === 'play_arrow' ? {type: 'play'} : {type: 'pause'}
+  return state.icon === 'play_arrow' ? PlayEvent.of() : PauseEvent.of()
 }
 
 export default {
@@ -31,7 +35,7 @@ export default {
       case '@@rwc/attr/src':
         return R.assoc('src', params, state)
       case 'CLICK':
-        return [state, PassiveAudioEvent.of(getEvent(state))]
+        return [state, getEvent(state)]
       case 'TIME_UPDATED':
         return onTimeUpdated(params, state)
       case 'PLAYING':
@@ -41,10 +45,7 @@ export default {
       case 'ERROR':
         return R.assoc('icon', 'error_outline', state)
       case 'SEEK':
-        return [state, PassiveAudioEvent.of({
-          type: 'seek',
-          to: params.detail.completion
-        })]
+        return [state, SeekEvent.of(params.detail)]
       default:
         return state
     }

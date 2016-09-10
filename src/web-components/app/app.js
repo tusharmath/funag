@@ -7,7 +7,7 @@
 import h from 'snabbdom/h'
 import R from 'ramda'
 import {Request} from '../http/http.events'
-import {toURI} from '../../lib/SoundCloud'
+import {toURI, trackStreamURL} from '../../lib/SoundCloud'
 
 export default {
   init () {
@@ -51,12 +51,13 @@ export default {
       ]),
       h('funag-track-list', {props: {tracks}}),
       selected ? h(`div.control-container`, [
-        h(`funag-mini-audio-control`, [
-          h(`div.control-track-detail`, [
-            h(`div.track-title.text-overflow`, [selected.title]),
-            h(`div.artist.text-overflow`, [selected.user.username])
+        h(`funag-mini-audio-control`,
+          {attrs: {src: trackStreamURL(selected)}}, [
+            h(`div.control-track-detail`, [
+              h(`div.track-title.text-overflow`, [selected.title]),
+              h(`div.artist.text-overflow`, [selected.user.username])
+            ])
           ])
-        ])
       ]) : ''
     ])
   }
