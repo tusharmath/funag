@@ -40,10 +40,12 @@ export default {
         props: {debounce: 300},
         on: {'http-response': dispatch('TRACKS')}
       }),
-      h('funag-input', {
-        on: {funaginputvalue: dispatch('SEARCH')},
-        attrs: {placeholder: 'Search'}
-      }),
+      h(`div.search-box-container`, [
+        h('funag-input', {
+          on: {funaginputvalue: dispatch('SEARCH')},
+          attrs: {placeholder: 'Search'}
+        })
+      ]),
       h('funag-track-list', {props: {tracks}}),
       tracks.length > 0 ? h(`div.control-container.fade-in`, [
         h(`funag-mini-audio-control`, [

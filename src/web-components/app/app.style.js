@@ -4,7 +4,7 @@
 
 'use strict'
 
-import {BlockHeight, Palette} from '../../lib/Themes'
+import {BlockHeight, Palette, BlockSpace} from '../../lib/Themes'
 import {createStyleSheet} from '../../lib/JSSHelpers'
 
 export default createStyleSheet({
@@ -35,5 +35,8 @@ export default createStyleSheet({
       fontSize: '0.8rem',
       color: Palette.fg__playbackInfo__light
     }
+  },
+  '.search-box-container': {
+    paddingLeft: BlockSpace
   }
 })
