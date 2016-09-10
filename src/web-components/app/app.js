@@ -9,6 +9,7 @@ import R from 'ramda'
 import {Request} from '../http/http.events'
 import {toURI, trackStreamURL} from '../../lib/SoundCloud'
 import {FunagInputValue} from '../input/input.events'
+import {TrackChanged} from '../track-list/track-list.events'
 
 export default {
   init () {
@@ -28,6 +29,8 @@ export default {
           R.merge(state, {search: params.detail, tracks: []}),
           Request.of(toURI('/tracks', {q: params.detail}))
         ]
+      case 'TRACK_CHANGE':
+        return R.assoc('selected', params.detail, state)
       case 'TRACKS':
         return R.merge(state, {
           tracks: params.response,
@@ -50,7 +53,10 @@ export default {
           attrs: {placeholder: 'Search', icon: 'search'}
         })
       ]),
-      h('funag-track-list', {props: {tracks}}),
+      h('funag-track-list', {
+        props: {tracks},
+        on: {[TrackChanged]: dispatch('TRACK_CHANGE')}
+      }),
       selected ? h(`div.control-container`, [
         h(`funag-mini-audio-control`,
           {attrs: {src: trackStreamURL(selected)}}, [
