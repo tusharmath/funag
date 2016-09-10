@@ -10,12 +10,17 @@ import {Request} from '../http/http.events'
 import {toURI, trackStreamURL} from '../../lib/SoundCloud'
 import {FunagInputValue} from '../input/input.events'
 import {TrackChanged} from '../track-list/track-list.events'
+import {
+  MediaPlaying,
+  MediaStopped
+} from '../mini-audio-control/mini-audio-control.events'
 
 export default {
   init () {
     return {
       tracks: [],
       selected: null,
+      playing: false,
       search: ''
     }
   },
@@ -36,12 +41,16 @@ export default {
           tracks: params.response,
           selected: state.selected ? state.selected : params.response[0]
         })
+      case 'MEDIA_PLAYING':
+        return R.assoc('playing', true, state)
+      case 'MEDIA_STOPPED':
+        return R.assoc('playing', false, state)
       default:
         return state
     }
   },
 
-  view ({tracks, selected}, dispatch) {
+  view ({tracks, selected, playing}, dispatch) {
     return h(`div.container`, [
       h(`funag-http`, {
         props: {debounce: 300},
@@ -54,12 +63,18 @@ export default {
         })
       ]),
       h('funag-track-list', {
-        props: {tracks},
+        props: {tracks, playing, selected},
         on: {[TrackChanged]: dispatch('TRACK_CHANGE')}
       }),
       selected ? h(`div.control-container`, [
         h(`funag-mini-audio-control`,
-          {attrs: {src: trackStreamURL(selected)}}, [
+          {
+            attrs: {src: trackStreamURL(selected)},
+            on: {
+              [MediaPlaying]: dispatch('MEDIA_PLAYING'),
+              [MediaStopped]: dispatch('MEDIA_STOPPED')
+            }
+          }, [
             h(`div.control-track-detail`, [
               h(`div.track-title.text-overflow`, [selected.title]),
               h(`div.artist.text-overflow`, [selected.user.username])
