@@ -8,9 +8,13 @@ import h from 'snabbdom/h'
 import R from 'ramda'
 import {durationFormat} from '../../lib/SoundCloud'
 
-function artwork ({artwork_url}) {
+function artworkBG (track) {
+  return {style: {backgroundImage: `url(${track.artwork_url })`}}
+}
+function artwork (track) {
   return h(`div.artwork`, [
-    h(`funag-icon`, {props: {icon: 'music_note'}})
+    track.artwork_url ? h('div.artwork-bg-image', artworkBG(track))
+      : h(`funag-icon`, {props: {icon: 'music_note'}})
   ])
 }
 function placeholder () {

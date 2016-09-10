@@ -49,6 +49,13 @@ export default createStyleSheet({
     alignItems: 'center',
     margin: BlockSpace
   },
+  '.artwork-bg-image': {
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: '50%',
+    backgroundSize: '100%',
+    height: BlockHeight,
+    width: BlockHeight
+  },
   '.animatedBG': {
     background: 'linear-gradient(to right , rgb(245, 245, 245), #fff)',
     animation: 'horizontal-motion 1000ms linear infinite',
