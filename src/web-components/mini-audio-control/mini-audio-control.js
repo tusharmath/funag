@@ -33,7 +33,10 @@ export default {
   update (state, {type, params}) {
     switch (type) {
       case '@@rwc/attr/src':
-        return R.assoc('src', params, state)
+        return R.merge(state, {
+          src: params,
+          completion: 0
+        })
       case 'CLICK':
         return [state, getEvent(state)]
       case 'TIME_UPDATED':
