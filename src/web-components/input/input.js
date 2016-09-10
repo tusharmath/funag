@@ -7,7 +7,7 @@
 import R from 'ramda'
 import h from 'snabbdom/h'
 import targetValue from '../../dom-api/targetValue'
-import {FunagInputValue} from './input.event'
+import {FunagInputValue} from './input.events'
 
 function onValue (params, state) {
   const value = targetValue(params)

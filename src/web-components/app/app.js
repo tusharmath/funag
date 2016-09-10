@@ -8,7 +8,7 @@ import h from 'snabbdom/h'
 import R from 'ramda'
 import {Request} from '../http/http.events'
 import {toURI, trackStreamURL} from '../../lib/SoundCloud'
-import {FunagInputValue} from '../input/input.event'
+import {FunagInputValue} from '../input/input.events'
 
 export default {
   init () {
