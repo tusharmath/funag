@@ -22,9 +22,9 @@ const getEvent = (state) => {
 }
 const getIcon = (status) => ({
   [MediaStatus.LOADING]: h(`funag-loader`),
-  [MediaStatus.PLAYING]: h('funag-icon', {props: {icon: 'pause'}}),
-  [MediaStatus.ERRED]: h('funag-icon', {props: {icon: 'error_outline'}}),
-  [MediaStatus.PAUSED]: h('funag-icon', {props: {icon: 'play_arrow'}})
+  [MediaStatus.PLAYING]: h('icon', {props: {icon: 'pause'}}),
+  [MediaStatus.ERRED]: h('icon', {props: {icon: 'error_outline'}}),
+  [MediaStatus.PAUSED]: h('icon', {props: {icon: 'play_arrow'}})
 })[status]
 export const MediaStatus = {LOADING: 0, PLAYING: 1, ERRED: 2, PAUSED: 3}
 export default {

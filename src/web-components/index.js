@@ -6,7 +6,7 @@
 
 import './slider/register'
 import './input/register'
-import './funag-icon/register'
+import './icon/register'
 import './passive-audio/register'
 import './mini-audio-control/register'
 import './stay-focussed-on/register'
