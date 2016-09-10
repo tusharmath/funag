@@ -7,11 +7,11 @@
 import registerWC from '../../lib/registerWC'
 import rwc from 'rwc'
 import h from 'hyperscript'
-import style from './input-box.style'
+import style from './input.style'
 import snabbdomPatcher from '../../lib/snabbdom-patcher'
-import InputBox from './input-box'
+import InputBox from './input'
 
-registerWC('x-input', rwc.createWCProto(root => {
+registerWC('funag-input', rwc.createWCProto(root => {
   root.appendChild(h('style', style.toString()))
   const iconCSS = `@import '//fonts.googleapis.com/icon?family=Material+Icons';`
   root.appendChild(h('style', iconCSS))

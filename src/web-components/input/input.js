@@ -7,14 +7,27 @@
 import R from 'ramda'
 import h from 'snabbdom/h'
 import targetValue from '../../dom-api/targetValue'
+import {FunagInputValue} from './input.event'
 
+function onValue (params, state) {
+  const value = targetValue(params)
+  const icon = value.length > 0 ? 'close' : 'search'
+  const event = state.value === value ? null : FunagInputValue.of(value)
+  return [R.merge(state, {value, icon}), event]
+}
+function onClick (state) {
+  return [
+    R.merge(state, {value: '', icon: 'search'}),
+    FunagInputValue.of('')
+  ]
+}
 export default {
   init (e) {
     return {
       active: false,
       value: '',
       icon: 'search',
-      placeholder: e.getAttribute('placeholder')
+      placeholder: e.getAttribute('placeholder') || ''
     }
   },
 
@@ -23,11 +36,9 @@ export default {
       case '@@rwc/attr/placeholder':
         return R.assoc('placeholder', params, state)
       case 'VALUE':
-        const value = targetValue(params)
-        const icon = value.length > 0 ? 'close' : 'search'
-        return R.merge(state, {value, icon})
+        return onValue(params, state)
       case 'CLICK':
-        return R.merge(state, {value: '', icon: 'search'})
+        return onClick(state)
       default:
         return state
     }

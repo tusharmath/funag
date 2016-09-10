@@ -5,7 +5,7 @@
 'use strict'
 
 import './slider/register'
-import './input-box/register'
+import './input/register'
 import './funag-icon/register'
 import './passive-audio/register'
 import './mini-audio-control/register'
