@@ -8,7 +8,8 @@
 
 import {PlayEvent, PauseEvent, SeekEvent} from './passive-audio.event'
 import validURL from 'valid-url'
-import getRootNode from '../../dom-api/getRootNode'
+import getHostNode from '../../dom-api/getHostNode'
+import compositeListener from '../../dom-api/compositeListener'
 
 function updateCurrentTime (audio, {funagEventParams}) {
   audio.currentTime = funagEventParams.completion * audio.duration
@@ -17,23 +18,22 @@ export default class PassiveAudio extends HTMLElement {
   static get observedAttributes () { return ['src'] }
 
   createdCallback () {
-    this.__onUpdate = this.__onUpdate.bind(this)
+    this.__onEvent = this.__onEvent.bind(this)
     this.__audio = document.createElement('audio')
     this.src = this.getAttribute('src')
   }
 
   attachedCallback () {
-    this.__root = getRootNode(this).host
-    this.__root.addEventListener(PlayEvent.type, this.__onUpdate)
-    this.__root.addEventListener(PauseEvent.type, this.__onUpdate)
-    this.__root.addEventListener(SeekEvent.type, this.__onUpdate)
+    this.disposable = compositeListener(getHostNode(this), this.__onEvent, [
+      PlayEvent.type,
+      PauseEvent.type,
+      SeekEvent.type
+    ])
     this.src = this.getAttribute('src')
   }
 
   detachedCallback () {
-    this.__root.removeEventListener(PlayEvent.type, this.__onUpdate)
-    this.__root.removeEventListener(PauseEvent.type, this.__onUpdate)
-    this.__root.removeEventListener(SeekEvent.type, this.__onUpdate)
+    this.disposable()
   }
 
   set src (value) {
@@ -53,9 +53,14 @@ export default class PassiveAudio extends HTMLElement {
     return this.__audio.removeEventListener(...args)
   }
 
-  __onUpdate (ev) {
-    if (PlayEvent.is(ev)) this.__audio.play()
-    else if (PauseEvent.is(ev)) this.__audio.pause()
-    else if (SeekEvent.is(ev)) updateCurrentTime(this.__audio, ev)
+  __onEvent (ev) {
+    switch (ev.type) {
+      case PlayEvent.type:
+        return this.__audio.play()
+      case PauseEvent.type:
+        return this.__audio.pause()
+      case SeekEvent.type:
+        return updateCurrentTime(this.__audio, ev)
+    }
   }
 }
