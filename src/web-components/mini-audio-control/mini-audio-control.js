@@ -11,6 +11,7 @@ import {
   PauseEvent,
   SeekEvent
 } from '../passive-audio/passive-audio.event'
+import {MediaPlaying, MediaStopped} from './mini-audio-control.events'
 
 function onTimeUpdated (params, state) {
   const completion = params.currentTime / params.duration
@@ -18,7 +19,23 @@ function onTimeUpdated (params, state) {
 }
 
 function getEvent (state) {
-  return state.icon === 'play_arrow' ? PlayEvent.of() : PauseEvent.of()
+  return state.mediaStatus === MediaStatus.PAUSED ? PlayEvent.of() : PauseEvent.of()
+}
+
+function getIcon (status) {
+  return {
+    [MediaStatus.LOADING]: h(`funag-loader`),
+    [MediaStatus.PLAYING]: h('funag-icon', {props: {icon: 'pause'}}),
+    [MediaStatus.ERRED]: h('funag-icon', {props: {icon: 'error_outline'}}),
+    [MediaStatus.PAUSED]: h('funag-icon', {props: {icon: 'play_arrow'}})
+  }[status]
+}
+
+export const MediaStatus = {
+  LOADING: 'LOADING',
+  PLAYING: 'PLAYING',
+  ERRED: 'ERRED',
+  PAUSED: 'PAUSED'
 }
 
 export default {
@@ -26,7 +43,7 @@ export default {
     return {
       completion: 0,
       src: null,
-      icon: 'loader'
+      mediaStatus: MediaStatus.LOADING
     }
   },
 
@@ -35,7 +52,7 @@ export default {
       case '@@rwc/attr/src':
         return R.merge(state, {
           src: params,
-          icon: 'loader',
+          mediaStatus: MediaStatus.LOADING,
           completion: 0
         })
       case 'CLICK':
@@ -43,32 +60,50 @@ export default {
       case 'TIME_UPDATED':
         return onTimeUpdated(params, state)
       case 'PLAYING':
-        return R.assoc('icon', 'pause', state)
-      case 'PAUSE':
-        return R.assoc('icon', 'play_arrow', state)
+        return [
+          R.assoc('mediaStatus', MediaStatus.PLAYING, state),
+          MediaPlaying.of()
+        ]
+      case 'PAUSED':
+        return [
+          R.assoc('mediaStatus', MediaStatus.PAUSED, state),
+          MediaStopped.of()
+        ]
       case 'ERROR':
-        return R.assoc('icon', 'error_outline', state)
+        return [
+          R.assoc('mediaStatus', MediaStatus.ERRED, state),
+          MediaStopped.of()
+        ]
       case 'SEEKING':
-        return R.assoc('icon', 'loader', state)
+        return [
+          R.assoc('mediaStatus', MediaStatus.LOADING, state),
+          MediaStopped.of()
+        ]
       case 'SEEK':
         return [state, SeekEvent.of(params.detail)]
       case 'SUSPEND':
-        return R.assoc('icon', 'loader', state)
+        return [
+          R.assoc('mediaStatus', MediaStatus.LOADING, state),
+          MediaStopped.of()
+        ]
       case 'CAN_PLAY':
-        return R.assoc('icon', 'play_arrow', state)
+        return [
+          R.assoc('mediaStatus', MediaStatus.PAUSED, state),
+          MediaStopped.of()
+        ]
       default:
         return state
     }
   },
 
-  view ({src, completion, icon}, dispatch) {
+  view ({src, completion, mediaStatus}, dispatch) {
     return h('div', [
       h('funag-passive-audio', {
         attrs: {src},
         on: {
           timeupdate: dispatch('TIME_UPDATED'),
           playing: dispatch('PLAYING'),
-          pause: dispatch('PAUSE'),
+          pause: dispatch('PAUSED'),
           error: dispatch('ERROR'),
           seeking: dispatch('SEEKING'),
           canplay: dispatch('CAN_PLAY')
@@ -76,11 +111,8 @@ export default {
       }),
       h('x-slider', {attrs: {completion}, on: {change: dispatch('SEEK')}}),
       h('div.control-row', [
-        h('div.control-button', [
-          icon === 'loader' ? h(`funag-loader`) : h('funag-icon', {
-            props: {icon},
-            on: {click: dispatch('CLICK')}
-          })
+        h('div.control-button', {on: {click: dispatch('CLICK')}}, [
+          getIcon(mediaStatus)
         ]),
         h(`div.slot-content`, [
           h('slot')
