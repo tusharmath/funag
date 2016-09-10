@@ -18,5 +18,10 @@ export default createStyleSheet({
   '.control-row': {
     display: 'flex',
     alignItems: 'center'
+  },
+  '.slot-content': {
+    flexBasis: 0,
+    flexGrow: 1,
+    overflow: 'hidden'
   }
 })

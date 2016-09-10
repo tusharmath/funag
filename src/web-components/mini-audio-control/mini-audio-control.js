@@ -69,7 +69,9 @@ export default {
             on: {click: dispatch('CLICK')}
           })
         ]),
-        h('slot')
+        h(`div.slot-content`, [
+          h('slot')
+        ])
       ])
     ])
   }

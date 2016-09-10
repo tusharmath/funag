@@ -8,6 +8,11 @@ import {BlockHeight, Palette} from '../../lib/Themes'
 import {createStyleSheet} from '../../lib/JSSHelpers'
 
 export default createStyleSheet({
+  '.text-overflow': {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
+  },
   '.container': {
     marginTop: BlockHeight,
     marginBottom: BlockHeight

@@ -36,7 +36,10 @@ export default {
 
   view ({tracks, selected}, dispatch) {
     return h(`div.container`, [
-      h(`funag-http`, {on: {'http-response': dispatch('TRACKS')}}),
+      h(`funag-http`, {
+        props: {debounce: 300},
+        on: {'http-response': dispatch('TRACKS')}
+      }),
       h('funag-input', {
         on: {funaginputvalue: dispatch('SEARCH')},
         attrs: {placeholder: 'Search'}
@@ -45,8 +48,8 @@ export default {
       tracks.length > 0 ? h(`div.control-container.fade-in`, [
         h(`funag-mini-audio-control`, [
           h(`div.control-track-detail`, [
-            h(`div.track-title`, [tracks[selected].title]),
-            h(`div.artist`, [tracks[selected].user.username])
+            h(`div.track-title.text-overflow`, [tracks[selected].title]),
+            h(`div.artist.text-overflow`, [tracks[selected].user.username])
           ])
         ])
       ]) : ''
