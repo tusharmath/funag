@@ -81,7 +81,7 @@ export default {
           canplay: dispatch('CAN_PLAY')
         }
       }),
-      h('x-slider', {attrs: {completion}, on: {change: dispatch('SEEK')}}),
+      h('funag-slider', {attrs: {completion}, on: {change: dispatch('SEEK')}}),
       h('div.control-row', [
         h('div.control-button', {on: {click: dispatch('CLICK')}}, [
           getIcon(mediaStatus)

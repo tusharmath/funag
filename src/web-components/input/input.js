@@ -48,7 +48,7 @@ export default {
   },
 
   view ({placeholder, icon, value}, dispatch) {
-    return h('x-stay-focused-on', {props: {select: 'input'}}, [
+    return h('funag-stay-focused-on', {props: {select: 'input'}}, [
       h(`div.container`, [
         h(`input.input`, {
           on: {keyup: dispatch('VALUE')},
