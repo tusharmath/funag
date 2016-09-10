@@ -14,7 +14,7 @@ import {
 
 function onTimeUpdated (params, state) {
   const completion = params.currentTime / params.duration
-  return R.assoc('completion', completion, state)
+  return R.merge(state, {completion})
 }
 
 function getEvent (state) {
@@ -26,7 +26,7 @@ export default {
     return {
       completion: 0,
       src: null,
-      icon: 'play_arrow'
+      icon: 'loader'
     }
   },
 
@@ -53,6 +53,8 @@ export default {
       case 'SEEK':
         return [state, SeekEvent.of(params.detail)]
       case 'SUSPEND':
+        return R.assoc('icon', 'loader', state)
+      case 'CAN_PLAY':
         return R.assoc('icon', 'play_arrow', state)
       default:
         return state
@@ -68,8 +70,8 @@ export default {
           playing: dispatch('PLAYING'),
           pause: dispatch('PAUSE'),
           error: dispatch('ERROR'),
-          suspend: dispatch('SUSPEND'),
-          seeking: dispatch('SEEKING')
+          seeking: dispatch('SEEKING'),
+          canplay: dispatch('CAN_PLAY')
         }
       }),
       h('x-slider', {attrs: {completion}, on: {change: dispatch('SEEK')}}),
