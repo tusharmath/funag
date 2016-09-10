@@ -49,6 +49,8 @@ export default {
         return R.assoc('icon', 'error_outline', state)
       case 'SEEK':
         return [state, SeekEvent.of(params.detail)]
+      case 'SUSPEND':
+        return R.assoc('icon', 'play_arrow', state)
       default:
         return state
     }
@@ -62,7 +64,8 @@ export default {
           timeupdate: dispatch('TIME_UPDATED'),
           playing: dispatch('PLAYING'),
           pause: dispatch('PAUSE'),
-          error: dispatch('ERROR')
+          error: dispatch('ERROR'),
+          suspend: dispatch('SUSPEND')
         }
       }),
       h('x-slider', {attrs: {completion}, on: {change: dispatch('SEEK')}}),
