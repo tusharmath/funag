@@ -21,7 +21,7 @@ const getEvent = (state) => {
   return PauseEvent.of()
 }
 const getIcon = (status) => ({
-  [MediaStatus.LOADING]: h(`funag-loader`),
+  [MediaStatus.LOADING]: h(`fg-loader`),
   [MediaStatus.PLAYING]: h('icon', {props: {icon: 'pause'}}),
   [MediaStatus.ERRED]: h('icon', {props: {icon: 'error_outline'}}),
   [MediaStatus.PAUSED]: h('icon', {props: {icon: 'play_arrow'}})
@@ -70,7 +70,7 @@ export default {
 
   view ({src, completion, mediaStatus}, dispatch) {
     return h('div', [
-      h('funag-passive-audio', {
+      h('fg-passive-audio', {
         attrs: {src},
         on: {
           timeupdate: dispatch('TIME_UPDATED'),
@@ -81,7 +81,7 @@ export default {
           canplay: dispatch('CAN_PLAY')
         }
       }),
-      h('funag-slider', {attrs: {completion}, on: {change: dispatch('SEEK')}}),
+      h('fg-slider', {attrs: {completion}, on: {change: dispatch('SEEK')}}),
       h('div.control-row', [
         h('div.control-button', {on: {click: dispatch('CLICK')}}, [
           getIcon(mediaStatus)

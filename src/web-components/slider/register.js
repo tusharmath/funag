@@ -11,7 +11,7 @@ import snabbdomPatcher from '../../lib/snabbdom-patcher'
 import Slider from './slider'
 import h from 'hyperscript'
 
-registerWC('funag-slider', rwc.createWCProto(root => {
+registerWC('fg-slider', rwc.createWCProto(root => {
   root.appendChild(h('style', style.toString()))
   return snabbdomPatcher(root)
 }, Slider))

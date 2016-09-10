@@ -30,4 +30,4 @@ proto.__dispatch = function (type, params) {
   }
 }
 
-registerWC('funag-mini-audio-control', proto)
+registerWC('fg-mini-audio-control', proto)

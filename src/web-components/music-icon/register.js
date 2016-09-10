@@ -11,7 +11,7 @@ import MusicAnime from './music-icon'
 import snabbdomPatcher from '../../lib/snabbdom-patcher'
 import style from './music-icon.style'
 
-registerWC('funag-music-icon', rwc.createWCProto(root => {
+registerWC('fg-music-icon', rwc.createWCProto(root => {
   root.appendChild(h('style', style.toString()))
   return snabbdomPatcher(root)
 }, MusicAnime))

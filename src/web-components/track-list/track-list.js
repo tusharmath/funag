@@ -15,9 +15,9 @@ function artworkBG (track) {
 }
 function artwork ({track, playing, selected}) {
   const paused = !playing
-  if (track === selected) h('funag-music-icon', {props: {paused}})
+  if (track === selected) h('fg-music-icon', {props: {paused}})
   if (track.artwork_url) return h('div.artwork-bg-image', artworkBG(track))
-  return h(`funag-icon`, {props: {icon: 'music_note'}})
+  return h(`fg-icon`, {props: {icon: 'music_note'}})
 }
 function placeholder () {
   return h(`div.placeholder`, [

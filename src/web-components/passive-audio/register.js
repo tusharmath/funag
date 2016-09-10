@@ -8,4 +8,4 @@ import PassiveAudio from './passive-audio'
 
 /* global document */
 
-document.registerElement('funag-passive-audio', PassiveAudio)
+document.registerElement('fg-passive-audio', PassiveAudio)

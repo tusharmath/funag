@@ -34,7 +34,7 @@ export default ({title, bundle, manifest, sw}) => {
     ]),
     h('body', [
       Header,
-      h(`funag-app`),
+      h(`fg-app`),
       h('script', {attrs: {src: bundle}})
     ])
   ])

@@ -7,4 +7,4 @@
 import registerWC from '../../lib/registerWC'
 import Loader from './loader'
 
-registerWC('funag-loader', Loader)
+registerWC('fg-loader', Loader)

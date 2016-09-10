@@ -52,22 +52,22 @@ export default {
 
   view ({tracks, selected, playing}, dispatch) {
     return h(`div.container`, [
-      h(`funag-http`, {
+      h(`fg-http`, {
         props: {debounce: 300},
         on: {'http-response': dispatch('TRACKS')}
       }),
       h(`div.search-box-container`, [
-        h('funag-input', {
+        h('fg-input', {
           on: {[FunagInputValue.type]: dispatch('SEARCH')},
           attrs: {placeholder: 'Search', icon: 'search'}
         })
       ]),
-      h('funag-track-list', {
+      h('fg-track-list', {
         props: {tracks, playing, selected},
         on: {[TrackChanged]: dispatch('TRACK_CHANGE')}
       }),
       selected ? h(`div.control-container`, [
-        h(`funag-mini-audio-control`,
+        h(`fg-mini-audio-control`,
           {
             attrs: {src: trackStreamURL(selected)},
             on: {

@@ -11,7 +11,7 @@ import snabbdomPatcher from '../../lib/snabbdom-patcher'
 import TrackList from './track-list'
 import h from 'hyperscript'
 
-registerWC('funag-track-list', rwc.createWCProto(root => {
+registerWC('fg-track-list', rwc.createWCProto(root => {
   root.appendChild(h('style', style.toString()))
   return snabbdomPatcher(root)
 }, TrackList))

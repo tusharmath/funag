@@ -11,7 +11,7 @@ import snabbdomPatcher from '../../lib/snabbdom-patcher'
 import style from './app.style'
 import App from './app'
 
-registerWC('funag-app', rwc.createWCProto(root => {
+registerWC('fg-app', rwc.createWCProto(root => {
   root.appendChild(h('style', style.toString()))
   return snabbdomPatcher(root)
 }, App))

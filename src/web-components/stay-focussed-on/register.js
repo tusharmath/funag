@@ -7,4 +7,4 @@
 import StayFocusedOn from './stay-focussed-on'
 import registerWC from '../../lib/registerWC'
 
-registerWC('funag-stay-focused-on', StayFocusedOn)
+registerWC('fg-stay-focused-on', StayFocusedOn)

@@ -11,7 +11,7 @@ import style from './input.style'
 import snabbdomPatcher from '../../lib/snabbdom-patcher'
 import InputBox from './input'
 
-registerWC('funag-input', rwc.createWCProto(root => {
+registerWC('fg-input', rwc.createWCProto(root => {
   root.appendChild(h('style', style.toString()))
   const iconCSS = `@import '//fonts.googleapis.com/icon?family=Material+Icons';`
   root.appendChild(h('style', iconCSS))
