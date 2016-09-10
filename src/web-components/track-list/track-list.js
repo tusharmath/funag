@@ -13,6 +13,15 @@ function artwork ({artwork_url}) {
     h(`funag-icon`, {props: {icon: 'music_note'}})
   ])
 }
+function placeholder () {
+  return h(`div.placeholder`, [
+    h(`div.square50`),
+    h(`div.lineCol`, [
+      h(`div.line100`),
+      h(`div.line75`)
+    ])
+  ])
+}
 
 export default {
   props: ['tracks'],
@@ -30,7 +39,7 @@ export default {
     }
   },
   view ({tracks}) {
-    return h('div', tracks.map(track =>
+    return h('div', tracks.length > 0 ? tracks.map(track =>
       h(`div.trackContainer`, [
         artwork(track),
         h(`div.trackDetail`, [
@@ -39,6 +48,6 @@ export default {
         ]),
         h(`div.duration`, [durationFormat(track.duration)])
       ])
-    ))
+    ) : R.times(placeholder, 3))
   }
 }
