@@ -13,14 +13,20 @@ export default {
   init () {
     return {
       tracks: [],
-      selected: 0
+      selected: 0,
+      search: ''
     }
   },
 
   update (state, {type, params}) {
     switch (type) {
       case '@@rwc/attached':
-        return [state, Request.of(toURI('/tracks'))]
+        return [state, Request.of(toURI('/tracks', {q: state.search}))]
+      case `SEARCH`:
+        return [
+          R.merge(state, {search: params.funagEventParams, tracks: []}),
+          Request.of(toURI('/tracks', {q: params.funagEventParams}))
+        ]
       case 'TRACKS':
         return R.assoc('tracks', params.response, state)
       default:
@@ -31,6 +37,10 @@ export default {
   view ({tracks, selected}, dispatch) {
     return h(`div.container`, [
       h(`funag-http`, {on: {'http-response': dispatch('TRACKS')}}),
+      h('funag-input', {
+        on: {funaginputvalue: dispatch('SEARCH')},
+        attrs: {placeholder: 'Search'}
+      }),
       h('funag-track-list', {props: {tracks}}),
       tracks.length > 0 ? h(`div.control-container.fade-in`, [
         h(`funag-mini-audio-control`, [
