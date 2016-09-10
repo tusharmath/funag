@@ -8,6 +8,7 @@ import h from 'snabbdom/h'
 import R from 'ramda'
 import getClientX from '../../lib/getClientX'
 import customEvent from '../../dom-api/customEvent'
+import getRootNode from '../../dom-api/getRootNode'
 
 const getStyle = ({translateX}) => {
   return {delayed: {transform: `translateX(${translateX}%)`}}
@@ -16,7 +17,7 @@ const getStyle = ({translateX}) => {
 export const init = () => {
   return {
     isMoving: false,
-    translateX: 0
+    translateX: -100
   }
 }
 
@@ -55,7 +56,7 @@ function setTranslateXOnAttrChange (attr, state) {
 }
 
 function setComponentWidth (component, state) {
-  const width = component.getBoundingClientRect().width
+  const width = getRootNode(component).host.getBoundingClientRect().width
   return R.assoc('width', width, state)
 }
 
