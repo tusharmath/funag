@@ -10,6 +10,9 @@ import R from 'ramda'
 export function CustomEventType (options, type) {
   return {
     type,
+    toString () {
+      return type
+    },
     of (detail) {
       return new CustomEvent(type, Object.assign({detail}, options))
     }
