@@ -40,7 +40,8 @@ export default createStyleSheet({
     backgroundColor: '#FFF',
     transition: 'all 300ms ease-in',
     '&.active': {
-      backgroundColor: Palette.bg__header
+      backgroundColor: Palette.bg__header,
+      boxShadow: Palette.zDepth__1
     }
   }
 })

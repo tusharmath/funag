@@ -8,7 +8,7 @@ import h from 'hyperscript'
 import style from './app-bar.style'
 
 const view = () => h('div', [
-  h('div.js_slotContainer.slot-container', [h('slot')]),
+  h('div.js_slotContainer', [h('slot')]),
   h('div.js_placeholder')
 ])
 
