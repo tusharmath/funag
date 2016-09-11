@@ -56,7 +56,7 @@ export default {
         props: {debounce: 300},
         on: {'http-response': dispatch('TRACKS')}
       }),
-      h('fg-app-bar', [
+      h('fg-app-bar', {attrs: {toggleClass: 'active'}}, [
         h(`div.search-box-container`, [
           h('fg-input', {
             on: {[FunagInputValue.type]: dispatch('SEARCH')},

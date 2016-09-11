@@ -37,6 +37,10 @@ export default createStyleSheet({
   },
   '.search-box-container': {
     paddingLeft: BlockSpace,
-    backgroundColor: Palette.bg__header
+    backgroundColor: '#FFF',
+    transition: 'all 300ms ease-in',
+    '&.active': {
+      backgroundColor: Palette.bg__header
+    }
   }
 })

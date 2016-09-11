@@ -34,13 +34,16 @@ export default {
   },
 
   __onScroll () {
+    const toggleClass = this.getAttribute('toggleClass')
     if (window.scrollY >= this.__top) {
       this.__slotContainer.classList.add('position-fixed')
       if (this.__placeholder.style.height !== this.__height) {
         this.__placeholder.style.height = this.__height
       }
+      if (toggleClass) this.children[0].classList.add(toggleClass)
     } else {
       this.__slotContainer.classList.remove('position-fixed')
+      if (toggleClass) this.children[0].classList.remove(toggleClass)
       if (this.__placeholder.style.height !== 0) {
         this.__placeholder.style.height = 0
       }
