@@ -25,13 +25,16 @@ export default createStyleSheet({
       backgroundColor: Palette.bg__artworkPlayingIcon,
       flexGrow: '1',
       transformOrigin: '0 100%',
-      marginRight: '1px',
-      '&:last-child': {marginRight: 0},
-      '&:nth-child(1)': animation(1250),
-      '&:nth-child(2)': animation(1000),
-      '&:nth-child(3)': animation(750)
+      marginRight: '1px'
     },
-    '&.pause-animation li': {animation: 'none', transform: 'scaleY(0.1)'}
+    '& li:last-child': {marginRight: 0},
+    '& li:nth-child(1)': animation(1250),
+    '& li:nth-child(2)': animation(1000),
+    '& li:nth-child(3)': animation(750)
+  },
+  '.pause-animation li': {
+    animation: 'none !important',
+    transform: 'scaleY(0.1)'
   },
   '@keyframes playing-animation': {
     '0%': {transform: 'scaleY(0.1)'},
