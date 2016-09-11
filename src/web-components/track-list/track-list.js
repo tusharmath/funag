@@ -49,7 +49,7 @@ export default {
       case 'CLICK':
         const node = findParent(R.prop('track'), params.target)
         return [
-          node ? R.assoc('selected', node.track, state) : state,
+          node ? R.merge(state, {selected: node.track, playing: false}) : state,
           node ? TrackChanged.of(node.track) : null
         ]
       default:
