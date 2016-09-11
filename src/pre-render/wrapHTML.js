@@ -5,7 +5,7 @@
 'use strict'
 
 import findChunkFile from './findChunkFile'
-import HTML from '../components/html/html'
+import HTML from '../main/main'
 import {name} from '../../package.json'
 
 export default (compilation) => {

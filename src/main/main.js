@@ -3,12 +3,11 @@
  */
 
 'use strict'
-import './html.style'
 import h from 'hyperscript'
-import {globalSheet} from '../../lib/JSSHelpers'
+import css from './main.style'
+import {globalSheet} from '../lib/JSSHelpers'
 import * as flex from 'flex-jss'
-import Header from '../header/header'
-import loadSW from '../../lib/loadSW'
+import loadSW from '../lib/loadSW'
 
 export default ({title, bundle, manifest, sw}) => {
   return h('html', [
@@ -33,7 +32,12 @@ export default ({title, bundle, manifest, sw}) => {
       })
     ]),
     h('body', [
-      Header,
+      h(`div.${css.headerContainer}`, [
+        h(`div.${css.headerText}`, [
+          h('div', [h('strong', 'Funag')]),
+          h('small', ['Unofficial SoundCloud player'])
+        ])
+      ]),
       h(`fg-app`),
       h('script', {attrs: {src: bundle}})
     ])
