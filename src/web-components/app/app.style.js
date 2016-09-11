@@ -36,6 +36,7 @@ export default createStyleSheet({
     }
   },
   '.search-box-container': {
-    paddingLeft: BlockSpace
+    paddingLeft: BlockSpace,
+    backgroundColor: Palette.bg__header
   }
 })

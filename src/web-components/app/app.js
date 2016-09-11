@@ -56,11 +56,13 @@ export default {
         props: {debounce: 300},
         on: {'http-response': dispatch('TRACKS')}
       }),
-      h(`div.search-box-container`, [
-        h('fg-input', {
-          on: {[FunagInputValue.type]: dispatch('SEARCH')},
-          attrs: {placeholder: 'Search', icon: 'search'}
-        })
+      h('fg-app-bar', [
+        h(`div.search-box-container`, [
+          h('fg-input', {
+            on: {[FunagInputValue.type]: dispatch('SEARCH')},
+            attrs: {placeholder: 'Search', icon: 'search'}
+          })
+        ])
       ]),
       h('fg-track-list', {
         props: {tracks, playing, selected},
