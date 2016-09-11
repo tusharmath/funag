@@ -1,10 +1,11 @@
+import registerWC from '../../lib/registerWC';
 /**
  * Created by tushar.mathur on 07/09/16.
  */
 
 'use strict'
 
-export default {
+registerWC('fg-stay-focused-on', {
   createdCallback () {
     this.onFocusOut = this.onFocusOut.bind(this)
     this.__selector = this.select || this.getAttribute('select')
@@ -37,4 +38,4 @@ export default {
       this.children[i].removeEventListener('focusin', this.onFocusOut)
     }
   }
-}
+})
