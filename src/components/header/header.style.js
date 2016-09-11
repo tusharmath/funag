@@ -13,10 +13,7 @@ export default addRules({
     backgroundColor: Palette.bg__header,
     boxShadow: Palette.zDepth__1,
     color: Palette.fg__header,
-    position: 'fixed',
-    top: 0,
     width: '100%',
-    zIndex: 1,
     '& small': {
       color: Palette.fg__trackDetail__light,
       fontSize: '0.6rem',

@@ -37,7 +37,7 @@ export default {
       case '@@rwc/attr/placeholder':
         return R.assoc('placeholder', params, state)
       case '@@rwc/attr/icon':
-        return R.assoc('icon', params, state)
+        return R.merge(state, {defaultIcon: params, icon: params})
       case 'VALUE':
         return onValue(params, state)
       case 'CLICK':

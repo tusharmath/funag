@@ -14,7 +14,6 @@ export default createStyleSheet({
     whiteSpace: 'nowrap'
   },
   '.container': {
-    marginTop: BlockHeight,
     marginBottom: BlockHeight
   },
   '.control-container': {
