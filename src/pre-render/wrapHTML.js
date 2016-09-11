@@ -4,15 +4,12 @@
 
 'use strict'
 
-import R from 'ramda'
 import findChunkFile from './findChunkFile'
-import findAsset from './findAsset'
-import HTML from '../components/html/html'
+import HTML from '../main/main'
 import {name} from '../../package.json'
 
-export default R.curry((compilation, html) => {
-  const manifest = findAsset('manifest', compilation)
+export default (compilation) => {
   const bundle = findChunkFile('client', compilation)
   const sw = findChunkFile('sw', compilation)
-  return HTML({html, title: name, bundle, manifest, sw})
-})
+  return HTML({title: name, bundle, sw})
+}

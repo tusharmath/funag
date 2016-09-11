@@ -1,11 +1,11 @@
 {
-	"lang": "en",
-	"dir": "ltr",
-	"name": "Funag",
-	"short_name": "Funag",
-	"start_url": "/",
-	"display": "standalone",
-	"orientation": "portrait",
-	"theme_color": "#2196F3",
-	"background_color": "#FFF"
+  "lang": "en",
+  "dir": "ltr",
+  "name": "Funag",
+  "short_name": "Funag",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#2196F3",
+  "background_color": "#FFF"
 }

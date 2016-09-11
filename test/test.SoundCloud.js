@@ -5,9 +5,7 @@
 'use strict'
 
 import test from 'ava'
-import {ReactiveTest} from 'rx'
 import * as SC from '../src/lib/SoundCloud'
-const {onNext, onCompleted} = ReactiveTest
 
 test('durationFormat()', t => {
   t.is(SC.durationFormat(5000), '0:50')

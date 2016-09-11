@@ -1,17 +1,17 @@
 /**
- * Created by tushar.mathur on 06/09/16.
+ * Created by tushar.mathur on 09/09/16.
  */
 
 'use strict'
 
 import registerWC from '../../lib/registerWC'
 import rwc from 'rwc'
-import style from './slider.style'
+import style from './track-list.style'
 import snabbdomPatcher from '../../lib/snabbdom-patcher'
-import Slider from './slider'
+import TrackList from './track-list'
 import h from 'hyperscript'
 
-registerWC('fg-slider', rwc.createWCProto(root => {
+registerWC('fg-track-list', rwc.createWCProto(root => {
   root.appendChild(h('style', style.toString()))
   return snabbdomPatcher(root)
-}, Slider))
+}, TrackList))
