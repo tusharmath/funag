@@ -18,7 +18,6 @@ export default createStyleSheet({
     display: 'flex',
     alignItems: 'center',
     overflow: 'hidden',
-    marginRight: `${BlockSpace}px`,
     color: Palette.fg__trackDetail,
     borderBottom: Palette.br__playlistItem
   },
@@ -37,7 +36,8 @@ export default createStyleSheet({
   },
   '.duration': {
     color: Palette.fg__trackDetail__light,
-    fontSize: '0.8rem'
+    fontSize: '0.8rem',
+    marginRight: `${BlockSpace}px`
   },
   '.artwork': {
     color: Palette.fg__artwork,
