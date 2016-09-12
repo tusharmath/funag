@@ -54,8 +54,8 @@ export default {
           on: {keyup: dispatch('VALUE')},
           props: {type: 'text', placeholder, value}
         }),
-        icon ? h('button.icon-button', {on: {click: dispatch('CLICK')}}, [
-          h('i.material-icons', [icon])
+        icon ? h('fg-button', {on: {click: dispatch('CLICK')}}, [
+          h('fg-icon', {props: {icon}})
         ]) : ''
       ])
     ])

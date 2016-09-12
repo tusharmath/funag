@@ -5,26 +5,27 @@
 'use strict'
 
 import h from 'snabbdom/h'
+import R from 'ramda'
 
 export default {
   props: ['icon'],
 
-  init (el) {
-    return {icon: el.getAttribute('icon') || el.icon || ''}
+  init () {
+    return {
+      icon: null
+    }
   },
 
   update (state, {type, params}) {
     switch (type) {
-      case '@@rwc/attr/icon':
-        return {icon: params}
       case '@@rwc/prop/icon':
-        return {icon: params}
+        return R.assoc('icon', params, state)
       default :
         return state
     }
   },
 
   view ({icon}) {
-    return h('i.material-icons', [icon])
+    return icon ? h('i.material-icons', [icon]) : ''
   }
 }

@@ -6,27 +6,15 @@
 
 import h from 'snabbdom/h'
 import R from 'ramda'
-import {
-  PlayEvent,
-  PauseEvent,
-  SeekEvent
-} from '../passive-audio/passive-audio.event'
+import {SeekEvent} from '../passive-audio/passive-audio.event'
 import {MediaPlaying, MediaStopped} from './mini-audio-control.events'
+import {
+  MediaStatus,
+  onTimeUpdated,
+  getEvent,
+  getIcon
+} from './mini-audio-control.utils'
 
-const onTimeUpdated = (params, state) => R.merge(
-  state, {completion: params.currentTime / params.duration}
-)
-const getEvent = (state) => {
-  if (state.mediaStatus === MediaStatus.PAUSED) return PlayEvent.of()
-  return PauseEvent.of()
-}
-const getIcon = (status) => ({
-  [MediaStatus.LOADING]: h(`fg-loader`),
-  [MediaStatus.PLAYING]: h('fg-icon', {props: {icon: 'pause'}}),
-  [MediaStatus.ERRED]: h('fg-icon', {props: {icon: 'error_outline'}}),
-  [MediaStatus.PAUSED]: h('fg-icon', {props: {icon: 'play_arrow'}})
-})[status]
-export const MediaStatus = {LOADING: 0, PLAYING: 1, ERRED: 2, PAUSED: 3}
 export default {
   init () {
     return {
@@ -83,7 +71,7 @@ export default {
       }),
       h('fg-slider', {attrs: {completion}, on: {change: dispatch('SEEK')}}),
       h('div.control-row', [
-        h('div.control-button', {on: {click: dispatch('CLICK')}}, [
+        h('fg-button', {on: {click: dispatch('CLICK')}}, [
           getIcon(mediaStatus)
         ]),
         h(`div.slot-content`, [h('slot')])
