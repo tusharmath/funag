@@ -37,6 +37,10 @@ export default {
     this.__audio.src = value
   },
 
+  get src () {
+    return this.__audio.src
+  },
+
   attributeChangedCallback (name, old, src) {
     this.src = src
   },

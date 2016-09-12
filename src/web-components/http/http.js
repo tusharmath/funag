@@ -4,7 +4,7 @@
 
 'use strict'
 
-/* global HTMLElement fetch */
+/* global fetch */
 
 import getRootNode from '../../dom-api/getRootNode'
 import {Request, Response} from './http.events'
