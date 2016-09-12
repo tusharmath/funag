@@ -21,12 +21,11 @@ const closureCompilerPlugin = new ClosureCompilerPlugin({
 const compressionPlugin = new CompressionPlugin({
   algorithm: 'gzip', test: /\.js$|\.html$/
 })
-const plugin = C.appendAt('plugin')
+const plugin = C.appendAt('plugins')
 const configFactory = C.compose(
   // Plugins
   C.when(APP_CONFIG.webpack.optimizeJS, plugin(closureCompilerPlugin)),
   C.when(APP_CONFIG.webpack.compression, plugin(compressionPlugin)),
   C.setAt('devtool', APP_CONFIG.webpack.devtool)
 )
-
 module.exports = configFactory(BaseConfig)

@@ -21,5 +21,3 @@ export class ApplicationShell {
     compiler.plugin('emit', onEmit)
   }
 }
-
-exports.ApplicationShell = ApplicationShell
