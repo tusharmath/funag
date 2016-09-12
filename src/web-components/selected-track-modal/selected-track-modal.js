@@ -38,9 +38,9 @@ export default {
         ])
       ]),
       h('div.menu', [
-        h('div.menu-item', ['Play Now']),
-        h('div.menu-item', ['add to queue']),
-        h('div.menu-item', ['add to up next'])
+        h('fg-button', {props: {wide: true}}, ['PLAY NOW']),
+        h('fg-button', {props: {wide: true}}, ['ADD TO QUEUE']),
+        h('fg-button', {props: {wide: true}}, ['ADD TO UP NEXT'])
       ])
     ])
   }
