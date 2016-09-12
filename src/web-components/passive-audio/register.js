@@ -5,7 +5,6 @@
 'use strict'
 
 import PassiveAudio from './passive-audio'
+import registerWC from '../../lib/registerWC'
 
-/* global document */
-
-document.registerElement('fg-passive-audio', PassiveAudio)
+registerWC('fg-passive-audio', PassiveAudio)
