@@ -8,12 +8,12 @@ import h from 'snabbdom/h'
 import R from 'ramda'
 
 export default {
-  props: ['show'],
+  props: ['state'],
   init () { return {show: false} },
   update (state, {type, params}) {
     switch (type) {
-      case '@@rwc/prop/show':
-        return R.assoc('show', params, state)
+      case '@@rwc/prop/state':
+        return R.assoc('show', params.show, state)
       case 'OVERLAY_CLICK':
         return R.assoc('show', false, state)
       default:
