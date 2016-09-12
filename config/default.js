@@ -29,6 +29,5 @@ module.exports = {
   },
   soundCloud: {
     clientID: '1862b9bf02ed7c80d0f545f835ad8773'
-  },
-  reduxLogger: true
+  }
 }
