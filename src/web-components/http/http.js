@@ -12,18 +12,14 @@ import {Request, Response} from './http.events'
 export default {
   createdCallback () {
     this.__timeout = null
+    Object.defineProperty(this, 'debounce', {
+      set (value) { this.__debounce = value },
+      get () { return this.__debounce }
+    })
     this.debounce = parseInt(this.getAttribute('debounce')) || 0
     this.onRequest = this.onRequest.bind(this)
     this.__root = getRootNode(this)
     document.addEventListener(Request.type, this.onRequest)
-  },
-
-  set debounce (value) {
-    this.__debounce = value
-  },
-
-  get debounce () {
-    return this.__debounce
   },
 
   __dispatch (response) {

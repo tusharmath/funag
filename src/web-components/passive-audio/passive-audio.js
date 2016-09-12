@@ -16,6 +16,10 @@ export default {
   createdCallback () {
     this.__onEvent = this.__onEvent.bind(this)
     this.__audio = document.createElement('audio')
+    Object.defineProperty(this, 'src', {
+      get () { return this.__audio.src },
+      set (value) { if (validURL.isUri(value)) this.__audio.src = value }
+    })
     this.src = this.getAttribute('src')
   },
 
@@ -30,15 +34,6 @@ export default {
 
   detachedCallback () {
     this.disposable()
-  },
-
-  set src (value) {
-    if (!validURL.isUri(value)) return
-    this.__audio.src = value
-  },
-
-  get src () {
-    return this.__audio.src
   },
 
   attributeChangedCallback (name, old, src) {
