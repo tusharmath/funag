@@ -6,12 +6,6 @@ import {BlockSpace, Palette, BlockHeight} from '../../lib/Themes'
 
 'use strict'
 
-const overflowingText = {
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis'
-}
-
 export default createStyleSheet({
   '.trackContainer': {
     flex: '1 0 0',
@@ -21,14 +15,19 @@ export default createStyleSheet({
     color: Palette.fg__trackDetail,
     borderBottom: Palette.br__playlistItem
   },
+  '.trackContainer.--spaced': {
+    paddingBottom: BlockSpace,
+    '& fg-track-artwork': {
+      marginRight: BlockSpace
+    }
+  },
+  'fg-track-artwork.--spaced': {
+    margin: BlockSpace
+  },
   '.trackDetail': {
     overflow: 'hidden',
     marginRight: `${BlockSpace}px`,
-    flex: '1 0 0',
-    extend: overflowingText
-  },
-  '.title': {
-    extend: overflowingText
+    flex: '1 0 0'
   },
   '.artist': {
     color: Palette.fg__trackDetail__light,
@@ -38,23 +37,6 @@ export default createStyleSheet({
     color: Palette.fg__trackDetail__light,
     fontSize: '0.8rem',
     marginRight: `${BlockSpace}px`
-  },
-  '.artwork': {
-    color: Palette.fg__artwork,
-    backgroundColor: Palette.bg__artwork,
-    height: BlockHeight,
-    width: BlockHeight,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: BlockSpace
-  },
-  '.artwork-bg-image': {
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: '50%',
-    backgroundSize: '100%',
-    height: BlockHeight,
-    width: BlockHeight
   },
   '.animatedBG': {
     background: 'linear-gradient(to right , rgb(245, 245, 245), #fff)',
@@ -95,5 +77,10 @@ export default createStyleSheet({
     '0%': {backgroundPosition: '0% 50%'},
     '50%': {backgroundPosition: '100% 50%'},
     '100%': {backgroundPosition: '0% 50%'}
+  },
+  '.hide-text-overflow': {
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap'
   }
 })
