@@ -48,16 +48,18 @@ export default {
     }
   },
   view ({tracks, selected, playing}, dispatch) {
-    return h('div', {on: {click: dispatch('CLICK')}},
-      tracks.length > 0 ? tracks.map(track =>
-        h(`div.trackContainer`, {props: {track}}, [
-          h('fg-track-artwork.--spaced', {props: {track, selected, playing}}),
-          h(`div.trackDetail`, [
-            h(`div.title.hide-text-overflow`, [track.title]),
-            h(`div.artist.hide-text-overflow`, [track.user.username])
-          ]),
-          h(`div.duration`, [durationFormat(track.duration)])
-        ])
-      ) : R.times(placeholder, 3))
+    return h('div', {on: {click: dispatch('CLICK')}}, [
+      h('div', tracks.length > 0 ? tracks.map(track =>
+          h(`div.trackContainer`, {props: {track}}, [
+            h('fg-track-artwork', {props: {track, selected, playing}}),
+            h(`div.trackDetail`, [
+              h(`div.title.hide-text-overflow`, [track.title]),
+              h(`div.artist.hide-text-overflow`, [track.user.username])
+            ]),
+            h(`div.duration`, [durationFormat(track.duration)])
+          ])
+        ) : R.times(placeholder, 3)
+      )
+    ])
   }
 }
