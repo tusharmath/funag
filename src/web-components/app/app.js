@@ -32,7 +32,7 @@ export default {
       case `SEARCH`:
         return [
           R.merge(state, {search: params.detail, tracks: []}),
-          Request.of(toURI('/tracks', {q: params.detail}))
+          Request.of({url: toURI('/tracks', {q: params.detail})})
         ]
       case 'TRACK_CHANGE':
         return R.assoc('selected', params.detail, state)
