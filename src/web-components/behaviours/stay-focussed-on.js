@@ -1,4 +1,4 @@
-import registerWC from '../../lib/registerWC';
+import registerWC from '../../lib/registerWC'
 /**
  * Created by tushar.mathur on 07/09/16.
  */
