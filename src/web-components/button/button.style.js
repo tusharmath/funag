@@ -5,13 +5,13 @@
 'use strict'
 
 import {createStyleSheet} from '../../lib/JSSHelpers'
-import {BlockHeight} from '../../lib/Themes'
+import {BlockHeight, BlockSpace} from '../../lib/Themes'
 
 export default createStyleSheet({
   '.icon-button': {
     height: `${BlockHeight}px`,
     margin: 0,
-    padding: 0,
+    padding: BlockSpace,
     border: 0,
     background: 0,
     width: `${BlockHeight}px`,
@@ -21,6 +21,8 @@ export default createStyleSheet({
     }
   },
   '.--wide': {
-    width: '100%'
+    width: '100%',
+    textAlign: 'left',
+    fontWeight: 500
   }
 })
