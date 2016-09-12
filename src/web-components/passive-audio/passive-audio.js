@@ -36,10 +36,6 @@ export default {
     this.disposable()
   },
 
-  get src () {
-    return this.__audio.src
-  },
-
   attributeChangedCallback (name, old, src) {
     this.src = src
   },
