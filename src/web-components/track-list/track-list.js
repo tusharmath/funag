@@ -53,7 +53,7 @@ export default {
       h('div',
         tracks.length > 0 ? tracks.map(track =>
           h(`div.trackContainer`, {props: {track}}, [
-            h('fg-track-artwork.--spaced', {props: {track, selected, playing}}),
+            h('fg-track-artwork', {props: {track, selected, playing}}),
             h(`div.trackDetail`, [
               h(`div.title.hide-text-overflow`, [track.title]),
               h(`div.artist.hide-text-overflow`, [track.user.username])

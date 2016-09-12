@@ -15,13 +15,7 @@ export default createStyleSheet({
     color: Palette.fg__trackDetail,
     borderBottom: Palette.br__playlistItem
   },
-  '.trackContainer.--spaced': {
-    paddingBottom: BlockSpace,
-    '& fg-track-artwork': {
-      marginRight: BlockSpace
-    }
-  },
-  'fg-track-artwork.--spaced': {
+  'fg-track-artwork': {
     margin: BlockSpace
   },
   '.trackDetail': {

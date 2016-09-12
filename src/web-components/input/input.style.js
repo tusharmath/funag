@@ -28,16 +28,5 @@ export default createStyleSheet({
     color: Palette.fg__search,
     margin: '0',
     display: 'flex'
-  },
-  '.icon-button': {
-    height: `${BlockHeight}px`,
-    width: `${BlockHeight}px`,
-    margin: 0,
-    padding: 0,
-    border: 0,
-    background: 0,
-    '&:focus': {
-      outline: 0
-    }
   }
 })
