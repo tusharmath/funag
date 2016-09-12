@@ -10,15 +10,6 @@ import {durationFormat} from '../../lib/SoundCloud'
 import findParent from '../../dom-api/findParent'
 import {TrackChanged} from './track-list.events'
 
-function artworkBG (track) {
-  return {style: {backgroundImage: `url(${track.artwork_url})`}}
-}
-function artwork ({track, playing, selected}) {
-  const paused = !playing
-  if (track === selected) return h('fg-music-icon', {props: {paused}})
-  if (track.artwork_url) return h('div.artwork-bg-image', artworkBG(track))
-  return h(`fg-icon`, {props: {icon: 'music_note'}})
-}
 function placeholder () {
   return h(`div.placeholder`, [
     h(`div.square50`),
@@ -60,10 +51,10 @@ export default {
     return h('div', {on: {click: dispatch('CLICK')}},
       tracks.length > 0 ? tracks.map(track =>
         h(`div.trackContainer`, {props: {track}}, [
-          h('div.artwork', [artwork({track, selected, playing})]),
+          h('fg-track-artwork.--spaced', {props: {track, selected, playing}}),
           h(`div.trackDetail`, [
-            h(`div.title`, [track.title]),
-            h(`div.artist`, [track.user.username])
+            h(`div.title.hide-text-overflow`, [track.title]),
+            h(`div.artist.hide-text-overflow`, [track.user.username])
           ]),
           h(`div.duration`, [durationFormat(track.duration)])
         ])
