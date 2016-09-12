@@ -6,7 +6,7 @@
 
 import h from 'snabbdom/h'
 import R from 'ramda'
-import {Request} from '../http/http.events'
+import {Request, Response} from '../http/http.events'
 import {toURI, trackStreamURL} from '../../lib/SoundCloud'
 import {FunagInputValue} from '../input/input.events'
 import {TrackChanged} from '../track-list/track-list.events'
@@ -28,7 +28,7 @@ export default {
   update (state, {type, params}) {
     switch (type) {
       case '@@rwc/attached':
-        return [state, Request.of(toURI('/tracks', {q: state.search}))]
+        return [state, Request.of({url: toURI('/tracks', {q: state.search})})]
       case `SEARCH`:
         return [
           R.merge(state, {search: params.detail, tracks: []}),
@@ -38,8 +38,8 @@ export default {
         return R.assoc('selected', params.detail, state)
       case 'TRACKS':
         return R.merge(state, {
-          tracks: params.response,
-          selected: state.selected ? state.selected : params.response[0]
+          tracks: params.detail,
+          selected: state.selected ? state.selected : params.detail[0]
         })
       case 'MEDIA_PLAYING':
         return R.assoc('playing', true, state)
@@ -54,7 +54,7 @@ export default {
     return h(`div.container`, [
       h(`fg-http`, {
         props: {debounce: 300},
-        on: {'http-response': dispatch('TRACKS')}
+        on: {[Response.type]: dispatch('TRACKS')}
       }),
       h('fg-app-bar', {attrs: {toggleClass: 'active'}}, [
         h(`div.search-box-container`, [

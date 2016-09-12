@@ -4,8 +4,7 @@
 
 'use strict'
 
-/* global document */
-
 import Http from './http'
+import registerWC from '../../lib/registerWC'
 
-document.registerElement('fg-http', Http)
+registerWC('fg-http', Http)
