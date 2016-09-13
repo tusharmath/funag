@@ -16,8 +16,12 @@ export default createStyleSheet({
     overflow: 'hidden',
     color: Palette.fg__trackDetail,
     borderBottom: Palette.br__playlistItem,
-    '& fg-track-artwork': {
-      margin: BlockSpace
+    padding: BlockSpace,
+    '& > *': {
+      marginRight: BlockSpace
+    },
+    '& > *:last-child': {
+      marginRight: 0
     }
   },
   '.artist': {
