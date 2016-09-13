@@ -15,20 +15,22 @@ export default createStyleSheet({
     display: 'flex',
     flexDirection: 'column-reverse',
     height: '100%',
-    transition: 'all 300ms ease-in',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    '&.hidden': {
+      pointerEvents: 'none'
+    }
+  },
+  '.dark-overlay': {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    top: 0
   },
   '.slot-container': {
     backgroundColor: '#FFF',
     boxShadow: '0px -4px 4px 0px rgba(0, 0, 0, 0.25)',
-    transition: 'all 300ms ease-in'
-  },
-  '.hidden': {
-    '& .slot-container': {
-      transform: 'translateY(105%)'
-    },
-    '&.modal-container': {
-      backgroundColor: 'transparent'
-    }
+    position: 'absolute',
+    width: '100%',
+    bottom: 0
   }
 })
