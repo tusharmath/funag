@@ -5,55 +5,56 @@
 'use strict'
 
 import registerWC from '../../lib/registerWC'
-import h from 'hyperscript'
+import getRootNode from '../../dom-api/getRootNode'
 import value from '../../lib/value'
-
-const isFunction = (e) => typeof e === 'function'
+import {AnimationStartEvent, AnimationEndEvent} from './animation-events'
 
 registerWC('fg-animate', {
   createdCallback () {
-    this.__show = false
-    this.__content = h('div', [h('slot')])
+    this.__lastAction = null
+    this.__applyAnimation = this.__applyAnimation.bind(this)
+    this.__onAnimationCompleted = this.__onAnimationCompleted.bind(this)
+
     Object.defineProperties(this, {
-      enterAnimation: {
-        get: () => this.__enterAnimation,
-        set: (value) => {
-          if (isFunction(value)) this.__enterAnimation = value
-        }
+      animation: {
+        get: () => this.__animation,
+        set: (value) => (this.__animation = value)
       },
-      exitAnimation: {
-        get: () => this.__exitAnimation,
-        set: (value) => {
-          if (isFunction(value)) this.__exitAnimation = value
-        }
-      },
-      duration: {
-        get: () => this.__duration || 300,
-        set: (value) => (this.__duration = value)
-      },
-      show: {
-        get: () => this.__show,
-        set: (show) => {
-          if (value.get(show) === this.__show) return
-          this.__show = value.get(show)
-          this.__animate()
+      action: {
+        get: () => this.__lastAction,
+        set: (_action) => {
+          const action = value.get(_action)
+          if (action === this.__lastAction) return
+          this.__lastAction = action
+          this.__beginAnimation(action)
         }
       }
     })
-    this.__root = this.attachShadow({mode: 'open'})
   },
   attachedCallback () {
-    if (this.show) {
-      this.__root.appendChild(this.__content)
+    this.__root = getRootNode(this)
+    this.__animate(this.__lastAction)
+  },
+  __beginAnimation (action) {
+    if (!this.animation || !this.__root) return
+    this.dispatchEvent(AnimationStartEvent.of(this))
+    const promises = this.__animate(action)
+    Promise.all(promises).then(this.__onAnimationCompleted)
+  },
+  __onAnimationCompleted () {
+    this.dispatchEvent(AnimationEndEvent.of(this))
+  },
+  __applyAnimation ({animation, select}) {
+    return animation(this.__root.querySelector(select)).then(t => t.finished)
+  },
+  __animate (action) {
+    switch (action) {
+      case 'enter':
+        return this.animation.enter.map(this.__applyAnimation)
+      case 'exit':
+        return this.animation.exit.map(this.__applyAnimation)
+      default :
+        return []
     }
-  },
-  __playEnterAnimation () {
-    if (this.enterAnimation) this.enterAnimation(this)
-  },
-  __playExitAnimation () {
-    if (this.exitAnimation) this.exitAnimation(this)
-  },
-  __animate () {
-    this.show ? this.__playEnterAnimation() : this.__playExitAnimation()
   }
 })

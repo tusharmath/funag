@@ -5,18 +5,16 @@
 'use strict'
 
 import R from 'ramda'
+import attachFinished from './attach-finished'
+import getComputedStyle from '../../dom-api/getComputedStyle'
 
-export default function (node) {
-  R.forEach(
-    i => {
-      const animation = i.animate([
-        {opacity: 1, left: getComputedStyle(i).left},
-        {opacity: 0, left: getComputedStyle(i).left}
-      ], node.duration)
-      animation.onfinish = () => {
-        node.__content.style.display = 'none'
-      }
-    },
-    node.children
-  )
-}
+export default R.curry(function (config, node) {
+  return getComputedStyle(node).then(function ({left}) {
+    return attachFinished(
+      node.animate([
+        {opacity: 1, left},
+        {opacity: 0, left}
+      ], config.duration)
+    )
+  })
+})

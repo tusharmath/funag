@@ -5,16 +5,16 @@
 'use strict'
 
 import R from 'ramda'
-export default function (node) {
-  node.__content.style.display = ''
-  R.forEach(
-    i => {
-      const left = getComputedStyle(i).left
-      i.animate([
+import attachFinished from './attach-finished'
+import getComputedStyle from '../../dom-api/getComputedStyle'
+
+export default R.curry(function (config, node) {
+  return getComputedStyle(node).then(function ({left}) {
+    return attachFinished(
+      node.animate([
         {transform: 'translateY(105%)', left},
         {transform: 'translateY(0)', left}
-      ], node.duration)
-    },
-    node.children
-  )
-}
+      ], config.duration)
+    )
+  })
+})
