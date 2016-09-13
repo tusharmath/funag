@@ -16,10 +16,19 @@ export const getEvent = (state) => {
   if (state.mediaStatus === MediaStatus.PAUSED) return PlayEvent.of()
   return PauseEvent.of()
 }
-export const iconElement = (icon) => h('fg-icon', {props: {color: 'red', icon}})
-export const getIcon = (status) => ({
-  [MediaStatus.LOADING]: h(`fg-loader`),
-  [MediaStatus.PLAYING]: iconElement('pause'),
-  [MediaStatus.ERRED]: iconElement('error_outline'),
-  [MediaStatus.PAUSED]: iconElement('play_arrow')
-})[status]
+export const iconElement = (icon, dispatch) =>
+  h('fg-button', {on: {click: dispatch('CLICK')}}, [
+    h('fg-icon', {props: {color: 'red', icon}})
+  ])
+export const getIcon = (status, dispatch) => {
+  switch (status) {
+    default:
+      return h(`fg-loader`)
+    case MediaStatus.PLAYING:
+      return iconElement('pause', dispatch)
+    case MediaStatus.ERRED:
+      return iconElement('error_outline', dispatch)
+    case MediaStatus.PAUSED:
+      return iconElement('play_arrow', dispatch)
+  }
+}

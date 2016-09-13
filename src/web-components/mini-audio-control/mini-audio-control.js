@@ -71,9 +71,7 @@ export default {
       }),
       h('fg-slider', {attrs: {completion}, on: {change: dispatch('SEEK')}}),
       h('div.control-row', [
-        h('fg-button', {on: {click: dispatch('CLICK')}}, [
-          getIcon(mediaStatus)
-        ]),
+        getIcon(mediaStatus, dispatch),
         h(`div.slot-content`, [h('slot')])
       ])
     ])
