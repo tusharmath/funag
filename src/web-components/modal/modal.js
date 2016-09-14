@@ -43,13 +43,13 @@ export default {
     return {
       action: null,
       show: false,
-      actionCompleted: false
+      actionCompleted: true
     }
   },
   update (state, {type, params}) {
     switch (type) {
       case '@@rwc/prop/show':
-        return R.merge(state, {
+        return params === state.show ? state : R.merge(state, {
           show: params,
           action: 'enter',
           actionCompleted: false
