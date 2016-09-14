@@ -6,26 +6,26 @@
 
 import http from 'superagent'
 import getRootNode from '../../dom-api/getRootNode'
-import {Request, Response} from './http.events'
+import {Response} from './http.events'
+import makeWCReactive from '../../lib/makeWCReactive'
 
 export default {
   createdCallback () {
+    makeWCReactive(this)
     this.__timeout = null
     Object.defineProperty(this, 'debounce', {
       set (value) { this.__debounce = value },
       get () { return this.__debounce }
     })
     this.debounce = parseInt(this.getAttribute('debounce')) || 0
-    this.onRequest = this.onRequest.bind(this)
     this.__root = getRootNode(this)
-    document.addEventListener(Request.type, this.onRequest)
   },
 
   __dispatch (response) {
     this.dispatchEvent(Response.of(response.body))
   },
 
-  makeRequest ({url, method = 'GET'}) {
+  __makeRequest ({url, method = 'GET'}) {
     if (this.__request) this.__request.abort()
     this.__request = http(method, url)
       .end((err, response) => {
@@ -34,11 +34,18 @@ export default {
       })
   },
 
-  onRequest (ev) {
+  __setupRequest (params) {
     if (this.__timeout) clearTimeout(this.__timeout)
     this.__timeout = setTimeout(() => {
       this.__timeout = null
-      this.makeRequest(ev.detail)
+      this.__makeRequest(params)
     }, this.debounce)
+  },
+
+  onAction ({type, params}) {
+    switch (type) {
+      case 'request':
+        return this.__setupRequest(params)
+    }
   }
 }
