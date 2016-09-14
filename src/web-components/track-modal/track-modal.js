@@ -20,14 +20,14 @@ export default {
       case '@@rwc/prop/show':
         return R.assoc('show', params, state)
       case '@@rwc/prop/track':
-        return R.merge(state, {show: true, track: params})
+        return R.assoc('track', params, state)
       default:
         return state
     }
   },
-  view ({show, track}) {
+  view ({show, track, menu}) {
     if (!track) return ''
-    return h(`fg-modal`, {props: {state: {show}}}, [
+    return h(`fg-modal`, {props: {show}}, [
       h(`div.trackContainer`, [
         h('fg-track-artwork', {
           props: {track, selected: false, playing: false}
@@ -38,9 +38,7 @@ export default {
         ])
       ]),
       h('div.menu', [
-        h('fg-button', {props: {wide: true}}, ['PLAY NOW']),
-        h('fg-button', {props: {wide: true}}, ['ADD TO QUEUE']),
-        h('fg-button', {props: {wide: true}}, ['ADD TO UP NEXT'])
+        h(`slot`)
       ])
     ])
   }
