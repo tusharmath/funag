@@ -6,48 +6,79 @@
 
 import h from 'snabbdom/h'
 import R from 'ramda'
-import value from '../../lib/value'
 import FadeInAnimation from '../animation/fade-in-animation'
 import FadeOutAnimation from '../animation/fade-out-animation'
 import SlideFromBottomAnimation from '../animation/slide-from-bottom-animation'
 import SlideToBottomAnimation from '../animation/slide-to-bottom-animation'
+import {AnimationEndEvent} from '../animation/animation-events'
+import value from '../../lib/value'
+
+const duration = 300
+const animation = {
+  enter: [
+    {
+      animation: FadeInAnimation({duration}),
+      select: '.dark-overlay'
+    },
+    {
+      animation: SlideFromBottomAnimation({duration}),
+      select: '.slot-container'
+    }
+  ],
+  exit: [
+    {
+      animation: FadeOutAnimation({duration}),
+      select: '.dark-overlay'
+    },
+    {
+      animation: SlideToBottomAnimation({duration}),
+      select: '.slot-container'
+    }
+  ]
+}
 
 export default {
   props: ['show'],
-  init () { return {show: false} },
+  init () {
+    return {
+      action: null,
+      show: false,
+      actionCompleted: false
+    }
+  },
   update (state, {type, params}) {
-    console.log(type)
     switch (type) {
       case '@@rwc/prop/show':
-        return R.assoc('show', value.get(params), state)
+        return R.merge(state, {
+          show: params,
+          action: 'enter',
+          actionCompleted: false
+        })
       case 'OVERLAY_CLICK':
-        return R.assoc('show', false, state)
+        return R.merge(state, {
+          show: false,
+          action: 'exit',
+          actionCompleted: false
+        })
+      case 'ANIMATION_END':
+        return R.assoc('actionCompleted', true, state)
       default:
         return state
     }
   },
-  view ({show}, dispatch) {
-    return h('div', [
-      h('div.modal-container', {class: {hidden: !show}}, [
+  view ({show, action, actionCompleted}, dispatch) {
+    const hidden = show === false && actionCompleted === true
+    return h('div', {class: {hidden}}, [
+      h('div.modal-container', [
         !show ? '' : h('fg-disable-scroll'),
         h('fg-animate', {
-          props: {
-            show: value.of(show),
-            enterAnimation: FadeInAnimation,
-            exitAnimation: FadeOutAnimation
-          }
-        }, [
-          h('div.dark-overlay', {
-            on: {click: dispatch('OVERLAY_CLICK', {stopPropagation: true})}
-          })
-        ]),
-        h('fg-animate', {
-          props: {
-            show: value.of(show),
-            enterAnimation: SlideFromBottomAnimation,
-            exitAnimation: SlideToBottomAnimation
-          }
-        }, [h('div.slot-container', [h('slot')])])
+          on: {[AnimationEndEvent]: dispatch('ANIMATION_END')},
+          props: {action: value.of(action), animation: animation}
+        }),
+        h('div.dark-overlay', {
+          on: {click: dispatch('OVERLAY_CLICK', {stopPropagation: true})}
+        }),
+        h('div.slot-container', [h('slot')])
       ])
     ])
   }

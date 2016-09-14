@@ -14,10 +14,10 @@ export default createStyleSheet({
     zIndex: 1,
     display: 'flex',
     flexDirection: 'column-reverse',
-    height: '100%',
-    '&.hidden': {
-      pointerEvents: 'none'
-    }
+    height: '100%'
+  },
+  '.hidden': {
+    display: 'none'
   },
   '.dark-overlay': {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
