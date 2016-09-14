@@ -4,11 +4,24 @@
 
 'use strict'
 
-export default {
-  of (__value) {
-    return {__value}
-  },
-  get (e) {
+export default class Value {
+  constructor (e) {
+    this.__value = e
+  }
+
+  static of (e) {
+    return new Value(e)
+  }
+
+  static get (e) {
     return e.__value
+  }
+
+  value () {
+    return this.__value
+  }
+
+  equals (e) {
+    return this.__value === e
   }
 }
