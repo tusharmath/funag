@@ -27,8 +27,5 @@ export default createStyleSheet({
   '.artist': {
     color: Palette.fg__trackDetail__light,
     fontSize: '0.8rem'
-  },
-  'fg-button': {
-    '--fg-button-color': 'red'
   }
 })

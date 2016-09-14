@@ -7,8 +7,8 @@
 import h from 'snabbdom/h'
 import R from 'ramda'
 import {durationFormat} from '../../lib/SoundCloud'
-import findParent from '../../dom-api/findParent'
 import {TrackChanged} from './track-list.events'
+import findParent from '../../dom-api/findParent'
 
 function placeholder () {
   return h(`div.placeholder`, [
@@ -24,7 +24,7 @@ export default {
   props: ['tracks', 'playing', 'selected'],
   init (e) {
     return {
-      tracks: [],
+      tracks: e.tracks || [],
       selected: e.selected,
       playing: e.playing
     }
@@ -48,9 +48,8 @@ export default {
     }
   },
   view ({tracks, selected, playing}, dispatch) {
-    return h('div', {on: {click: dispatch('CLICK')}}, [
-      h('fg-selected-track-modal', {props: {track: selected}}),
-      h('div',
+    return h('div', [
+      h('div', {on: {click: dispatch('CLICK')}},
         tracks.length > 0 ? tracks.map(track =>
           h(`div.trackContainer`, {props: {track}}, [
             h('fg-track-artwork', {props: {track, selected, playing}}),
