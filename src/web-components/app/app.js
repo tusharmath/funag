@@ -26,8 +26,9 @@ export default {
     return {
       tracks: [],
       selected: null,
-      playing: false,
-      search: ''
+      playing: null,
+      search: '',
+      showModal: false
     }
   },
 
@@ -51,7 +52,7 @@ export default {
     }
   },
 
-  view ({tracks, selected, playing, search}, dispatch) {
+  view ({tracks, selected, playing, search, showModal}, dispatch) {
     return h(`div.container`, [
       h(`fg-reactive-http`, {
         props: {debounce: 300, action: createRequest(search)},
@@ -64,6 +65,9 @@ export default {
             attrs: {placeholder: 'Search', icon: 'search'}
           })
         ])
+      ]),
+      h('fg-track-modal', {props: {track: selected, show: showModal}}, [
+        h(`fg-button`, {props: {wide: true}}, ['PLAY NOW'])
       ]),
       h('fg-track-list', {
         props: {tracks, playing, selected},

@@ -43,5 +43,8 @@ export default createStyleSheet({
       backgroundColor: Palette.bg__header,
       boxShadow: Palette.zDepth__1
     }
+  },
+  'fg-button': {
+    '--fg-button-color': 'red'
   }
 })
