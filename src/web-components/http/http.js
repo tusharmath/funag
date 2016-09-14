@@ -4,8 +4,7 @@
 
 'use strict'
 
-/* global fetch */
-
+import http from 'superagent'
 import getRootNode from '../../dom-api/getRootNode'
 import {Request, Response} from './http.events'
 
@@ -23,12 +22,11 @@ export default {
   },
 
   __dispatch (response) {
-    this.dispatchEvent(Response.of(response))
+    this.dispatchEvent(Response.of(response.body))
   },
 
-  makeRequest ({url, params}) {
-    fetch(url, params)
-      .then(response => response.json())
+  makeRequest ({url, method = 'GET'}) {
+    http(method, url)
       .then(
         json => this.__dispatch(json),
         function (err) { throw err }

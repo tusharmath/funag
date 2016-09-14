@@ -27,6 +27,7 @@
     "route-parser": "0.0.5",
     "rwc": "^2.0.0",
     "snabbdom": "^0.5.1",
+    "superagent": "^2.2.0",
     "sw-toolbox": "^3.1.1",
     "valid-url": "^1.0.9",
     "webpack-super": "^2.0.0"
