@@ -6,7 +6,7 @@
 
 import h from 'snabbdom/h'
 import R from 'ramda'
-import {Response} from '../http/http.events'
+import {Response} from '../reactive-http/reactive-http.events'
 import {toURI, trackStreamURL} from '../../lib/SoundCloud'
 import {FunagInputValue} from '../input/input.events'
 import {TrackChanged} from '../track-list/track-list.events'
@@ -53,7 +53,7 @@ export default {
 
   view ({tracks, selected, playing, search}, dispatch) {
     return h(`div.container`, [
-      h(`fg-http`, {
+      h(`fg-reactive-http`, {
         props: {debounce: 300, action: createRequest(search)},
         on: {[Response.type]: dispatch('TRACKS')}
       }),

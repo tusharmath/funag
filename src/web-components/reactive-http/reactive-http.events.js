@@ -6,4 +6,4 @@
 
 import {BubblingEventType} from '../../lib/CustomEventType'
 
-export const Response = BubblingEventType('fg-http-response')
+export const Response = BubblingEventType('fg-reactive-http-response')
