@@ -26,11 +26,12 @@ export default {
   },
 
   makeRequest ({url, method = 'GET'}) {
-    http(method, url)
-      .then(
-        json => this.__dispatch(json),
-        function (err) { throw err }
-      )
+    if (this.__request) this.__request.abort()
+    this.__request = http(method, url)
+      .end((err, response) => {
+        if (err) throw err
+        this.__dispatch(response)
+      })
   },
 
   onRequest (ev) {
