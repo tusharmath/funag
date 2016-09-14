@@ -6,7 +6,7 @@
 
 import http from 'superagent'
 import getRootNode from '../../dom-api/getRootNode'
-import {Response} from './http.events'
+import {Response} from './reactive-http.events'
 import makeWCReactive from '../../lib/makeWCReactive'
 
 export default {

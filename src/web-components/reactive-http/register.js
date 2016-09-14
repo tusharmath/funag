@@ -4,7 +4,7 @@
 
 'use strict'
 
-import Http from './http'
+import Http from './reactive-http'
 import registerWC from '../../lib/registerWC'
 
-registerWC('fg-http', Http)
+registerWC('fg-reactive-http', Http)
