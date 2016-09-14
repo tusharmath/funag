@@ -6,12 +6,11 @@
 
 import h from 'snabbdom/h'
 import R from 'ramda'
-import {SeekEvent} from '../passive-audio/passive-audio.event'
 import {MediaPlaying, MediaStopped} from './mini-audio-control.events'
 import {
   MediaStatus,
   onTimeUpdated,
-  getEvent,
+  toggleAudioAction,
   getIcon
 } from './mini-audio-control.utils'
 
@@ -20,7 +19,8 @@ export default {
     return {
       completion: 0,
       src: null,
-      mediaStatus: MediaStatus.LOADING
+      mediaStatus: MediaStatus.LOADING,
+      audioAction: {}
     }
   },
 
@@ -34,7 +34,7 @@ export default {
           completion: 0
         })
       case 'CLICK':
-        return [state, getEvent(state)]
+        return toggleAudioAction(state)
       case 'TIME_UPDATED':
         return onTimeUpdated(params, state)
       case 'PLAYING':
@@ -46,7 +46,10 @@ export default {
       case 'SEEKING':
         return [updateMediaState(MediaStatus.LOADING), MediaStopped.of()]
       case 'SEEK':
-        return [state, SeekEvent.of(params.detail)]
+        return R.assoc('audioAction', {
+          type: 'seek',
+          params: params.detail
+        }, state)
       case 'SUSPEND':
         return [updateMediaState(MediaStatus.LOADING), MediaStopped.of()]
       case 'CAN_PLAY':
@@ -56,10 +59,11 @@ export default {
     }
   },
 
-  view ({src, completion, mediaStatus}, dispatch) {
+  view ({src, completion, mediaStatus, audioAction}, dispatch) {
     return h('div', [
-      h('fg-passive-audio', {
+      h('fg-reactive-audio', {
         attrs: {src},
+        props: {action: audioAction},
         on: {
           timeupdate: dispatch('TIME_UPDATED'),
           playing: dispatch('PLAYING'),

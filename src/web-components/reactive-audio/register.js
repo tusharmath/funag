@@ -4,7 +4,7 @@
 
 'use strict'
 
-import PassiveAudio from './passive-audio'
+import PassiveAudio from './reactive-audio'
 import registerWC from '../../lib/registerWC'
 
-registerWC('fg-passive-audio', PassiveAudio)
+registerWC('fg-reactive-audio', PassiveAudio)

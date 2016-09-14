@@ -6,7 +6,7 @@
 
 import h from 'snabbdom/h'
 import R from 'ramda'
-import {Request, Response} from '../http/http.events'
+import {Response} from '../reactive-http/reactive-http.events'
 import {toURI, trackStreamURL} from '../../lib/SoundCloud'
 import {FunagInputValue} from '../input/input.events'
 import {TrackChanged} from '../track-list/track-list.events'
@@ -14,6 +14,12 @@ import {
   MediaPlaying,
   MediaStopped
 } from '../mini-audio-control/mini-audio-control.events'
+import memoizeLatest from '../../lib/memoizeLatest'
+
+const createRequest = memoizeLatest((q) => ({
+  type: 'request',
+  params: {url: toURI('/tracks', {q})}
+}))
 
 export default {
   init () {
@@ -27,13 +33,8 @@ export default {
 
   update (state, {type, params}) {
     switch (type) {
-      case '@@rwc/attached':
-        return [state, Request.of({url: toURI('/tracks', {q: state.search})})]
       case `SEARCH`:
-        return [
-          R.merge(state, {search: params.detail, tracks: []}),
-          Request.of({url: toURI('/tracks', {q: params.detail})})
-        ]
+        return R.merge(state, {search: params.detail, tracks: []})
       case 'TRACK_CHANGE':
         return R.assoc('selected', params.detail, state)
       case 'TRACKS':
@@ -50,10 +51,10 @@ export default {
     }
   },
 
-  view ({tracks, selected, playing}, dispatch) {
+  view ({tracks, selected, playing, search}, dispatch) {
     return h(`div.container`, [
-      h(`fg-http`, {
-        props: {debounce: 300},
+      h(`fg-reactive-http`, {
+        props: {debounce: 300, action: createRequest(search)},
         on: {[Response.type]: dispatch('TRACKS')}
       }),
       h('fg-app-bar', {attrs: {toggleClass: 'active'}}, [
