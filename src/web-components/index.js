@@ -7,7 +7,7 @@
 import './slider/register'
 import './input/register'
 import './icon/register'
-import './passive-audio/register'
+import './reactive-audio/register'
 import './mini-audio-control/register'
 import './behaviours/stay-focussed-on'
 import './http/register'

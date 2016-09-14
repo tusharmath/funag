@@ -61,7 +61,7 @@ export default {
 
   view ({src, completion, mediaStatus, audioAction}, dispatch) {
     return h('div', [
-      h('fg-passive-audio', {
+      h('fg-reactive-audio', {
         attrs: {src},
         props: {action: audioAction},
         on: {
