@@ -4,31 +4,28 @@
 
 'use strict'
 
-import {PlayEvent, PauseEvent, SeekEvent} from './passive-audio.event'
 import validURL from 'valid-url'
-import getHostNode from '../../dom-api/getHostNode'
-import compositeListener from '../../dom-api/compositeListener'
+import makeWCReactive from '../../lib/makeWCReactive'
 
-function updateCurrentTime (audio, {detail}) {
-  audio.currentTime = detail.completion * audio.duration
+function updateCurrentTime (audio, {completion}) {
+  audio.currentTime = completion * audio.duration
 }
 export default {
   createdCallback () {
-    this.__onEvent = this.__onEvent.bind(this)
+    makeWCReactive(this)
     this.__audio = document.createElement('audio')
     Object.defineProperty(this, 'src', {
       get () { return this.__audio.src },
-      set (value) { if (validURL.isUri(value)) this.__audio.src = value }
+      set (value) {
+        if (validURL.isUri(value) && value !== this.__audio.src) {
+          this.__audio.src = value
+        }
+      }
     })
     this.src = this.getAttribute('src')
   },
 
   attachedCallback () {
-    this.disposable = compositeListener(getHostNode(this), this.__onEvent, [
-      PlayEvent.type,
-      PauseEvent.type,
-      SeekEvent.type
-    ])
     this.src = this.getAttribute('src')
   },
 
@@ -37,7 +34,7 @@ export default {
   },
 
   attributeChangedCallback (name, old, src) {
-    this.src = src
+    if (name === 'src') this.src = src
   },
 
   addEventListener (...args) {
@@ -48,14 +45,14 @@ export default {
     return this.__audio.removeEventListener(...args)
   },
 
-  __onEvent (ev) {
-    switch (ev.type) {
-      case PlayEvent.type:
+  onAction ({type, params}) {
+    switch (type) {
+      case 'play':
         return this.__audio.play()
-      case PauseEvent.type:
+      case 'pause':
         return this.__audio.pause()
-      case SeekEvent.type:
-        return updateCurrentTime(this.__audio, ev)
+      case 'seek':
+        return updateCurrentTime(this.__audio, params)
     }
   }
 }
