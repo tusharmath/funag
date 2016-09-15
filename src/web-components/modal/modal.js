@@ -11,7 +11,7 @@ import FadeOutAnimation from '../animation/fade-out-animation'
 import SlideFromBottomAnimation from '../animation/slide-from-bottom-animation'
 import SlideToBottomAnimation from '../animation/slide-to-bottom-animation'
 import {AnimationEndEvent} from '../animation/animation-events'
-import value from '../../lib/value'
+import Value from '../../lib/value'
 
 const duration = 300
 const animation = {
@@ -49,8 +49,8 @@ export default {
   update (state, {type, params}) {
     switch (type) {
       case '@@rwc/prop/show':
-        return params === state.show ? state : R.merge(state, {
-          show: params,
+        return params.equals(state.show) ? state : R.merge(state, {
+          show: Value.get(params),
           action: 'enter',
           actionCompleted: false
         })
@@ -73,7 +73,7 @@ export default {
         !show ? '' : h('fg-disable-scroll'),
         h('fg-animate', {
           on: {[AnimationEndEvent]: dispatch('ANIMATION_END')},
-          props: {action: value.of(action), animation: animation}
+          props: {action: Value.of(action), animation: animation}
         }),
         h('div.dark-overlay', {
           on: {click: dispatch('OVERLAY_CLICK', {stopPropagation: true})}
