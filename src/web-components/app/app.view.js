@@ -16,7 +16,7 @@ import {createRequest} from './app.utils'
 export default (state, dispatch) => {
   const {
     tracks,
-    selected,
+    selectedTrack,
     playing,
     search,
     showModal,
@@ -27,7 +27,7 @@ export default (state, dispatch) => {
     // HTTP
     h(`fg-reactive-http`, {
       props: {debounce: 300, action: createRequest(search)},
-      on: {[Response.type]: dispatch('TRACKS')}
+      on: {[Response.type]: dispatch('HTTP_TRACKS_RESPONSE')}
     }),
 
     // APP BAR
@@ -42,7 +42,7 @@ export default (state, dispatch) => {
 
     // TRACK MODAL
     h('fg-track-modal', {
-      props: {track: selected, show: value.of(showModal)}
+      props: {track: selectedTrack, show: value.of(showModal)}
     }, [
       h(`fg-button`, {
         props: {wide: true}, on: {click: dispatch('PLAY_NOW')}
@@ -51,7 +51,7 @@ export default (state, dispatch) => {
 
     // TRACK LIST
     h('fg-track-list', {
-      props: {tracks, playing, selected},
+      props: {tracks, playing, selected: selectedTrack},
       on: {[TrackChanged]: dispatch('TRACK_CHANGE')}
     }),
 
@@ -61,8 +61,8 @@ export default (state, dispatch) => {
         {
           attrs: {src: trackStreamURL(activeTrack)},
           on: {
-            [Play]: dispatch('MEDIA_PLAYING'),
-            [Pause]: dispatch('MEDIA_STOPPED')
+            [Play]: dispatch('PLAY'),
+            [Pause]: dispatch('PAUSE')
           }
         }, [
           h(`div.control-track-detail`, [

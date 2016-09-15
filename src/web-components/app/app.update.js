@@ -11,16 +11,18 @@ export default (state, {type, params}) => {
   switch (type) {
     case `SEARCH`:
       return R.merge(state, {search: params.detail, tracks: []})
-    case 'TRACK_CHANGE':
-      return R.merge(state, {selected: params.detail, showModal: true})
-    case 'TRACKS':
+    case 'SELECT_TRACK':
+      return R.merge(state, {selectedTrack: params.detail, showModal: true})
+    case 'HTTP_TRACKS_RESPONSE':
       return setTracks(state, params)
-    case 'PLAY_NOW':
-      return R.merge(state, {activeTrack: state.selected, showModal: false})
-    case 'MEDIA_PLAYING':
-      return R.assoc('playing', true, state)
-    case 'MEDIA_STOPPED':
-      return R.assoc('playing', false, state)
+    case 'PLAY':
+      return R.merge(state, {
+        activeTrack: state.selectedTrack,
+        showModal: false,
+        audioAction: 'play'
+      })
+    case 'PAUSE':
+      return R.merge(state, {audioAction: 'pause'})
     default:
       return state
   }

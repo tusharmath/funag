@@ -15,7 +15,7 @@ export const createRequest = memoizeLatest((q) => ({
 export const setTracks = (state, params) => {
   return R.merge(state, {
     tracks: params.detail,
-    selected: state.selected ? state.selected : params.detail[0],
-    controlTrack: state.controlTrack ? state.controlTrack : params.detail[0]
+    selectedTrack: state.selectedTrack || params.detail[0],
+    activeTrack: state.activeTrack || state.selectedTrack || params.detail[0]
   })
 }

@@ -7,7 +7,7 @@
 export default () => {
   return {
     tracks: [],
-    selected: null,
+    selectedTrack: null,
     activeTrack: null,
     playing: null,
     search: '',
