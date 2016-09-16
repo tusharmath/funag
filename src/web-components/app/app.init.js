@@ -8,7 +8,7 @@ import {MediaStatus} from '../../lib/MediaStatus'
 export default () => {
   return {
     tracks: [],
-    selectedTrack: null,
+    modalTrack: null,
     activeTrack: null,
     mediaStatus: MediaStatus.LOADING,
     completion: 0,

@@ -18,38 +18,26 @@ test('SEARCH', t => {
   })
 })
 test('SELECT_TRACK', t => {
-  t.deepEqual(update({}, mockAction('SELECT_TRACK', '#track')), {
-    selectedTrack: '#track',
-    showModal: true
-  })
+  t.deepEqual(
+    update({}, mockAction('SELECT_TRACK', '#track')),
+    {
+      modalTrack: '#track',
+      showModal: true
+    }
+  )
 })
 test('HTTP_TRACKS_RESPONSE', t => {
   t.deepEqual(update({}, mockAction('HTTP_TRACKS_RESPONSE', ['t0', 't1'])), {
     tracks: ['t0', 't1'],
-    selectedTrack: 't0',
-    activeTrack: 't0'
+    selectedTrack: 't0'
   })
   t.deepEqual(
     update({selectedTrack: 't3'},
       mockAction('HTTP_TRACKS_RESPONSE', ['t0', 't1'])
     ), {
       tracks: ['t0', 't1'],
-      selectedTrack: 't3',
-      activeTrack: 't3'
+      selectedTrack: 't3'
     })
-})
-test('PLAY', t => {
-  t.deepEqual(update({selectedTrack: 't0'}, mockAction('PLAY')), {
-    activeTrack: 't0',
-    selectedTrack: 't0',
-    showModal: false,
-    audioAction: 'play'
-  })
-})
-test('PAUSE', t => {
-  t.deepEqual(update({}, mockAction('PAUSE')), {
-    audioAction: 'pause'
-  })
 })
 test('MEDIA_PAUSED', t => {
   t.deepEqual(update({}, mockAction('MEDIA_PAUSED')), {
@@ -61,12 +49,29 @@ test('MEDIA_PLAYING', t => {
     mediaStatus: MediaStatus.PLAYING
   })
 })
+test('MEDIA_ERRED', t => {
+  t.deepEqual(update({}, mockAction('MEDIA_ERRED')), {
+    mediaStatus: MediaStatus.ERRED
+  })
+})
+test('MEDIA_LOADING', t => {
+  t.deepEqual(update({}, mockAction('MEDIA_LOADING')), {
+    mediaStatus: MediaStatus.LOADING
+  })
+})
 test('CONTROL_CLICK', t => {
   t.deepEqual(update(
     {mediaStatus: MediaStatus.PAUSED},
     mockAction('CONTROL_CLICK')), {
-      audioAction: {type: 'play'},
-      mediaStatus: MediaStatus.PAUSED
+      mediaStatus: MediaStatus.PAUSED,
+      audioAction: 'play'
+    }
+  )
+  t.deepEqual(update(
+    {mediaStatus: MediaStatus.PLAYING},
+    mockAction('CONTROL_CLICK')), {
+      mediaStatus: MediaStatus.PLAYING,
+      audioAction: 'pause'
     }
   )
 })
@@ -77,5 +82,14 @@ test('UPDATE_COMPLETION', t => {
       params: {target: {duration: 100, currentTime: 45}}
     }),
     {completion: 0.45}
+  )
+})
+test('PLAY_NOW', t => {
+  t.deepEqual(
+    update(
+      {modalTrack: 't0'},
+      mockAction('PLAY_NOW')
+    ),
+    {audioAction: 'play', modalTrack: 't0', selectedTrack: 't0'}
   )
 })

@@ -9,9 +9,8 @@ import {Response} from '../reactive-http/reactive-http.events'
 import {trackStreamURL} from '../../lib/SoundCloud'
 import {FunagInputValue} from '../input/input.events'
 import {SelectTrack} from '../track-list/track-list.events'
-import {Play, Pause} from '../mini-audio-control/mini-audio-control.events'
-import value from '../../lib/value'
 import {createRequest} from './app.utils'
+import Value from '../../lib/value'
 
 export default (state, dispatch) => {
   const {
@@ -20,7 +19,7 @@ export default (state, dispatch) => {
     playing,
     search,
     showModal,
-    activeTrack,
+    modalTrack,
     audioAction,
     mediaStatus,
     completion
@@ -44,7 +43,7 @@ export default (state, dispatch) => {
 
     // TRACK MODAL
     h('fg-track-modal', {
-      props: {track: selectedTrack, show: value.of(showModal)}
+      props: {track: modalTrack, show: Value.of(showModal)}
     }, [
       h(`fg-button`, {
         props: {wide: true}, on: {click: dispatch('PLAY_NOW')}
@@ -58,33 +57,31 @@ export default (state, dispatch) => {
     }),
 
     // CONTROL/PLAYER
-    !activeTrack ? '' : h(`div.control-container`, [
+    !selectedTrack ? '' : h(`div.control-container`, [
       h(`fg-mini-audio-control`,
         {
           on: {
-            click: dispatch('CONTROL_CLICK'),
-            [Play]: dispatch('PLAY'),
-            [Pause]: dispatch('PAUSE')
+            click: dispatch('CONTROL_CLICK')
           },
           props: {mediaStatus, completion}
         }, [
           h(`div.control-track-detail`, [
-            h(`div.track-title.text-overflow`, [activeTrack.title]),
-            h(`div.artist.text-overflow`, [activeTrack.user.username])
+            h(`div.track-title.text-overflow`, [selectedTrack.title]),
+            h(`div.artist.text-overflow`, [selectedTrack.user.username])
           ])
         ])
     ]),
 
     // REACTIVE/AUDIO
-    !activeTrack ? '' : h('fg-reactive-audio', {
-      attrs: {src: trackStreamURL(activeTrack)},
+    !selectedTrack ? '' : h('fg-reactive-audio', {
+      attrs: {src: trackStreamURL(selectedTrack)},
       props: {action: audioAction},
       on: {
         timeupdate: dispatch('UPDATE_COMPLETION'),
         playing: dispatch('MEDIA_PLAYING'),
         pause: dispatch('MEDIA_PAUSED'),
-        error: dispatch('audio.ERROR'),
-        seeking: dispatch('audio.SEEKING'),
+        error: dispatch('MEDIA_ERRED'),
+        seeking: dispatch('MEDIA_LOADING'),
         canplay: dispatch('MEDIA_PAUSED')
       }
     })
