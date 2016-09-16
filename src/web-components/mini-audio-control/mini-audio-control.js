@@ -6,8 +6,8 @@
 
 import h from 'snabbdom/h'
 import R from 'ramda'
+import {MediaStatus} from './mini-audio-control.media-status'
 
-export const MediaStatus = {LOADING: 0, PLAYING: 1, ERRED: 2, PAUSED: 3}
 export const iconElement = (icon, dispatch) =>
   h('fg-button', {on: {click: dispatch('CLICK')}}, [
     h('fg-icon', {props: {color: 'red', icon}})
