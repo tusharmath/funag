@@ -17,14 +17,12 @@ test('SEARCH', t => {
     tracks: []
   })
 })
-
 test('SELECT_TRACK', t => {
   t.deepEqual(update({}, mockAction('SELECT_TRACK', '#track')), {
     selectedTrack: '#track',
     showModal: true
   })
 })
-
 test('HTTP_TRACKS_RESPONSE', t => {
   t.deepEqual(update({}, mockAction('HTTP_TRACKS_RESPONSE', ['t0', 't1'])), {
     tracks: ['t0', 't1'],
@@ -40,7 +38,6 @@ test('HTTP_TRACKS_RESPONSE', t => {
       activeTrack: 't3'
     })
 })
-
 test('PLAY', t => {
   t.deepEqual(update({selectedTrack: 't0'}, mockAction('PLAY')), {
     activeTrack: 't0',
@@ -49,15 +46,36 @@ test('PLAY', t => {
     audioAction: 'play'
   })
 })
-
 test('PAUSE', t => {
   t.deepEqual(update({}, mockAction('PAUSE')), {
     audioAction: 'pause'
   })
 })
-
 test('MEDIA_PAUSED', t => {
   t.deepEqual(update({}, mockAction('MEDIA_PAUSED')), {
     mediaStatus: MediaStatus.PAUSED
   })
+})
+test('MEDIA_PLAYING', t => {
+  t.deepEqual(update({}, mockAction('MEDIA_PLAYING')), {
+    mediaStatus: MediaStatus.PLAYING
+  })
+})
+test('CONTROL_CLICK', t => {
+  t.deepEqual(update(
+    {mediaStatus: MediaStatus.PAUSED},
+    mockAction('CONTROL_CLICK')), {
+      audioAction: {type: 'play'},
+      mediaStatus: MediaStatus.PAUSED
+    }
+  )
+})
+test('UPDATE_COMPLETION', t => {
+  t.deepEqual(update({},
+    {
+      type: 'UPDATE_COMPLETION',
+      params: {target: {duration: 100, currentTime: 45}}
+    }),
+    {completion: 0.45}
+  )
 })

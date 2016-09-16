@@ -9,6 +9,9 @@ import {setTracks} from './app.utils'
 import logUnhandledActions from '../../lib/logUnhandledActions'
 import {MediaStatus} from '../../lib/MediaStatus'
 
+function getDuration (params) {
+  return params.target.currentTime / params.target.duration
+}
 export default (state, {type, params}) => {
   switch (type) {
     case `SEARCH`:
@@ -27,6 +30,12 @@ export default (state, {type, params}) => {
       return R.merge(state, {audioAction: 'pause'})
     case 'MEDIA_PAUSED':
       return R.assoc('mediaStatus', MediaStatus.PAUSED, state)
+    case 'MEDIA_PLAYING':
+      return R.assoc('mediaStatus', MediaStatus.PLAYING, state)
+    case 'CONTROL_CLICK':
+      return R.assoc('audioAction', {type: 'play'}, state)
+    case 'UPDATE_COMPLETION':
+      return R.assoc('completion', getDuration(params), state)
     default:
       logUnhandledActions(state, {type, params})
       return state

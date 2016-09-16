@@ -7,7 +7,6 @@
 import h from 'snabbdom/h'
 import R from 'ramda'
 import {MediaStatus} from '../../lib/MediaStatus'
-import logUnhandledActions from '../../lib/logUnhandledActions'
 
 export const iconElement = (icon, dispatch) =>
   h('fg-button', {on: {click: dispatch('CLICK')}}, [
@@ -41,7 +40,6 @@ export default {
       case '@@rwc/prop/completion':
         return R.assoc('completion', params, state)
       default:
-        logUnhandledActions(state, {type, params})
         return state
     }
   },

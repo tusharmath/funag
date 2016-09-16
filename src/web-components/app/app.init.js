@@ -11,6 +11,8 @@ export default () => {
     selectedTrack: null,
     activeTrack: null,
     mediaStatus: MediaStatus.LOADING,
+    completion: 0,
+    audioAction: {},
     search: '',
     showModal: false
   }
