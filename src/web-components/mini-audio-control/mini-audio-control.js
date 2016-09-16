@@ -6,7 +6,8 @@
 
 import h from 'snabbdom/h'
 import R from 'ramda'
-import {MediaStatus} from './mini-audio-control.media-status'
+import {MediaStatus} from '../../lib/MediaStatus'
+import logUnhandledActions from '../../lib/logUnhandledActions'
 
 export const iconElement = (icon, dispatch) =>
   h('fg-button', {on: {click: dispatch('CLICK')}}, [
@@ -26,6 +27,7 @@ export const getIcon = (status, dispatch) => {
 }
 
 export default {
+  props: ['completion', 'mediaStatus'],
   init () {
     return {
       completion: 0,
@@ -39,6 +41,7 @@ export default {
       case '@@rwc/prop/completion':
         return R.assoc('completion', params, state)
       default:
+        logUnhandledActions(state, {type, params})
         return state
     }
   },

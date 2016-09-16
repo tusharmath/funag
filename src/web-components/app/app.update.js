@@ -7,6 +7,7 @@
 import R from 'ramda'
 import {setTracks} from './app.utils'
 import logUnhandledActions from '../../lib/logUnhandledActions'
+import {MediaStatus} from '../../lib/MediaStatus'
 
 export default (state, {type, params}) => {
   switch (type) {
@@ -24,6 +25,8 @@ export default (state, {type, params}) => {
       })
     case 'PAUSE':
       return R.merge(state, {audioAction: 'pause'})
+    case 'MEDIA_PAUSED':
+      return R.assoc('mediaStatus', MediaStatus.PAUSED, state)
     default:
       logUnhandledActions(state, {type, params})
       return state

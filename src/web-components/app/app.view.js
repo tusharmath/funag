@@ -21,7 +21,8 @@ export default (state, dispatch) => {
     search,
     showModal,
     activeTrack,
-    audioAction
+    audioAction,
+    mediaStatus
   } = state
   return h(`div.container`, [
     // HTTP
@@ -59,11 +60,11 @@ export default (state, dispatch) => {
     !activeTrack ? '' : h(`div.control-container`, [
       h(`fg-mini-audio-control`,
         {
-          attrs: {src: trackStreamURL(activeTrack)},
           on: {
             [Play]: dispatch('PLAY'),
             [Pause]: dispatch('PAUSE')
-          }
+          },
+          props: {mediaStatus}
         }, [
           h(`div.control-track-detail`, [
             h(`div.track-title.text-overflow`, [activeTrack.title]),
@@ -82,7 +83,7 @@ export default (state, dispatch) => {
         pause: dispatch('audio.PAUSED'),
         error: dispatch('audio.ERROR'),
         seeking: dispatch('audio.SEEKING'),
-        canplay: dispatch('audio.CAN_PLAY')
+        canplay: dispatch('MEDIA_PAUSED')
       }
     })
   ])

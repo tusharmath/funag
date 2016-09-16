@@ -6,6 +6,7 @@
 
 import update from '../src/web-components/app/app.update'
 import test from 'ava'
+import {MediaStatus} from '../src/lib/MediaStatus'
 
 function mockAction (type, detail) {
   return {type, params: {detail}}
@@ -52,5 +53,11 @@ test('PLAY', t => {
 test('PAUSE', t => {
   t.deepEqual(update({}, mockAction('PAUSE')), {
     audioAction: 'pause'
+  })
+})
+
+test('MEDIA_PAUSED', t => {
+  t.deepEqual(update({}, mockAction('MEDIA_PAUSED')), {
+    mediaStatus: MediaStatus.PAUSED
   })
 })
