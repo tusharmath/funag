@@ -10,18 +10,10 @@ export default class Value {
   }
 
   static of (e) {
-    return new Value(e)
+    return e instanceof Value ? e : new Value(e)
   }
 
-  static get (e) {
-    return e.__value
-  }
-
-  value () {
+  valueOf () {
     return this.__value
-  }
-
-  equals (e) {
-    return this.__value === e
   }
 }
