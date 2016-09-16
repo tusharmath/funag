@@ -6,7 +6,6 @@
 
 import registerWC from '../../lib/registerWC'
 import getRootNode from '../../dom-api/getRootNode'
-import value from '../../lib/value'
 import {AnimationStartEvent, AnimationEndEvent} from './animation-events'
 
 registerWC('fg-animate', {
@@ -23,7 +22,7 @@ registerWC('fg-animate', {
       action: {
         get: () => this.__lastAction,
         set: (_action) => {
-          const action = value.get(_action)
+          const action = _action.valueOf()
           if (action === this.__lastAction) return
           this.__lastAction = action
           this.__beginAnimation(action)
