@@ -9,7 +9,6 @@ export default () => {
     tracks: [],
     selectedTrack: null,
     activeTrack: null,
-    playing: null,
     search: '',
     showModal: false
   }
