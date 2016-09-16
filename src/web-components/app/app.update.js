@@ -21,7 +21,7 @@ export default (state, {type, params}) => {
       return R.merge(state, {search: params.detail, tracks: []})
     case 'SELECT_TRACK':
       return R.merge(state, {
-        modalTrack: params.detail,
+        modalTrack: params,
         showModal: true
       })
     case 'HTTP_TRACKS_RESPONSE':

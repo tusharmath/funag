@@ -8,9 +8,9 @@ import h from 'snabbdom/h'
 import {Response} from '../reactive-http/reactive-http.events'
 import {trackStreamURL} from '../../lib/SoundCloud'
 import {FunagInputValue} from '../input/input.events'
-import {SelectTrack} from '../track-list/track-list.events'
 import {createRequest} from './app.utils'
 import Value from '../../lib/value'
+import TrackListView from './track-list.view'
 
 export default (state, dispatch) => {
   const {
@@ -51,17 +51,14 @@ export default (state, dispatch) => {
     ]),
 
     // TRACK LIST
-    h('fg-track-list', {
-      props: {tracks, playing, selected: selectedTrack},
-      on: {[SelectTrack]: dispatch('SELECT_TRACK')}
-    }),
+    TrackListView({tracks, selectedTrack, playing}, dispatch),
 
     // CONTROL/PLAYER
     !selectedTrack ? '' : h(`div.control-container`, [
       h(`fg-mini-audio-control`,
         {
           on: {
-            click: dispatch('CONTROL_CLICK')
+            click: dispatch('CONTROL_CLICK', {preventDefault: true})
           },
           props: {mediaStatus, completion}
         }, [

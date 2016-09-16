@@ -19,7 +19,7 @@ test('SEARCH', t => {
 })
 test('SELECT_TRACK', t => {
   t.deepEqual(
-    update({}, mockAction('SELECT_TRACK', '#track')),
+    update({}, {type: 'SELECT_TRACK', params: '#track'}),
     {
       modalTrack: '#track',
       showModal: true

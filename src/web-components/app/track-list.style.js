@@ -1,12 +1,15 @@
-import {createStyleSheet} from '../../lib/JSSHelpers'
-import {BlockSpace, Palette, BlockHeight} from '../../lib/Themes'
 /**
- * Created by tushar.mathur on 09/09/16.
+ * Created by tushar.mathur on 17/09/16.
  */
 
 'use strict'
 
-export default createStyleSheet({
+import {BlockHeight, Palette, BlockSpace} from '../../lib/Themes'
+
+export default {
+  'fg-button': {
+    '--fg-button-color': 'red'
+  },
   '.trackContainer': {
     flex: '1 0 0',
     display: 'flex',
@@ -77,4 +80,4 @@ export default createStyleSheet({
     overflow: 'hidden',
     whiteSpace: 'nowrap'
   }
-})
+}
