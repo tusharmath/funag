@@ -7,7 +7,7 @@
 import h from 'snabbdom/h'
 import R from 'ramda'
 import {durationFormat} from '../../lib/SoundCloud'
-import {TrackChanged} from './track-list.events'
+import {SelectTrack} from './track-list.events'
 import findParent from '../../dom-api/findParent'
 
 function placeholder () {
@@ -41,7 +41,7 @@ export default {
         const node = findParent(R.prop('track'), params.target)
         return [
           node ? R.merge(state, {selected: node.track, playing: false}) : state,
-          node ? TrackChanged.of(node.track) : null
+          node ? SelectTrack.of(node.track) : null
         ]
       default:
         return state

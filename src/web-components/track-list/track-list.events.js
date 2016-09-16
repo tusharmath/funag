@@ -6,4 +6,4 @@
 
 import {BubblingEventType} from '../../lib/CustomEventType'
 
-export const TrackChanged = BubblingEventType('TrackChanged')
+export const SelectTrack = BubblingEventType('fg-track-list-select')
