@@ -43,31 +43,31 @@ export default {
     return {
       action: null,
       show: false,
-      actionCompleted: true
+      animationCompleted: true
     }
   },
   update (state, {type, params}) {
     switch (type) {
       case '@@rwc/prop/show':
-        return params.equals(state.show) ? state : R.merge(state, {
-          show: Value.get(params),
-          action: 'enter',
-          actionCompleted: false
+        return state.show === params.valueOf() ? state : R.merge(state, {
+          show: params.valueOf(),
+          animationCompleted: false,
+          action: params.valueOf() ? 'enter' : 'exit'
         })
       case 'OVERLAY_CLICK':
         return R.merge(state, {
           show: false,
           action: 'exit',
-          actionCompleted: false
+          animationCompleted: false
         })
       case 'ANIMATION_END':
-        return R.assoc('actionCompleted', true, state)
+        return R.assoc('animationCompleted', true, state)
       default:
         return state
     }
   },
-  view ({show, action, actionCompleted}, dispatch) {
-    const hidden = show === false && actionCompleted === true
+  view ({show, action, animationCompleted}, dispatch) {
+    const hidden = show === false && animationCompleted === true
     return h('div', {class: {hidden}}, [
       h('div.modal-container', [
         !show ? '' : h('fg-disable-scroll'),
