@@ -3,7 +3,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "ava",
+    "test": "NODE_ENV=test ava",
     "start": "nodemon src/server",
     "build": "webpack",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
