@@ -10,9 +10,23 @@ import {trackStreamURL} from '../../lib/SoundCloud'
 import {FunagInputValue} from '../input/input.events'
 import {TrackChanged} from '../track-list/track-list.events'
 import {Play, Pause} from '../mini-audio-control/mini-audio-control.events'
-import value from '../../lib/value'
 import {createRequest} from './app.utils'
+import Value from '../../lib/value'
 
+function TrackModal ({show, track}, children) {
+  return h(`fg-modal`, {props: {show: Value.of(show)}}, [
+    h(`div.trackContainer`, [
+      h('fg-track-artwork', {
+        props: {track, selected: false, playing: false}
+      }),
+      h(`div.trackDetail`, [
+        h(`div.title`, [track.title]),
+        h(`div.artist`, [track.user.username])
+      ])
+    ]),
+    h('div.menu', children)
+  ])
+}
 export default (state, dispatch) => {
   const {
     tracks,
@@ -23,16 +37,16 @@ export default (state, dispatch) => {
     activeTrack,
     audioAction
   } = state
-  return h(`div.container`, [
+  return h('div.container', [
     // HTTP
-    h(`fg-reactive-http`, {
+    h('fg-reactive-http', {
       props: {debounce: 300, action: createRequest(search)},
       on: {[Response.type]: dispatch('HTTP_TRACKS_RESPONSE')}
     }),
 
     // APP BAR
     h('fg-app-bar', {attrs: {toggleClass: 'active'}}, [
-      h(`div.search-box-container`, [
+      h('div.search-box-container', [
         h('fg-input', {
           on: {[FunagInputValue.type]: dispatch('SEARCH')},
           attrs: {placeholder: 'Search', icon: 'search'}
@@ -41,10 +55,8 @@ export default (state, dispatch) => {
     ]),
 
     // TRACK MODAL
-    h('fg-track-modal', {
-      props: {track: selectedTrack, show: value.of(showModal)}
-    }, [
-      h(`fg-button`, {
+    !selectedTrack ? '' : TrackModal({show: showModal, track: selectedTrack}, [
+      h('fg-button', {
         props: {wide: true}, on: {click: dispatch('PLAY_NOW')}
       }, ['PLAY NOW'])
     ]),
@@ -56,8 +68,8 @@ export default (state, dispatch) => {
     }),
 
     // CONTROL/PLAYER
-    !activeTrack ? '' : h(`div.control-container`, [
-      h(`fg-mini-audio-control`,
+    !activeTrack ? '' : h('div.control-container', [
+      h('fg-mini-audio-control',
         {
           attrs: {src: trackStreamURL(activeTrack)},
           on: {
@@ -65,9 +77,9 @@ export default (state, dispatch) => {
             [Pause]: dispatch('PAUSE')
           }
         }, [
-          h(`div.control-track-detail`, [
-            h(`div.track-title.text-overflow`, [activeTrack.title]),
-            h(`div.artist.text-overflow`, [activeTrack.user.username])
+          h('div.control-track-detail', [
+            h('div.track-title.text-overflow', [activeTrack.title]),
+            h('div.artist.text-overflow', [activeTrack.user.username])
           ])
         ])
     ]),
