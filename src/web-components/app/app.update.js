@@ -6,6 +6,7 @@
 
 import R from 'ramda'
 import {setTracks} from './app.utils'
+import Debug from '../../lib/Debug'
 
 export default (state, {type, params}) => {
   switch (type) {
@@ -24,6 +25,7 @@ export default (state, {type, params}) => {
     case 'PAUSE':
       return R.merge(state, {audioAction: 'pause'})
     default:
+      Debug(() => console.warn(`Unhandled action: ${type}`, params))
       return state
   }
 }
