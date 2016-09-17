@@ -6,7 +6,7 @@
 
 import h from 'snabbdom/h'
 import R from 'ramda'
-import getClientX from '../../lib/getClientX'
+import getClientX from '../../dom-api/getClientX'
 import customEvent from '../../dom-api/customEvent'
 import getRootNode from '../../dom-api/getRootNode'
 
