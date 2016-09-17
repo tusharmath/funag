@@ -6,7 +6,6 @@
 
 import R from 'ramda'
 import {setTracks} from './app.utils'
-import logUnhandledActions from '../../lib/logUnhandledActions'
 import {MediaStatus} from '../../lib/MediaStatus'
 import Value from '../../lib/value'
 import {trackStreamURL} from '../../lib/SoundCloud'
@@ -57,7 +56,6 @@ export default (state, {type, params}) => {
         {audioAction: {type: 'seek', params: params.detail}}
       )
     default:
-      logUnhandledActions(state, {type, params})
       return state
   }
 }
