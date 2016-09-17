@@ -7,6 +7,7 @@
 import h from 'snabbdom/h'
 import R from 'ramda'
 import {MediaStatus} from '../../lib/MediaStatus'
+import {SeekEvent} from './mini-audio-control.events'
 
 export const iconElement = (icon, dispatch) =>
   h('fg-button', {on: {click: dispatch('CLICK')}}, [
@@ -39,6 +40,8 @@ export default {
         return R.assoc('mediaStatus', params, state)
       case '@@rwc/prop/completion':
         return R.assoc('completion', params, state)
+      case 'SEEK':
+        return [state, SeekEvent.of(params)]
       default:
         return state
     }

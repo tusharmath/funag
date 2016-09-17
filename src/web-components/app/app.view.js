@@ -11,6 +11,7 @@ import {FunagInputValue} from '../input/input.events'
 import {createRequest} from './app.utils'
 import Value from '../../lib/value'
 import TrackListView from './track-list.view'
+import {SeekEvent} from '../mini-audio-control/mini-audio-control.events'
 
 export default (state, dispatch) => {
   const {
@@ -58,6 +59,7 @@ export default (state, dispatch) => {
       h(`fg-mini-audio-control`,
         {
           on: {
+            [SeekEvent]: dispatch('SEEK'),
             click: dispatch('CONTROL_CLICK', {preventDefault: true})
           },
           props: {mediaStatus, completion}
