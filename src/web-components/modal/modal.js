@@ -13,25 +13,28 @@ import SlideToBottomAnimation from '../animation/slide-to-bottom-animation'
 import {AnimationEndEvent} from '../animation/animation-events'
 import Value from '../../lib/value'
 
-const duration = 300
+const config = {
+  duration: 300,
+  easing: 'cubic-bezier(0.5, 0.2, 0.2, 1.5)'
+}
 const animation = {
   enter: [
     {
-      animation: FadeInAnimation({duration}),
+      animation: FadeInAnimation(config),
       select: '.dark-overlay'
     },
     {
-      animation: SlideFromBottomAnimation({duration}),
+      animation: SlideFromBottomAnimation(config),
       select: '.slot-container'
     }
   ],
   exit: [
     {
-      animation: FadeOutAnimation({duration}),
+      animation: FadeOutAnimation(config),
       select: '.dark-overlay'
     },
     {
-      animation: SlideToBottomAnimation({duration}),
+      animation: SlideToBottomAnimation(config),
       select: '.slot-container'
     }
   ]

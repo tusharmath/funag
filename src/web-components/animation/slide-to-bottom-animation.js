@@ -14,6 +14,6 @@ export default R.curry(function (config, node) {
     node.animate([
       {transform: 'translateY(0)', left},
       {transform: 'translateY(105%)', left}
-    ], config.duration)
+    ], config)
   )
 })

@@ -14,7 +14,7 @@ export default R.curry(function (config, node) {
     node.animate([
       {opacity: 0, left},
       {opacity: 1, left}
-    ], config.duration)
+    ], config)
   )
 })
 
