@@ -70,13 +70,17 @@ export default {
     const hidden = show === false && animationCompleted === true
     return h('div', {class: {hidden}}, [
       h('div.modal-container', [
-        h('fg-body-scroll', {attrs: {enabled: !show}}),
         h('fg-animate', {
           on: {[AnimationEndEvent]: dispatch('ANIMATION_END')},
           props: {action: Value.of(action), animation: animation}
         }),
         h('div.dark-overlay', {
-          on: {click: dispatch('OVERLAY_CLICK', {stopPropagation: true})}
+          on: {
+            tap: dispatch('OVERLAY_CLICK', {
+              stopPropagation: true,
+              preventDefault: true
+            })
+          }
         }),
         h('div.slot-container', [h('slot')])
       ])
