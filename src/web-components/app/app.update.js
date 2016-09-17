@@ -52,6 +52,10 @@ export default (state, {type, params}) => {
         selectedTrack: state.modalTrack,
         showModal: Value.of(false)
       })
+    case 'SEEK':
+      return R.merge(state,
+        {audioAction: {type: 'seek', params: params.detail}}
+      )
     default:
       logUnhandledActions(state, {type, params})
       return state

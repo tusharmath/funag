@@ -114,3 +114,14 @@ test('PLAY_NOW', t => {
     }
   )
 })
+test('SEEK', t => {
+  t.deepEqual(
+    update({}, mockAction('SEEK', {completion: 0.5})),
+    {
+      audioAction: {
+        type: 'seek',
+        params: {completion: 0.5}
+      }
+    }
+  )
+})
