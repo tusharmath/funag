@@ -65,14 +65,14 @@ test('CONTROL_CLICK', t => {
     {mediaStatus: MediaStatus.PAUSED},
     mockAction('CONTROL_CLICK')), {
       mediaStatus: MediaStatus.PAUSED,
-      audioAction: 'play'
+      audioAction: {type: 'play'}
     }
   )
   t.deepEqual(update(
     {mediaStatus: MediaStatus.PLAYING},
     mockAction('CONTROL_CLICK')), {
       mediaStatus: MediaStatus.PLAYING,
-      audioAction: 'pause'
+      audioAction: {type: 'pause'}
     }
   )
 })

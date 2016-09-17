@@ -15,7 +15,10 @@ function getDuration (params) {
   return params.target.currentTime / params.target.duration
 }
 function getAudioAction (state) {
-  return state.mediaStatus === MediaStatus.PLAYING ? 'pause' : 'play'
+  return R.objOf(
+    'type',
+    state.mediaStatus === MediaStatus.PLAYING ? 'pause' : 'play'
+  )
 }
 export default (state, {type, params}) => {
   switch (type) {
