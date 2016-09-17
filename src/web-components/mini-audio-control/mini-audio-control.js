@@ -41,7 +41,7 @@ export default {
       case '@@rwc/prop/completion':
         return R.assoc('completion', params, state)
       case 'SEEK':
-        return [state, SeekEvent.of(params)]
+        return [state, SeekEvent.of(params.detail)]
       default:
         return state
     }
