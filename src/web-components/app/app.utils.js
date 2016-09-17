@@ -5,7 +5,7 @@
 'use strict'
 
 import R from 'ramda'
-import {toURI} from '../../lib/SoundCloud'
+import {toURI, trackStreamURL} from '../../lib/SoundCloud'
 import memoizeLatest from '../../lib/memoizeLatest'
 
 export const createRequest = memoizeLatest((q) => ({
@@ -15,6 +15,12 @@ export const createRequest = memoizeLatest((q) => ({
 export const setTracks = (state, params) => {
   return R.merge(state, {
     tracks: params.detail,
-    selectedTrack: state.selectedTrack || params.detail[0]
+    selectedTrack: state.selectedTrack || params.detail[0],
+    audioAction: state.selectedTrack ? state.audioAction : {
+      type: 'load',
+      params: {
+        src: trackStreamURL(params.detail[0])
+      }
+    }
   })
 }

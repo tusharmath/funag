@@ -27,17 +27,29 @@ test('SELECT_TRACK', t => {
     }
   )
 })
-test('HTTP_TRACKS_RESPONSE', t => {
-  t.deepEqual(update({}, mockAction('HTTP_TRACKS_RESPONSE', ['t0', 't1'])), {
-    tracks: ['t0', 't1'],
-    selectedTrack: 't0'
+test('HTTP_TRACKS_RESPONSE:default', t => {
+  const t0 = {name: 't0', stream_url: '/t0.mp3'}
+  const t1 = {name: 't1', stream_url: '/t1.mp3'}
+  t.deepEqual(update({}, mockAction('HTTP_TRACKS_RESPONSE', [t0, t1])), {
+    tracks: [t0, t1],
+    selectedTrack: t0,
+    audioAction: {
+      type: 'load',
+      params: {src: '/t0.mp3?client_id=PASSWORD%40123'}
+    }
   })
+})
+test('HTTP_TRACKS_RESPONSE', t => {
+  const t0 = {name: 't0', stream_url: '/t0.mp3'}
+  const t1 = {name: 't1', stream_url: '/t1.mp3'}
+  const t3 = {name: 't3', stream_url: '/t3.mp3'}
   t.deepEqual(
-    update({selectedTrack: 't3'},
-      mockAction('HTTP_TRACKS_RESPONSE', ['t0', 't1'])
+    update({selectedTrack: t3, audioAction: null},
+      mockAction('HTTP_TRACKS_RESPONSE', [t0, t1])
     ), {
-      tracks: ['t0', 't1'],
-      selectedTrack: 't3'
+      tracks: [t0, t1],
+      selectedTrack: t3,
+      audioAction: null
     })
 })
 test('MEDIA_PAUSED', t => {
