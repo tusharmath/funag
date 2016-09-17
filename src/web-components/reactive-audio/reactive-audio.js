@@ -38,6 +38,12 @@ export default {
         return this.__audio.pause()
       case 'seek':
         return updateCurrentTime(this.__audio, params)
+      case 'load':
+        if (isValidSource(this.__audio, params.src)) {
+          this.__audio.src = params.src
+          return this.__audio.load()
+        }
+        return
     }
   }
 }
