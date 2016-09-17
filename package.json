@@ -3,7 +3,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "ava",
+    "test": "NODE_ENV=test ava",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "start": "nodemon src/server",
     "build": "webpack",

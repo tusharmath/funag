@@ -4,10 +4,12 @@
 
 'use strict'
 
+import R from 'ramda'
 import {BlockHeight, Palette, BlockSpace} from '../../lib/Themes'
 import {createStyleSheet} from '../../lib/JSSHelpers'
+import TrackListStyle from './track-list.style'
 
-export default createStyleSheet({
+export default createStyleSheet(R.merge(TrackListStyle, {
   '.text-overflow': {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -44,4 +46,4 @@ export default createStyleSheet({
       boxShadow: Palette.zDepth__1
     }
   }
-})
+}))

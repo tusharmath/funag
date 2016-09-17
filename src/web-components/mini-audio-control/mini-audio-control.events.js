@@ -1,9 +1,9 @@
-import {BubblingEventType} from '../../lib/CustomEventType'
 /**
- * Created by tushar.mathur on 11/09/16.
+ * Created by tushar.mathur on 17/09/16.
  */
 
 'use strict'
 
-export const MediaPlaying = BubblingEventType('MediaPlaying')
-export const MediaStopped = BubblingEventType('MediaStopped')
+import {BubblingEventType} from '../../lib/CustomEventType'
+
+export const SeekEvent = BubblingEventType('fg-mini-audio-control-seek')

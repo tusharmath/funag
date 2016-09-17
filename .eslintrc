@@ -16,6 +16,7 @@
     ]
   },
   "globals": {
-    "APP_CONFIG": true
+    "APP_CONFIG": true,
+    "Promise": true
   }
 }
