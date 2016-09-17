@@ -74,7 +74,7 @@ export default (state, dispatch) => {
     // REACTIVE/AUDIO
     !selectedTrack ? '' : h('fg-reactive-audio', {
       attrs: {src: trackStreamURL(selectedTrack)},
-      props: {action: audioAction},
+      props: {action: Value.of(audioAction)},
       on: {
         timeupdate: dispatch('UPDATE_COMPLETION'),
         playing: dispatch('MEDIA_PLAYING'),

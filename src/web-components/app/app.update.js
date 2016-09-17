@@ -8,6 +8,7 @@ import R from 'ramda'
 import {setTracks} from './app.utils'
 import logUnhandledActions from '../../lib/logUnhandledActions'
 import {MediaStatus} from '../../lib/MediaStatus'
+import Value from '../../lib/value'
 
 function getDuration (params) {
   return params.target.currentTime / params.target.duration
@@ -22,7 +23,7 @@ export default (state, {type, params}) => {
     case 'SELECT_TRACK':
       return R.merge(state, {
         modalTrack: params,
-        showModal: true
+        showModal: Value.of(true)
       })
     case 'HTTP_TRACKS_RESPONSE':
       return setTracks(state, params)
@@ -41,7 +42,8 @@ export default (state, {type, params}) => {
     case 'PLAY_NOW':
       return R.merge(state, {
         audioAction: 'play',
-        selectedTrack: state.modalTrack
+        selectedTrack: state.modalTrack,
+        showModal: Value.of(false)
       })
     default:
       logUnhandledActions(state, {type, params})

@@ -7,6 +7,7 @@
 import update from '../src/web-components/app/app.update'
 import test from 'ava'
 import {MediaStatus} from '../src/lib/MediaStatus'
+import Value from '../src/lib/value'
 
 function mockAction (type, detail) {
   return {type, params: {detail}}
@@ -22,7 +23,7 @@ test('SELECT_TRACK', t => {
     update({}, {type: 'SELECT_TRACK', params: '#track'}),
     {
       modalTrack: '#track',
-      showModal: true
+      showModal: Value.of(true)
     }
   )
 })
@@ -90,6 +91,11 @@ test('PLAY_NOW', t => {
       {modalTrack: 't0'},
       mockAction('PLAY_NOW')
     ),
-    {audioAction: 'play', modalTrack: 't0', selectedTrack: 't0'}
+    {
+      audioAction: 'play',
+      modalTrack: 't0',
+      selectedTrack: 't0',
+      showModal: Value.of(false)
+    }
   )
 })
