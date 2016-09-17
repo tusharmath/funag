@@ -8,6 +8,7 @@ import h from 'snabbdom/h'
 import thunk from 'snabbdom/thunk'
 import {durationFormat} from '../../lib/SoundCloud'
 import R from 'ramda'
+import {MediaStatus} from '../../lib/MediaStatus'
 
 function placeholder () {
   return h(`div.placeholder`, [
@@ -19,14 +20,18 @@ function placeholder () {
   ])
 }
 
-function render (tracks, selectedTrack, playing, dispatch) {
+function render (tracks, selectedTrack, mediaStatus, dispatch) {
   return h('div',
     tracks.length > 0 ? tracks.map(track =>
       h(`div.trackContainer`, {
         on: {click: [dispatch('SELECT_TRACK'), track]}
       }, [
         h('fg-track-artwork', {
-          props: {track, selected: selectedTrack, playing}
+          props: {
+            track,
+            selected: selectedTrack,
+            playing: mediaStatus === MediaStatus.PLAYING
+          }
         }),
         h(`div.trackDetail`, [
           h(`div.title.hide-text-overflow`, [track.title]),
@@ -39,6 +44,6 @@ function render (tracks, selectedTrack, playing, dispatch) {
 }
 
 export default (state, dispatch) => {
-  const {tracks, selectedTrack, playing} = state
-  return thunk('div', render, [tracks, selectedTrack, playing, dispatch])
+  const {tracks, selectedTrack, mediaStatus} = state
+  return thunk('div', render, [tracks, selectedTrack, mediaStatus, dispatch])
 }

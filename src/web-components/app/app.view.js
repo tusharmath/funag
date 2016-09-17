@@ -16,7 +16,6 @@ export default (state, dispatch) => {
   const {
     tracks,
     selectedTrack,
-    playing,
     search,
     showModal,
     modalTrack,
@@ -51,7 +50,7 @@ export default (state, dispatch) => {
     ]),
 
     // TRACK LIST
-    TrackListView({tracks, selectedTrack, playing}, dispatch),
+    TrackListView({tracks, selectedTrack, mediaStatus}, dispatch),
 
     // CONTROL/PLAYER
     !selectedTrack ? '' : h(`div.control-container`, [
