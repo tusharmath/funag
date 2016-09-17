@@ -76,7 +76,7 @@ export default {
         }),
         h('div.dark-overlay', {
           on: {
-            tap: dispatch('OVERLAY_CLICK', {
+            click: dispatch('OVERLAY_CLICK', {
               stopPropagation: true,
               preventDefault: true
             })
