@@ -10,31 +10,13 @@ import makeWCReactive from '../../lib/makeWCReactive'
 function updateCurrentTime (audio, {completion}) {
   audio.currentTime = completion * audio.duration
 }
+function isValidSource (audio, value) {
+  return validURL.isUri(value) && value !== audio.src
+}
 export default {
   createdCallback () {
     makeWCReactive(this)
     this.__audio = document.createElement('audio')
-    Object.defineProperty(this, 'src', {
-      get () { return this.__audio.src },
-      set (value) {
-        if (validURL.isUri(value) && value !== this.__audio.src) {
-          this.__audio.src = value
-        }
-      }
-    })
-    this.src = this.getAttribute('src')
-  },
-
-  attachedCallback () {
-    this.src = this.getAttribute('src')
-  },
-
-  detachedCallback () {
-    this.disposable()
-  },
-
-  attributeChangedCallback (name, old, src) {
-    if (name === 'src') this.src = src
   },
 
   addEventListener (...args) {
@@ -45,9 +27,12 @@ export default {
     return this.__audio.removeEventListener(...args)
   },
 
-  onAction ({type, params}) {
+  onAction ({type, params = {}}) {
     switch (type) {
       case 'play':
+        if (isValidSource(this.__audio, params.src)) {
+          this.__audio.src = params.src
+        }
         return this.__audio.play()
       case 'pause':
         return this.__audio.pause()
