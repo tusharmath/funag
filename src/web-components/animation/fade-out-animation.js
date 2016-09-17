@@ -9,12 +9,12 @@ import attachFinished from './attach-finished'
 import getComputedStyle from '../../dom-api/getComputedStyle'
 
 export default R.curry(function (config, node) {
-  return getComputedStyle(node).then(function ({left}) {
-    return attachFinished(
-      node.animate([
-        {opacity: 1, left},
-        {opacity: 0, left}
-      ], config.duration)
-    )
-  })
+  const left = getComputedStyle(node).left
+  return attachFinished(
+    node.animate([
+      {opacity: 1, left},
+      {opacity: 0, left}
+    ], config.duration)
+  )
 })
+

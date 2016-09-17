@@ -44,7 +44,7 @@ registerWC('fg-animate', {
     this.dispatchEvent(AnimationEndEvent.of(this))
   },
   __applyAnimation ({animation, select}) {
-    return animation(this.__root.querySelector(select)).then(t => t.finished)
+    return animation(this.__root.querySelector(select)).finished
   },
   __animate (action) {
     switch (action) {

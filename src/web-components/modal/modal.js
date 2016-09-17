@@ -70,7 +70,7 @@ export default {
     const hidden = show === false && animationCompleted === true
     return h('div', {class: {hidden}}, [
       h('div.modal-container', [
-        !show ? '' : h('fg-disable-scroll'),
+        h('fg-body-scroll', {attrs: {enabled: !show}}),
         h('fg-animate', {
           on: {[AnimationEndEvent]: dispatch('ANIMATION_END')},
           props: {action: Value.of(action), animation: animation}
