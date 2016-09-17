@@ -6,7 +6,6 @@
 
 import h from 'snabbdom/h'
 import {Response} from '../reactive-http/reactive-http.events'
-import {trackStreamURL} from '../../lib/SoundCloud'
 import {FunagInputValue} from '../input/input.events'
 import {createRequest} from './app.utils'
 import Value from '../../lib/value'
@@ -73,8 +72,7 @@ export default (state, dispatch) => {
 
     // REACTIVE/AUDIO
     !selectedTrack ? '' : h('fg-reactive-audio', {
-      attrs: {src: trackStreamURL(selectedTrack)},
-      props: {action: Value.of(audioAction)},
+      props: {action: audioAction},
       on: {
         timeupdate: dispatch('UPDATE_COMPLETION'),
         playing: dispatch('MEDIA_PLAYING'),

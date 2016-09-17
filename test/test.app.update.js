@@ -88,13 +88,16 @@ test('UPDATE_COMPLETION', t => {
 test('PLAY_NOW', t => {
   t.deepEqual(
     update(
-      {modalTrack: 't0'},
+      {modalTrack: {name: 't0', stream_url: '/t0.mp3'}},
       mockAction('PLAY_NOW')
     ),
     {
-      audioAction: 'play',
-      modalTrack: 't0',
-      selectedTrack: 't0',
+      audioAction: {
+        type: 'play',
+        params: {src: '/t0.mp3?client_id=PASSWORD%40123'}
+      },
+      modalTrack: {name: 't0', stream_url: '/t0.mp3'},
+      selectedTrack: {name: 't0', stream_url: '/t0.mp3'},
       showModal: Value.of(false)
     }
   )

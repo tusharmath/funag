@@ -5,5 +5,8 @@
 'use strict'
 
 module.exports = {
-  env: 'test'
+  env: 'test',
+  soundCloud: {
+    clientID: 'PASSWORD@123'
+  }
 }

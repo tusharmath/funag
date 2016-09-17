@@ -9,6 +9,7 @@ import {setTracks} from './app.utils'
 import logUnhandledActions from '../../lib/logUnhandledActions'
 import {MediaStatus} from '../../lib/MediaStatus'
 import Value from '../../lib/value'
+import {trackStreamURL} from '../../lib/SoundCloud'
 
 function getDuration (params) {
   return params.target.currentTime / params.target.duration
@@ -41,7 +42,10 @@ export default (state, {type, params}) => {
       return R.assoc('completion', getDuration(params), state)
     case 'PLAY_NOW':
       return R.merge(state, {
-        audioAction: 'play',
+        audioAction: {
+          type: 'play',
+          params: {src: trackStreamURL(state.modalTrack)}
+        },
         selectedTrack: state.modalTrack,
         showModal: Value.of(false)
       })
