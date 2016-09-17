@@ -6,6 +6,7 @@
 
 import R from 'ramda'
 import getClientY from '../../dom-api/getClientY'
+import minmax from '../../lib/minmax'
 
 function onTouchMove (params, state) {
   const clientY = getClientY(params)
@@ -13,8 +14,15 @@ function onTouchMove (params, state) {
   const translateY = state.translateY + change * 100
   return R.merge(state, {
     touchMove: clientY,
-    opacity: Math.max(Math.min(state.opacity - change, 1), 0),
+    opacity: minmax(0, 1, state.opacity - change),
     translateY: translateY < 0 ? state.translateY : translateY
+  })
+}
+function onTouchEnd (params, state) {
+  return R.merge(state, {
+    isMoving: false,
+    translateY: 0,
+    opacity: 1
   })
 }
 export default (state, {type, params}) => {
@@ -42,6 +50,8 @@ export default (state, {type, params}) => {
       })
     case 'MOVE':
       return onTouchMove(params, state)
+    case 'END':
+      return onTouchEnd(params, state)
     case 'ANIMATION_END':
       return R.assoc('animationCompleted', true, state)
     default:

@@ -4,41 +4,8 @@
 
 'use strict'
 
-import h from 'snabbdom/h'
-import R from 'ramda'
-import FadeInAnimation from '../animation/fade-in-animation'
-import FadeOutAnimation from '../animation/fade-out-animation'
-import SlideFromBottomAnimation from '../animation/slide-from-bottom-animation'
-import SlideToBottomAnimation from '../animation/slide-to-bottom-animation'
-import {AnimationEndEvent} from '../animation/animation-events'
-import Value from '../../lib/value'
-
-const config = {
-  duration: 300,
-  easing: 'cubic-bezier(0.5, 0.2, 0.2, 1.5)'
-}
-const animation = {
-  enter: [
-    {
-      animation: FadeInAnimation(config),
-      select: '.dark-overlay'
-    },
-    {
-      animation: SlideFromBottomAnimation(config),
-      select: '.slot-container'
-    }
-  ],
-  exit: [
-    {
-      animation: FadeOutAnimation(config),
-      select: '.dark-overlay'
-    },
-    {
-      animation: SlideToBottomAnimation(config),
-      select: '.slot-container'
-    }
-  ]
-}
+import update from './modal.update'
+import view from './modal.view'
 
 export default {
   props: ['show'],
@@ -46,47 +13,11 @@ export default {
     return {
       action: null,
       show: false,
-      animationCompleted: true
+      animationCompleted: true,
+      opacity: 1,
+      translateY: 0
     }
   },
-  update (state, {type, params}) {
-    switch (type) {
-      case '@@rwc/prop/show':
-        return state.show === params.valueOf() ? state : R.merge(state, {
-          show: params.valueOf(),
-          animationCompleted: false,
-          action: params.valueOf() ? 'enter' : 'exit'
-        })
-      case 'OVERLAY_CLICK':
-        return R.merge(state, {
-          show: false,
-          action: 'exit',
-          animationCompleted: false
-        })
-      case 'ANIMATION_END':
-        return R.assoc('animationCompleted', true, state)
-      default:
-        return state
-    }
-  },
-  view ({show, action, animationCompleted}, dispatch) {
-    const hidden = show === false && animationCompleted === true
-    return h('div', {class: {hidden}}, [
-      h('div.modal-container', [
-        h('fg-animate', {
-          on: {[AnimationEndEvent]: dispatch('ANIMATION_END')},
-          props: {action: Value.of(action), animation: animation}
-        }),
-        h('div.dark-overlay', {
-          on: {
-            click: dispatch('OVERLAY_CLICK', {
-              stopPropagation: true,
-              preventDefault: true
-            })
-          }
-        }),
-        h('div.slot-container', [h('slot')])
-      ])
-    ])
-  }
+  update,
+  view
 }

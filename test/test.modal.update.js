@@ -14,7 +14,7 @@ function Elm () {
   return {getBoundingClientRect: () => ({height: 100})}
 }
 
-test('TOUCH_START', t => {
+test('START', t => {
   const elm = Elm()
   const out = update({elm},
     mockAction('START', {changedTouches: [{clientY: 10}]})
@@ -25,5 +25,33 @@ test('TOUCH_START', t => {
     touchMove: 10,
     height: 100,
     isMoving: true
+  })
+})
+test('MOVE', t => {
+  const out = update(
+    {
+      touchMove: 8,
+      opacity: 0.8,
+      height: 80,
+      translateY: 80
+    },
+    mockAction('MOVE', {changedTouches: [{clientY: 10}]})
+  )
+  t.deepEqual(out, {
+    touchMove: 10,
+    opacity: 0.775,
+    height: 80,
+    translateY: 82.5
+  })
+})
+test('END', t => {
+  const out = update(
+    {},
+    mockAction('END', {})
+  )
+  t.deepEqual(out, {
+    isMoving: false,
+    translateY: 0,
+    opacity: 1
   })
 })
