@@ -5,6 +5,7 @@
 'use strict'
 
 import h from 'snabbdom/h'
+import {DragEvent} from '../draggable/draggable.events'
 
 const DAMPED = {
   stopPropagation: true,
@@ -23,13 +24,12 @@ export default (state, dispatch) => {
       }),
       h('div.slot-container', {
         style: {transform: `translateY(${translateY}%)`},
-        hook: {insert: dispatch('INSERTED')},
-        on: {
-          touchmove: dispatch('MOVE', DAMPED),
-          touchstart: dispatch('START', DAMPED),
-          touchend: dispatch('END', DAMPED)
-        }
-      }, [h('slot')])
+        hook: {insert: dispatch('INSERTED')}
+      }, [
+        h('fg-enhanced-drag', {on: {[DragEvent]: dispatch('DRAG')}}, [
+          h('slot')
+        ])
+      ])
     ])
   ])
 }
