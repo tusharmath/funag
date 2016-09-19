@@ -6,6 +6,7 @@
 
 import R from 'ramda'
 
+// TODO: DEPRECATE
 export default R.compose(
   R.prop('clientX'),
   R.nth(0),
