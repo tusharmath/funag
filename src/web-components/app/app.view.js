@@ -8,9 +8,12 @@ import h from 'snabbdom/h'
 import {Response} from '../reactive-http/reactive-http.events'
 import {FunagInputValue} from '../input/input.events'
 import {createRequest} from './app.utils'
-import Value from '../../lib/value'
 import TrackListView from './track-list.view'
 import {SeekEvent} from '../mini-audio-control/mini-audio-control.events'
+import {
+  TrackModalShowEvent,
+  TrackModalHideEvent
+} from '../track-modal/track-modal.events'
 
 export default (state, dispatch) => {
   const {
@@ -42,7 +45,11 @@ export default (state, dispatch) => {
 
     // TRACK MODAL
     h('fg-track-modal', {
-      props: {track: modalTrack, show: Value.of(showModal)}
+      props: {track: modalTrack, show: showModal},
+      on: {
+        [TrackModalShowEvent]: dispatch('SHOW_MODAL'),
+        [TrackModalHideEvent]: dispatch('HIDE_MODAL')
+      }
     }, [
       h(`fg-button`, {
         props: {wide: true}, on: {click: dispatch('PLAY_NOW')}

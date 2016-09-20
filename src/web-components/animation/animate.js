@@ -21,8 +21,7 @@ registerWC('fg-animate', {
       },
       action: {
         get: () => this.__lastAction,
-        set: (_action) => {
-          const action = _action.valueOf()
+        set: (action) => {
           if (action === this.__lastAction) return
           this.__lastAction = action
           this.__beginAnimation(action)
