@@ -5,7 +5,7 @@
 'use strict'
 
 import R from 'ramda'
-/* global CustomEvent */
+import CustomEvent from './CustomEvent'
 
 export function CustomEventType (options, type) {
   return {
