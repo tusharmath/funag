@@ -11,11 +11,11 @@ export default {
   props: ['show'],
   init () {
     return {
-      action: null,
       show: false,
       animationCompleted: true,
       opacity: 1,
-      translateY: 0
+      translateY: 0,
+      animationStatus: 'enter'
     }
   },
   update,

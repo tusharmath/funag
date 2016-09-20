@@ -22,18 +22,20 @@ export default (state, {type, params}) => {
       return state.show === params.valueOf() ? state : R.merge(state, {
         show: params.valueOf(),
         animationCompleted: false,
-        action: params.valueOf() ? 'enter' : 'exit'
+        animationStatus: params.valueOf() ? 'enter' : 'exit'
       })
     case 'OVERLAY_CLICK':
       return R.merge(state, {
         show: false,
-        action: 'exit',
+        animationStatus: 'exit',
         animationCompleted: false
       })
     case 'DRAG':
       return onDrag(params, state)
     case 'ANIMATION_END':
-      return R.assoc('animationCompleted', true, state)
+      return R.merge(state, {
+        animationCompleted: true
+      })
     default:
       return state
   }
