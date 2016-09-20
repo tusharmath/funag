@@ -6,12 +6,12 @@
 
 /* global requestAnimationFrame */
 
-export default function (func) {
+export default function (func, ctx) {
   var __args
   var queue
 
   function flush () {
-    func.apply(null, __args)
+    func.apply(ctx, __args)
     queue = null
   }
 
