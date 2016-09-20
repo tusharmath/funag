@@ -6,7 +6,10 @@
 
 import test from 'ava'
 import Modal from '../src/web-components/modal/modal'
-import Value from '../src/lib/value'
+import {
+  ModalShowEvent,
+  ModalHideEvent
+} from '../src/web-components/modal/modal.events'
 
 const {update} = Modal
 function mockAction (type, params) {
@@ -14,7 +17,7 @@ function mockAction (type, params) {
 }
 test('@@rwc/prop/show', t => {
   t.deepEqual(
-    update({}, mockAction('@@rwc/prop/show', Value.of(false))),
+    update({}, mockAction('@@rwc/prop/show', false)),
     {show: false, animationCompleted: false, animationStatus: 'exit'}
   )
   t.deepEqual(
@@ -39,8 +42,12 @@ test('OVERLAY_CLICK', t => {
 })
 test('ANIMATION_END', t => {
   t.deepEqual(
-    update({}, mockAction('ANIMATION_END')),
-    {animationCompleted: true}
+    update({show: true}, mockAction('ANIMATION_END')),
+    [{show: true, animationCompleted: true}, ModalShowEvent.of()]
+  )
+  t.deepEqual(
+    update({show: false}, mockAction('ANIMATION_END')),
+    [{show: false, animationCompleted: true}, ModalHideEvent.of()]
   )
 })
 test('DRAG', t => {

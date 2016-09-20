@@ -6,6 +6,7 @@
 
 import R from 'ramda'
 import minmax from '../../lib/minmax'
+import {ModalShowEvent, ModalHideEvent} from './modal.events'
 
 function onDrag (params, state) {
   const {dragX, dragY} = params.detail
@@ -33,9 +34,9 @@ export default (state, {type, params}) => {
     case 'DRAG':
       return onDrag(params, state)
     case 'ANIMATION_END':
-      return R.merge(state, {
-        animationCompleted: true
-      })
+      return [R.assoc('animationCompleted', true, state),
+        state.show ? ModalShowEvent.of(params) : ModalHideEvent.of(params)
+      ]
     default:
       return state
   }

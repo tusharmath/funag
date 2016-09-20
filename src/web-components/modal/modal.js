@@ -14,8 +14,7 @@ export default {
       show: false,
       animationCompleted: true,
       opacity: 1,
-      translateY: 0,
-      animationStatus: 'enter'
+      translateY: 0
     }
   },
   update,

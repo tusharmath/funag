@@ -7,7 +7,6 @@
 import update from '../src/web-components/app/app.update'
 import test from 'ava'
 import {MediaStatus} from '../src/lib/MediaStatus'
-import Value from '../src/lib/value'
 
 function mockAction (type, detail) {
   return {type, params: {detail}}
@@ -23,7 +22,7 @@ test('SELECT_TRACK', t => {
     update({}, {type: 'SELECT_TRACK', params: '#track'}),
     {
       modalTrack: '#track',
-      showModal: Value.of(true)
+      showModal: true
     }
   )
 })
@@ -98,9 +97,10 @@ test('UPDATE_COMPLETION', t => {
   )
 })
 test('PLAY_NOW', t => {
+  const modalTrack = {name: 't0', stream_url: '/t0.mp3'}
   t.deepEqual(
     update(
-      {modalTrack: {name: 't0', stream_url: '/t0.mp3'}},
+      {modalTrack},
       mockAction('PLAY_NOW')
     ),
     {
@@ -108,9 +108,90 @@ test('PLAY_NOW', t => {
         type: 'play',
         params: {src: '/t0.mp3?client_id=PASSWORD%40123'}
       },
-      modalTrack: {name: 't0', stream_url: '/t0.mp3'},
-      selectedTrack: {name: 't0', stream_url: '/t0.mp3'},
-      showModal: Value.of(false)
+      modalTrack: modalTrack,
+      selectedTrack: modalTrack,
+      showModal: false,
+      mediaStatus: MediaStatus.LOADING
+    }
+  )
+})
+test('PLAY_NOW:no-selected-track', t => {
+  const modalTrack = {name: 't0', stream_url: '/t0.mp3'}
+  t.deepEqual(
+    update(
+      {modalTrack},
+      mockAction('PLAY_NOW')
+    ),
+    {
+      audioAction: {
+        type: 'play',
+        params: {src: '/t0.mp3?client_id=PASSWORD%40123'}
+      },
+      modalTrack: modalTrack,
+      selectedTrack: modalTrack,
+      showModal: false,
+      mediaStatus: MediaStatus.LOADING
+    }
+  )
+})
+test('PLAY_NOW:already-playing', t => {
+  const modalTrack = {name: 't0', stream_url: '/t0.mp3'}
+  t.deepEqual(
+    update(
+      {
+        modalTrack: modalTrack,
+        selectedTrack: modalTrack,
+        mediaStatus: MediaStatus.PLAYING
+      },
+      mockAction('PLAY_NOW')
+    ),
+    {
+      modalTrack: modalTrack,
+      selectedTrack: modalTrack,
+      showModal: false,
+      mediaStatus: MediaStatus.PLAYING
+    }
+  )
+})
+test('PLAY_NOW:track-loading', t => {
+  const modalTrack = {name: 't0', stream_url: '/t0.mp3'}
+  t.deepEqual(
+    update(
+      {
+        modalTrack: modalTrack,
+        selectedTrack: modalTrack,
+        mediaStatus: MediaStatus.LOADING
+      },
+      mockAction('PLAY_NOW')
+    ),
+    {
+      modalTrack: modalTrack,
+      selectedTrack: modalTrack,
+      showModal: false,
+      mediaStatus: MediaStatus.LOADING
+    }
+  )
+})
+test('PLAY_NOW:track-paused', t => {
+  const modalTrack = {name: 't0', stream_url: '/t0.mp3'}
+  t.deepEqual(
+    update(
+      {
+        modalTrack: modalTrack,
+        selectedTrack: modalTrack,
+        mediaStatus: MediaStatus.PAUSED
+      },
+      mockAction('PLAY_NOW')
+    ),
+    {
+      modalTrack: modalTrack,
+      selectedTrack: modalTrack,
+      mediaStatus: MediaStatus.LOADING,
+      showModal: false,
+      audioAction: {
+        type: 'play',
+        params: {src: '/t0.mp3?client_id=PASSWORD%40123'}
+      }
     }
   )
 })
