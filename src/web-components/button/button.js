@@ -9,7 +9,7 @@ import h from 'snabbdom/h'
 export default {
   props: ['wide'],
   init (e) {
-    return {wide: e.wide}
+    return {wide: e.props.wide}
   },
   update (state, {type, params}) {
     switch (type) {

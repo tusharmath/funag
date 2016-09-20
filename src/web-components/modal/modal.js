@@ -11,7 +11,7 @@ import FadeOutAnimation from '../animation/fade-out-animation'
 import SlideFromBottomAnimation from '../animation/slide-from-bottom-animation'
 import SlideToBottomAnimation from '../animation/slide-to-bottom-animation'
 import {AnimationEndEvent} from '../animation/animation-events'
-import Value from '../../lib/value'
+import {ModalHideEvent, ModalShowEvent} from './modal.events'
 
 const config = {
   duration: 300,
@@ -52,10 +52,10 @@ export default {
   update (state, {type, params}) {
     switch (type) {
       case '@@rwc/prop/show':
-        return state.show === params.valueOf() ? state : R.merge(state, {
-          show: params.valueOf(),
+        return state.show === params ? state : R.merge(state, {
+          show: params,
           animationCompleted: false,
-          action: params.valueOf() ? 'enter' : 'exit'
+          action: params ? 'enter' : 'exit'
         })
       case 'OVERLAY_CLICK':
         return R.merge(state, {
@@ -64,7 +64,10 @@ export default {
           animationCompleted: false
         })
       case 'ANIMATION_END':
-        return R.assoc('animationCompleted', true, state)
+        return [
+          R.assoc('animationCompleted', true, state),
+          state.show ? ModalShowEvent.of(params) : ModalHideEvent.of(params)
+        ]
       default:
         return state
     }
@@ -75,7 +78,7 @@ export default {
       h('div.modal-container', [
         h('fg-animate', {
           on: {[AnimationEndEvent]: dispatch('ANIMATION_END')},
-          props: {action: Value.of(action), animation: animation}
+          props: {action, animation: animation}
         }),
         h('div.dark-overlay', {
           on: {

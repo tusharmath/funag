@@ -7,7 +7,6 @@
 import R from 'ramda'
 import {setTracks} from './app.utils'
 import {MediaStatus} from '../../lib/MediaStatus'
-import Value from '../../lib/value'
 import {trackStreamURL} from '../../lib/SoundCloud'
 
 function getDuration (params) {
@@ -26,7 +25,7 @@ export default (state, {type, params}) => {
     case 'SELECT_TRACK':
       return R.merge(state, {
         modalTrack: params,
-        showModal: Value.of(true)
+        showModal: true
       })
     case 'HTTP_TRACKS_RESPONSE':
       return setTracks(state, params)
@@ -49,8 +48,12 @@ export default (state, {type, params}) => {
           params: {src: trackStreamURL(state.modalTrack)}
         },
         selectedTrack: state.modalTrack,
-        showModal: Value.of(false)
+        showModal: false
       })
+    case 'SHOW_MODAL':
+      return R.assoc('showModal', true, state)
+    case 'HIDE_MODAL':
+      return R.assoc('showModal', false, state)
     case 'SEEK':
       return R.merge(state,
         {audioAction: {type: 'seek', params: params.detail}}
