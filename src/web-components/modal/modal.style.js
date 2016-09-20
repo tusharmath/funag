@@ -25,7 +25,7 @@ export default createStyleSheet({
     height: '100%',
     width: '100%',
     top: 0,
-    transition: 'opacity cubic-bezier(0.5, 0, 1, 0.5) 300ms'
+    transition: 'opacity cubic-bezier(0.5, 0.2, 0.2, 1.5) 300ms'
   },
   '.slot-container': {
     backgroundColor: '#FFF',
@@ -33,7 +33,7 @@ export default createStyleSheet({
     position: 'absolute',
     width: '100%',
     bottom: 0,
-    transition: 'transform cubic-bezier(0.5, 0, 1, 0.5) 300ms'
+    transition: 'transform cubic-bezier(0.5, 0.2, 0.2, 1.5) 300ms'
   },
   '.no-anime': {
     '& .dark-overlay': {
