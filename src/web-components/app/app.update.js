@@ -18,6 +18,24 @@ function getAudioAction (state) {
     state.mediaStatus === MediaStatus.PLAYING ? 'pause' : 'play'
   )
 }
+function onPlay (state) {
+  const ignorePlayAction = [
+    state.selectedTrack === state.modalTrack,
+    state.mediaStatus !== MediaStatus.PAUSED
+  ].every(Boolean)
+
+  if (ignorePlayAction) return R.assoc('showModal', false, state)
+
+  return R.merge(state, {
+    audioAction: {
+      type: 'play',
+      params: {src: trackStreamURL(state.modalTrack)}
+    },
+    mediaStatus: MediaStatus.LOADING,
+    selectedTrack: state.modalTrack,
+    showModal: false
+  })
+}
 export default (state, {type, params}) => {
   switch (type) {
     case `SEARCH`:
@@ -42,14 +60,7 @@ export default (state, {type, params}) => {
     case 'UPDATE_COMPLETION':
       return R.assoc('completion', getDuration(params), state)
     case 'PLAY_NOW':
-      return R.merge(state, {
-        audioAction: {
-          type: 'play',
-          params: {src: trackStreamURL(state.modalTrack)}
-        },
-        selectedTrack: state.modalTrack,
-        showModal: false
-      })
+      return onPlay(state)
     case 'SHOW_MODAL':
       return R.assoc('showModal', true, state)
     case 'HIDE_MODAL':
