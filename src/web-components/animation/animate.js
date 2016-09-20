@@ -7,6 +7,7 @@
 import registerWC from '../../lib/registerWC'
 import getRootNode from '../../dom-api/getRootNode'
 import {AnimationStartEvent, AnimationEndEvent} from './animation-events'
+import webAnimationShim from '../../dom-api/web-animation-shim'
 
 registerWC('fg-animate', {
   createdCallback () {
@@ -43,8 +44,10 @@ registerWC('fg-animate', {
   __onAnimationCompleted () {
     this.dispatchEvent(AnimationEndEvent.of(this))
   },
-  __applyAnimation ({animation, select}) {
-    return animation(this.__root.querySelector(select)).finished
+  __applyAnimation ({animation, select, options}) {
+    const node = this.__root.querySelector(select)
+    if (!node) return null
+    return webAnimationShim(node.animate(animation, options)).finished
   },
   __animate (action) {
     switch (action) {

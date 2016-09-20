@@ -7,33 +7,33 @@
 import h from 'snabbdom/h'
 import {DragEvent} from '../draggable/draggable.events'
 import {AnimationEndEvent} from '../animation/animation-events'
-import FadeInAnimation from '../animation/fade-in-animation'
-import FadeOutAnimation from '../animation/fade-out-animation'
-import SlideFromBottomAnimation from '../animation/slide-from-bottom-animation'
-import SlideToBottomAnimation from '../animation/slide-to-bottom-animation'
 
-const config = {
+const options = {
   duration: 300,
   easing: 'cubic-bezier(0.5, 0.2, 0.2, 1.5)'
 }
 const animation = {
   enter: [
     {
-      animation: FadeInAnimation(config),
+      options,
+      animation: {opacity: [0, 1]},
       select: '.dark-overlay'
     },
     {
-      animation: SlideFromBottomAnimation(config),
+      options,
+      animation: {transform: ['translateY(105%)', 'translateY(0)']},
       select: '.slot-container'
     }
   ],
   exit: [
     {
-      animation: FadeOutAnimation(config),
+      options,
+      animation: {opacity: [1, 0]},
       select: '.dark-overlay'
     },
     {
-      animation: SlideToBottomAnimation(config),
+      options,
+      animation: {transform: ['translateY(0)', 'translateY(105%)']},
       select: '.slot-container'
     }
   ]
