@@ -5,7 +5,8 @@
 'use strict'
 
 import R from 'ramda'
-import CustomEvent from './CustomEvent'
+import EventTask from './EventTask'
+import customEvent from '../dom-api/customEvent'
 
 export function CustomEventType (options, type) {
   return {
@@ -13,8 +14,11 @@ export function CustomEventType (options, type) {
     toString () {
       return type
     },
+    event (detail) {
+      return customEvent(type, detail, options)
+    },
     of (detail) {
-      return new CustomEvent(type, Object.assign({detail}, options))
+      return EventTask.of(this.event(detail))
     }
   }
 }

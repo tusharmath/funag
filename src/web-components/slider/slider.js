@@ -9,6 +9,7 @@ import R from 'ramda'
 import getClientX from '../../lib/getClientX'
 import customEvent from '../../dom-api/customEvent'
 import getRootNode from '../../dom-api/getRootNode'
+import EventTask from '../../lib/EventTask'
 
 const getStyle = ({translateX}) => {
   return {delayed: {transform: `translateX(${translateX}%)`}}
@@ -65,10 +66,9 @@ export const update = (state, {type, params}) => {
     case 'START':
       return R.assoc('isMoving', true, state)
     case 'END':
-      return [
-        R.assoc('isMoving', false, state),
+      return [R.assoc('isMoving', false, state), EventTask.of(
         customEvent('change', {completion: 1 + state.translateX / 100})
-      ]
+      )]
     case 'MOVE':
       return setTouchMove(params, state)
     case '@@rwc/attr/completion':

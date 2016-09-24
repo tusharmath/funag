@@ -4,8 +4,8 @@
 
 'use strict'
 
-/* global CustomEvent */
-export default (name, detail) => new CustomEvent(name, {
-  bubbles: true,
-  detail
-})
+import CustomEvent from '../lib/CustomEvent'
+
+export default (name, detail) => new CustomEvent(
+  name, {bubbles: true, detail}
+)
