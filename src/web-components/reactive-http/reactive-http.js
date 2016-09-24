@@ -22,7 +22,7 @@ export default {
   },
 
   __dispatch (response) {
-    this.dispatchEvent(Response.of(response.body))
+    this.dispatchEvent(Response.event(response.body))
   },
 
   __makeRequest ({url, method = 'GET'}) {
