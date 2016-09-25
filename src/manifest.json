@@ -6,6 +6,23 @@
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#2196F3",
-  "background_color": "#FFF"
+  "theme_color": "rgb(238, 238, 238)",
+  "background_color": "#FFF",
+  "icons": [
+    {
+      "src": "soundcloud.svg",
+      "sizes": "96x96",
+      "type": "image/svg"
+    },
+    {
+      "src": "soundcloud.svg",
+      "sizes": "144x144",
+      "type": "image/svg"
+    },
+    {
+      "src": "soundcloud.svg",
+      "sizes": "192x192",
+      "type": "image/svg"
+    }
+  ]
 }
