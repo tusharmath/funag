@@ -36,12 +36,12 @@ registerWC('fg-animate', {
   },
   __beginAnimation (action) {
     if (!this.animation || !this.__root) return
-    this.dispatchEvent(AnimationStartEvent.of(this))
+    this.dispatchEvent(AnimationStartEvent.event(this))
     const promises = this.__animate(action)
     Promise.all(promises).then(this.__onAnimationCompleted)
   },
   __onAnimationCompleted () {
-    this.dispatchEvent(AnimationEndEvent.of(this))
+    this.dispatchEvent(AnimationEndEvent.event(this))
   },
   __applyAnimation ({animation, select, options}) {
     const node = this.__root.querySelector(select)
