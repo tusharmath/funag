@@ -11,7 +11,12 @@ import toolbox from 'sw-toolbox'
 const swConfig = APP_CONFIG.sw
 toolbox.precache([
   '/',
-  '/soundcloud.svg'
+  '/soundcloud-16.png',
+  '/soundcloud-32.png',
+  '/soundcloud-64.png',
+  '/soundcloud-128.png',
+  '/soundcloud-256.png',
+  '/soundcloud-512.png'
 ])
 toolbox.router.get('/', toolbox.cacheFirst)
 toolbox.router.get(/.*client.*/, toolbox.cacheFirst)
