@@ -10,7 +10,7 @@ import toolbox from 'sw-toolbox'
 
 const swConfig = APP_CONFIG.sw
 toolbox.precache([
-  '/index.html',
+  '/',
   '/soundcloud.svg'
 ])
 toolbox.router.get('/', toolbox.cacheFirst)
