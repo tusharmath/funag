@@ -14,7 +14,9 @@ export default ({title, bundle, manifest, sw}) => {
     h('head', [
       h('title', [title]),
       h('link', {
-        attrs: {rel: 'shortcut icon', type: 'image/svg', href: 'soundcloud.svg'}
+        attrs: {
+          rel: 'shortcut icon', type: 'image/svg', href: 'soundcloud-32.png'
+        }
       }),
       h('style', [globalSheet.toString()]),
       h('style', [flex.asHtmlStyleString()]),

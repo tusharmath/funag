@@ -43,7 +43,7 @@ export default {
     new ApplicationShell(),
     new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(APP_CONFIG)}),
     new CopyWebpackPlugin([
-      { from: './src/icons/soundcloud.svg' }
+      {from: '*.png', context: './src/icons'}
     ])
   ],
   module: {
