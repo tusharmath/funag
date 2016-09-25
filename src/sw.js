@@ -4,18 +4,31 @@
 
 'use strict'
 
+/* global self */
+
 import toolbox from 'sw-toolbox'
 
 const swConfig = APP_CONFIG.sw
+toolbox.precache([
+  '/index.html',
+  '/soundcloud.svg'
+])
+toolbox.router.get('/', toolbox.cacheFirst)
+toolbox.router.get(/.*client.*/, toolbox.cacheFirst)
 
-toolbox.router.get('/', toolbox.fastest)
-toolbox.router.get(/.*client.*/, toolbox.fastest)
-
-toolbox.router.get(/^.*googleapis.*$/, toolbox.fastest)
-toolbox.router.get(/^.*gstatic.*$/, toolbox.fastest)
-toolbox.router.get(/^.*bootstrapcdn.*$/, toolbox.fastest)
-toolbox.router.get(/^.*snd\.cdn.*$/, toolbox.fastest)
+toolbox.router.get(/^.*googleapis.*$/, toolbox.cacheFirst)
+toolbox.router.get(/^.*gstatic.*$/, toolbox.cacheFirst)
+toolbox.router.get(/^.*bootstrapcdn.*$/, toolbox.cacheFirst)
+toolbox.router.get(/^.*sndcdn.*$/, toolbox.cacheFirst)
 
 if (swConfig.debug) {
   toolbox.options.debug = true
 }
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(self.skipWaiting())
+})
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(self.clients.claim())
+})
