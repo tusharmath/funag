@@ -2,14 +2,7 @@ module.exports = {
   env: 'development',
   port: 9000,
   sw: {
-    debug: false,
-    preCache: false,
-    appCache: {
-      policy: 'networkOnly'
-    },
-    externalCache: {
-      policy: 'fastest'
-    }
+    debug: true
   },
   express: {
     useGzipped: false

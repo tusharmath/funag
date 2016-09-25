@@ -2,14 +2,7 @@ module.exports = {
   env: 'production',
   port: 8081,
   sw: {
-    debug: false,
-    preCache: true,
-    appCache: {
-      policy: 'fastest'
-    },
-    externalCache: {
-      policy: 'fastest'
-    }
+    debug: false
   },
   express: {
     useGzipped: true
