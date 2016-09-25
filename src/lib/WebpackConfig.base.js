@@ -7,6 +7,7 @@
 import path from 'path'
 import webpack from 'webpack'
 import {ApplicationShell} from '../pre-render/AppShellPlugin'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
 
 /**
  * Loaders
@@ -40,7 +41,10 @@ export default {
   devServer: {contentBase: './public'},
   plugins: [
     new ApplicationShell(),
-    new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(APP_CONFIG)})
+    new webpack.DefinePlugin({APP_CONFIG: JSON.stringify(APP_CONFIG)}),
+    new CopyWebpackPlugin([
+      { from: './src/icons/soundcloud.svg' }
+    ])
   ],
   module: {
     loaders: [imgLoader, babelLoader]
