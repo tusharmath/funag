@@ -24,13 +24,25 @@ export default createStyleSheet({
     position: 'absolute',
     height: '100%',
     width: '100%',
-    top: 0
+    top: 0,
+    transition: 'opacity cubic-bezier(0.5, 0.2, 0.2, 1.5) 300ms'
   },
   '.slot-container': {
     backgroundColor: '#FFF',
     boxShadow: '0px -4px 4px 0px rgba(0, 0, 0, 0.25)',
     position: 'absolute',
     width: '100%',
-    bottom: 0
+    bottom: 0,
+    transition: 'transform cubic-bezier(0.5, 0.2, 0.2, 1.5) 300ms'
+  },
+  '.no-anime': {
+    '& .dark-overlay': {
+      willChange: 'opacity',
+      transition: 'none'
+    },
+    '& .slot-container': {
+      willChange: 'transform',
+      transition: 'none'
+    }
   }
 })
