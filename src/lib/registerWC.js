@@ -6,6 +6,9 @@
 /* global HTMLElement */
 
 export default (name, proto) => {
-  const prototype = Object.assign(Object.create(HTMLElement.prototype), proto)
+  const prototype = proto instanceof HTMLElement ? proto : Object.assign(
+    Object.create(HTMLElement.prototype),
+    proto
+  )
   document.registerElement(name, {prototype})
 }
