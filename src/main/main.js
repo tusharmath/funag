@@ -30,6 +30,12 @@ export default ({title, bundle, manifest, sw}) => {
       h('link', {attrs: {rel: 'manifest', href: '/manifest.json'}}),
       h('link', {
         attrs: {
+          rel: 'subresource',
+          href: '//fonts.googleapis.com/icon?family=Material+Icons'
+        }
+      }),
+      h('link', {
+        attrs: {
           rel: 'stylesheet',
           type: 'text/css',
           href: '//fonts.googleapis.com/css?family=Open+Sans:300,400,600'
