@@ -1,7 +1,7 @@
 {
   "name": "funag",
   "description": "",
-  "main": "index.js",
+  "main": "public/index.html",
   "scripts": {
     "test": "NODE_ENV=test ava",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
