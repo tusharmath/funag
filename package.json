@@ -25,7 +25,7 @@
     "ramda": "^0.22.0",
     "rimraf": "^2.5.2",
     "route-parser": "0.0.5",
-    "rwc": "^5.0.0",
+    "rwc": "^6.0.2",
     "snabbdom": "^0.5.1",
     "superagent": "^3.1.0",
     "sw-toolbox": "^3.1.1",
