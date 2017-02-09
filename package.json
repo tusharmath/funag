@@ -26,7 +26,7 @@
     "rimraf": "^2.5.2",
     "route-parser": "0.0.5",
     "rwc": "^5.0.0",
-    "snabbdom": "^0.5.1",
+    "snabbdom": "^0.6.4",
     "superagent": "^3.1.0",
     "sw-toolbox": "^3.1.1",
     "valid-url": "^1.0.9",
