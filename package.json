@@ -57,7 +57,7 @@
     "semantic-release": "^6.3.2",
     "serviceworker-loader": "^0.1.0",
     "validate-commit-msg": "^2.8.0",
-    "webpack": "^1.13.0",
+    "webpack": "^2.4.0",
     "webpack-closure-compiler": "^2.0.2",
     "webpack-dev-middleware": "^1.6.1"
   },
